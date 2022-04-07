@@ -36,6 +36,18 @@
     <ClInclude Include="MTXSingleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MTXLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTXImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTXSynchronize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTXThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -51,6 +63,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MTXTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTXLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTXImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTXSynchronize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTXThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

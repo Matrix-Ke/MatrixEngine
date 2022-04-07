@@ -19,9 +19,10 @@ using namespace Matrix;
 int main()
 {
 	char  name[20] = "kkl";
-	ClassTest  singleTest = Singleton<ClassTest>::GetInstance();
+	ClassTest   foo(name, 28);
+	//ClassTest  singleTest = MTXSingleton<ClassTest>::GetInstance();
 
-	singleTest.printClassInfo();
+	foo.printClassInfo();
 
 	return 0;
 }

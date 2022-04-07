@@ -1,14 +1,15 @@
-﻿#pragma once
+#pragma once
 
 class ClassTest
 {
 public:
 	ClassTest();
+	ClassTest(const char* pName);
 	ClassTest(char* name, int number);
 
 	void printClassInfo();
 private:
-	int mNumber;
+	unsigned int mNumber;
 	char* mName;
 };
 

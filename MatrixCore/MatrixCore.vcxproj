@@ -230,7 +230,11 @@
     <ClInclude Include="MTXCore.h" />
     <ClInclude Include="MatrixPlatform.h" />
     <ClInclude Include="MTXFile.h" />
+    <ClInclude Include="MTXImage.h" />
+    <ClInclude Include="MTXLog.h" />
     <ClInclude Include="MTXSingleton.h" />
+    <ClInclude Include="MTXSynchronize.h" />
+    <ClInclude Include="MTXThread.h" />
     <ClInclude Include="MTXTimer.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -238,6 +242,10 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="MTXCore.cpp" />
     <ClCompile Include="MTXFile.cpp" />
+    <ClCompile Include="MTXImage.cpp" />
+    <ClCompile Include="MTXLog.cpp" />
+    <ClCompile Include="MTXSynchronize.cpp" />
+    <ClCompile Include="MTXThread.cpp" />
     <ClCompile Include="MTXTimer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

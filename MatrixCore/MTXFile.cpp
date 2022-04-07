@@ -101,8 +101,8 @@ bool Matrix::MTXFile::Write(const void* pBuffer, unsigned int uiSize, unsigned i
 	//	size − This is the size in bytes of each element to be written.
 	//	nmemb − This is the number of elements, each one with a size of size bytes.
 	//	stream − This is the pointer to a FILE object that specifies an output stream.
-	fwrite(pBuffer, uiSize, uiCount, m_pFileHandle);
-	return false;
+
+	return fwrite(pBuffer, uiSize, uiCount, m_pFileHandle);
 }
 
 bool Matrix::MTXFile::Read(void* pBuffer, unsigned int uiSize, unsigned int uiCount)
