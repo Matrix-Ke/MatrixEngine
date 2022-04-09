@@ -1,0 +1,182 @@
+#pragma once
+#include "MTXCore.h"
+namespace Matrix
+{
+	class MATRIXCORE_API  MTXSynchronize
+	{
+	public:
+		MTXSynchronize() {};
+		virtual ~MTXSynchronize() {};
+		virtual void* GetHandle() = 0;
+
+		enum MyEnum
+		{
+			WF_OBJECT0 = 0,
+			WF_TIMEOUT = 256,
+			WF_FAILED = 0xFFFFFFFF
+		};
+		static unsigned int WaitAll(MTXSynchronize** pSynchornize, unsigned int uiNum, bool bWaitAll, DWORD dwMilliseconds = (DWORD)-1);
+
+		static void MTXSafeOutputDebugString(const TCHAR* pString, ...);
+	};
+
+
+	class MATRIXCORE_API  MTXCriticalSection
+	{
+	private:
+		//windows api
+		CRITICAL_SECTION   mCriticalSection;
+
+	public:
+		MTXCriticalSection(void)
+		{
+			InitializeCriticalSection(&mCriticalSection);
+			//由于将线程切换到等待状态的开销较大，因此为了提高关键段的性能，Microsoft将旋转锁合并到关键段中，
+			//这样EnterCriticalSection()会先用一个旋转锁不断循环，尝试一段时间才会将线程切换到等待状态,旋转次数一般设置为4000。
+			SetCriticalSectionSpinCount(&mCriticalSection, 4000);
+		}
+		~MTXCriticalSection(void)
+		{
+			DeleteCriticalSection(&mCriticalSection);
+		}
+
+		inline void Lock(void)
+		{
+			// Spin first before entering critical section, causing ring-0 transition and context switch.
+			EnterCriticalSection(&mCriticalSection);
+		}
+		inline bool TryLock()
+		{
+			return TryEnterCriticalSection(&mCriticalSection);
+		}
+
+		inline void Unlock(void)
+		{
+			LeaveCriticalSection(&mCriticalSection);
+		}
+
+		class Locker
+		{
+		private:
+			MTXCriticalSection& mCriticalSection;
+
+		public:
+			Locker(MTXCriticalSection& inCriticalSection) : mCriticalSection(inCriticalSection)
+			{
+				mCriticalSection.Lock();
+			}
+			~Locker()
+			{
+				mCriticalSection.Unlock();
+			}
+		};
+	};
+
+	class MATRIXCORE_API  MTXSemaphore : public  MTXSynchronize
+	{
+	public:
+		MTXSemaphore(unsigned int uiCount, unsigned int maxCount);
+		virtual ~MTXSemaphore();
+
+		virtual void Enter();
+		virtual void Leave(unsigned int uiReleaseCount);
+		virtual void* GetHandle()
+		{
+			return mSemaphore;
+		}
+	protected:
+		void* mSemaphore;
+		unsigned int mMaxCount;
+	};
+
+	class MATRIXCORE_API  MTXMutex : public MTXSynchronize
+	{
+		//互斥量内核对象用来确保一线程独占对一个资源的访问， 互斥量是内核对象，
+		//互斥量一般用来对多个线程访问的同一内存块进行保护。 
+	public:
+		MTXMutex();
+		virtual ~MTXMutex();
+
+		virtual void Enter();
+		virtual void Leave();
+		virtual void* GetHandle()
+		{
+			return mMutex;
+		}
+
+	protected:
+		void* mMutex;
+	};
+
+
+	class MATRIXCORE_API  MTXEvent : public MTXSynchronize
+	{
+		//事件包含一个使用计数， 一个用来表示自动重置还是手动重置的bool值，以及一个用来表示事件有没有被触发的bool值。
+		//事件的触发表示一个操作已经完成。
+		//手动事件被触发： 等待该事件的所有线程都将变成可调度； 自动重置事件被触发： 只有一个正在等待该事件的线程变成可调度状态。
+		//一般用途： 让一个线程执行初始化工作，然后再触发另一个线程，让他执行剩下的工作
+	protected:
+		void* mEvent;
+
+	public:
+		virtual void* GetHandle()
+		{
+			return mEvent;
+		}
+		MTXEvent();
+		virtual ~MTXEvent();
+
+		//Waits for the event to be signaled before returning
+		virtual void Lock();
+
+		//Triggers the event so any waiting threads are allowed access
+		virtual void unLock();
+
+		// Creates the event. Manually reset events stay triggered until reset.
+		// Named events share the same underlying event.
+		// @param bIsManualReset Whether the event requires manual reseting or not
+		// @param InName Whether to use a commonly shared event or not. If so this is the name of the event to share.
+		// @return Returns TRUE if the event was created, FALSE otherwise
+		virtual bool Create(bool bIsManualReset = FALSE, const TCHAR* InName = NULL);
+
+		//Triggers the event so any waiting threads are activated
+		virtual void Trigger(void);
+
+		//Resets the event to an untriggered (waitable) state
+		virtual void Reset(void);
+
+		//Triggers the event and resets the triggered state NOTE: This behaves
+		//differently for auto-reset versus manual reset events. All threads
+		//are released for manual reset events and only one is for auto reset
+		virtual void Pulse(void);
+
+		//Waits for the event to be triggered
+		//@param WaitTime Time in milliseconds to wait before abandoning the event
+		//(DWORD)-1 is treated as wait infinite
+		//@return TRUE if the event was signaled, FALSE if the wait timed out
+		virtual bool Wait(DWORD WaitTime = (DWORD)-1);
+
+		virtual bool IsTrigger();
+	};
+
+	class MTXIsValue
+	{
+	public:
+		MTXIsValue();
+		~MTXIsValue();
+
+		enum
+		{
+			MAX_THREAD_VALUE = 256,
+		};
+		void SetThreadValue(void* pValue);
+		void* GetThreadValue();
+	protected:
+		unsigned int mSlot = 0XFFFFFFFF;
+		class VSStackMem* mThreadValue[MAX_THREAD_VALUE];
+		unsigned int mThreadValueNum = 0;
+		MTXCriticalSection mCriticalSection;
+	};
+
+}
+

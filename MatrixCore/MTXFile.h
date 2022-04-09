@@ -6,6 +6,7 @@ namespace Matrix
 {
 	class MATRIXCORE_API MTXFile
 	{
+	public:
 		enum //Open Mode
 		{
 			OM_RB,

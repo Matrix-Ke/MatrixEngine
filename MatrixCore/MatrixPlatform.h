@@ -4,7 +4,7 @@
 #define WINDOWS_PLATFORM 1
 #endif
 
-enum EPLATFORM
+enum class EPLATFORM
 {
 	EP_Windows,
 	EP_Android,
