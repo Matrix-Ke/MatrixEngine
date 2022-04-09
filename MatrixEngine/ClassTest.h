@@ -9,7 +9,7 @@ public:
 
 	void printClassInfo();
 private:
-	unsigned int mNumber;
+	size_t mNumber;
 	char* mName;
 };
 

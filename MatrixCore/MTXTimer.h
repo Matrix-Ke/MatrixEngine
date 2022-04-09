@@ -17,10 +17,12 @@ namespace Matrix
 		int GetRandSeed();
 
 	private:
-		bool mUselargeTime; // ʹ�����ʱ���־
-		__int64  mOneSecondTicks; // һ���ڵĵδ����
-		__int64  mTimeTickStartCounts;// ��ʼ�δ����ֵ
-		unsigned  long long  mTimeStart; // timeGettime��ʼʱ��
+		bool mUselargeTime; // 使用最大时间标志
+		//__int64也是一种基本数据类型，是微软的virtual C++编译器定义的一种基本数据类型，而不是C++标准规范（协会）里定义的一种基本数据类型
+		//unsigned long long  8字节整型
+		unsigned long long  mOneSecondTicks; // 一秒内的滴答次数
+		unsigned long long  mTimeTickStartCounts;// 开始滴答计数值
+		unsigned  long long  mTimeStart; // timeGettime开始时间
 		int mFrameCount;
 		double mFPS;
 		double mTime;
