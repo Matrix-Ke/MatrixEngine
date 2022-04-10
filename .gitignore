@@ -37,6 +37,7 @@ bld/
 !*.c
 !*.vcxproj
 !*.filters
+!*.sln
 !*.user
 !*.md
 
