@@ -17,28 +17,13 @@
 
 
 using namespace std;
-//using namespace Matrix;
 
-
-//typedef WCHAR TCHAR, * PTCHAR;
-
-typedef int  KKL, LiMing;
 int main()
 {
+	int i = 1;
 
-	//unsigned long long  kkl = 90;
-	//cout << sizeof(kkl) << endl;
+	int result = (i + 1) >> 2;
 
-	//TCHAR pStr[] = _T("中文测试");
-	//中文注释测试效果很多覅Ohio是东方化工i哦化工i活动分工i
-	char pStr[] = "中文测试";
-	wcout << "pStr = " << sizeof(pStr) << endl;
-	wcout << pStr << endl;
-
-	//char  name[20] = "kkl";
-	//ClassTest   foo(name, 28);
-	////ClassTest  singleTest = MTXSingleton<ClassTest>::GetInstance();
-	//foo.printClassInfo();
-
+	cout << result << endl;
 	return 0;
 }
