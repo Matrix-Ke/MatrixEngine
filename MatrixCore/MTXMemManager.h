@@ -19,6 +19,63 @@ namespace Matrix
 
 #if !_DEBUG && !_WIN64
 
+	class MATRIXCORE_API  MTXMemWin32 : public MTXMemManager
+	{
+	public:
+		MTXMemWin32();
+		~MTXMemWin32();
+
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+
+
+	private:
+		// Forward declares.
+		struct FPoolTable;
+		struct FFreeMem;
+
+		struct FPoolInfo
+		{
+			FPoolInfo* Pre; //指向自己前一个节点
+			FPoolInfo* Next; //指向自己的后一个节点
+			FPoolTable* Owner; //属于哪个链表管理者
+			void* Mem; //指向 32 位 Windows 系统分配空间的首地址
+			unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，
+			//那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
+			FFreeMem* FreeMem;
+
+			void Link(FPoolInfo*& Before)
+			{
+				if (Before)
+				{
+					Before->Pre = &Next;
+				}
+			}
+		};
+
+		struct FFreeMem
+		{
+			FFreeMem* Next; //在同一个 PoolInfo 中，下一个可用的单元
+			DWORD Blocks; //还剩下多少可用单元
+			FPoolInfo* GetPool()
+			{
+				//在Poolinfo中的任意一个地址取出高17位就可以定位这个Poolinfo
+				//因为M 为 32KB，即低15位为块内地址
+				return (FPoolInfo*)((INT)this & 0xffff8000);
+			}
+		};
+
+		//链表管理者
+		struct FPoolTable
+		{
+			unsigned int TableSize; //每次可以分配的内存大小,poolinfo中单独内存块的大小
+			FPoolInfo* ExhaustedPool; //分配完的 PoolInfo 链表头指针
+			FPoolInfo* FirstPool; //没有分配完的 PoolInfo 链表头指针
+		};
+
+
+	};
+
 #elif _DEBUG
 	class MATRIXCORE_API MTXDebugMem : public MTXMemManager
 	{
@@ -32,7 +89,7 @@ namespace Matrix
 
 
 	private:
-		enum BlockMacro
+		enum  BLOCKMARK
 		{
 			BEGIN_MASK = 0xDEADC0DE,
 			END_MASK = 0xDEADC0DE,
@@ -87,31 +144,7 @@ namespace Matrix
 		void FreeDbgHelpLib();
 	};
 
-	struct FreeMem
-	{
-		FreeMem* Next; //在同一个 PoolInfo 中，下一个可用的单元
-		DWORD Blocks; //还剩下多少可用单元
-		PoolInfo* GetPool();
-	};
 
-	//链表管理者
-	struct PoolTable
-	{
-		unsigned int TableSize; //每次可以分配的内存大小,poolinfo中单独内存块的大小
-		PoolInfo* ExhaustedPool; //分配完的 PoolInfo 链表头指针
-		PoolInfo* FirstPool; //没有分配完的 PoolInfo 链表头指针
-	};
-
-	struct PoolInfo
-	{
-		PoolInfo* Pre; //指向自己前一个节点
-		PoolInfo* Next; //指向自己的后一个节点
-		PoolTable* Owner; //属于哪个链表管理者
-		void* Mem; //指向 32 位 Windows 系统分配空间的首地址
-		unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，
-		//那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
-		FreeMem* FreeMem;
-	}
 
 
 #else
