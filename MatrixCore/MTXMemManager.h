@@ -1,8 +1,19 @@
 #pragma once
 #include "MTXCore.h"
+#include "MTXSynchronize.h"
 
 namespace Matrix
 {
+	//内存对齐
+	template< class T > inline T Align(const T Ptr, USIZE_TYPE Alignment)
+	{
+		return (T)(((USIZE_TYPE)Ptr + Alignment - 1) & ~(Alignment - 1));
+
+	}
+	template< class T > inline T Align1(const T Ptr, USIZE_TYPE Alignment)
+	{
+		return (T)((USIZE_TYPE)Ptr + Alignment - (Ptr & (Alignment - 1)));
+	}
 
 	//引擎的内存管理模块： 1.高效的管理自己的内存  2.避免出现内存泄漏
 	class MATRIXCORE_API MTXMemManager
@@ -10,10 +21,13 @@ namespace Matrix
 	public:
 		MTXMemManager();
 		virtual ~MTXMemManager() = 0;
+
 		//内存分配
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 		//内存管理
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
+
+		static MTXCriticalSection msMemlock;
 
 	};
 
@@ -26,30 +40,61 @@ namespace Matrix
 		~MTXMemWin32();
 
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+		//取消已经分配的block
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
 
+	private:
+		// Counts.
+		enum { POOL_CATEGORY = 42 };
+		enum { POOL_MAX = 32768 + 1 };
+		// Forward declares.
+		struct FPoolInfo;
+		struct FFreeMem;
+
+		FPoolInfo* CreateIndirect();
 
 	private:
-		// Forward declares.
-		struct FPoolTable;
-		struct FFreeMem;
+		//链表管理者
+		struct FPoolTable
+		{
+			unsigned int BlockSize; //每次可以分配的内存大小,poolinfo中单独内存块的大小
+			FPoolInfo* ExhaustedPool; //分配完的 PoolInfo 链表头指针
+			FPoolInfo* FirstPool; //没有分配完的 PoolInfo 链表头指针
+		};
 
 		struct FPoolInfo
 		{
-			FPoolInfo* Pre; //指向自己前一个节点
+			//FPoolInfo* Pre; //指向自己前一个节点
+			//于 PreLink 为什么是指针的指针，其实这种方式从一个链表中删除，无须知道当前链表的头指针
+			FPoolInfo** PrevLink;
 			FPoolInfo* Next; //指向自己的后一个节点
 			FPoolTable* Owner; //属于哪个链表管理者
 			void* Mem; //指向 32 位 Windows 系统分配空间的首地址
-			unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，
-			//那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
-			FFreeMem* FreeMem;
+			unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
+			FFreeMem* FirstMem;
+			//Fpoolinfo link 到参数中，所以需要使用引用传参，head是指向指针的指针。
+			//将this插入到链表头结点。
 
-			void Link(FPoolInfo*& Before)
+			DWORD	    Bytes;		// Bytes allocated for pool.
+			DWORD		OsBytes;	// Bytes aligned to page size.
+
+			void Link(FPoolInfo*& Head)
 			{
-				if (Before)
+				if (Head)
 				{
-					Before->Pre = &Next;
+					Head->PrevLink = &(this->Next);
 				}
+				this->Next = Head;
+				PrevLink = &Head;
+				Head = this;
+			}
+			void Unlink()
+			{
+				if (Next)
+				{
+					Next->PrevLink = PrevLink;
+				}
+				*PrevLink = Next;
 			}
 		};
 
@@ -65,14 +110,12 @@ namespace Matrix
 			}
 		};
 
-		//链表管理者
-		struct FPoolTable
-		{
-			unsigned int TableSize; //每次可以分配的内存大小,poolinfo中单独内存块的大小
-			FPoolInfo* ExhaustedPool; //分配完的 PoolInfo 链表头指针
-			FPoolInfo* FirstPool; //没有分配完的 PoolInfo 链表头指针
-		};
 
+		FPoolTable  PoolTable[POOL_CATEGORY];
+		FPoolTable OsTable;
+		FPoolInfo* PoolIndirect[32];
+		FPoolTable* MemSizeToPoolTable[POOL_MAX];
+		INT			PageSize;
 
 	};
 

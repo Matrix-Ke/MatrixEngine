@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <stdio.h>
 #include <tchar.h>
 #include <assert.h>
@@ -20,9 +20,8 @@ using namespace std;
 
 int main()
 {
-	int i = 1;
-
-	int result = (i + 1) >> 2;
+	unsigned int a = 10;
+	unsigned int result = a--;
 
 	cout << result << endl;
 	return 0;
