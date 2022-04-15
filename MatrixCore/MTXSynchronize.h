@@ -159,11 +159,13 @@ namespace Matrix
 		virtual bool IsTrigger();
 	};
 
-	class MTXIsValue
+	//线程本地存储(TLS) 是一种方法，给定的多线程进程中的每个线程可以使用这种方法分配用以存储线程特定的数据的位置。
+	//如果需要在一个线程内部的各个函数调用都能访问、但其它线程不能访问的变量（被称为static memory local to a thread 线程局部静态变量），就需要新的机制来实现。这就是TLS。
+	class MTXTlsValue
 	{
 	public:
-		MTXIsValue();
-		~MTXIsValue();
+		MTXTlsValue();
+		~MTXTlsValue();
 
 		enum
 		{

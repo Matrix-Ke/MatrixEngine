@@ -2,8 +2,45 @@
 #include "MTXCore.h"
 #include "MTXSynchronize.h"
 
+#include <Windows.h>
+#include <new.h>
+#define MTX_NEW new
+#define MTX_DELETE delete
+#define USE_STL_TYPE_TRAIT
+#ifdef USE_STL_TYPE_TRAIT
+//stl 类型萃取 
+#include <type_traits>
+#endif // USE_STL_TYPE_TRAIT
+
+
 namespace Matrix
 {
+
+#ifdef USE_STL_TYPE_TRAIT
+	//C++ STL的std::is_trivially_constructible模板用于检查给定类型T是否是带有参数集的平凡可构造类型。
+	//如果T是平凡可构造的类型，则它返回布尔值true，否则返回false。
+#define HAS_TRIVIAL_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
+#define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
+#define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
+#define HAS_TRIVIAL_COPY(T) std::is_trivially_copyable<T>::value
+#define IS_POD(T) std::is_pod<T>::value
+#define IS_ENUM(T) std::is_enum<T>::value
+#define IS_EMPTY(T) std::is_empty<T>::value
+
+
+//TIsPODType
+//POD，是Plain Old Data的缩写，普通旧数据类型，是C++中的一种数据类型概念
+	template<typename T> struct TIsPODType
+	{
+		enum { Value = IS_POD(T) };
+	};
+
+	template<typename T> struct ValueBase
+	{
+		enum { NeedsConstructor = !HAS_TRIVIAL_CONSTRUCTOR(T) && !TIsPODType<T>::Value };
+		enum { NeedsDestructor = !HAS_TRIVIAL_DESTRUCTOR(T) && !TIsPODType<T>::Value };
+	};
+
 	//内存对齐
 	template< class T > inline T Align(const T Ptr, USIZE_TYPE Alignment)
 	{
@@ -14,7 +51,8 @@ namespace Matrix
 	{
 		return (T)((USIZE_TYPE)Ptr + Alignment - (Ptr & (Alignment - 1)));
 	}
-
+#else
+#endif
 	//引擎的内存管理模块： 1.高效的管理自己的内存  2.避免出现内存泄漏
 	class MATRIXCORE_API MTXMemManager
 	{
@@ -41,6 +79,7 @@ namespace Matrix
 	};
 
 
+	//===========================堆内存管理====================================
 #if !_DEBUG && !_WIN64
 
 	class MATRIXCORE_API  MTXMemWin32 : public MTXMemManager
@@ -49,9 +88,9 @@ namespace Matrix
 		MTXMemWin32();
 		~MTXMemWin32();
 
-		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 		//取消已经分配的block
-		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
 	private:
 		// Counts.
@@ -137,8 +176,8 @@ namespace Matrix
 		~MTXDebugMem();
 
 		//uiSize 是这次申请的字节数
-		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
-		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
 
 	private:
@@ -196,17 +235,103 @@ namespace Matrix
 		void PrintInfo();
 		void FreeDbgHelpLib();
 	};
-#else
+#else 
 	class MATRIXCORE_API MTXMemWin64 : public MTXMemManager
 	{
 	public:
 		MTXMemWin64();
 		~MTXMemWin64();
 
-		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
-		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 	};
 #endif
+
+	//==============================栈内存管理===============================
+	//栈内存管理， 参考UE的代码设计， 没有考虑线程安全，每帧都会清理
+	class MATRIXCORE_API  MTXStackMem : public MTXMemManager
+	{
+	public:
+		//默认分配
+		MTXStackMem(USIZE_TYPE uiDefaultChunkSize = 65536);
+		~MTXStackMem();
+
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
+
+	private:
+		//Chunk 指针结构
+		struct FTaggedMemory
+		{
+			FTaggedMemory* Next;
+			INT DataSize;
+			BYTE Data[1];
+		};
+
+		// Variables.
+		BYTE* Top;				// Top of current chunk (Top<=End).
+		BYTE* End;				// End of current chunk.
+		USIZE_TYPE		DefaultChunkSize;	// Maximum chunk size to allocate.
+		FTaggedMemory* TopChunk;			// Only chunks 0..ActiveChunks-1 are valid.
+
+		/** The memory chunks that have been allocated but are currently unused. */
+		FTaggedMemory* UnusedChunks;
+
+		/** The number of marks on this stack. */
+		INT NumMarks;
+
+		/**
+		* Allocate a new chunk of memory of at least MinSize size,
+		* and return it aligned to Align. Updates the memory stack's
+		* Chunks table and ActiveChunks counter.
+		*/
+		BYTE* AllocateNewChunk(USIZE_TYPE MinSize);
+
+		/** Frees the chunks above the specified chunk on the stack. */
+		/*移除这个chunk和这个chunk之前的所有chunk*/
+		void FreeChunks(FTaggedMemory* NewTopChunk);
+
+	};
+
+	template<typename T>
+	class MTXStackMemAlloc : public MMemObject
+	{
+	public:
+		//
+		MTXStackMemAlloc(USIZE_TYPE uiNum = 0, USIZE_TYPE uiAlignment = 0)
+		{
+			if (uiNum > 0)
+			{
+				MTXStackMem& StackMem = GetStackMemManager();
+				mNum = uiNum;
+				Top = StackMem.Top;
+				SavedChunk = StackMem.TopChunk;
+				// track 
+				StackMem.NumMarks++;
+				mPtr = (T*)StackMem.Allocate(uiNum * sizeof(T), uiAlignment, 0);
+				MTXENGINE_ASSERT(mPtr);
+
+				//判断是否有构造函数， 
+				if (ValueBase<T>::NeedsConstructor)
+				{
+					for (unsigned int i = 0; i < uiNum; i++)
+					{
+						//在当前内存地址中执行构造
+						MTX_NEW(mPtr + i)T();
+					}
+				}
+
+
+			}
+		}
+
+	private:
+		BYTE* Top;
+		MTXStackMem::FTaggedMemory* SavedChunk;
+		T* mPtr;
+		unsigned int mNum;
+	};
 
 
 	class MATRIXCORE_API  MMemObject
@@ -215,7 +340,7 @@ namespace Matrix
 		MMemObject();
 		~MMemObject();
 
-		//static MTXStackMem& GetStackMemManager();
+		static MTXStackMem& GetStackMemManager();
 		static MTXMemManager& GetMemManager();
 		static MTXMemManager& GetCMemManager();
 	};

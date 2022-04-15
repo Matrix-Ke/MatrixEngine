@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MTXMemManager.h"
 
+
 using namespace Matrix;
 
 
@@ -50,6 +51,7 @@ void Matrix::MTXCMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsA
 		_aligned_free(pcAddr);
 	}
 }
+
 
 #if !_DEBUG && !_WIN64
 Matrix::MTXMemWin32::MTXMemWin32()
@@ -383,7 +385,7 @@ void Matrix::MTXDebugMem::FreeLeakMem()
 		pBlock = pBlock->pNext;
 		//free((void*)Temp);
 		//todo : 此处应该使用MTXCMem::Deallocate()函数是否更好。 使用free不是很合适
-		MMemObject::GetCMemManager().Deallocate((char*)pBlock, pBlock->mbAlignment, pBlock->mbArray);
+		MMemObject::GetCMemManager().Deallocate((char*)Temp, pBlock->mbAlignment, pBlock->mbArray);
 	}
 }
 
@@ -634,6 +636,23 @@ bool Matrix::MTXDebugMem::GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_
 }
 
 #else
+Matrix::MTXMemWin64::MTXMemWin64()
+{
+}
+Matrix::MTXMemWin64::~MTXMemWin64()
+{
+}
+
+void* Matrix::MTXMemWin64::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	return nullptr;
+}
+
+void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+
+}
+
 #endif
 
 Matrix::MMemObject::MMemObject()
@@ -643,6 +662,20 @@ Matrix::MMemObject::MMemObject()
 
 Matrix::MMemObject::~MMemObject()
 {
+}
+
+MTXStackMem& Matrix::MMemObject::GetStackMemManager()
+{
+	static MTXTlsValue g_TlsValue;
+	void* pTlsValue = g_TlsValue.GetThreadValue();
+	if (!pTlsValue)
+	{
+		pTlsValue = VS_NEW MTXStackMem();
+		g_TlsValue.SetThreadValue(pTlsValue);
+	}
+	return *((MTXStackMem*)pTlsValue);
+	//static VSStackMem g_StackMemManager;
+	//return g_StackMemManager;
 }
 
 MTXMemManager& Matrix::MMemObject::GetMemManager()
