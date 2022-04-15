@@ -12,7 +12,44 @@ Matrix::MTXMemManager::~MTXMemManager()
 {
 }
 
-MTXCriticalSection  MTXMemManager::msMemlock;
+MTXCriticalSection  MTXMemManager::msMemLock;
+
+Matrix::MTXCMem::MTXCMem()
+{
+}
+
+Matrix::MTXCMem::~MTXCMem()
+{
+}
+
+void* Matrix::MTXCMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	MTXCriticalSection::Locker Temp(msMemLock);
+	if (uiAlignment == 0)
+	{
+		return malloc(uiSize);
+
+	}
+	else
+	{
+		//变分配器默认行为（默认是提供32-byte或者64-byte对齐）
+		return _aligned_malloc(uiSize, uiAlignment);
+	}
+	return NULL;
+}
+
+void Matrix::MTXCMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	MTXCriticalSection::Locker Temp(msMemLock);
+	if (uiAlignment == 0)
+	{
+		free(pcAddr);
+	}
+	else
+	{
+		_aligned_free(pcAddr);
+	}
+}
 
 #if !_DEBUG && !_WIN64
 Matrix::MTXMemWin32::MTXMemWin32()
@@ -79,7 +116,7 @@ Matrix::MTXMemWin32::~MTXMemWin32()
 void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	//内存锁，防止两个线程同时申请内存
-	MTXCriticalSection::Locker   Temp(msMemlock);
+	MTXCriticalSection::Locker   Temp(msMemLock);
 	FFreeMem* Free;
 	//大于pool_MAX大内存采用操作系统的内存分配
 	if (uiSize < POOL_MAX)
@@ -175,7 +212,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 
 void Matrix::MTXMemWin32::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-	MTXCriticalSection::Locker  Temp(msMemlock);
+	MTXCriticalSection::Locker  Temp(msMemLock);
 	MTXENGINE_ASSERT(pcAddr);
 	if (!pcAddr)
 	{
@@ -270,10 +307,31 @@ static HMODULE s_DbgHelpLib = NULL;
 
 Matrix::MTXDebugMem::MTXDebugMem()
 {
+	mNumNewCalls = 0;
+	mNumDeleteCalls = 0;
+
+	mNumBlocks = 0;
+	mNumBytes = 0;
+	mMaxNumBytes = 0;
+	mMaxNumBlocks = 0;
+
+	pHead = NULL;
+	pTail = NULL;
+
+	for (unsigned int i = 0; i < RECORD_NUM; i++)
+	{
+		mSizeRecord[i] = 0;
+	}
 }
 
 Matrix::MTXDebugMem::~MTXDebugMem()
 {
+	//动态加载dbghelp.dll
+	InitDbgHelpLib();
+	PrintInfo();
+	FreeDbgHelpLib();
+
+	FreeLeakMem();
 }
 
 bool Matrix::MTXDebugMem::InitDbgHelpLib()
@@ -287,6 +345,7 @@ bool Matrix::MTXDebugMem::InitDbgHelpLib()
 
 	// 查找当前目录的DLL
 	s_DbgHelpLib = LoadLibrary(szDbgName);
+	MTXENGINE_ASSERT(s_DbgHelpLib);
 	//根据代码地址调用 fnSymGetLineFromAddr64 函数就可以获得堆栈代码所在文件的行数和所在文件的名称。
 	//一旦出现内存泄露，就可以准确地找到泄漏的整个调用过程。用这种方法查找内存泄露时最好用 Debug 模式
 	fnSymGetLineFromAddr64 = (tFSymGetLineFromAddr64)GetProcAddress(s_DbgHelpLib, "SymGetLineFromAddr64");
@@ -315,14 +374,93 @@ bool Matrix::MTXDebugMem::InitDbgHelpLib()
 	return Temp;
 }
 
+void Matrix::MTXDebugMem::FreeLeakMem()
+{
+	Block* pBlock = pHead;
+	while (pBlock)
+	{
+		Block* Temp = pBlock;
+		pBlock = pBlock->pNext;
+		//free((void*)Temp);
+		//todo : 此处应该使用MTXCMem::Deallocate()函数是否更好。 使用free不是很合适
+		MMemObject::GetCMemManager().Deallocate((char*)pBlock, pBlock->mbAlignment, pBlock->mbArray);
+	}
+}
+
+void Matrix::MTXDebugMem::PrintInfo()
+{
+	MTXOutputDebugString(_T("#########################  begin print leak mem  ######################\n"));
+	MTXOutputDebugString(_T("Max Byte Num: %d\n"), mMaxNumBytes);
+	MTXOutputDebugString(_T("Max Block Num: %d\n"), mMaxNumBlocks);
+	MTXOutputDebugString(_T("Total Size: %d\n"), mNumBytes);
+	MTXOutputDebugString(_T("Block Num: %d\n"), mNumBlocks);
+	MTXOutputDebugString(_T("New Call: %d\n"), mNumNewCalls);
+	MTXOutputDebugString(_T("Delete Call: %d\n"), mNumDeleteCalls);
+
+	if (pHead)
+	{
+		MTXOutputDebugString(_T("Memory Leak:\n"));
+	}
+	else
+	{
+		MTXOutputDebugString(_T("No Memory Leak\n"));
+	}
+	Block* pBlock = pHead;
+	static unsigned int uiLeakNum = 0;
+	while (pBlock)
+	{
+
+		uiLeakNum++;
+		MTXOutputDebugString(_T("$$$$$$$$$$$$$$$$  Leak %d  $$$$$$$$$$$$$$$$$\n"), uiLeakNum);
+		MTXOutputDebugString(_T("Size: %d\n"), pBlock->mSize);
+		MTXOutputDebugString(_T("Is Array:%d\n"), pBlock->mbArray);
+#if WINDOWS_PLATFORM
+		TCHAR szFile[MAX_PATH];
+		int	  line;
+		for (unsigned int i = 0; i < pBlock->mStackInfoNum; i++)
+		{
+
+			if (!GetFileAndLine(pBlock->pStackAddr[i], szFile, line))
+			{
+				break;
+			}
+			MTXOutputDebugString(_T("%s(%d)\n"), szFile, line);
+
+		}
+#endif
+		MTXOutputDebugString(_T("$$$$$$$$$$$$$$$$$ Leak %d  $$$$$$$$$$$$$$$$$$$\n"), uiLeakNum);
+		pBlock = pBlock->pNext;
+	}
+	MTXOutputDebugString(_T("leak block total num : %d\n"), uiLeakNum);
+
+	MTXOutputDebugString(_T("#########################  end print leak mem  ######################\n"));
+}
+
+void Matrix::MTXDebugMem::FreeDbgHelpLib()
+{
+	if (s_DbgHelpLib != NULL)
+	{
+		FreeLibrary(s_DbgHelpLib);
+		s_DbgHelpLib = NULL;
+	}
+
+	fnSymGetLineFromAddr64 = NULL;
+	fnSymGetOptions = NULL;
+	fnSymSetOptions = NULL;
+	fnSymInitializeW = NULL;
+
+}
+
 void* Matrix::MTXDebugMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
+	MTXCriticalSection::Locker   Temp(msMemLock);
+	MTXENGINE_ASSERT(uiSize);
+	mNumNewCalls++;
 
 	//申请的总空间
-	USIZE_TYPE uiExtendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
-	char* pcAddr = (char*)malloc(uiExtendedSize);
-	if (!pcAddr)
-		return NULL;
+	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
+	char* pcAddr = (char*)MMemObject::GetCMemManager().Allocate(extendedSize, uiAlignment, bIsArray);
+	MTXENGINE_ASSERT(pcAddr);
 	//填写 Block 信息
 	Block* pBlock = (Block*)pcAddr;
 	pBlock->mSize = uiSize;
@@ -330,9 +468,29 @@ void* Matrix::MTXDebugMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 
 	bool bAlignment = (uiAlignment > 0) ? true : false;
 	pBlock->mbAlignment = bAlignment;
+	pBlock->mStackInfoNum = 0;
+
+	//获取当前函数的调用栈函数
+#if WINDOWS_PLATFORM	
+	PVOID WinBackTrace[CALLSTACK_NUM];
+	short NumFrames = RtlCaptureStackBackTrace(0, CALLSTACK_NUM, WinBackTrace, NULL);
+
+#if _WIN64
+	NumFrames -= 6;
+#else
+	NumFrames -= 7;
+#endif
+	for (short i = 1; i < NumFrames; i++)
+	{
+		pBlock->pStackAddr[i - 1] = WinBackTrace[i];
+		pBlock->mStackInfoNum++;
+	}
+#endif
+
 	//插入节点
 	InsertBlock(pBlock);
 	pcAddr += sizeof(Block);
+
 	//填写头标识
 	unsigned int* pBeginMask = (unsigned int*)(pcAddr);
 	*pBeginMask = BEGIN_MASK;
@@ -341,15 +499,46 @@ void* Matrix::MTXDebugMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 	unsigned int* pEndMask = (unsigned int*)(pcAddr + uiSize);
 	*pEndMask = END_MASK;
 
+	//todo list
+	mNumBlocks++;
+	mNumBytes += (unsigned int)uiSize;
+	if (mNumBytes > mMaxNumBytes)
+	{
+		mMaxNumBytes = mNumBytes;
+	}
+	if (mNumBlocks > mMaxNumBlocks)
+	{
+		mMaxNumBlocks = mMaxNumBlocks;
+	}
+
+	//uiSize 是这次申请的字节数，上面这段代码会根据 uiSize 落到 2n的哪个范围内来做统计。
+	//如果申请 15 字节，i 等于 4 的时候，uiTwoPowerI 等于 16，15 小于 16，它落在 23和 24之间，
+	//这样就可以统计出以 2 为基数不同大小内存的分配情况
+	unsigned int uiTwoPowerI = 1;
+	int i;
+	for (i = 0; i <= RECORD_NUM - 2; i++, uiTwoPowerI <<= 1)
+	{
+		if (uiSize <= uiTwoPowerI)
+		{
+			mSizeRecord[i]++;
+			break;
+		}
+	}
+	if (i == RECORD_NUM - 1)
+	{
+		mSizeRecord[i]++;
+	}
+
 	return (void*)pcAddr;
 }
 
 void MTXDebugMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-	if (!pcAddr)
-	{
-		return;
-	}
+	MTXCriticalSection::Locker  Temp(msMemLock);
+	//调用 delete 的次数统计
+	mNumDeleteCalls++;
+	MTXENGINE_ASSERT(pcAddr);
+
 	//判断头标识
 	pcAddr -= sizeof(unsigned int);
 	unsigned int* pBeginMask = (unsigned int*)(pcAddr);
@@ -358,14 +547,21 @@ void MTXDebugMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray
 	Block* pBlock = (Block*)pcAddr;
 
 	MTXENGINE_ASSERT(pBlock->mbArray == bIsArray);
+	MTXENGINE_ASSERT(mNumBlocks > 0 && mNumBytes >= pBlock->mSize);
 	bool bAlignment = (uiAlignment > 0) ? true : false;
 	MTXENGINE_ASSERT(pBlock->mbAlignment == bAlignment);
 	//判断尾标识
 	unsigned int* pEndMask = (unsigned int*)(pcAddr + sizeof(Block) + sizeof(unsigned int) + pBlock->mSize);
 	MTXENGINE_ASSERT(*pEndMask == END_MASK);
+
+	//更新统计数据
+	mNumBlocks--;
+	mNumBytes -= (unsigned int)pBlock->mSize;
+
 	//删除节点
 	RemoveBlock(pBlock);
-	free(pcAddr);
+	//free(pcAddr);
+	MMemObject::GetCMemManager().Deallocate(pcAddr, uiAlignment, bIsArray);
 }
 
 void Matrix::MTXDebugMem::InsertBlock(Block* pBlock)
@@ -433,24 +629,36 @@ bool Matrix::MTXDebugMem::GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_
 	else
 	{
 		DWORD error = GetLastError();
-		// 		if (error == 487)
-		// 		{
-		// 			VSOutputDebugString(_T("No debug info in current module\n"));
-		// 		}
-		// 		else if (error == 126)
-		// 		{
-		// 			VSOutputDebugString(_T("Debug info in current module has not loaded\n"));
-		// 		}
-		// 		else 
-		// 		{
-		// 			VSOutputDebugString(_T("SymGetLineFromAddr64 failed\n"));
-		// 		}
 		return false;
 	}
 }
 
-
-
+#else
 #endif
 
+Matrix::MMemObject::MMemObject()
+{
 
+}
+
+Matrix::MMemObject::~MMemObject()
+{
+}
+
+MTXMemManager& Matrix::MMemObject::GetMemManager()
+{
+#if !_DEBUG  && !_WIN64
+	static MTXMemWin32  g_MemManager;
+#elif _DEBUG
+	static MTXDebugMem  g_MemManager;
+#else
+	static MTXMemWin64  g_MemManager;
+#endif // !_DEBUG  && !_WIN64
+	return g_MemManager;
+}
+
+MTXMemManager& Matrix::MMemObject::GetCMemManager()
+{
+	static  MTXCMem  g_MemManager;
+	return g_MemManager;
+}

@@ -27,9 +27,19 @@ namespace Matrix
 		//内存管理
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
-		static MTXCriticalSection msMemlock;
+		static MTXCriticalSection msMemLock;
 
 	};
+
+	class MATRIXCORE_API MTXCMem : public MTXMemManager
+	{
+	public:
+		MTXCMem();
+		~MTXCMem();
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void  Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+	};
+
 
 #if !_DEBUG && !_WIN64
 
@@ -147,7 +157,7 @@ namespace Matrix
 			{
 				for (size_t i = 0; i < CALLSTACK_NUM; i++)
 				{
-					pAddr[i] = NULL;
+					pStackAddr[i] = NULL;
 				}
 				pPrev = NULL;
 				pNext = NULL;
@@ -157,7 +167,7 @@ namespace Matrix
 				mStackInfoNum = 0;
 			}
 
-			void* pAddr[CALLSTACK_NUM]; //申请内存时候的调用堆栈信息
+			void* pStackAddr[CALLSTACK_NUM]; //申请内存时候的调用堆栈信息
 			unsigned int mStackInfoNum; //堆栈层数
 			USIZE_TYPE   mSize; //申请空间的大小
 			bool mbArray; //是否是数组
@@ -174,7 +184,7 @@ namespace Matrix
 		unsigned int mNumBytes; //当前有多少字节
 		unsigned int mMaxNumBytes; //最多申请多少字节
 		unsigned int mMaxNumBlocks; //最多申请多少内存块
-		unsigned int mSizeRecord[RECORD_NUM];
+		unsigned int mSizeRecord[RECORD_NUM]; //统计内存在2的n次方的分布情况。
 		void InsertBlock(Block* pBlock);
 		//仅仅负责移除，不做内存释放处理
 		void RemoveBlock(Block* pBlock);
@@ -186,12 +196,29 @@ namespace Matrix
 		void PrintInfo();
 		void FreeDbgHelpLib();
 	};
-
-
-
-
 #else
+	class MATRIXCORE_API MTXMemWin64 : public MTXMemManager
+	{
+	public:
+		MTXMemWin64();
+		~MTXMemWin64();
+
+		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
+	};
 #endif
+
+
+	class MATRIXCORE_API  MMemObject
+	{
+	public:
+		MMemObject();
+		~MMemObject();
+
+		//static MTXStackMem& GetStackMemManager();
+		static MTXMemManager& GetMemManager();
+		static MTXMemManager& GetCMemManager();
+	};
 
 
 
