@@ -15,44 +15,6 @@ Matrix::MTXMemManager::~MTXMemManager()
 
 MTXCriticalSection  MTXMemManager::msMemLock;
 
-Matrix::MTXCMem::MTXCMem()
-{
-}
-
-Matrix::MTXCMem::~MTXCMem()
-{
-}
-
-void* Matrix::MTXCMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
-{
-	MTXCriticalSection::Locker Temp(msMemLock);
-	if (uiAlignment == 0)
-	{
-		return malloc(uiSize);
-
-	}
-	else
-	{
-		//变分配器默认行为（默认是提供32-byte或者64-byte对齐）
-		return _aligned_malloc(uiSize, uiAlignment);
-	}
-	return NULL;
-}
-
-void Matrix::MTXCMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
-{
-	MTXCriticalSection::Locker Temp(msMemLock);
-	if (uiAlignment == 0)
-	{
-		free(pcAddr);
-	}
-	else
-	{
-		_aligned_free(pcAddr);
-	}
-}
-
-
 #if !_DEBUG && !_WIN64
 Matrix::MTXMemWin32::MTXMemWin32()
 {
@@ -119,7 +81,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 {
 	//内存锁，防止两个线程同时申请内存
 	MTXCriticalSection::Locker   Temp(msMemLock);
-	FFreeMem* Free;
+	FFreeBlock* Free;
 	//大于pool_MAX大内存采用操作系统的内存分配
 	if (uiSize < POOL_MAX)
 	{
@@ -140,7 +102,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 			//按照page单位（64KB）分配, 分配类型: MEM_COMMIT 为指定地址空间提交物理内存。这个函数初始化内在为零
 			//试图提交已提交的内存页不会导致函数失败。这意味着您可以在不确定当前页的当前提交状态的情况下提交一系列页面。
 			//如果尚未保留内存页，则设置此值会导致函数同时保留并提交内存页。
-			Free = (FFreeMem*)VirtualAlloc(NULL, Bytes, MEM_COMMIT, PAGE_READWRITE); //分配一块block
+			Free = (FFreeBlock*)VirtualAlloc(NULL, Bytes, MEM_COMMIT, PAGE_READWRITE); //分配一块block
 			if (!Free)
 			{
 				return NULL;
@@ -158,12 +120,12 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 
 			//连接到对应 PoolTable 
 			Pool->Link(Table->FirstPool);
-			Pool->Mem = (BYTE*)Free;
+			Pool->MemoryAddr = (BYTE*)Free;
 			Pool->Bytes = Bytes;
 			Pool->OsBytes = Align(Bytes, PageSize);
 			Pool->Owner = Table;
 			Pool->Taken = 0;
-			Pool->FirstMem = Free;
+			Pool->pAvailableBlock = Free;
 
 			//Create first free item
 			Free->Blocks = Blocks;
@@ -172,14 +134,15 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 
 		// Pick first available block and unlink it.
 		Pool->Taken++;
-		MTXENGINE_ASSERT(Pool->FirstMem);
-		MTXENGINE_ASSERT(Pool->FirstMem->Blocks > 0);
-		Free = (FFreeMem*)((BYTE*)Pool->FirstMem + --Pool->FirstMem->Blocks * Table->BlockSize);
-		if (Pool->FirstMem->Blocks == 0)
+		MTXENGINE_ASSERT(Pool->pAvailableBlock);
+		MTXENGINE_ASSERT(Pool->pAvailableBlock->Blocks > 0);
+		//从后往前覆盖可以巧妙的利用地位地址来存放FFreeBlocks数据。
+		Free = (FFreeBlock*)((BYTE*)Pool->pAvailableBlock + --Pool->pAvailableBlock->Blocks * Table->BlockSize);
+		if (Pool->pAvailableBlock->Blocks == 0)
 		{
 			//FreeMem blocks之间的链接
-			Pool->FirstMem = Pool->FirstMem->Next;
-			if (!Pool->FirstMem)
+			Pool->pAvailableBlock = Pool->pAvailableBlock->Next;
+			if (!Pool->pAvailableBlock)
 			{
 				// poolinfo所指向的block满了就将其移入ExhaustedPool
 				Pool->Unlink();
@@ -192,7 +155,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 	{
 		//大的内存采用操作系统自身的
 		INT AlignedSize = Align(uiSize, PageSize);
-		Free = (FFreeMem*)VirtualAlloc(NULL, AlignedSize, MEM_COMMIT, PAGE_READWRITE);
+		Free = (FFreeBlock*)VirtualAlloc(NULL, AlignedSize, MEM_COMMIT, PAGE_READWRITE);
 		if (!Free)
 		{
 			return NULL;
@@ -204,7 +167,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 		}
 		//init pool
 		FPoolInfo* Pool = &Indirect[((DWORD)Free >> 16) & 2047];
-		Pool->Mem = (BYTE*)Free;
+		Pool->MemoryAddr = (BYTE*)Free;
 		Pool->Bytes = uiSize;
 		Pool->OsBytes = AlignedSize;
 		Pool->Owner = &OsTable;
@@ -225,33 +188,34 @@ void Matrix::MTXMemWin32::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool 
 	MTXENGINE_ASSERT(Pool->Bytes != 0);
 	if (Pool->Owner != &OsTable)
 	{
-		if (!Pool->FirstMem)
+		if (!Pool->pAvailableBlock)
 		{
-			//FirstMem为null， 此pool已经满了，切换到可用的pool列表
+			//pAvailableBlock为null， 考虑到pool释放后是可以分配的，需要将pool切换到可用的pool列表参与以后的分配
 			Pool->Unlink();
 			Pool->Link(Pool->Owner->FirstPool);
 		}
 
 		// Free a pooled allocation.
-		FFreeMem* Free = (FFreeMem*)pcAddr;
-		Free->Blocks = 1;
-		Free->Next = Pool->FirstMem;
-
-		Pool->FirstMem = Free;
+		FFreeBlock* Free = (FFreeBlock*)pcAddr;
+		Free->Blocks = 1; //当前 FreeMem 只管理 1 个单元块
+		//链接到 PoolInfo 第一个可用的 pAvailableBlock
+		Free->Next = Pool->pAvailableBlock;
+		Pool->pAvailableBlock = Free;
 		MTXENGINE_ASSERT(Pool->Taken >= 1);
 		if (--Pool->Taken == 0)
 		{
 			// Free the OS memory.
+			//如果释放后，发现 16 个单元都空闲，则把这个 PoolInfo 归还给32 位Windows 系统，所以极限可能是 1 个单元被占用，15 个空闲
 			Pool->Unlink();
-			VirtualFree(Pool->Mem, 0, MEM_RELEASE);
-			Pool->Mem = NULL;
+			VirtualFree(Pool->MemoryAddr, 0, MEM_RELEASE);
+			Pool->MemoryAddr = NULL;
 		}
 	}
 	else
 	{
 		// Free an OS allocation.
 		VirtualFree(pcAddr, 0, MEM_RELEASE);
-		Pool->Mem = NULL;
+		Pool->MemoryAddr = NULL;
 	}
 }
 
@@ -655,11 +619,161 @@ void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool 
 
 #endif
 
-Matrix::MMemObject::MMemObject()
+Matrix::MTXCMem::MTXCMem()
+{
+}
+Matrix::MTXCMem::~MTXCMem()
+{
+}
+
+void* Matrix::MTXCMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	MTXCriticalSection::Locker Temp(msMemLock);
+	if (uiAlignment == 0)
+	{
+		return malloc(uiSize);
+
+	}
+	else
+	{
+		//变分配器默认行为（默认是提供32-byte或者64-byte对齐）
+		return _aligned_malloc(uiSize, uiAlignment);
+	}
+	return NULL;
+}
+void Matrix::MTXCMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	MTXCriticalSection::Locker Temp(msMemLock);
+	if (uiAlignment == 0)
+	{
+		free(pcAddr);
+	}
+	else
+	{
+		_aligned_free(pcAddr);
+	}
+}
+
+Matrix::MTXStackMem::MTXStackMem(USIZE_TYPE uiDefaultChunkSize)
+{
+	//默认size 需要大于 FTaggedMemory 大小 
+	MTXENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
+	Top = NULL;
+	End = NULL;
+	DefaultChunkSize = uiDefaultChunkSize;
+	TopChunk = NULL;
+	UnusedChunks = NULL;
+	NumMarks = 0;
+}
+Matrix::MTXStackMem::~MTXStackMem()
+{
+	FreeChunks(NULL);
+	while (UnusedChunks)
+	{
+		void* Old = UnusedChunks;
+		UnusedChunks = UnusedChunks->Next;
+		MMemObject::GetMemManager().Deallocate((char*)Old, 0, true);
+	}
+	//核验是否释放完毕
+	MTXENGINE_ASSERT(NumMarks == 0);
+}
+
+void* Matrix::MTXStackMem::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+{
+	MTXENGINE_ASSERT(uiSize >= 0);
+	if (uiAlignment > 0)
+	{
+		MTXENGINE_ASSERT((uiAlignment & (uiAlignment - 1)) == 0);
+	}
+
+	MTXENGINE_ASSERT(Top <= End);
+	//从当前chunk里分配空间
+	BYTE* Result = Top;
+	if (uiAlignment > 0)
+	{
+		//字节对齐
+		Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
+	}
+	Top = Result + uiSize;
+	//超出当前chunk大小， 分配新的Chunk
+	if (Top > End)
+	{
+		//分配足够字节对齐的空间
+		AllocateNewChunk(uiSize + uiAlignment);
+		Result = Top;
+		if (uiAlignment > 0)
+		{
+			//字节对齐
+			Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
+		}
+		//增加 Top 指针
+		Top = Result + uiSize;
+	}
+	return Result;
+}
+void Matrix::MTXStackMem::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 
 }
 
+void Matrix::MTXStackMem::Clear()
+{
+	FreeChunks(NULL);
+}
+
+BYTE* Matrix::MTXStackMem::AllocateNewChunk(USIZE_TYPE MinSize)
+{
+	FTaggedMemory* Chunk = NULL;
+	for (FTaggedMemory** link = &UnusedChunks; *link; link = &(*link)->Next)
+	{
+		// Find existing chunk
+		if ((*link)->DataSize >= (INT)MinSize)
+		{
+			Chunk = *link;
+			*link = (*link)->Next;
+			break;
+		}
+	}
+	if (!Chunk)
+	{
+		// Create new chunk.
+		USIZE_TYPE DataSize = Max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
+		Chunk = (FTaggedMemory*)MMemObject::GetMemManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
+		Chunk->DataSize = DataSize;
+	}
+
+	Chunk->Next = TopChunk;
+	TopChunk = Chunk;
+	Top = Chunk->Data;
+	End = Top + Chunk->DataSize;
+
+	return Top;
+}
+void Matrix::MTXStackMem::FreeChunks(FTaggedMemory* NewTopChunk)
+{
+	//释放 NewTopChunk 到 TopChunk 的所有 Chunk
+	//这里的释放就是将topchunk指向的chunk转移到unusedchunk块中。
+	while (TopChunk != NewTopChunk)
+	{
+		FTaggedMemory* RemoveChunk = TopChunk;
+		TopChunk = TopChunk->Next;
+		RemoveChunk->Next = UnusedChunks;
+		UnusedChunks = RemoveChunk;
+	}
+	//重置 Top、End 和 TopChunck
+	Top = NULL;
+	End = NULL;
+	if (TopChunk)
+	{
+		Top = TopChunk->Data;
+		End = Top + TopChunk->DataSize;
+	}
+}
+
+Matrix::MMemObject::MMemObject()
+{
+
+}
 Matrix::MMemObject::~MMemObject()
 {
 }
@@ -670,14 +784,13 @@ MTXStackMem& Matrix::MMemObject::GetStackMemManager()
 	void* pTlsValue = g_TlsValue.GetThreadValue();
 	if (!pTlsValue)
 	{
-		pTlsValue = VS_NEW MTXStackMem();
+		pTlsValue = MTX_NEW MTXStackMem();
 		g_TlsValue.SetThreadValue(pTlsValue);
 	}
 	return *((MTXStackMem*)pTlsValue);
 	//static VSStackMem g_StackMemManager;
 	//return g_StackMemManager;
 }
-
 MTXMemManager& Matrix::MMemObject::GetMemManager()
 {
 #if !_DEBUG  && !_WIN64
@@ -689,7 +802,6 @@ MTXMemManager& Matrix::MMemObject::GetMemManager()
 #endif // !_DEBUG  && !_WIN64
 	return g_MemManager;
 }
-
 MTXMemManager& Matrix::MMemObject::GetCMemManager()
 {
 	static  MTXCMem  g_MemManager;

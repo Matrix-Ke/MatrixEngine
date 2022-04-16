@@ -28,8 +28,7 @@ namespace Matrix
 #define IS_EMPTY(T) std::is_empty<T>::value
 
 
-//TIsPODType
-//POD，是Plain Old Data的缩写，普通旧数据类型，是C++中的一种数据类型概念
+	//POD，是Plain Old Data的缩写，普通旧数据类型，是C++中的一种数据类型概念
 	template<typename T> struct TIsPODType
 	{
 		enum { Value = IS_POD(T) };
@@ -98,7 +97,7 @@ namespace Matrix
 		enum { POOL_MAX = 32768 + 1 };
 		// Forward declares.
 		struct FPoolInfo;
-		struct FFreeMem;
+		struct FFreeBlock;
 
 		FPoolInfo* CreateIndirect();
 
@@ -118,9 +117,9 @@ namespace Matrix
 			FPoolInfo** PrevLink;
 			FPoolInfo* Next; //指向自己的后一个节点
 			FPoolTable* Owner; //属于哪个链表管理者
-			void* Mem; //指向 32 位 Windows 系统分配空间的首地址
+			void* MemoryAddr; //指向 32 位 Windows 系统分配空间的首地址
 			unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
-			FFreeMem* FirstMem;
+			FFreeBlock* pAvailableBlock;
 			//Fpoolinfo link 到参数中，所以需要使用引用传参，head是指向指针的指针。
 			//将this插入到链表头结点。
 
@@ -146,10 +145,10 @@ namespace Matrix
 				*PrevLink = Next;
 			}
 		};
-
-		struct FFreeMem
+		//FreeMem的大小是8字节，可以和一个block单元公用，因为未分配才需要freemem记录，已经分配的不需要Freemem记录。
+		struct FFreeBlock
 		{
-			FFreeMem* Next; //在同一个 PoolInfo 中，下一个可用的单元
+			FFreeBlock* Next; //在同一个 PoolInfo 中，下一个可用的单元
 			DWORD Blocks; //还剩下多少可用单元
 			FPoolInfo* GetPool()
 			{
@@ -257,42 +256,54 @@ namespace Matrix
 		~MTXStackMem();
 
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
-
+		//栈内存无须主动释放，出栈即消亡
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
+		//每帧结束或者开始的时候调用,释放所有
+		void Clear();
+
+		template<class T>
+		friend class MTXStackMemAlloc;
+		friend class MTXStackMemTag;
 	private:
 		//Chunk 指针结构
 		struct FTaggedMemory
 		{
 			FTaggedMemory* Next;
-			INT DataSize;
+			USIZE_TYPE DataSize;
 			BYTE Data[1];
 		};
 
-		// Variables.
-		BYTE* Top;				// Top of current chunk (Top<=End).
-		BYTE* End;				// End of current chunk.
-		USIZE_TYPE		DefaultChunkSize;	// Maximum chunk size to allocate.
-		FTaggedMemory* TopChunk;			// Only chunks 0..ActiveChunks-1 are valid.
-
-		/** The memory chunks that have been allocated but are currently unused. */
-		FTaggedMemory* UnusedChunks;
+		BYTE* Top; //当前 Chunk 栈头
+		BYTE* End; //当前 Chunk 栈尾
+		USIZE_TYPE DefaultChunkSize; //默认每次分配最大 Size 
+		FTaggedMemory* TopChunk; //当前已分配 Chunk 头指针 
+		FTaggedMemory* UnusedChunks; //当前空闲 Chunk 头指针(但是已经分配好了）
 
 		/** The number of marks on this stack. */
 		INT NumMarks;
 
-		/**
-		* Allocate a new chunk of memory of at least MinSize size,
-		* and return it aligned to Align. Updates the memory stack's
-		* Chunks table and ActiveChunks counter.
-		*/
 		BYTE* AllocateNewChunk(USIZE_TYPE MinSize);
-
-		/** Frees the chunks above the specified chunk on the stack. */
-		/*移除这个chunk和这个chunk之前的所有chunk*/
+		//释放 NewTopChunk 到 TopChunk 的所有 Chunk 
 		void FreeChunks(FTaggedMemory* NewTopChunk);
 
 	};
+
+
+	//==============================以上为多平台的内存分配的设计实现====================================
+	//=============================================================================================
+
+	class MATRIXCORE_API  MMemObject
+	{
+	public:
+		MMemObject();
+		~MMemObject();
+
+		static MTXStackMem& GetStackMemManager();
+		static MTXMemManager& GetMemManager();
+		static MTXMemManager& GetCMemManager();
+	};
+
 
 	template<typename T>
 	class MTXStackMemAlloc : public MMemObject
@@ -321,29 +332,83 @@ namespace Matrix
 						MTX_NEW(mPtr + i)T();
 					}
 				}
-
-
 			}
+		}
+
+		~MTXStackMemAlloc()
+		{
+			if (mNum > 0)
+			{
+				if (ValueBase<T>::NeedsDestructor)
+				{
+					for (unsigned int i = 0; i < mNum; i++)
+					{
+						(mPtr + i)-> ~T();
+					}
+				}
+			}
+			MTXStackMem& StackMem = GetStackMemManager();
+			// Track the number of outstanding marks on the stack.
+			--StackMem.NumMarks;
+			//释放 SavedChunk 前面的所有 Chunk 到空闲列表中
+			if (SavedChunk != StackMem.TopChunk)
+			{
+				StackMem.FreeChunks(SavedChunk);
+			}
+			//还原现场
+			GetStackMemManager().Top = Top;
+			Top = NULL;
+		}
+
+		//取得分配空间的指针
+		inline T* GetPtr()const
+		{
+			return mPtr;
+		}
+		inline unsigned int GetNum() const
+		{
+			return mNum;
 		}
 
 	private:
 		BYTE* Top;
 		MTXStackMem::FTaggedMemory* SavedChunk;
 		T* mPtr;
-		unsigned int mNum;
+		unsigned int mNum; //记录构造的数量
 	};
 
-
-	class MATRIXCORE_API  MMemObject
+	class MTXStackMemTag : public MMemObject
 	{
 	public:
-		MMemObject();
-		~MMemObject();
+		// Constructors.
+		MTXStackMemTag()
+		{
+			MTXStackMem& StackMem = GetStackMemManager();
+			StackMem.NumMarks++;
+			Top = StackMem.Top;
+			SavedChunk = StackMem.TopChunk;
+		}
 
-		static MTXStackMem& GetStackMemManager();
-		static MTXMemManager& GetMemManager();
-		static MTXMemManager& GetCMemManager();
+		/** Destructor. */
+		~MTXStackMemTag()
+		{
+			MTXStackMem& StackMem = GetStackMemManager();
+
+			// Unlock any new chunks that were allocated.
+			if (SavedChunk != StackMem.TopChunk)
+				StackMem.FreeChunks(SavedChunk);
+
+			// Restore the memory stack's state.
+			StackMem.Top = Top;
+			StackMem.NumMarks--;
+		}
+	private:
+		BYTE* Top;
+		MTXStackMem::FTaggedMemory* SavedChunk;
 	};
+
+
+
 
 
 
