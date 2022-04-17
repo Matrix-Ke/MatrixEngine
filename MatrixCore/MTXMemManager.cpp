@@ -306,7 +306,10 @@ bool Matrix::MTXDebugMem::InitDbgHelpLib()
 	GetModuleFileName(NULL, szDbgName, MAX_PATH);
 	TCHAR* p = (TCHAR*)MTXCsrchr(szDbgName, _T('\\'));
 	if (p)
+	{
+		//获取文件路径名字
 		*p = 0;
+	}
 	MTXStrcat(szDbgName, MAX_PATH, _T("\\dbghelp.dll"));
 
 	// 查找当前目录的DLL
@@ -609,12 +612,31 @@ Matrix::MTXMemWin64::~MTXMemWin64()
 
 void* Matrix::MTXMemWin64::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-	return nullptr;
+	if (uiAlignment != 0)
+	{
+		uiAlignment = Max(uiSize >= 16 ? (USIZE_TYPE)16 : (USIZE_TYPE)8, uiAlignment);
+		return scalable_aligned_malloc(uiSize, uiAlignment);
+	}
+	else
+	{
+		return scalable_malloc(uiSize);
+	}
 }
 
 void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-
+	if (!pcAddr)
+	{
+		return;
+	}
+	if (uiAlignment != 0)
+	{
+		scalable_aligned_free(pcAddr);
+	}
+	else
+	{
+		scalable_free(pcAddr);
+	}
 }
 
 #endif

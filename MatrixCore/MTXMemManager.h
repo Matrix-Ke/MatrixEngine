@@ -4,6 +4,9 @@
 
 #include <Windows.h>
 #include <new.h>
+
+//实现一套自己的内存管理机制，最好要重载全局new函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
+#include <new.h>
 #define MTX_NEW new
 #define MTX_DELETE delete
 #define USE_STL_TYPE_TRAIT
@@ -235,6 +238,10 @@ namespace Matrix
 		void FreeDbgHelpLib();
 	};
 #else 
+#if defined(_DEBUG)
+#undef _DEBUG
+#endif
+#include <scalable_allocator.h>
 	class MATRIXCORE_API MTXMemWin64 : public MTXMemManager
 	{
 	public:
@@ -414,3 +421,19 @@ namespace Matrix
 
 }
 
+
+#define USE_CUSTOM_NEW
+#ifdef USE_CUSTOM_NEW
+inline void* operator new(size_t uiSize)
+{
+	Matrix::MTXOutputDebugString(_T("operator new has been called!"));
+	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, false);
+}
+
+inline void* operator new[](size_t uiSize)
+{
+	Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
+	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, true);
+}
+
+#endif // USE_CUSTOM_NEW

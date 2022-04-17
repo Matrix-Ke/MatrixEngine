@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Practise3", "Practise3", "{97C448CE-C5FF-4A19-8F19-0C8FDBC5CE22}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "practise3.1", "PractiseDemo\practise3.1\practise3.1.vcxproj", "{67FF4824-F6CF-40EC-94CA-92432CD3210B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2FD1DFD4-E225-41E1-A9D7-FB1554D27B0D} = {2FD1DFD4-E225-41E1-A9D7-FB1554D27B0D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
