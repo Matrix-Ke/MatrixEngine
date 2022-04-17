@@ -238,10 +238,6 @@ namespace Matrix
 		void FreeDbgHelpLib();
 	};
 #else 
-#if defined(_DEBUG)
-#undef _DEBUG
-#endif
-#include <scalable_allocator.h>
 	class MATRIXCORE_API MTXMemWin64 : public MTXMemManager
 	{
 	public:

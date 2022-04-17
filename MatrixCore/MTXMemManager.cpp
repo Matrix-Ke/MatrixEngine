@@ -603,6 +603,11 @@ bool Matrix::MTXDebugMem::GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_
 }
 
 #else
+#if defined(_DEBUG)
+#undef _DEBUG
+#endif
+#include <scalable_allocator.h>
+
 Matrix::MTXMemWin64::MTXMemWin64()
 {
 }
