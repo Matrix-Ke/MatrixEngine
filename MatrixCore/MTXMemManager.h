@@ -1,9 +1,8 @@
 #pragma once
 #include "MTXCore.h"
 #include "MTXSynchronize.h"
-
 #include <Windows.h>
-#include <new.h>
+
 
 //实现一套自己的内存管理机制，最好要重载全局new函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
 #include <new.h>
@@ -422,14 +421,24 @@ namespace Matrix
 #ifdef USE_CUSTOM_NEW
 inline void* operator new(size_t uiSize)
 {
-	Matrix::MTXOutputDebugString(_T("operator new has been called!"));
+	//Matrix::MTXOutputDebugString(_T("operator new has been called!"));
 	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, false);
 }
 
 inline void* operator new[](size_t uiSize)
 {
-	Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
+	//Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
 	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, true);
 }
 
+inline void operator delete (void* pvAddr)
+{
+	//Matrix::MTXOutputDebugString(_T("operator delete has been called!"));
+	return Matrix::MMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, false);
+}
+inline void operator delete[](void* pvAddr)
+{
+	//Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
+	return Matrix::MMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, true);
+}
 #endif // USE_CUSTOM_NEW

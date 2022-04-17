@@ -627,7 +627,6 @@ void* Matrix::MTXMemWin64::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 		return scalable_malloc(uiSize);
 	}
 }
-
 void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	if (!pcAddr)
@@ -643,7 +642,6 @@ void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool 
 		scalable_free(pcAddr);
 	}
 }
-
 #endif
 
 Matrix::MTXCMem::MTXCMem()

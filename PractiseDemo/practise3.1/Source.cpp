@@ -3,6 +3,9 @@
 
 int main()
 {
-	int* array = new int[10];
+	using namespace std;
+	int* pArr = new int[10];
+	delete[] pArr;
+	//cout << "test" << endl;
 	return 0;
 }
