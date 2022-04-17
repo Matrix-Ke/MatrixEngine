@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "MatrixPlatform.h"
 #include <stdio.h>
 #include <tchar.h>
@@ -19,19 +19,16 @@
 
 namespace Matrix
 {
-#ifndef _DEBUG
-#define _DEBUG 0
-#endif 
-
 #ifdef _DEBUG
 	//assert 的缺点是，频繁的调用会极大的影响程序的性能，增加额外的开销。
 	//在调试结束后，可以通过在包含 #include 的语句之前插入 #define NDEBUG 来禁用 assert 调用
 #define MTXENGINE_ASSERT(Expression)\
-	{\
-		 assert(Expression);\
-	}
+		{\
+			 assert(Expression);\
+		}
 #else
-#define VSMAC_ASSERT(Expression)
+	//通过debug来控制
+#define MTXENGINE_ASSERT(Expression)
 #endif
 
 #define THREAD_CALLBACK __stdcall
