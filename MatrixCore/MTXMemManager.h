@@ -87,7 +87,7 @@ namespace Matrix
 
 	//===========================堆内存管理====================================
 #if !_DEBUG && !_WIN64
-
+	//采用虚幻3的内存管理代码删改而成
 	class MATRIXCORE_API MTXMemWin32 : public MTXMemManager
 	{
 	public:
@@ -179,6 +179,7 @@ namespace Matrix
 	};
 
 #elif _DEBUG
+	//采用浮动大小的block块，BeginMask 和 EndMask隔离 
 	class MATRIXCORE_API MTXDebugMem : public MTXMemManager
 	{
 	public:
@@ -301,7 +302,6 @@ namespace Matrix
 
 	//==============================以上为多平台的内存分配的设计实现====================================
 	//=============================================================================================
-
 	class MATRIXCORE_API MMemObject
 	{
 	public:
@@ -415,7 +415,6 @@ namespace Matrix
 		BYTE* Top;
 		MTXStackMem::FTaggedMemory* SavedChunk;
 	};
-
 }
 
 #define USE_CUSTOM_NEW
@@ -425,7 +424,6 @@ inline void* operator new(size_t uiSize)
 	// Matrix::MTXOutputDebugString(_T("operator new has been called!"));
 	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, false);
 }
-
 inline void* operator new[](size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
