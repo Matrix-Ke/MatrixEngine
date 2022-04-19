@@ -1,5 +1,6 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "MTXSynchronize.h"
+#include "MTXMemManager.h"
 
 using namespace Matrix;
 MTXCriticalSection gSafeOutputString;
@@ -170,15 +171,17 @@ Matrix::MTXTlsValue::~MTXTlsValue()
 	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 	for (size_t i = 0; i < mThreadValueNum; i++)
 	{
-		//todo list
-		//MTXDele
+		MTXDelete(pThreadValue[i]);
 	}
 	MTXTlsFree(mSlot);
 }
 
 void Matrix::MTXTlsValue::SetThreadValue(void* pValue)
 {
-	//todo list: 
+	MTXCriticalSection::Locker Temp(mCriticalSection);
+	pThreadValue[mThreadValueNum] = (MTXStackMem*)pValue;
+	mThreadValueNum++;
+	MTXSetTlsValue(mSlot, pValue);
 }
 
 void* Matrix::MTXTlsValue::GetThreadValue()

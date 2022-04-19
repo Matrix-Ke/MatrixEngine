@@ -231,8 +231,8 @@ namespace Matrix
 		unsigned int mNumDeleteCalls;		  //调用 delete 的次数
 		unsigned int mNumBlocks;			  //当前有多少内存块
 		unsigned int mNumBytes;				  //当前有多少字节
-		unsigned int mMaxNumBytes;			  //最多申请多少字节
-		unsigned int mMaxNumBlocks;			  //最多申请多少内存块
+		//unsigned int mMaxNumBytes;			  //todo：最多申请多少字节
+		//unsigned int mMaxNumBlocks;			  //todo：最多申请多少内存块，暂无控制含义
 		unsigned int mSizeRecord[RECORD_NUM]; //统计内存在2的n次方的分布情况。
 		void InsertBlock(Block* pBlock);
 		//仅仅负责移除，不做内存释放处理
@@ -286,8 +286,8 @@ namespace Matrix
 			BYTE Data[1];
 		};
 
-		BYTE* Top;					 //当前 Chunk 栈头
-		BYTE* End;					 //当前 Chunk 栈尾
+		BYTE* Top;					 //当前 Chunk块内栈头
+		BYTE* End;					 //当前 Chunk块内栈尾
 		USIZE_TYPE DefaultChunkSize; //默认每次分配最大 Size
 		FTaggedMemory* TopChunk;	 //当前已分配 Chunk 头指针
 		FTaggedMemory* UnusedChunks; //当前空闲 Chunk 头指针(但是已经分配好了）
@@ -364,7 +364,7 @@ namespace Matrix
 				StackMem.FreeChunks(SavedChunk);
 			}
 			//还原现场
-			GetStackMemManager().Top = Top;
+			StackMem.Top = Top;
 			Top = NULL;
 		}
 
@@ -382,7 +382,7 @@ namespace Matrix
 		BYTE* Top;
 		MTXStackMem::FTaggedMemory* SavedChunk;
 		T* mPtr;
-		unsigned int mNum; //记录构造的数量
+		size_t mNum; //记录构造的数量
 	};
 
 	class MTXStackMemTag : public MMemObject
@@ -441,3 +441,25 @@ inline void operator delete[](void* pvAddr)
 	return Matrix::MMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, true);
 }
 #endif // USE_CUSTOM_NEW
+
+
+#define MTXENGINE_DELETE(p) if(p){delete p; p = 0;}
+#define MTXENGINE_DELETEA(p) if(p){delete []p; p = 0;}
+#define MTXENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) MTXENGINE_DELETEA(p[i]); MTXENGINE_DELETEA(p);}
+	// use by inner mac
+	template<typename T>
+inline void MTXDelete(T*& p)
+{
+	if (p) { delete p; p = 0; }
+}
+template<typename T>
+inline void MTXDeleteA(T*& p)
+{
+	if (p) { delete[]p; p = 0; }
+}
+template<typename T, typename N>
+inline void MTXDeleteAB(T*& p, N num)
+{
+	if (p) { for (int i = 0; i < num; i++) MTXENGINE_DELETEA(p[i]); MTXENGINE_DELETEA(p); }
+}
+
