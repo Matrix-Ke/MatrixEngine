@@ -172,10 +172,12 @@ namespace Matrix
 			MAX_THREAD_VALUE = 256,
 		};
 		void SetThreadValue(void* pValue);
+		//如果为空则还未分配数据
 		void* GetThreadValue();
 	protected:
+		//mSlot在tls初始化时就进行分配。 
 		unsigned int mSlot = 0XFFFFFFFF;
-		class VSStackMem* mThreadValue[MAX_THREAD_VALUE];
+		class StackMemoryAlloc* pThreadValue[MAX_THREAD_VALUE];
 		unsigned int mThreadValueNum = 0;
 		MTXCriticalSection mCriticalSection;
 	};
