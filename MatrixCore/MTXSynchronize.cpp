@@ -179,7 +179,7 @@ Matrix::MTXTlsValue::~MTXTlsValue()
 void Matrix::MTXTlsValue::SetThreadValue(void* pValue)
 {
 	MTXCriticalSection::Locker Temp(mCriticalSection);
-	pThreadValue[mThreadValueNum] = (MTXStackMem*)pValue;
+	pThreadValue[mThreadValueNum] = (StackMemoryAlloc*)pValue;
 	mThreadValueNum++;
 	MTXSetTlsValue(mSlot, pValue);
 }

@@ -62,12 +62,11 @@ namespace Matrix
 #else
 #endif
 	//引擎的内存管理模块： 1.高效的管理自己的内存  2.避免出现内存泄漏
-	class MATRIXCORE_API MTXMemManager
+	class MATRIXCORE_API BaseMemoryAlloc
 	{
 	public:
-		MTXMemManager();
-		virtual ~MTXMemManager() = 0;
-
+		BaseMemoryAlloc();
+		virtual ~BaseMemoryAlloc() = 0;
 		//内存分配
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 		//内存管理
@@ -76,11 +75,11 @@ namespace Matrix
 		static MTXCriticalSection msMemLock;
 	};
 
-	class MATRIXCORE_API MTXCMem : public MTXMemManager
+	class MATRIXCORE_API CMemoryAlloc : public BaseMemoryAlloc
 	{
 	public:
-		MTXCMem();
-		~MTXCMem();
+		CMemoryAlloc();
+		~CMemoryAlloc();
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
 	};
@@ -180,11 +179,11 @@ namespace Matrix
 
 #elif _DEBUG
 	//采用浮动大小的block块，BeginMask 和 EndMask隔离 
-	class MATRIXCORE_API MTXDebugMem : public MTXMemManager
+	class MATRIXCORE_API DebugMemoryAlloc : public BaseMemoryAlloc
 	{
 	public:
-		MTXDebugMem();
-		~MTXDebugMem();
+		DebugMemoryAlloc();
+		~DebugMemoryAlloc();
 
 		// uiSize 是这次申请的字节数
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
@@ -231,8 +230,8 @@ namespace Matrix
 		unsigned int mNumDeleteCalls;		  //调用 delete 的次数
 		unsigned int mNumBlocks;			  //当前有多少内存块
 		unsigned int mNumBytes;				  //当前有多少字节
-		//unsigned int mMaxNumBytes;			  //todo：最多申请多少字节
-		//unsigned int mMaxNumBlocks;			  //todo：最多申请多少内存块，暂无控制含义
+		unsigned int mMaxNumBytes;			  //最多申请多少字节
+		unsigned int mMaxNumBlocks;			  //最多申请多少内存块
 		unsigned int mSizeRecord[RECORD_NUM]; //统计内存在2的n次方的分布情况。
 		void InsertBlock(Block* pBlock);
 		//仅仅负责移除，不做内存释放处理
@@ -259,12 +258,12 @@ namespace Matrix
 
 	//==============================栈内存管理===============================
 	//栈内存管理， 参考UE的代码设计， 没有考虑线程安全，每帧都会清理
-	class MATRIXCORE_API MTXStackMem : public MTXMemManager
+	class MATRIXCORE_API StackMemoryAlloc : public BaseMemoryAlloc
 	{
 	public:
 		//默认分配
-		MTXStackMem(USIZE_TYPE uiDefaultChunkSize = 65536);
-		~MTXStackMem();
+		StackMemoryAlloc(USIZE_TYPE uiDefaultChunkSize = 65536);
+		~StackMemoryAlloc();
 
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 		//栈内存无须主动释放，出栈即消亡
@@ -274,8 +273,8 @@ namespace Matrix
 		void Clear();
 
 		template <class T>
-		friend class MTXStackMemAlloc;
-		friend class MTXStackMemTag;
+		friend class StackMemAdaptor;
+		friend class StackMemTag;
 
 	private:
 		// Chunk 指针结构
@@ -302,27 +301,27 @@ namespace Matrix
 
 	//==============================以上为多平台的内存分配的设计实现====================================
 	//=============================================================================================
-	class MATRIXCORE_API MMemObject
+	class MATRIXCORE_API MMemoryObject
 	{
 	public:
-		MMemObject();
-		~MMemObject();
+		MMemoryObject();
+		~MMemoryObject();
 
-		static MTXStackMem& GetStackMemManager();
-		static MTXMemManager& GetMemManager();
-		static MTXMemManager& GetCMemManager();
+		static StackMemoryAlloc& GetStackMemManager();
+		static BaseMemoryAlloc& GetMemManager();
+		static BaseMemoryAlloc& GetCMemManager();
 	};
 
 	template <typename T>
-	class MTXStackMemAlloc : public MMemObject
+	class StackMemAdaptor : public MMemoryObject
 	{
 	public:
 		//
-		MTXStackMemAlloc(USIZE_TYPE uiNum = 0, USIZE_TYPE uiAlignment = 0)
+		StackMemAdaptor(USIZE_TYPE uiNum = 0, USIZE_TYPE uiAlignment = 0)
 		{
 			if (uiNum > 0)
 			{
-				MTXStackMem& StackMem = GetStackMemManager();
+				StackMemoryAlloc& StackMem = GetStackMemManager();
 				mNum = uiNum;
 				Top = StackMem.Top;
 				SavedChunk = StackMem.TopChunk;
@@ -343,7 +342,7 @@ namespace Matrix
 			}
 		}
 
-		~MTXStackMemAlloc()
+		~StackMemAdaptor()
 		{
 			if (mNum > 0)
 			{
@@ -355,7 +354,7 @@ namespace Matrix
 					}
 				}
 			}
-			MTXStackMem& StackMem = GetStackMemManager();
+			StackMemoryAlloc& StackMem = GetStackMemManager();
 			// Track the number of outstanding marks on the stack.
 			--StackMem.NumMarks;
 			//释放 SavedChunk 前面的所有 Chunk 到空闲列表中
@@ -380,27 +379,27 @@ namespace Matrix
 
 	private:
 		BYTE* Top;
-		MTXStackMem::FTaggedMemory* SavedChunk;
+		StackMemoryAlloc::FTaggedMemory* SavedChunk;
 		T* mPtr;
 		size_t mNum; //记录构造的数量
 	};
 
-	class MTXStackMemTag : public MMemObject
+	class StackMemTag : public MMemoryObject
 	{
 	public:
 		// Constructors.
-		MTXStackMemTag()
+		StackMemTag()
 		{
-			MTXStackMem& StackMem = GetStackMemManager();
+			StackMemoryAlloc& StackMem = GetStackMemManager();
 			StackMem.NumMarks++;
 			Top = StackMem.Top;
 			SavedChunk = StackMem.TopChunk;
 		}
 
 		/** Destructor. */
-		~MTXStackMemTag()
+		~StackMemTag()
 		{
-			MTXStackMem& StackMem = GetStackMemManager();
+			StackMemoryAlloc& StackMem = GetStackMemManager();
 
 			// Unlock any new chunks that were allocated.
 			if (SavedChunk != StackMem.TopChunk)
@@ -413,7 +412,7 @@ namespace Matrix
 
 	private:
 		BYTE* Top;
-		MTXStackMem::FTaggedMemory* SavedChunk;
+		StackMemoryAlloc::FTaggedMemory* SavedChunk;
 	};
 }
 
@@ -422,23 +421,23 @@ namespace Matrix
 inline void* operator new(size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator new has been called!"));
-	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, false);
+	return Matrix::MMemoryObject::GetMemManager().Allocate(uiSize, 0, false);
 }
 inline void* operator new[](size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
-	return Matrix::MMemObject::GetMemManager().Allocate(uiSize, 0, true);
+	return Matrix::MMemoryObject::GetMemManager().Allocate(uiSize, 0, true);
 }
 
 inline void operator delete(void* pvAddr)
 {
 	// Matrix::MTXOutputDebugString(_T("operator delete has been called!"));
-	return Matrix::MMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, false);
+	return Matrix::MMemoryObject::GetMemManager().Deallocate((char*)pvAddr, 0, false);
 }
 inline void operator delete[](void* pvAddr)
 {
 	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
-	return Matrix::MMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, true);
+	return Matrix::MMemoryObject::GetMemManager().Deallocate((char*)pvAddr, 0, true);
 }
 #endif // USE_CUSTOM_NEW
 

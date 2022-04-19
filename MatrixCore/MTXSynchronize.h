@@ -177,7 +177,7 @@ namespace Matrix
 	protected:
 		//mSlot在tls初始化时就进行分配。 
 		unsigned int mSlot = 0XFFFFFFFF;
-		class MTXStackMem* pThreadValue[MAX_THREAD_VALUE];
+		class StackMemoryAlloc* pThreadValue[MAX_THREAD_VALUE];
 		unsigned int mThreadValueNum = 0;
 		MTXCriticalSection mCriticalSection;
 	};
