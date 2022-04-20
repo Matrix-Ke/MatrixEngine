@@ -258,6 +258,7 @@ namespace Matrix
 
 	//==============================栈内存管理===============================
 	//栈内存管理， 参考UE的代码设计， 没有考虑线程安全，每帧都会清理
+
 	class MATRIXCORE_API StackMemoryManager : public BaseMemoryManager
 	{
 	public:
@@ -355,6 +356,7 @@ namespace Matrix
 					}
 				}
 			}
+
 			StackMemoryManager& StackMem = GetStackMemoryManager();
 			// Track the number of outstanding marks on the stack.
 			--StackMem.NumMarks;
@@ -400,6 +402,7 @@ namespace Matrix
 		/** Destructor. */
 		~StackMemTag()
 		{
+
 			StackMemoryManager& StackMem = GetStackMemoryManager();
 
 			// Unlock any new chunks that were allocated.

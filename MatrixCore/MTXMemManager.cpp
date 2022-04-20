@@ -3,6 +3,7 @@
 
 using namespace Matrix;
 
+
 Matrix::BaseMemoryManager::BaseMemoryManager()
 {
 }
@@ -677,6 +678,7 @@ void Matrix::Win64MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, 
 
 
 Matrix::StackMemoryManager::StackMemoryManager(USIZE_TYPE uiDefaultChunkSize)
+
 {
 	//默认size 需要大于 FTaggedMemory 大小
 	MTXENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
@@ -687,6 +689,7 @@ Matrix::StackMemoryManager::StackMemoryManager(USIZE_TYPE uiDefaultChunkSize)
 	UnusedChunks = NULL;
 	NumMarks = 0;
 }
+
 Matrix::StackMemoryManager::~StackMemoryManager()
 {
 	FreeChunks(NULL);
@@ -795,7 +798,6 @@ Matrix::MMemoryObject::MMemoryObject()
 	GetCMemoryManager();
 	GetMemoryManager();
 	GetStackMemoryManager();
-
 }
 Matrix::MMemoryObject::~MMemoryObject()
 {

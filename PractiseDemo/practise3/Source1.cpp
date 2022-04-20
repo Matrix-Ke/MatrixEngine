@@ -1,4 +1,4 @@
-﻿//stack memroy unit demo
+//stack memroy unit demo
 #include "MTXMemManager.h"
 #include <iostream>
 
