@@ -16,7 +16,7 @@ public:
 
 void Fun5()
 {
-	StackMemAdaptor<MyStruct> Temp(10000);
+	StackMemoryAdaptor<MyStruct> Temp(10000);
 	MyStruct* p = Temp.GetPtr();
 	p[2].a = 1;
 	p[2].c = 'k';
@@ -24,8 +24,8 @@ void Fun5()
 
 int  main()
 {
-	StackMemAdaptor<MyStruct> Temp(2);
-	StackMemAdaptor<MyStruct> Temp1(2);
+	StackMemoryAdaptor<MyStruct> Temp(2);
+	StackMemoryAdaptor<MyStruct> Temp1(2);
 
 	MyStruct* p = Temp.GetPtr();
 	p[1].a = 1;

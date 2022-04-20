@@ -3,21 +3,22 @@
 
 using namespace Matrix;
 
-Matrix::BaseMemoryAlloc::BaseMemoryAlloc()
-{
-}
-Matrix::BaseMemoryAlloc::~BaseMemoryAlloc()
-{
-}
-MTXCriticalSection BaseMemoryAlloc::msMemLock;
 
-Matrix::CMemoryAlloc::CMemoryAlloc()
+Matrix::BaseMemoryManager::BaseMemoryManager()
 {
 }
-Matrix::CMemoryAlloc::~CMemoryAlloc()
+Matrix::BaseMemoryManager::~BaseMemoryManager()
 {
 }
-void* Matrix::CMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+MTXCriticalSection BaseMemoryManager::msMemLock;
+
+Matrix::CMemoryManager::CMemoryManager()
+{
+}
+Matrix::CMemoryManager::~CMemoryManager()
+{
+}
+void* Matrix::CMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
 	if (uiAlignment == 0)
@@ -31,7 +32,7 @@ void* Matrix::CMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, 
 	}
 	return NULL;
 }
-void Matrix::CMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+void Matrix::CMemoryManager::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
 	if (uiAlignment == 0)
@@ -45,7 +46,7 @@ void Matrix::CMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool
 }
 
 #if !_DEBUG && !_WIN64
-Matrix::MTXMemWin32::MTXMemWin32()
+Matrix::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
 {
 	// PageSize = 0;
 	SYSTEM_INFO SI;
@@ -101,11 +102,29 @@ Matrix::MTXMemWin32::MTXMemWin32()
 	MTXENGINE_ASSERT(POOL_MAX - 1 == PoolTable[POOL_CATEGORY - 1].BlockSize);
 }
 
-Matrix::MTXMemWin32::~MTXMemWin32()
+Matrix::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
 {
+	//释放申请的内存池
+	for (unsigned int i = 0; i < 32; i++)
+	{
+		for (unsigned int j = 0; j < 2048; j++)
+		{
+			if (PoolIndirect[i])
+			{
+				if (PoolIndirect[i][j].MemoryAddr)
+				{
+					VirtualFree(PoolIndirect[i][j].MemoryAddr, 0, MEM_RELEASE);
+					PoolIndirect[i][j].MemoryAddr = NULL;
+				}
+
+				VirtualFree(PoolIndirect[i], 0, MEM_RELEASE);
+				PoolIndirect[i] = NULL;
+			}
+		}
+	}
 }
 
-void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	//内存锁，防止两个线程同时申请内存
 	MTXCriticalSection::Locker Temp(msMemLock);
@@ -202,7 +221,7 @@ void* Matrix::MTXMemWin32::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 	return Free;
 }
 
-void Matrix::MTXMemWin32::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+void Matrix::UEWin32MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
 	MTXENGINE_ASSERT(pcAddr);
@@ -246,7 +265,7 @@ void Matrix::MTXMemWin32::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool 
 	}
 }
 
-MTXMemWin32::FPoolInfo* Matrix::MTXMemWin32::CreateIndirect()
+UEWin32MemoryAlloc::FPoolInfo* Matrix::UEWin32MemoryAlloc::CreateIndirect()
 {
 	//二级索引为空，则创建二级索引，2048 个 PoolInfo 正好是 64KB
 	//这是第二类，分配的内存正好是 32 位 Windows 系统的一个分配粒度
@@ -441,7 +460,7 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 
 	//申请的总空间
 	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
-	char* pcAddr = (char*)MMemoryObject::GetCMemManager().Allocate(extendedSize, uiAlignment, bIsArray);
+	char* pcAddr = (char*)MMemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
 	MTXENGINE_ASSERT(pcAddr);
 	//填写 Block 信息
 	Block* pBlock = (Block*)pcAddr;
@@ -544,7 +563,7 @@ void DebugMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIs
 	//删除节点
 	RemoveBlock(pBlock);
 	// free(pcAddr);
-	MMemoryObject::GetCMemManager().Deallocate(pcAddr, uiAlignment, bIsArray);
+	MMemoryObject::GetCMemoryManager().Deallocate(pcAddr, uiAlignment, bIsArray);
 }
 
 void Matrix::DebugMemoryAlloc::InsertBlock(Block* pBlock)
@@ -621,14 +640,14 @@ bool Matrix::DebugMemoryAlloc::GetFileAndLine(const void* pAddress, TCHAR szFile
 #endif
 #include <scalable_allocator.h>
 
-Matrix::MTXMemWin64::MTXMemWin64()
+Matrix::Win64MemoryAlloc::Win64MemoryAlloc()
 {
 }
-Matrix::MTXMemWin64::~MTXMemWin64()
+Matrix::Win64MemoryAlloc::~Win64MemoryAlloc()
 {
 }
 
-void* Matrix::MTXMemWin64::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Win64MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	if (uiAlignment != 0)
 	{
@@ -640,7 +659,7 @@ void* Matrix::MTXMemWin64::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, b
 		return scalable_malloc(uiSize);
 	}
 }
-void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+void Matrix::Win64MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	if (!pcAddr)
 	{
@@ -658,7 +677,8 @@ void Matrix::MTXMemWin64::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool 
 #endif
 
 
-Matrix::StackMemoryAlloc::StackMemoryAlloc(USIZE_TYPE uiDefaultChunkSize)
+Matrix::StackMemoryManager::StackMemoryManager(USIZE_TYPE uiDefaultChunkSize)
+
 {
 	//默认size 需要大于 FTaggedMemory 大小
 	MTXENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
@@ -669,19 +689,20 @@ Matrix::StackMemoryAlloc::StackMemoryAlloc(USIZE_TYPE uiDefaultChunkSize)
 	UnusedChunks = NULL;
 	NumMarks = 0;
 }
-Matrix::StackMemoryAlloc::~StackMemoryAlloc()
+
+Matrix::StackMemoryManager::~StackMemoryManager()
 {
 	FreeChunks(NULL);
 	while (UnusedChunks)
 	{
 		void* Old = UnusedChunks;
 		UnusedChunks = UnusedChunks->Next;
-		MMemoryObject::GetMemManager().Deallocate((char*)Old, 0, true);
+		MMemoryObject::GetMemoryManager().Deallocate((char*)Old, 0, true);
 	}
-	//核验是否释放完毕
+	//核验是否取消分配完毕
 	MTXENGINE_ASSERT(NumMarks == 0);
 }
-void* Matrix::StackMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXENGINE_ASSERT(uiSize >= 0);
 	if (uiAlignment > 0)
@@ -715,14 +736,14 @@ void* Matrix::StackMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 	}
 	return Result;
 }
-void Matrix::StackMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
+void Matrix::StackMemoryManager::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 }
-void Matrix::StackMemoryAlloc::Clear()
+void Matrix::StackMemoryManager::Clear()
 {
 	FreeChunks(NULL);
 }
-BYTE* Matrix::StackMemoryAlloc::AllocateNewChunk(USIZE_TYPE MinSize)
+BYTE* Matrix::StackMemoryManager::AllocateNewChunk(USIZE_TYPE MinSize)
 {
 	FTaggedMemory* Chunk = NULL;
 	for (FTaggedMemory** link = &UnusedChunks; *link; link = &(*link)->Next)
@@ -739,7 +760,7 @@ BYTE* Matrix::StackMemoryAlloc::AllocateNewChunk(USIZE_TYPE MinSize)
 	{
 		// Create new chunk.
 		USIZE_TYPE DataSize = Max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
-		Chunk = (FTaggedMemory*)MMemoryObject::GetMemManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
+		Chunk = (FTaggedMemory*)MMemoryObject::GetMemoryManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
 		Chunk->DataSize = DataSize;
 	}
 
@@ -750,7 +771,7 @@ BYTE* Matrix::StackMemoryAlloc::AllocateNewChunk(USIZE_TYPE MinSize)
 
 	return Top;
 }
-void Matrix::StackMemoryAlloc::FreeChunks(FTaggedMemory* NewTopChunk)
+void Matrix::StackMemoryManager::FreeChunks(FTaggedMemory* NewTopChunk)
 {
 	//释放 NewTopChunk 到 TopChunk 的所有 Chunk
 	//这里的释放就是将topchunk指向的chunk转移到unusedchunk块中。
@@ -772,38 +793,40 @@ void Matrix::StackMemoryAlloc::FreeChunks(FTaggedMemory* NewTopChunk)
 }
 Matrix::MMemoryObject::MMemoryObject()
 {
-	GetCMemManager();
-	GetMemManager();
-	GetStackMemManager();
+	//必须要控制内存初始化的顺序关系， stackmanager实现依赖heap memory的内存分配，
+	//静态变量声明顺序与析构顺序相反， 即先进后出原则
+	GetCMemoryManager();
+	GetMemoryManager();
+	GetStackMemoryManager();
 }
 Matrix::MMemoryObject::~MMemoryObject()
 {
 }
 
-StackMemoryAlloc& Matrix::MMemoryObject::GetStackMemManager()
+StackMemoryManager& Matrix::MMemoryObject::GetStackMemoryManager()
 {
 	static MTXTlsValue g_TlsValue;
 	void* pTlsValue = g_TlsValue.GetThreadValue();
 	if (!pTlsValue)
 	{
-		pTlsValue = new StackMemoryAlloc();
+		pTlsValue = new StackMemoryManager();
 		g_TlsValue.SetThreadValue(pTlsValue);
 	}
-	return *((StackMemoryAlloc*)pTlsValue);
+	return *((StackMemoryManager*)pTlsValue);
 }
-BaseMemoryAlloc& Matrix::MMemoryObject::GetMemManager()
+BaseMemoryManager& Matrix::MMemoryObject::GetMemoryManager()
 {
 #if !_DEBUG && !_WIN64
-	static MTXMemWin32 g_MemManager;
+	static UEWin32MemoryAlloc gMemManager;
 #elif _DEBUG
 	static DebugMemoryAlloc gMemManager;
 #else
-	static MTXMemWin64 g_MemManager;
+	static Win64MemoryAlloc gMemManager;
 #endif // !_DEBUG  && !_WIN64
 	return gMemManager;
 }
-BaseMemoryAlloc& Matrix::MMemoryObject::GetCMemManager()
+BaseMemoryManager& Matrix::MMemoryObject::GetCMemoryManager()
 {
-	static CMemoryAlloc g_MemManager;
+	static CMemoryManager g_MemManager;
 	return g_MemManager;
 }
