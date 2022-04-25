@@ -302,11 +302,11 @@ namespace Matrix
 
 	//==============================以上为多平台的内存分配的设计实现====================================
 	//=============================================================================================
-	class MATRIXCORE_API MMemoryObject
+	class MATRIXCORE_API MemoryObject
 	{
 	public:
-		MMemoryObject();
-		~MMemoryObject();
+		MemoryObject();
+		~MemoryObject();
 
 		static BaseMemoryManager& GetCMemoryManager();
 		static BaseMemoryManager& GetMemoryManager();
@@ -315,7 +315,7 @@ namespace Matrix
 	};
 
 	template <typename T>
-	class StackMemoryAdaptor : public MMemoryObject
+	class StackMemoryAdaptor : public MemoryObject
 	{
 	public:
 		//
@@ -387,7 +387,7 @@ namespace Matrix
 		size_t mNum; //记录构造的数量
 	};
 
-	class StackMemTag : public MMemoryObject
+	class StackMemTag : public MemoryObject
 	{
 	public:
 		// Constructors.
@@ -425,23 +425,23 @@ namespace Matrix
 inline void* operator new(size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator new has been called!"));
-	return Matrix::MMemoryObject::GetMemoryManager().Allocate(uiSize, 0, false);
+	return Matrix::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, false);
 }
 inline void* operator new[](size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
-	return Matrix::MMemoryObject::GetMemoryManager().Allocate(uiSize, 0, true);
+	return Matrix::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, true);
 }
 
 inline void operator delete(void* pvAddr)
 {
 	// Matrix::MTXOutputDebugString(_T("operator delete has been called!"));
-	return Matrix::MMemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, false);
+	return Matrix::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, false);
 }
 inline void operator delete[](void* pvAddr)
 {
 	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
-	return Matrix::MMemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
+	return Matrix::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
 }
 #endif // USE_CUSTOM_NEW
 

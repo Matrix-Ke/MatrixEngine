@@ -253,7 +253,7 @@
     <ClInclude Include="MTXFile.h" />
     <ClInclude Include="MTXImage.h" />
     <ClInclude Include="MTXLog.h" />
-    <ClInclude Include="MTXMemManager.h" />
+    <ClInclude Include="MTXMemoryManager.h" />
     <ClInclude Include="MTXSingleton.h" />
     <ClInclude Include="MTXSynchronize.h" />
     <ClInclude Include="MTXThread.h" />
@@ -266,7 +266,7 @@
     <ClCompile Include="MTXFile.cpp" />
     <ClCompile Include="MTXImage.cpp" />
     <ClCompile Include="MTXLog.cpp" />
-    <ClCompile Include="MTXMemManager.cpp" />
+    <ClCompile Include="MTXMemoryManager.cpp" />
     <ClCompile Include="MTXSynchronize.cpp" />
     <ClCompile Include="MTXThread.cpp" />
     <ClCompile Include="MTXTimer.cpp" />

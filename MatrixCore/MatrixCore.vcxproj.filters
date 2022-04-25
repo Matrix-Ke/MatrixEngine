@@ -48,7 +48,7 @@
     <ClInclude Include="MTXThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MTXMemManager.h">
+    <ClInclude Include="MTXMemoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,7 +80,7 @@
     <ClCompile Include="MTXThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MTXMemManager.cpp">
+    <ClCompile Include="MTXMemoryManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "MTXMemManager.h"
+#include "MTXMemoryManager.h"
 
 using namespace Matrix;
 
@@ -460,7 +460,7 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 
 	//申请的总空间
 	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
-	char* pcAddr = (char*)MMemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
+	char* pcAddr = (char*)MemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
 	MTXENGINE_ASSERT(pcAddr);
 	//填写 Block 信息
 	Block* pBlock = (Block*)pcAddr;
@@ -563,7 +563,7 @@ void DebugMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIs
 	//删除节点
 	RemoveBlock(pBlock);
 	// free(pcAddr);
-	MMemoryObject::GetCMemoryManager().Deallocate(pcAddr, uiAlignment, bIsArray);
+	MemoryObject::GetCMemoryManager().Deallocate(pcAddr, uiAlignment, bIsArray);
 }
 
 void Matrix::DebugMemoryAlloc::InsertBlock(Block* pBlock)
@@ -697,7 +697,7 @@ Matrix::StackMemoryManager::~StackMemoryManager()
 	{
 		void* Old = UnusedChunks;
 		UnusedChunks = UnusedChunks->Next;
-		MMemoryObject::GetMemoryManager().Deallocate((char*)Old, 0, true);
+		MemoryObject::GetMemoryManager().Deallocate((char*)Old, 0, true);
 	}
 	//核验是否取消分配完毕
 	MTXENGINE_ASSERT(NumMarks == 0);
@@ -760,7 +760,7 @@ BYTE* Matrix::StackMemoryManager::AllocateNewChunk(USIZE_TYPE MinSize)
 	{
 		// Create new chunk.
 		USIZE_TYPE DataSize = Max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
-		Chunk = (FTaggedMemory*)MMemoryObject::GetMemoryManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
+		Chunk = (FTaggedMemory*)MemoryObject::GetMemoryManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
 		Chunk->DataSize = DataSize;
 	}
 
@@ -791,7 +791,7 @@ void Matrix::StackMemoryManager::FreeChunks(FTaggedMemory* NewTopChunk)
 		End = Top + TopChunk->DataSize;
 	}
 }
-Matrix::MMemoryObject::MMemoryObject()
+Matrix::MemoryObject::MemoryObject()
 {
 	//必须要控制内存初始化的顺序关系， stackmanager实现依赖heap memory的内存分配，
 	//静态变量声明顺序与析构顺序相反， 即先进后出原则
@@ -799,11 +799,11 @@ Matrix::MMemoryObject::MMemoryObject()
 	GetMemoryManager();
 	GetStackMemoryManager();
 }
-Matrix::MMemoryObject::~MMemoryObject()
+Matrix::MemoryObject::~MemoryObject()
 {
 }
 
-StackMemoryManager& Matrix::MMemoryObject::GetStackMemoryManager()
+StackMemoryManager& Matrix::MemoryObject::GetStackMemoryManager()
 {
 	static MTXTlsValue g_TlsValue;
 	void* pTlsValue = g_TlsValue.GetThreadValue();
@@ -814,7 +814,7 @@ StackMemoryManager& Matrix::MMemoryObject::GetStackMemoryManager()
 	}
 	return *((StackMemoryManager*)pTlsValue);
 }
-BaseMemoryManager& Matrix::MMemoryObject::GetMemoryManager()
+BaseMemoryManager& Matrix::MemoryObject::GetMemoryManager()
 {
 #if !_DEBUG && !_WIN64
 	static UEWin32MemoryAlloc gMemManager;
@@ -825,7 +825,7 @@ BaseMemoryManager& Matrix::MMemoryObject::GetMemoryManager()
 #endif // !_DEBUG  && !_WIN64
 	return gMemManager;
 }
-BaseMemoryManager& Matrix::MMemoryObject::GetCMemoryManager()
+BaseMemoryManager& Matrix::MemoryObject::GetCMemoryManager()
 {
 	static CMemoryManager g_MemManager;
 	return g_MemManager;
