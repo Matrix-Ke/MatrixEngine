@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MTXSynchronize.h"
 #include "MTXMemManager.h"
 

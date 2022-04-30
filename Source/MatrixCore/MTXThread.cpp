@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MTXThread.h"
 #include <process.h>
 

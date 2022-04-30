@@ -10,7 +10,7 @@
 #pragma warning(disable:4251) //去除模板导出编译的警告
 #pragma warning(disable:4595) 
 
-#ifdef MATRIXCORE_EXPORTS
+#ifdef MatrixCore_EXPORTS
 #define MATRIXCORE_API __declspec(dllexport) 
 #else 
 #define MATRIXCORE_API __declspec(dllimport) 

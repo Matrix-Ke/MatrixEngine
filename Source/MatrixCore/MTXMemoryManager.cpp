@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MTXMemoryManager.h"
 
 using namespace Matrix;

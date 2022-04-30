@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "MTXTimer.h"
 #include <mmsystem.h>
 using namespace Matrix;

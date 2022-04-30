@@ -1,5 +1,4 @@
-﻿#include "pch.h"
-#include "MTXLog.h"
+﻿#include "MTXLog.h"
 
 Matrix::MTXLog::MTXLog()
 {
