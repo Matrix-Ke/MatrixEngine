@@ -1,0 +1,14 @@
+set(SharedLibName "MatrixCore")
+
+
+#===============================文件分组==============================
+FILE(GLOB HeaderFiles ./*.h)  #GLOB 获取./include/目录下的*.h 储存在变量HEAD_RIGEL_EDITOR中
+FILE(GLOB SourceFiles ./*.cpp)#GLOB 递归获取./include/目录和子目录下的*.cpp 储存在变量HEAD_RIGEL_EDITOR中
+source_group("Header Files" FILES ${HeaderFiles})
+source_group("Source Files" FILES ${SourceFiles})
+
+add_library(${SharedLibName} SHARED ${HeaderFiles} ${SourceFiles})
+# add_library(Matrix::${SharedLibName} ALIAS  ${SharedLibName}) # #添加别名
+
+#==============================设置target属性=============================
+target_compile_definitions(${SharedLibName}  PRIVATE  $<$<CONFIG:Debug>: _TEST _NAME> )

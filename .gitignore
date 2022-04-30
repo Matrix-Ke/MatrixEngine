@@ -40,6 +40,7 @@ bld/
 !*.sln
 !*.user
 !*.md
+!*.txt
 
 !*.gitignore
 !*.gitattributes
