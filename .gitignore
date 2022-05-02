@@ -1,47 +1,119 @@
-# .gitignore
-# 首先忽略所有的文件
-*
-# 但是不忽略目录
-!*/
-# 忽略一些指定的目录名
-[Bb]uild/
-ut/
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-[Bb]uild/
-CMakeFiles/
-config/
-Win32/
-x64/
-x86/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
+# ignores following folders
+bin/
+build/
+.vs/
 
-# 不忽略下面指定的文件类型
-!*.c++
-!*.cc
-!*.cp
-!*.cpp
-!*.cxx
-!*.h
-!*.h++
-!*.hh
-!*.hp
-!*.hpp
-!*.hxx
-!*.C
-!*.H
-!*.c
-!*.md
-!*.txt
-!*.bat
-!*.cmake
-!*.gitignore
-!*.gitattributes
+#other
+*.tlog
+*.log
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.sbr
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+
+# Executables
+*.exe
+*.out
+*.app
+
+# binaries files 
+*.png
+*.xml
+*.html
+
+
+# C++.gitignore from https://github.com/oneapi-src/oneTBB.git
+# -------- C++ --------
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# -------- CMake --------
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+build/*
+
+# -------- Python --------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# -------- IDE --------
+.vscode/*
+.vs/*
+out/*
+CMakeSettings.json
+
+# -------- CTags --------
+.tags
+.ctags
+
 
 
 
