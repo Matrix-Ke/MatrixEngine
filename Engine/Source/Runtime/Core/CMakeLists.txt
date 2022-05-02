@@ -8,12 +8,11 @@ source_group("Header Files" FILES ${HeaderFiles})
 source_group("Source Files" FILES ${SourceFiles})
 
 add_library(${SharedLibName} SHARED ${HeaderFiles} ${SourceFiles})
-# add_library(Matrix::${SharedLibName} ALIAS  ${SharedLibName}) # #添加别名
+set_target_properties(${SharedLibName} PROPERTIES FOLDER ${engine_root_dir}/${second_level_dir})
+
 
 #==============================设置target属性=============================
 target_compile_definitions(${SharedLibName}  PRIVATE  $<$<CONFIG:Debug>: _TEST_MACRO_> )
 target_include_directories(${SharedLibName}  INTERFACE ${HeaderFiles})
-
 target_link_libraries(${SharedLibName} PRIVATE dbghelp Winmm)
-
 target_link_directories(${SharedLibName} PRIVATE  )

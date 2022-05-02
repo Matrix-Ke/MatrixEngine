@@ -1,3 +1,5 @@
 
-# add_subdirectory(MatrixCore)
-get_all_subdirectory()
+#尽量放置在最后面
+fAdd_all_subdirectory()
+
+
