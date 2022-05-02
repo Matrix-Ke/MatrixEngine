@@ -41,6 +41,7 @@ bld/
 !*.user
 !*.md
 !*.txt
+!*.bat
 
 !*.gitignore
 !*.gitattributes
