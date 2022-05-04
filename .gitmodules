@@ -1,3 +1,0 @@
-[submodule "Engine/ThirdParty/oneTBB"]
-	path = Engine/ThirdParty/oneTBB
-	url = https://github.com/oneapi-src/oneTBB.git
