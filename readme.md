@@ -11,6 +11,7 @@
                 --- Editor
                 --- Runtime
                     --- Core
+                    --- Platform
                     --- Render
                     --- Physics
                 --- Developer
