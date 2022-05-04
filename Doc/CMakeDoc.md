@@ -130,7 +130,8 @@ message(STATUS/WARNING/FATAL_ERROR "str")
 
 ```cmake
 function(PrintVar var)
-  message(STATUS "${var}: ${${var}}")
+  message(STATUS "${var}: ${${var}}") 
+  set(${var}  "kklTest" PARENT_SCOPE) 可以传引用
 endfunction()
 
 function(PrintValue value)
