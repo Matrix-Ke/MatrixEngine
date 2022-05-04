@@ -1,4 +1,4 @@
-set(SharedLibName "MatrixCore")
+set(SharedLibName "Core")
 
 
 #===============================文件分组==============================
@@ -11,8 +11,16 @@ add_library(${SharedLibName} SHARED ${HeaderFiles} ${SourceFiles})
 set_target_properties(${SharedLibName} PROPERTIES FOLDER ${engine_root_dir}/${second_level_dir})
 
 
+
 #==============================设置target属性=============================
 target_compile_definitions(${SharedLibName}  PRIVATE  $<$<CONFIG:Debug>: _TEST_MACRO_> )
-target_include_directories(${SharedLibName}  INTERFACE ${HeaderFiles})
-target_link_libraries(${SharedLibName} PRIVATE dbghelp Winmm)
-target_link_directories(${SharedLibName} PRIVATE  )
+target_compile_definitions(${SharedLibName} PRIVATE UNICODE _UNICODE)
+# target_include_directories(${SharedLibName}  INTERFACE ${HeaderFiles})
+# target_link_directories(${SharedLibName} PRIVATE )
+target_link_libraries(${SharedLibName} PRIVATE "dbghelp;Winmm" )
+if(oneTTB_FOUND)
+    message(STATUS  found = xxx)
+endif()
+
+# #==========================================生成器表达式 Debug===================================== 
+# file(GENERATE OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../generator_test.txt" CONTENT "$<$<BOOL:release>:dbghelp>\n")

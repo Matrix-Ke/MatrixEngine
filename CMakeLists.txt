@@ -10,7 +10,7 @@ endif()
 
 #=====================================全局设置=======================================
 #相关变量设置
-set(BUILD_USE_64BITS on)
+# set(BUILD_USE_64BITS on)
 set(CMAKE_DEBUG_POSTFIX "_d")
 set(engine_root_dir  "Engine")
 set(PROJECT_VERSION  1.0.0)
@@ -29,15 +29,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #   "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Wshadow;-Wformat=2;-Wunused>>"
 #   "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3>>"
 # )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Bin")
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Bin")
 #Cmake划分目录
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
 #==================================引入外部包====================================
-include(${CMAKE_SOURCE_DIR}/CMake/SetUpConfigurations.cmake)
-
-
-
+include(CMake/SetUpConfigurations.cmake)
 
 
 #===================================定义函数========================================
