@@ -1,5 +1,5 @@
 //stack memroy unit demo
-#include "MTXMemManager.h"
+#include "MemoryManager.h"
 #include <iostream>
 
 using namespace Matrix;

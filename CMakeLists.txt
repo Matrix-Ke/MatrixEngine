@@ -12,7 +12,7 @@ endif()
 #相关变量设置
 # set(BUILD_USE_64BITS on)
 set(CMAKE_DEBUG_POSTFIX "_d")
-set(engine_root_dir  "Engine")
+set(ENGINE_ROOT_DIR  "Engine")
 set(PROJECT_VERSION  1.0.0)
 Project(MatrixEngine  LANGUAGES CXX  VERSION ${PROJECT_VERSION})
 message(STATUS "Version: ${PROJECT_VERSION}")
@@ -30,11 +30,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #   "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3>>"
 # )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Bin")
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/Bin")
 #Cmake划分目录
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
+set(ENGINE_SOURCE_RUNTIME_DIR  ${CMAKE_SOURCE_DIR}/Engine/Source/Runtime)
 
 #==================================引入外部包====================================
 include(CMake/SetUpConfigurations.cmake)
