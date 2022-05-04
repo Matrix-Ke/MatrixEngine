@@ -1,6 +1,3 @@
-# fAdd_all_subdirectory()
-
-set(third_party_folder "ThirdParty")
 
 
 
@@ -22,14 +19,7 @@ set(third_party_folder "ThirdParty")
 # endif()
 
 
-if(NOT TARGET TBB)
-    option(TBB_TEST "" OFF)
-    # option(TBB_BUILD_DOCS "" OFF)
-    # option(TBB_INSTALL "" OFF)
-    # add_subdirectory(oneTBB)
-    # set_target_properties(TBB PROPERTIES FOLDER ${third_party_folder}/TBB)
-endif()
 
 
-
-
+# add_subdirectory(TBB)
+fAdd_all_subdirectory()

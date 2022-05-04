@@ -17,12 +17,12 @@ namespace Matrix
 		int GetRandSeed();
 
 	private:
-		bool mUselargeTime; // ä½¿ç”¨æœ€å¤§æ—¶é—´æ ‡å¿—
-		//__int64ä¹Ÿæ˜¯ä¸€ç§åŸºæœ¬æ•°æ®ç±»å‹ï¼Œæ˜¯å¾®è½¯çš„virtual C++ç¼–è¯‘å™¨å®šä¹‰çš„ä¸€ç§åŸºæœ¬æ•°æ®ç±»å‹ï¼Œè€Œä¸æ˜¯C++æ ‡å‡†è§„èŒƒï¼ˆåä¼šï¼‰é‡Œå®šä¹‰çš„ä¸€ç§åŸºæœ¬æ•°æ®ç±»å‹
-		//unsigned long long  8å­—èŠ‚æ•´å‹
-		unsigned long long  mOneSecondTicks; // ä¸€ç§’å†…çš„æ»´ç­”æ¬¡æ•°
-		unsigned long long  mTimeTickStartCounts;// å¼€å§‹æ»´ç­”è®¡æ•°å€¼
-		unsigned  long long  mTimeStart; // timeGettimeå¼€å§‹æ—¶é—´
+		bool mUselargeTime; // Ê¹ÓÃ×î´óÊ±¼ä±êÖ¾
+		//__int64Ò²ÊÇÒ»ÖÖ»ù±¾Êı¾İÀàĞÍ£¬ÊÇÎ¢ÈíµÄvirtual C++±àÒëÆ÷¶¨ÒåµÄÒ»ÖÖ»ù±¾Êı¾İÀàĞÍ£¬¶ø²»ÊÇC++±ê×¼¹æ·¶£¨Ğ­»á£©Àï¶¨ÒåµÄÒ»ÖÖ»ù±¾Êı¾İÀàĞÍ
+		//unsigned long long  8×Ö½ÚÕûĞÍ
+		unsigned long long  mOneSecondTicks; // Ò»ÃëÄÚµÄµÎ´ğ´ÎÊı
+		unsigned long long  mTimeTickStartCounts;// ¿ªÊ¼µÎ´ğ¼ÆÊıÖµ
+		unsigned  long long  mTimeStart; // timeGettime¿ªÊ¼Ê±¼ä
 		int mFrameCount;
 		double mFPS;
 		double mTime;

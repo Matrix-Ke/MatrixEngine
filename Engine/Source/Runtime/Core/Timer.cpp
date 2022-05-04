@@ -39,7 +39,7 @@ void Matrix::MTXTimer::InitGameTime()
 
 double Matrix::MTXTimer::GetGamePlayTime()
 {
-	//è¿”å›å½“å‰æ—¶é—´ï¼Œå•ä½æ¯«ç§’
+	//·µ»Øµ±Ç°Ê±¼ä£¬µ¥Î»ºÁÃë
 	__int64  timecurrentCounts;
 	if (mUselargeTime)
 	{
@@ -48,7 +48,7 @@ double Matrix::MTXTimer::GetGamePlayTime()
 	}
 	else
 	{
-		return double((timeGetTime() - mTimeStart));  //timeGetTimeå‡½æ•°è¿”å›çš„æ—¶é—´å•ä½ä¸ºæ¯«ç§’
+		return double((timeGetTime() - mTimeStart));  //timeGetTimeº¯Êı·µ»ØµÄÊ±¼äµ¥Î»ÎªºÁÃë
 	}
 }
 

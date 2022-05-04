@@ -5,7 +5,7 @@
 
 namespace Matrix
 {
-	//只允许一个线程控制这个线程类，没有线程安全性，2个线程同时控制这个线程类有些地方会出错
+	//ֻ����һ���߳̿�������߳��࣬û���̰߳�ȫ�ԣ�2���߳�ͬʱ��������߳�����Щ�ط������
 	class MATRIXCORE_API MTXThread
 	{
 	public:
@@ -23,8 +23,8 @@ namespace Matrix
 		};
 	public:
 		MTXThread();
-		// 线程返回清理工作： c++对象都通过其析构函数被正确的销毁；　操作系统正确释放线程栈使用的内存；　
-		//操作系统把线程的退出码设为线程函数的返回值；系统减少线程的内核对象的使用计数
+		// �̷߳������������� c++����ͨ����������������ȷ�����٣�������ϵͳ��ȷ�ͷ��߳�ջʹ�õ��ڴ棻��
+		//����ϵͳ���̵߳��˳�����Ϊ�̺߳����ķ���ֵ��ϵͳ�����̵߳��ں˶����ʹ�ü���
 		~MTXThread();
 
 		void SetPriority(const Priority& p);

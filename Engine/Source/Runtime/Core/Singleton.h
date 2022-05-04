@@ -1,11 +1,11 @@
-ï»¿#pragma once
+#pragma once
 #include "Core.h"
 #include <memory>
 #include <mutex>
 
 namespace Matrix
 {
-	//å…³äºå•ä¾‹çš„å…¶ä»–å®ç°æ–¹  å¼ï¼Œ åˆ©ç”¨staticå…³é”®å­—æ¥å®ç° 
+	//¹ØÓÚµ¥ÀıµÄÆäËûÊµÏÖ·½  Ê½£¬ ÀûÓÃstatic¹Ø¼ü×ÖÀ´ÊµÏÖ 
 	template <typename T>
 	class MTXSingleton
 	{
@@ -15,7 +15,7 @@ namespace Matrix
 			static T instance;
 			return instance;
 		}
-		//ç›¸å…³æ„é€ å‡½æ•°å…¨éƒ¨éšè—
+		//Ïà¹Ø¹¹Ôìº¯ÊıÈ«²¿Òş²Ø
 		MTXSingleton(const T& rhs) = delete;
 		MTXSingleton(const T&& rhs) = delete;
 		void operator= (const T& rhs) = delete;
@@ -27,7 +27,7 @@ namespace Matrix
 
 
 
-	////æ­¤ç§å•ä¾‹æ¨¡å¼ä¸æ˜¯å¾ˆå¥½
+	////´ËÖÖµ¥ÀıÄ£Ê½²»ÊÇºÜºÃ
 	//template <typename T>
 	//class MTXSingleton
 	//{
@@ -64,7 +64,7 @@ namespace Matrix
 
 
 
-	////åˆ©ç”¨é”æ¥å®ç°ï¼ŒlazeySingleTon
+	////ÀûÓÃËøÀ´ÊµÏÖ£¬lazeySingleTon
 	//template<typename T, bool is_thread_safe = true>
 	//class LazySingleton
 	//{

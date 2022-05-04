@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <atlsimpstr.h>
 #include <intrin.h>
-#pragma warning(disable:4251) //å»é™¤æ¨¡æ¿å¯¼å‡ºç¼–è¯‘çš„è­¦å‘Š
+#pragma warning(disable:4251) //È¥³ıÄ£°åµ¼³ö±àÒëµÄ¾¯¸æ
 #pragma warning(disable:4595) 
 
 #ifdef	Core_EXPORTS
@@ -20,14 +20,14 @@
 namespace Matrix
 {
 #ifdef _DEBUG
-	//assert çš„ç¼ºç‚¹æ˜¯ï¼Œé¢‘ç¹çš„è°ƒç”¨ä¼šæå¤§çš„å½±å“ç¨‹åºçš„æ€§èƒ½ï¼Œå¢åŠ é¢å¤–çš„å¼€é”€ã€‚
-	//åœ¨è°ƒè¯•ç»“æŸåï¼Œå¯ä»¥é€šè¿‡åœ¨åŒ…å« #include çš„è¯­å¥ä¹‹å‰æ’å…¥ #define NDEBUG æ¥ç¦ç”¨ assert è°ƒç”¨
+	//assert µÄÈ±µãÊÇ£¬Æµ·±µÄµ÷ÓÃ»á¼«´óµÄÓ°Ïì³ÌĞòµÄĞÔÄÜ£¬Ôö¼Ó¶îÍâµÄ¿ªÏú¡£
+	//ÔÚµ÷ÊÔ½áÊøºó£¬¿ÉÒÔÍ¨¹ıÔÚ°üº¬ #include µÄÓï¾äÖ®Ç°²åÈë #define NDEBUG À´½ûÓÃ assert µ÷ÓÃ
 #define MTXENGINE_ASSERT(Expression)\
 		{\
 			 assert(Expression);\
 		}
 #else
-	//é€šè¿‡debugæ¥æ§åˆ¶
+	//Í¨¹ıdebugÀ´¿ØÖÆ
 #define MTXENGINE_ASSERT(Expression)
 #endif
 
@@ -87,8 +87,8 @@ namespace Matrix
 
 	inline long MTXlockedCompareExchange(long* pDestination, long Exchange, long Comparand)
 	{
-		//InterlockedCompareExchangeæ˜¯æŠŠç›®æ ‡æ“ä½œæ•°ï¼ˆç¬¬1å‚æ•°æ‰€æŒ‡å‘çš„å†…å­˜ä¸­çš„æ•°ï¼‰ä¸ä¸€ä¸ªå€¼ï¼ˆç¬¬3å‚æ•°ï¼‰æ¯”è¾ƒï¼Œå¦‚æœç›¸ç­‰ï¼Œåˆ™ç”¨å¦ä¸€ä¸ªå€¼ï¼ˆç¬¬2å‚æ•°ï¼‰ä¸ç›®æ ‡æ“ä½œæ•°ï¼ˆç¬¬1å‚æ•°æ‰€æŒ‡å‘çš„å†…å­˜ä¸­çš„æ•°ï¼‰äº¤æ¢ï¼›
-		//InterlockedExchangeæ˜¯ä¸æ¯”è¾ƒç›´æ¥äº¤æ¢ã€‚æ•´ä¸ªæ“ä½œè¿‡ç¨‹æ˜¯é”å®šå†…å­˜çš„ï¼Œå…¶å®ƒå¤„ç†å™¨ä¸ä¼šåŒæ—¶è®¿é—®å†…å­˜ï¼Œä»è€Œå®ç°å¤šå¤„ç†å™¨ç¯å¢ƒä¸‹çš„çº¿ç¨‹äº’æ–¥
+		//InterlockedCompareExchangeÊÇ°ÑÄ¿±ê²Ù×÷Êı£¨µÚ1²ÎÊıËùÖ¸ÏòµÄÄÚ´æÖĞµÄÊı£©ÓëÒ»¸öÖµ£¨µÚ3²ÎÊı£©±È½Ï£¬Èç¹ûÏàµÈ£¬ÔòÓÃÁíÒ»¸öÖµ£¨µÚ2²ÎÊı£©ÓëÄ¿±ê²Ù×÷Êı£¨µÚ1²ÎÊıËùÖ¸ÏòµÄÄÚ´æÖĞµÄÊı£©½»»»£»
+		//InterlockedExchangeÊÇ²»±È½ÏÖ±½Ó½»»»¡£Õû¸ö²Ù×÷¹ı³ÌÊÇËø¶¨ÄÚ´æµÄ£¬ÆäËü´¦ÀíÆ÷²»»áÍ¬Ê±·ÃÎÊÄÚ´æ£¬´Ó¶øÊµÏÖ¶à´¦ÀíÆ÷»·¾³ÏÂµÄÏß³Ì»¥³â
 		return _InterlockedCompareExchange(pDestination, Exchange, Comparand);
 	}
 
@@ -99,7 +99,7 @@ namespace Matrix
 
 	inline long MTXlockedExchange(long* pRefCount, long Value)
 	{
-		//èƒ½ä»¥åŸå­æ“ä½œçš„æ–¹å¼äº¤æ¢ä¿©ä¸ªå‚æ•°a, bï¼Œå¹¶è¿”å›aä»¥å‰çš„å€¼ï¼›å› ä¸ºInterlockedExchange æ˜¯åŸå­å‡½æ•°ï¼Œä¸ä¼šè¦æ±‚ä¸­æ­¢ä¸­æ–­ï¼Œæ‰€ä»¥äº¤æ¢æŒ‡é’ˆçš„æ–¹å¼æ˜¯å®‰å…¨çš„ã€‚
+		//ÄÜÒÔÔ­×Ó²Ù×÷µÄ·½Ê½½»»»Á©¸ö²ÎÊıa, b£¬²¢·µ»ØaÒÔÇ°µÄÖµ£»ÒòÎªInterlockedExchange ÊÇÔ­×Óº¯Êı£¬²»»áÒªÇóÖĞÖ¹ÖĞ¶Ï£¬ËùÒÔ½»»»Ö¸ÕëµÄ·½Ê½ÊÇ°²È«µÄ¡£
 		return _InterlockedExchange(pRefCount, Value);
 	}
 
@@ -200,7 +200,7 @@ namespace Matrix
 		return _tcsncmp(String1, String2, uiMaxNum);
 	}
 
-	//å­—ç¬¦è½¬åŒ–
+	//×Ö·û×ª»¯
 	inline void MTXMbsToWcs(wchar_t* Dest, unsigned int uiSizeInWord, const char* Source, unsigned int uiSizeInByte)
 	{
 		mbstowcs_s(0, Dest, uiSizeInWord, Source, uiSizeInByte);
@@ -264,7 +264,7 @@ namespace Matrix
 		MatrixCore::msMainThreadID = GetCurrentThreadId();
 	}
 
-	//çº¿ç¨‹å±€éƒ¨å˜é‡ï¼š å¦‚æœéœ€è¦åœ¨ä¸€ä¸ªçº¿ç¨‹å†…éƒ¨çš„å„ä¸ªå‡½æ•°è°ƒç”¨éƒ½èƒ½è®¿é—®ã€ä½†å…¶å®ƒçº¿ç¨‹ä¸èƒ½è®¿é—®çš„å˜é‡ï¼ˆè¢«ç§°ä¸ºstatic memory local to a thread çº¿ç¨‹å±€éƒ¨é™æ€å˜é‡ï¼Œè¿™å°±æ˜¯TLSã€‚
+	//Ïß³Ì¾Ö²¿±äÁ¿£º Èç¹ûĞèÒªÔÚÒ»¸öÏß³ÌÄÚ²¿µÄ¸÷¸öº¯Êıµ÷ÓÃ¶¼ÄÜ·ÃÎÊ¡¢µ«ÆäËüÏß³Ì²»ÄÜ·ÃÎÊµÄ±äÁ¿£¨±»³ÆÎªstatic memory local to a thread Ïß³Ì¾Ö²¿¾²Ì¬±äÁ¿£¬Õâ¾ÍÊÇTLS¡£
 	inline unsigned int MTXTlsAlloc()
 	{
 		return TlsAlloc();
