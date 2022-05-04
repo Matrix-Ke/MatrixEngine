@@ -32,7 +32,7 @@ void Matrix::MTXSynchronize::MTXSafeOutputDebugString(const TCHAR* pString, ...)
 	MTXCriticalSection::Locker Temp(gSafeOutputString);
 	char* pArgs;
 	pArgs = (char*)&pString + sizeof(pString);
-	//todo list: 了解如何设计日志系统
+	//todo list: �˽���������־ϵͳ
 	_vstprintf_s(MatrixCore::msLogbuffer, LOG_BUFFER_SIZE, pString, pArgs);
 	OutputDebugString(MatrixCore::msLogbuffer);
 }
@@ -56,9 +56,9 @@ Matrix::MTXSemaphore::~MTXSemaphore()
 
 void Matrix::MTXSemaphore::Enter()
 {
-	//WAIT_OBJECT_0, 表示等待的对象有信号（对线程来说，表示执行结束）；
-	//WAIT_TIMEOUT, 表示等待指定时间内，对象一直没有信号（线程没执行完）；
-	//WAIT_ABANDONED 表示对象有信号，但还是不能执行  一般是因为未获取到锁或其他原因
+	//WAIT_OBJECT_0, ��ʾ�ȴ��Ķ������źţ����߳���˵����ʾִ�н�������
+	//WAIT_TIMEOUT, ��ʾ�ȴ�ָ��ʱ���ڣ�����һֱû���źţ��߳�ûִ���꣩��
+	//WAIT_ABANDONED ��ʾ�������źţ������ǲ���ִ��  һ������Ϊδ��ȡ����������ԭ��
 	// result:
 	//   WAIT_ABANDONED (0x00000080)
 	//   WAIT_OBJECT_0  (0x00000000), signaled

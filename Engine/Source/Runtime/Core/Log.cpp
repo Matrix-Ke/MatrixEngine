@@ -1,4 +1,4 @@
-﻿#include "Log.h"
+#include "Log.h"
 
 Matrix::MTXLog::MTXLog()
 {
@@ -15,6 +15,6 @@ bool Matrix::MTXLog::Open(const TCHAR* pFileName)
 
 bool Matrix::MTXLog::WriteInfo(const TCHAR* pString)
 {
-	//时时刻刻记得字符数组不要越界
+	//ʱʱ�̼̿ǵ��ַ����鲻ҪԽ��
 	return MTXFile::Write(pString, MTXStrlen(pString) + 1, 1);
 }

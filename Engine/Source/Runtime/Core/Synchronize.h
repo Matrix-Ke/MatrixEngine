@@ -31,8 +31,8 @@ namespace Matrix
 		MTXCriticalSection(void)
 		{
 			InitializeCriticalSection(&mCriticalSection);
-			//由于将线程切换到等待状态的开销较大，因此为了提高关键段的性能，Microsoft将旋转锁合并到关键段中，
-			//这样EnterCriticalSection()会先用一个旋转锁不断循环，尝试一段时间才会将线程切换到等待状态,旋转次数一般设置为4000。
+			//���ڽ��߳��л����ȴ�״̬�Ŀ����ϴ����Ϊ����߹ؼ��ε����ܣ�Microsoft����ת���ϲ����ؼ����У�
+			//����EnterCriticalSection()������һ����ת������ѭ��������һ��ʱ��ŻὫ�߳��л����ȴ�״̬,��ת����һ������Ϊ4000��
 			SetCriticalSectionSpinCount(&mCriticalSection, 4000);
 		}
 		~MTXCriticalSection(void)
@@ -91,8 +91,8 @@ namespace Matrix
 
 	class MATRIXCORE_API  MTXMutex : public MTXSynchronize
 	{
-		//互斥量内核对象用来确保一线程独占对一个资源的访问， 互斥量是内核对象，
-		//互斥量一般用来对多个线程访问的同一内存块进行保护。 
+		//�������ں˶�������ȷ��һ�̶߳�ռ��һ����Դ�ķ��ʣ� ���������ں˶���
+		//������һ�������Զ���̷߳��ʵ�ͬһ�ڴ����б����� 
 	public:
 		MTXMutex();
 		virtual ~MTXMutex();
@@ -111,10 +111,10 @@ namespace Matrix
 
 	class MATRIXCORE_API  MTXEvent : public MTXSynchronize
 	{
-		//事件包含一个使用计数， 一个用来表示自动重置还是手动重置的bool值，以及一个用来表示事件有没有被触发的bool值。
-		//事件的触发表示一个操作已经完成。
-		//手动事件被触发： 等待该事件的所有线程都将变成可调度； 自动重置事件被触发： 只有一个正在等待该事件的线程变成可调度状态。
-		//一般用途： 让一个线程执行初始化工作，然后再触发另一个线程，让他执行剩下的工作
+		//�¼�����һ��ʹ�ü����� һ��������ʾ�Զ����û����ֶ����õ�boolֵ���Լ�һ��������ʾ�¼���û�б�������boolֵ��
+		//�¼��Ĵ�����ʾһ�������Ѿ���ɡ�
+		//�ֶ��¼��������� �ȴ����¼��������̶߳�����ɿɵ��ȣ� �Զ������¼��������� ֻ��һ�����ڵȴ����¼����̱߳�ɿɵ���״̬��
+		//һ����;�� ��һ���߳�ִ�г�ʼ��������Ȼ���ٴ�����һ���̣߳�����ִ��ʣ�µĹ���
 	protected:
 		void* mEvent;
 
@@ -159,8 +159,8 @@ namespace Matrix
 		virtual bool IsTrigger();
 	};
 
-	//线程本地存储(TLS) 是一种方法，给定的多线程进程中的每个线程可以使用这种方法分配用以存储线程特定的数据的位置。
-	//如果需要在一个线程内部的各个函数调用都能访问、但其它线程不能访问的变量（被称为static memory local to a thread 线程局部静态变量），就需要新的机制来实现。这就是TLS。
+	//�̱߳��ش洢(TLS) ��һ�ַ����������Ķ��߳̽����е�ÿ���߳̿���ʹ�����ַ����������Դ洢�߳��ض������ݵ�λ�á�
+	//�����Ҫ��һ���߳��ڲ��ĸ����������ö��ܷ��ʡ��������̲߳��ܷ��ʵı���������Ϊstatic memory local to a thread �ֲ߳̾���̬������������Ҫ�µĻ�����ʵ�֡������TLS��
 	class MTXTlsValue
 	{
 	public:
@@ -172,10 +172,10 @@ namespace Matrix
 			MAX_THREAD_VALUE = 256,
 		};
 		void SetThreadValue(void* pValue);
-		//如果为空则还未分配数据
+		//���Ϊ����δ��������
 		void* GetThreadValue();
 	protected:
-		//mSlot在tls初始化时就进行分配。 
+		//mSlot��tls��ʼ��ʱ�ͽ��з��䡣 
 		unsigned int mSlot = 0XFFFFFFFF;
 		class StackMemoryManager* pThreadValue[MAX_THREAD_VALUE];
 		unsigned int mThreadValueNum = 0;

@@ -49,7 +49,7 @@ namespace Matrix
 		FILE* m_pFileHandle;
 		unsigned int m_uiOpenMode;
 		unsigned int m_uiFileSize;
-		//宸﹀彸鍊煎尯鍒嗙殑鍏抽敭鏄兘鍚﹀彇寰楀唴瀛樺湴鍧�
+		//左右值区分的关键是能否取得内存地址
 		TCHAR m_tcFileName[MTXMAX_PATH];
 	};
 }

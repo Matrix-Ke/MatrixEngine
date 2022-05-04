@@ -26,7 +26,7 @@ void* Matrix::CMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment
 	}
 	else
 	{
-		//å˜åˆ†é…å™¨é»˜è®¤è¡Œä¸ºï¼ˆé»˜è®¤æ˜¯æä¾›32-byteæˆ–è€…64-byteå¯¹é½ï¼‰
+		//±ä·ÖÅäÆ÷Ä¬ÈÏĞĞÎª£¨Ä¬ÈÏÊÇÌá¹©32-byte»òÕß64-byte¶ÔÆë£©
 		return _aligned_malloc(uiSize, uiAlignment);
 	}
 	return NULL;
@@ -49,14 +49,14 @@ Matrix::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
 {
 	// PageSize = 0;
 	SYSTEM_INFO SI;
-	//å¾—åˆ° 32 ä½ Windows ç³»ç»Ÿé¡µé¢å¤§å°ï¼Œã€ŠWindows æ ¸å¿ƒç¼–ç¨‹ã€‹é‡Œé¢æåˆ°ï¼Œè¿™ä¸ªä¸€èˆ¬ç”± CPU æ¥å†³å®šï¼Œ
-	//ä½† Intel å’Œ AMD çš„å¤§éƒ¨åˆ† CPU æ˜¯ 4KB
+	//µÃµ½ 32 Î» Windows ÏµÍ³Ò³Ãæ´óĞ¡£¬¡¶Windows ºËĞÄ±à³Ì¡·ÀïÃæÌáµ½£¬Õâ¸öÒ»°ãÓÉ CPU À´¾ö¶¨£¬
+	//µ« Intel ºÍ AMD µÄ´ó²¿·Ö CPU ÊÇ 4KB
 	GetSystemInfo(&SI);
 	PageSize = SI.dwPageSize;
-	// pagesizeé¦–ä½ä¸º1å…¶ä»–ä½éœ€è¦ä¸º0ï¼›
+	// pagesizeÊ×Î»Îª1ÆäËûÎ»ĞèÒªÎª0£»
 	MTXENGINE_ASSERT(!(PageSize & (PageSize - 1)));
 
-	//åˆå§‹åŒ–Pool table
+	//³õÊ¼»¯Pool table
 	OsTable.FirstPool = NULL;
 	OsTable.ExhaustedPool = NULL;
 	OsTable.BlockSize = 0;
@@ -65,7 +65,7 @@ Matrix::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
 	PoolTable[0].ExhaustedPool = NULL;
 	PoolTable[0].BlockSize = 8;
 
-	// blocksize é€æ­¥å¢é•¿
+	// blocksize Öğ²½Ôö³¤
 	for (DWORD i = 1; i < 5; i++)
 	{
 		PoolTable[i].FirstPool = NULL;
@@ -79,31 +79,31 @@ Matrix::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
 		PoolTable[i].BlockSize = (4 + ((i + 7) & 3)) << (1 + ((i + 7) >> 2));
 	}
 
-	//å»ºç«‹ä» 0ï½32768å­—èŠ‚æ˜ å°„åˆ° PoolTable çš„è¡¨
-	//ä¸ºäº†å¿«é€ŸæŸ¥æ‰¾åˆ°è¦åˆ†é…çš„å†…å­˜ä½äºå“ªä¸ª PoolTable ä¸­ï¼ŒUnrealEngine å»ºç«‹äº†ä¸€ä¸ªç´¢å¼•ç”¨æ¥å¿«é€ŸæŸ¥æ‰¾ã€‚42 ä¸ª PoolTable çš„
-	// TableSize åŸºæœ¬ä¸ŠåŒ…å«äº† 1ï½32 768 å­—èŠ‚å†…å­˜ç©ºé—´çš„ç®¡ç†ï¼Œå…¶ä¸­PoolTable0 ç®¡ç† 1ï½8 å­—èŠ‚ï¼ŒPoolTable1 ç®¡ç† 9ï½12 å­—èŠ‚ï¼Œä»¥æ­¤
-	//ç±»æ¨ï¼ŒPoolTable41 ç®¡ç†ï¼ˆ28672 + 1ï¼‰ï½32 768 å­—èŠ‚ã€‚è¿™æ ·ç´¢å¼•å°±å¯ä»¥å¾ˆå®¹æ˜“å»ºç«‹å‡ºæ¥
+	//½¨Á¢´Ó 0¡«32768×Ö½ÚÓ³Éäµ½ PoolTable µÄ±í
+	//ÎªÁË¿ìËÙ²éÕÒµ½Òª·ÖÅäµÄÄÚ´æÎ»ÓÚÄÄ¸ö PoolTable ÖĞ£¬UnrealEngine ½¨Á¢ÁËÒ»¸öË÷ÒıÓÃÀ´¿ìËÙ²éÕÒ¡£42 ¸ö PoolTable µÄ
+	// TableSize »ù±¾ÉÏ°üº¬ÁË 1¡«32 768 ×Ö½ÚÄÚ´æ¿Õ¼äµÄ¹ÜÀí£¬ÆäÖĞPoolTable0 ¹ÜÀí 1¡«8 ×Ö½Ú£¬PoolTable1 ¹ÜÀí 9¡«12 ×Ö½Ú£¬ÒÔ´Ë
+	//ÀàÍÆ£¬PoolTable41 ¹ÜÀí£¨28672 + 1£©¡«32 768 ×Ö½Ú¡£ÕâÑùË÷Òı¾Í¿ÉÒÔºÜÈİÒ×½¨Á¢³öÀ´
 	for (DWORD i = 0; i < POOL_MAX; i++)
 	{
 		DWORD Index;
 		for (Index = 0; PoolTable[Index].BlockSize < i; Index++)
 			;
 		MTXENGINE_ASSERT(Index < POOL_CATEGORY);
-		//æ¯ä¸€ä¸ªpooltableå†…çš„blocksizeéƒ½å¿…é¡»è¦å¤§äºi ï¼ˆiå°±æ˜¯ç”³è¯·å†…å­˜çš„å¤§å°, å³ç”³è¯·å†…å­˜çš„å¤§å°ä¸èƒ½è¶…è¿‡tableçš„blocksizeï¼‰
+		//Ã¿Ò»¸öpooltableÄÚµÄblocksize¶¼±ØĞëÒª´óÓÚi £¨i¾ÍÊÇÉêÇëÄÚ´æµÄ´óĞ¡, ¼´ÉêÇëÄÚ´æµÄ´óĞ¡²»ÄÜ³¬¹ıtableµÄblocksize£©
 		MemSizeToPoolTable[i] = &PoolTable[Index];
 	}
 	for (DWORD i = 0; i < 32; i++)
 	{
-		//æ¸…ç©º 32 ä¸ªä¸€çº§ç´¢å¼•
+		//Çå¿Õ 32 ¸öÒ»¼¶Ë÷Òı
 		PoolIndirect[i] = NULL;
 	}
-	//åˆ¤æ–­æ˜¯å¦æ•°æ®å¯¹åº”çš„ä¸Š
+	//ÅĞ¶ÏÊÇ·ñÊı¾İ¶ÔÓ¦µÄÉÏ
 	MTXENGINE_ASSERT(POOL_MAX - 1 == PoolTable[POOL_CATEGORY - 1].BlockSize);
 }
 
 Matrix::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
 {
-	//é‡Šæ”¾ç”³è¯·çš„å†…å­˜æ± 
+	//ÊÍ·ÅÉêÇëµÄÄÚ´æ³Ø
 	for (unsigned int i = 0; i < 32; i++)
 	{
 		for (unsigned int j = 0; j < 2048; j++)
@@ -125,46 +125,46 @@ Matrix::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
 
 void* Matrix::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-	//å†…å­˜é”ï¼Œé˜²æ­¢ä¸¤ä¸ªçº¿ç¨‹åŒæ—¶ç”³è¯·å†…å­˜
+	//ÄÚ´æËø£¬·ÀÖ¹Á½¸öÏß³ÌÍ¬Ê±ÉêÇëÄÚ´æ
 	MTXCriticalSection::Locker Temp(msMemLock);
 	FFreeBlock* Free;
-	//å¤§äºpool_MAXå¤§å†…å­˜é‡‡ç”¨æ“ä½œç³»ç»Ÿçš„å†…å­˜åˆ†é…
+	//´óÓÚpool_MAX´óÄÚ´æ²ÉÓÃ²Ù×÷ÏµÍ³µÄÄÚ´æ·ÖÅä
 	if (uiSize < POOL_MAX)
 	{
-		// æ ¹æ®ç”³è¯·å†…å­˜çš„å¤§å°æ‰¾åˆ°ç›¸å…³çš„å†…å­˜table
+		// ¸ù¾İÉêÇëÄÚ´æµÄ´óĞ¡ÕÒµ½Ïà¹ØµÄÄÚ´ætable
 		FPoolTable* Table = MemSizeToPoolTable[uiSize];
 		MTXENGINE_ASSERT(uiSize < Table->BlockSize);
 		FPoolInfo* Pool = Table->FirstPool;
 		if (!Pool)
 		{
-			//åˆ›å»º PoolInfoåˆ›å»ºå†…å­˜æ± ,ï¼Œæ¯ä¸ª PoolInfo ç®¡ç† 64KB = 65532  å†…å­˜,
-			//æ ¹æ®å½“å‰ PoolTable ç®¡ç†æ¯ä¸ªå•å…ƒå¤§å°ï¼Œè®¡ç®—å‡ºæ€»å—æ•°
+			//´´½¨ PoolInfo´´½¨ÄÚ´æ³Ø,£¬Ã¿¸ö PoolInfo ¹ÜÀí 64KB = 65532  ÄÚ´æ,
+			//¸ù¾İµ±Ç° PoolTable ¹ÜÀíÃ¿¸öµ¥Ôª´óĞ¡£¬¼ÆËã³ö×Ü¿éÊı
 			DWORD Blocks = 65536 / Table->BlockSize;
 			DWORD Bytes = Blocks * Table->BlockSize;
 			MTXENGINE_ASSERT(Blocks >= 1);
 			MTXENGINE_ASSERT(Blocks * Table->BlockSize <= Bytes);
 
-			//åˆ†é…å†…å­˜ï¼Œä¸€å…±ä»  Windows ç³»ç»Ÿç”³è¯· 3 ç±»å†…å­˜ï¼Œ è¿™ä¸ªæ˜¯ç¬¬ä¸€ç±»ï¼Œç”³è¯· PoolInfoï¼Œå³ä½¿ Bytes å°äº 64KBï¼Œ
-			//æŒ‰ç…§pageå•ä½ï¼ˆ64KBï¼‰åˆ†é…, åˆ†é…ç±»å‹: MEM_COMMIT ä¸ºæŒ‡å®šåœ°å€ç©ºé—´æäº¤ç‰©ç†å†…å­˜ã€‚è¿™ä¸ªå‡½æ•°åˆå§‹åŒ–å†…åœ¨ä¸ºé›¶
-			//è¯•å›¾æäº¤å·²æäº¤çš„å†…å­˜é¡µä¸ä¼šå¯¼è‡´å‡½æ•°å¤±è´¥ã€‚è¿™æ„å‘³ç€æ‚¨å¯ä»¥åœ¨ä¸ç¡®å®šå½“å‰é¡µçš„å½“å‰æäº¤çŠ¶æ€çš„æƒ…å†µä¸‹æäº¤ä¸€ç³»åˆ—é¡µé¢ã€‚
-			//å¦‚æœå°šæœªä¿ç•™å†…å­˜é¡µï¼Œåˆ™è®¾ç½®æ­¤å€¼ä¼šå¯¼è‡´å‡½æ•°åŒæ—¶ä¿ç•™å¹¶æäº¤å†…å­˜é¡µã€‚
-			Free = (FFreeBlock*)VirtualAlloc(NULL, Bytes, MEM_COMMIT, PAGE_READWRITE); //åˆ†é…ä¸€å—block
+			//·ÖÅäÄÚ´æ£¬Ò»¹²´Ó  Windows ÏµÍ³ÉêÇë 3 ÀàÄÚ´æ£¬ Õâ¸öÊÇµÚÒ»Àà£¬ÉêÇë PoolInfo£¬¼´Ê¹ Bytes Ğ¡ÓÚ 64KB£¬
+			//°´ÕÕpageµ¥Î»£¨64KB£©·ÖÅä, ·ÖÅäÀàĞÍ: MEM_COMMIT ÎªÖ¸¶¨µØÖ·¿Õ¼äÌá½»ÎïÀíÄÚ´æ¡£Õâ¸öº¯Êı³õÊ¼»¯ÄÚÔÚÎªÁã
+			//ÊÔÍ¼Ìá½»ÒÑÌá½»µÄÄÚ´æÒ³²»»áµ¼ÖÂº¯ÊıÊ§°Ü¡£ÕâÒâÎ¶×ÅÄú¿ÉÒÔÔÚ²»È·¶¨µ±Ç°Ò³µÄµ±Ç°Ìá½»×´Ì¬µÄÇé¿öÏÂÌá½»Ò»ÏµÁĞÒ³Ãæ¡£
+			//Èç¹ûÉĞÎ´±£ÁôÄÚ´æÒ³£¬ÔòÉèÖÃ´ËÖµ»áµ¼ÖÂº¯ÊıÍ¬Ê±±£Áô²¢Ìá½»ÄÚ´æÒ³¡£
+			Free = (FFreeBlock*)VirtualAlloc(NULL, Bytes, MEM_COMMIT, PAGE_READWRITE); //·ÖÅäÒ»¿éblock
 			if (!Free)
 			{
 				return NULL;
 			}
 
-			//é€šè¿‡ä¸€çº§ç´¢å¼•æŸ¥æ‰¾äºŒçº§ç´¢å¼•, å·¦ç§»27ä¿ç•™é«˜5ä½
+			//Í¨¹ıÒ»¼¶Ë÷Òı²éÕÒ¶ş¼¶Ë÷Òı, ×óÒÆ27±£Áô¸ß5Î»
 			FPoolInfo*& Indirect = PoolIndirect[((DWORD)Free >> 27)];
 			if (!Indirect)
 			{
-				//å°†åˆ†é…å¥½çš„å†…å­˜å¼•ç”¨åˆ°PoolIndirectä¸­
+				//½«·ÖÅäºÃµÄÄÚ´æÒıÓÃµ½PoolIndirectÖĞ
 				Indirect = CreateIndirect();
 			}
-			//æ ¹æ®äºŒçº§ç´¢å¼•æ‰¾åˆ°å¯¹åº”çš„ PoolInfo
+			//¸ù¾İ¶ş¼¶Ë÷ÒıÕÒµ½¶ÔÓ¦µÄ PoolInfo
 			Pool = &Indirect[((DWORD)Free >> 16) & 2047];
 
-			//è¿æ¥åˆ°å¯¹åº” PoolTable
+			//Á¬½Óµ½¶ÔÓ¦ PoolTable
 			Pool->Link(Table->FirstPool);
 			Pool->MemoryAddr = (BYTE*)Free;
 			Pool->Bytes = Bytes;
@@ -182,15 +182,15 @@ void* Matrix::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlign
 		Pool->Taken++;
 		MTXENGINE_ASSERT(Pool->pAvailableBlock);
 		MTXENGINE_ASSERT(Pool->pAvailableBlock->Blocks > 0);
-		//ä»åå¾€å‰è¦†ç›–å¯ä»¥å·§å¦™çš„åˆ©ç”¨åœ°ä½åœ°å€æ¥å­˜æ”¾FFreeBlocksæ•°æ®ã€‚
+		//´ÓºóÍùÇ°¸²¸Ç¿ÉÒÔÇÉÃîµÄÀûÓÃµØÎ»µØÖ·À´´æ·ÅFFreeBlocksÊı¾İ¡£
 		Free = (FFreeBlock*)((BYTE*)Pool->pAvailableBlock + --Pool->pAvailableBlock->Blocks * Table->BlockSize);
 		if (Pool->pAvailableBlock->Blocks == 0)
 		{
-			// FreeMem blocksä¹‹é—´çš„é“¾æ¥
+			// FreeMem blocksÖ®¼äµÄÁ´½Ó
 			Pool->pAvailableBlock = Pool->pAvailableBlock->Next;
 			if (!Pool->pAvailableBlock)
 			{
-				// poolinfoæ‰€æŒ‡å‘çš„blockæ»¡äº†å°±å°†å…¶ç§»å…¥ExhaustedPool
+				// poolinfoËùÖ¸ÏòµÄblockÂúÁË¾Í½«ÆäÒÆÈëExhaustedPool
 				Pool->Unlink();
 				Pool->Link(Table->ExhaustedPool);
 			}
@@ -198,7 +198,7 @@ void* Matrix::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlign
 	}
 	else
 	{
-		//å¤§çš„å†…å­˜é‡‡ç”¨æ“ä½œç³»ç»Ÿè‡ªèº«çš„
+		//´óµÄÄÚ´æ²ÉÓÃ²Ù×÷ÏµÍ³×ÔÉíµÄ
 		INT AlignedSize = Align(uiSize, PageSize);
 		Free = (FFreeBlock*)VirtualAlloc(NULL, AlignedSize, MEM_COMMIT, PAGE_READWRITE);
 		if (!Free)
@@ -228,29 +228,29 @@ void Matrix::UEWin32MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment
 	{
 		return;
 	}
-	//é€šè¿‡äºŒç»´æ•°ç»„æ‰¾åˆ°å¯¹åº”çš„PoolInfo
+	//Í¨¹ı¶şÎ¬Êı×éÕÒµ½¶ÔÓ¦µÄPoolInfo
 	FPoolInfo* Pool = &PoolIndirect[(DWORD)pcAddr >> 27][((DWORD)pcAddr >> 16) & 2047];
 	MTXENGINE_ASSERT(Pool->Bytes != 0);
 	if (Pool->Owner != &OsTable)
 	{
 		if (!Pool->pAvailableBlock)
 		{
-			// pAvailableBlockä¸ºnullï¼Œ è€ƒè™‘åˆ°poolé‡Šæ”¾åæ˜¯å¯ä»¥åˆ†é…çš„ï¼Œéœ€è¦å°†poolåˆ‡æ¢åˆ°å¯ç”¨çš„poolåˆ—è¡¨å‚ä¸ä»¥åçš„åˆ†é…
+			// pAvailableBlockÎªnull£¬ ¿¼ÂÇµ½poolÊÍ·ÅºóÊÇ¿ÉÒÔ·ÖÅäµÄ£¬ĞèÒª½«poolÇĞ»»µ½¿ÉÓÃµÄpoolÁĞ±í²ÎÓëÒÔºóµÄ·ÖÅä
 			Pool->Unlink();
 			Pool->Link(Pool->Owner->FirstPool);
 		}
 
 		// Free a pooled allocation.
 		FFreeBlock* Free = (FFreeBlock*)pcAddr;
-		Free->Blocks = 1; //å½“å‰ FreeMem åªç®¡ç† 1 ä¸ªå•å…ƒå—
-		//é“¾æ¥åˆ° PoolInfo ç¬¬ä¸€ä¸ªå¯ç”¨çš„ pAvailableBlock
+		Free->Blocks = 1; //µ±Ç° FreeMem Ö»¹ÜÀí 1 ¸öµ¥Ôª¿é
+		//Á´½Óµ½ PoolInfo µÚÒ»¸ö¿ÉÓÃµÄ pAvailableBlock
 		Free->Next = Pool->pAvailableBlock;
 		Pool->pAvailableBlock = Free;
 		MTXENGINE_ASSERT(Pool->Taken >= 1);
 		if (--Pool->Taken == 0)
 		{
 			// Free the OS memory.
-			//å¦‚æœé‡Šæ”¾åï¼Œå‘ç° 16 ä¸ªå•å…ƒéƒ½ç©ºé—²ï¼Œåˆ™æŠŠè¿™ä¸ª PoolInfo å½’è¿˜ç»™32 ä½Windows ç³»ç»Ÿï¼Œæ‰€ä»¥æé™å¯èƒ½æ˜¯ 1 ä¸ªå•å…ƒè¢«å ç”¨ï¼Œ15 ä¸ªç©ºé—²
+			//Èç¹ûÊÍ·Åºó£¬·¢ÏÖ 16 ¸öµ¥Ôª¶¼¿ÕÏĞ£¬Ôò°ÑÕâ¸ö PoolInfo ¹é»¹¸ø32 Î»Windows ÏµÍ³£¬ËùÒÔ¼«ÏŞ¿ÉÄÜÊÇ 1 ¸öµ¥Ôª±»Õ¼ÓÃ£¬15 ¸ö¿ÕÏĞ
 			Pool->Unlink();
 			VirtualFree(Pool->MemoryAddr, 0, MEM_RELEASE);
 			Pool->MemoryAddr = NULL;
@@ -266,8 +266,8 @@ void Matrix::UEWin32MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment
 
 UEWin32MemoryAlloc::FPoolInfo* Matrix::UEWin32MemoryAlloc::CreateIndirect()
 {
-	//äºŒçº§ç´¢å¼•ä¸ºç©ºï¼Œåˆ™åˆ›å»ºäºŒçº§ç´¢å¼•ï¼Œ2048 ä¸ª PoolInfo æ­£å¥½æ˜¯ 64KB
-	//è¿™æ˜¯ç¬¬äºŒç±»ï¼Œåˆ†é…çš„å†…å­˜æ­£å¥½æ˜¯ 32 ä½ Windows ç³»ç»Ÿçš„ä¸€ä¸ªåˆ†é…ç²’åº¦
+	//¶ş¼¶Ë÷ÒıÎª¿Õ£¬Ôò´´½¨¶ş¼¶Ë÷Òı£¬2048 ¸ö PoolInfo ÕıºÃÊÇ 64KB
+	//ÕâÊÇµÚ¶şÀà£¬·ÖÅäµÄÄÚ´æÕıºÃÊÇ 32 Î» Windows ÏµÍ³µÄÒ»¸ö·ÖÅäÁ£¶È
 	FPoolInfo* Indirect = (FPoolInfo*)VirtualAlloc(NULL, 2048 * sizeof(FPoolInfo), MEM_COMMIT, PAGE_READWRITE);
 	if (!Indirect)
 	{
@@ -325,7 +325,7 @@ Matrix::DebugMemoryAlloc::DebugMemoryAlloc()
 
 Matrix::DebugMemoryAlloc::~DebugMemoryAlloc()
 {
-	//åŠ¨æ€åŠ è½½dbghelp.dll
+	//¶¯Ì¬¼ÓÔØdbghelp.dll
 	InitDbgHelpLib();
 	PrintInfo();
 	FreeDbgHelpLib();
@@ -340,16 +340,16 @@ bool Matrix::DebugMemoryAlloc::InitDbgHelpLib()
 	TCHAR* p = (TCHAR*)MTXCsrchr(szDbgName, _T('\\'));
 	if (p)
 	{
-		//è·å–æ–‡ä»¶è·¯å¾„åå­—
+		//»ñÈ¡ÎÄ¼şÂ·¾¶Ãû×Ö
 		*p = 0;
 	}
 	MTXStrcat(szDbgName, MAX_PATH, _T("\\dbghelp.dll"));
 
-	// æŸ¥æ‰¾å½“å‰ç›®å½•çš„DLL
+	// ²éÕÒµ±Ç°Ä¿Â¼µÄDLL
 	s_DbgHelpLib = LoadLibrary(szDbgName);
 	MTXENGINE_ASSERT(s_DbgHelpLib);
-	//æ ¹æ®ä»£ç åœ°å€è°ƒç”¨ fnSymGetLineFromAddr64 å‡½æ•°å°±å¯ä»¥è·å¾—å †æ ˆä»£ç æ‰€åœ¨æ–‡ä»¶çš„è¡Œæ•°å’Œæ‰€åœ¨æ–‡ä»¶çš„åç§°ã€‚
-	//ä¸€æ—¦å‡ºç°å†…å­˜æ³„éœ²ï¼Œå°±å¯ä»¥å‡†ç¡®åœ°æ‰¾åˆ°æ³„æ¼çš„æ•´ä¸ªè°ƒç”¨è¿‡ç¨‹ã€‚ç”¨è¿™ç§æ–¹æ³•æŸ¥æ‰¾å†…å­˜æ³„éœ²æ—¶æœ€å¥½ç”¨ Debug æ¨¡å¼
+	//¸ù¾İ´úÂëµØÖ·µ÷ÓÃ fnSymGetLineFromAddr64 º¯Êı¾Í¿ÉÒÔ»ñµÃ¶ÑÕ»´úÂëËùÔÚÎÄ¼şµÄĞĞÊıºÍËùÔÚÎÄ¼şµÄÃû³Æ¡£
+	//Ò»µ©³öÏÖÄÚ´æĞ¹Â¶£¬¾Í¿ÉÒÔ×¼È·µØÕÒµ½Ğ¹Â©µÄÕû¸öµ÷ÓÃ¹ı³Ì¡£ÓÃÕâÖÖ·½·¨²éÕÒÄÚ´æĞ¹Â¶Ê±×îºÃÓÃ Debug Ä£Ê½
 	fnSymGetLineFromAddr64 = (tFSymGetLineFromAddr64)GetProcAddress(s_DbgHelpLib, "SymGetLineFromAddr64");
 	fnSymGetOptions = (tFSymGetOptions)GetProcAddress(s_DbgHelpLib, "SymGetOptions");
 	fnSymSetOptions = (tFSymSetOptions)GetProcAddress(s_DbgHelpLib, "SymSetOptions");
@@ -384,7 +384,7 @@ void Matrix::DebugMemoryAlloc::FreeLeakMem()
 		Block* Temp = pBlock;
 		pBlock = pBlock->pNext;
 		free((void*)Temp);
-		// todo : æ­¤å¤„åº”è¯¥ä½¿ç”¨MTXCMem::Deallocate()å‡½æ•°æ˜¯å¦æ›´å¥½? æ„Ÿè§‰ä½¿ç”¨freeä¸æ˜¯å¾ˆåˆé€‚
+		// todo : ´Ë´¦Ó¦¸ÃÊ¹ÓÃMTXCMem::Deallocate()º¯ÊıÊÇ·ñ¸üºÃ? ¸Ğ¾õÊ¹ÓÃfree²»ÊÇºÜºÏÊÊ
 		//MMemObject::GetCMemManager().Deallocate((char *)Temp, pBlock->mbAlignment, pBlock->mbArray);
 	}
 }
@@ -457,11 +457,11 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 	MTXENGINE_ASSERT(uiSize);
 	mNumNewCalls++;
 
-	//ç”³è¯·çš„æ€»ç©ºé—´
+	//ÉêÇëµÄ×Ü¿Õ¼ä
 	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
 	char* pcAddr = (char*)MemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
 	MTXENGINE_ASSERT(pcAddr);
-	//å¡«å†™ Block ä¿¡æ¯
+	//ÌîĞ´ Block ĞÅÏ¢
 	Block* pBlock = (Block*)pcAddr;
 	pBlock->mSize = uiSize;
 	pBlock->mbArray = bIsArray;
@@ -470,7 +470,7 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 	pBlock->mbAlignment = bAlignment;
 	pBlock->mStackInfoNum = 0;
 
-	//è·å–å½“å‰å‡½æ•°çš„è°ƒç”¨æ ˆå‡½æ•°
+	//»ñÈ¡µ±Ç°º¯ÊıµÄµ÷ÓÃÕ»º¯Êı
 #if WINDOWS_PLATFORM
 	PVOID WinBackTrace[CALLSTACK_NUM];
 	short NumFrames = RtlCaptureStackBackTrace(0, CALLSTACK_NUM, WinBackTrace, NULL);
@@ -487,22 +487,22 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 	}
 #endif
 
-	//æ’å…¥èŠ‚ç‚¹
+	//²åÈë½Úµã
 	InsertBlock(pBlock);
 	pcAddr += sizeof(Block);
 
-	//å¡«å†™å¤´æ ‡è¯†
+	//ÌîĞ´Í·±êÊ¶
 	unsigned int* pBeginMask = (unsigned int*)(pcAddr);
 	*pBeginMask = BEGIN_MASK;
 	pcAddr += sizeof(unsigned int);
-	//å¡«å†™å°¾æ ‡è¯†
+	//ÌîĞ´Î²±êÊ¶
 	unsigned int* pEndMask = (unsigned int*)(pcAddr + uiSize);
 	*pEndMask = END_MASK;
 
 	// todo list
 	mNumBlocks++;
 	mNumBytes += (unsigned int)uiSize;
-	//è®°å½•æœ€å¤§å­—èŠ‚æ•°é‡å’Œæœ€å¤§å—æ•°é‡
+	//¼ÇÂ¼×î´ó×Ö½ÚÊıÁ¿ºÍ×î´ó¿éÊıÁ¿
 	if (mNumBytes > mMaxNumBytes)
 	{
 		mMaxNumBytes = mNumBytes;
@@ -512,9 +512,9 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 		mMaxNumBlocks = mNumBlocks;
 	}
 
-	// uiSize æ˜¯è¿™æ¬¡ç”³è¯·çš„å­—èŠ‚æ•°ï¼Œä¸Šé¢è¿™æ®µä»£ç ä¼šæ ¹æ® uiSize è½åˆ° 2nçš„å“ªä¸ªèŒƒå›´å†…æ¥åšç»Ÿè®¡ã€‚
-	//å¦‚æœç”³è¯· 15 å­—èŠ‚ï¼Œi ç­‰äº 4 çš„æ—¶å€™ï¼ŒuiTwoPowerI ç­‰äº 16ï¼Œ15 å°äº 16ï¼Œå®ƒè½åœ¨ 23å’Œ 24ä¹‹é—´ï¼Œ
-	//è¿™æ ·å°±å¯ä»¥ç»Ÿè®¡å‡ºä»¥ 2 ä¸ºåŸºæ•°ä¸åŒå¤§å°å†…å­˜çš„åˆ†é…æƒ…å†µ
+	// uiSize ÊÇÕâ´ÎÉêÇëµÄ×Ö½ÚÊı£¬ÉÏÃæÕâ¶Î´úÂë»á¸ù¾İ uiSize Âäµ½ 2nµÄÄÄ¸ö·¶Î§ÄÚÀ´×öÍ³¼Æ¡£
+	//Èç¹ûÉêÇë 15 ×Ö½Ú£¬i µÈÓÚ 4 µÄÊ±ºò£¬uiTwoPowerI µÈÓÚ 16£¬15 Ğ¡ÓÚ 16£¬ËüÂäÔÚ 23ºÍ 24Ö®¼ä£¬
+	//ÕâÑù¾Í¿ÉÒÔÍ³¼Æ³öÒÔ 2 Îª»ùÊı²»Í¬´óĞ¡ÄÚ´æµÄ·ÖÅäÇé¿ö
 	unsigned int uiTwoPowerI = 1;
 	int i;
 	for (i = 0; i <= RECORD_NUM - 2; i++, uiTwoPowerI <<= 1)
@@ -536,11 +536,11 @@ void* Matrix::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignme
 void DebugMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
-	//è°ƒç”¨ delete çš„æ¬¡æ•°ç»Ÿè®¡
+	//µ÷ÓÃ delete µÄ´ÎÊıÍ³¼Æ
 	mNumDeleteCalls++;
 	MTXENGINE_ASSERT(pcAddr);
 
-	//åˆ¤æ–­å¤´æ ‡è¯†
+	//ÅĞ¶ÏÍ·±êÊ¶
 	pcAddr -= sizeof(unsigned int);
 	unsigned int* pBeginMask = (unsigned int*)(pcAddr);
 	MTXENGINE_ASSERT(*pBeginMask == BEGIN_MASK);
@@ -551,15 +551,15 @@ void DebugMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIs
 	MTXENGINE_ASSERT(mNumBlocks > 0 && mNumBytes >= pBlock->mSize);
 	bool bAlignment = (uiAlignment > 0) ? true : false;
 	MTXENGINE_ASSERT(pBlock->mbAlignment == bAlignment);
-	//åˆ¤æ–­å°¾æ ‡è¯†
+	//ÅĞ¶ÏÎ²±êÊ¶
 	unsigned int* pEndMask = (unsigned int*)(pcAddr + sizeof(Block) + sizeof(unsigned int) + pBlock->mSize);
 	MTXENGINE_ASSERT(*pEndMask == END_MASK);
 
-	//æ›´æ–°ç»Ÿè®¡æ•°æ®
+	//¸üĞÂÍ³¼ÆÊı¾İ
 	mNumBlocks--;
 	mNumBytes -= (unsigned int)pBlock->mSize;
 
-	//åˆ é™¤èŠ‚ç‚¹
+	//É¾³ı½Úµã
 	RemoveBlock(pBlock);
 	// free(pcAddr);
 	MemoryObject::GetCMemoryManager().Deallocate(pcAddr, uiAlignment, bIsArray);
@@ -567,7 +567,7 @@ void DebugMemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIs
 
 void Matrix::DebugMemoryAlloc::InsertBlock(Block* pBlock)
 {
-	//æ’å…¥åˆ¤æ–­å°¾éƒ¨å­˜åœ¨ä¸å¦
+	//²åÈëÅĞ¶ÏÎ²²¿´æÔÚÓë·ñ
 	if (pTail)
 	{
 		pBlock->pPrev = pTail;
@@ -579,7 +579,7 @@ void Matrix::DebugMemoryAlloc::InsertBlock(Block* pBlock)
 	{
 		pBlock->pPrev = 0;
 		pBlock->pNext = 0;
-		//å¤´å°¾æŒ‡é’ˆä¸€è‡´
+		//Í·Î²Ö¸ÕëÒ»ÖÂ
 		pHead = pBlock;
 		pTail = pBlock;
 	}
@@ -587,8 +587,8 @@ void Matrix::DebugMemoryAlloc::InsertBlock(Block* pBlock)
 
 void Matrix::DebugMemoryAlloc::RemoveBlock(Block* pBlock)
 {
-	//ç§»é™¤æ—¶å€™åˆ¤æ–­å¤´æŒ‡é’ˆå­˜åœ¨ä¸å¦
-	//é“¾è¡¨æŒ‡é’ˆçš„æ“ä½œé€»è¾‘éƒ½æ˜¯ä»preåˆ°nextå…ˆå»ºç«‹æŒ‡å‘å…³ç³»ï¼Œç„¶åå†åšåˆ é™¤æ“ä½œã€‚
+	//ÒÆ³ıÊ±ºòÅĞ¶ÏÍ·Ö¸Õë´æÔÚÓë·ñ
+	//Á´±íÖ¸ÕëµÄ²Ù×÷Âß¼­¶¼ÊÇ´Ópreµ½nextÏÈ½¨Á¢Ö¸Ïò¹ØÏµ£¬È»ºóÔÙ×öÉ¾³ı²Ù×÷¡£
 	if (pBlock->pPrev)
 	{
 		pBlock->pPrev->pNext = pBlock->pNext;
@@ -613,8 +613,8 @@ bool Matrix::DebugMemoryAlloc::GetFileAndLine(const void* pAddress, TCHAR szFile
 	Line.SizeOfStruct = sizeof(Line);
 	MTXMemset(&Line, 0, sizeof(Line));
 	DWORD Offset = 0;
-	//é€šè¿‡ fnSymGetLineFromAddr64 å¾—åˆ° IMAGEHLP_LINE64 çš„ FileNameï¼Œ
-	//è¿›è€Œå¾—åˆ°å‡½æ•°è°ƒç”¨æ‰€åœ¨è¡Œæ•°å’Œæ–‡ä»¶åï¼ŒpAddress æ˜¯å‡½æ•°åœ°å€
+	//Í¨¹ı fnSymGetLineFromAddr64 µÃµ½ IMAGEHLP_LINE64 µÄ FileName£¬
+	//½ø¶øµÃµ½º¯Êıµ÷ÓÃËùÔÚĞĞÊıºÍÎÄ¼şÃû£¬pAddress ÊÇº¯ÊıµØÖ·
 	if (fnSymGetLineFromAddr64(GetCurrentProcess(), (DWORD64)pAddress, &Offset, &Line))
 	{
 #ifdef _UNICODE
@@ -679,7 +679,7 @@ void Matrix::Win64MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, 
 Matrix::StackMemoryManager::StackMemoryManager(USIZE_TYPE uiDefaultChunkSize)
 
 {
-	//é»˜è®¤size éœ€è¦å¤§äº FTaggedMemory å¤§å°
+	//Ä¬ÈÏsize ĞèÒª´óÓÚ FTaggedMemory ´óĞ¡
 	MTXENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
 	Top = NULL;
 	End = NULL;
@@ -698,7 +698,7 @@ Matrix::StackMemoryManager::~StackMemoryManager()
 		UnusedChunks = UnusedChunks->Next;
 		MemoryObject::GetMemoryManager().Deallocate((char*)Old, 0, true);
 	}
-	//æ ¸éªŒæ˜¯å¦å–æ¶ˆåˆ†é…å®Œæ¯•
+	//ºËÑéÊÇ·ñÈ¡Ïû·ÖÅäÍê±Ï
 	MTXENGINE_ASSERT(NumMarks == 0);
 }
 void* Matrix::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
@@ -711,26 +711,26 @@ void* Matrix::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlign
 
 	MTXENGINE_ASSERT(Top <= End);
 	MTXENGINE_ASSERT(NumMarks > 0);
-	//ä»å½“å‰chunké‡Œåˆ†é…ç©ºé—´
+	//´Óµ±Ç°chunkÀï·ÖÅä¿Õ¼ä
 	BYTE* Result = Top;
 	if (uiAlignment > 0)
 	{
-		//å­—èŠ‚å¯¹é½
+		//×Ö½Ú¶ÔÆë
 		Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
 	}
 	Top = Result + uiSize;
-	//è¶…å‡ºå½“å‰chunkå¤§å°ï¼Œ åˆ†é…æ–°çš„Chunk
+	//³¬³öµ±Ç°chunk´óĞ¡£¬ ·ÖÅäĞÂµÄChunk
 	if (Top > End)
 	{
-		//åˆ†é…è¶³å¤Ÿå­—èŠ‚å¯¹é½çš„ç©ºé—´
+		//·ÖÅä×ã¹»×Ö½Ú¶ÔÆëµÄ¿Õ¼ä
 		AllocateNewChunk(uiSize + uiAlignment);
 		Result = Top;
 		if (uiAlignment > 0)
 		{
-			//å­—èŠ‚å¯¹é½
+			//×Ö½Ú¶ÔÆë
 			Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
 		}
-		//å¢åŠ  Top æŒ‡é’ˆ
+		//Ôö¼Ó Top Ö¸Õë
 		Top = Result + uiSize;
 	}
 	return Result;
@@ -772,8 +772,8 @@ BYTE* Matrix::StackMemoryManager::AllocateNewChunk(USIZE_TYPE MinSize)
 }
 void Matrix::StackMemoryManager::FreeChunks(FTaggedMemory* NewTopChunk)
 {
-	//é‡Šæ”¾ NewTopChunk åˆ° TopChunk çš„æ‰€æœ‰ Chunk
-	//è¿™é‡Œçš„é‡Šæ”¾å°±æ˜¯å°†topchunkæŒ‡å‘çš„chunkè½¬ç§»åˆ°unusedchunkå—ä¸­ã€‚
+	//ÊÍ·Å NewTopChunk µ½ TopChunk µÄËùÓĞ Chunk
+	//ÕâÀïµÄÊÍ·Å¾ÍÊÇ½«topchunkÖ¸ÏòµÄchunk×ªÒÆµ½unusedchunk¿éÖĞ¡£
 	while (TopChunk != NewTopChunk)
 	{
 		FTaggedMemory* RemoveChunk = TopChunk;
@@ -781,7 +781,7 @@ void Matrix::StackMemoryManager::FreeChunks(FTaggedMemory* NewTopChunk)
 		RemoveChunk->Next = UnusedChunks;
 		UnusedChunks = RemoveChunk;
 	}
-	//é‡ç½® Topã€End å’Œ TopChunck
+	//ÖØÖÃ Top¡¢End ºÍ TopChunck
 	Top = NULL;
 	End = NULL;
 	if (TopChunk)
@@ -792,8 +792,8 @@ void Matrix::StackMemoryManager::FreeChunks(FTaggedMemory* NewTopChunk)
 }
 Matrix::MemoryObject::MemoryObject()
 {
-	//å¿…é¡»è¦æ§åˆ¶å†…å­˜åˆå§‹åŒ–çš„é¡ºåºå…³ç³»ï¼Œ stackmanagerå®ç°ä¾èµ–heap memoryçš„å†…å­˜åˆ†é…ï¼Œ
-	//é™æ€å˜é‡å£°æ˜é¡ºåºä¸ææ„é¡ºåºç›¸åï¼Œ å³å…ˆè¿›åå‡ºåŸåˆ™
+	//±ØĞëÒª¿ØÖÆÄÚ´æ³õÊ¼»¯µÄË³Ğò¹ØÏµ£¬ stackmanagerÊµÏÖÒÀÀµheap memoryµÄÄÚ´æ·ÖÅä£¬
+	//¾²Ì¬±äÁ¿ÉùÃ÷Ë³ĞòÓëÎö¹¹Ë³ĞòÏà·´£¬ ¼´ÏÈ½øºó³öÔ­Ôò
 	GetCMemoryManager();
 	GetMemoryManager();
 	GetStackMemoryManager();

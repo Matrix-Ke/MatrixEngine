@@ -3,11 +3,11 @@
 #include "Synchronize.h"
 #include <Windows.h>
 
-//å®ç°ä¸€å¥—è‡ªå·±çš„å†…å­˜ç®¡ç†æœºåˆ¶ï¼Œæœ€å¥½è¦é‡è½½å…¨å±€newå‡½æ•°ï¼Œå¥½å¤„æ˜¯èƒ½ä½¿æ•´ä¸ªé¡¹ç›®ç»Ÿä¸€ï¼ŒæŸ¥æ‰¾å†…å­˜åˆ†é…æƒ…å†µå’Œå¤„ç† bug éƒ½ç›¸å¯¹å®¹æ˜“
+//ÊµÏÖÒ»Ì××Ô¼ºµÄÄÚ´æ¹ÜÀí»úÖÆ£¬×îºÃÒªÖØÔØÈ«¾Önewº¯Êı£¬ºÃ´¦ÊÇÄÜÊ¹Õû¸öÏîÄ¿Í³Ò»£¬²éÕÒÄÚ´æ·ÖÅäÇé¿öºÍ´¦Àí bug ¶¼Ïà¶ÔÈİÒ×
 #include <new.h>
 #define USE_STL_TYPE_TRAIT
 #ifdef USE_STL_TYPE_TRAIT
-// stl ç±»å‹èƒå–
+// stl ÀàĞÍİÍÈ¡
 #include <type_traits>
 #endif // USE_STL_TYPE_TRAIT
 
@@ -15,8 +15,8 @@ namespace Matrix
 {
 
 #ifdef USE_STL_TYPE_TRAIT
-	// C++ STLçš„std::is_trivially_constructibleæ¨¡æ¿ç”¨äºæ£€æŸ¥ç»™å®šç±»å‹Tæ˜¯å¦æ˜¯å¸¦æœ‰å‚æ•°é›†çš„å¹³å‡¡å¯æ„é€ ç±»å‹ã€‚
-	//å¦‚æœTæ˜¯å¹³å‡¡å¯æ„é€ çš„ç±»å‹ï¼Œåˆ™å®ƒè¿”å›å¸ƒå°”å€¼trueï¼Œå¦åˆ™è¿”å›falseã€‚
+	// C++ STLµÄstd::is_trivially_constructibleÄ£°åÓÃÓÚ¼ì²é¸ø¶¨ÀàĞÍTÊÇ·ñÊÇ´øÓĞ²ÎÊı¼¯µÄÆ½·²¿É¹¹ÔìÀàĞÍ¡£
+	//Èç¹ûTÊÇÆ½·²¿É¹¹ÔìµÄÀàĞÍ£¬ÔòËü·µ»Ø²¼¶ûÖµtrue£¬·ñÔò·µ»Øfalse¡£
 #define HAS_TRIVIAL_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
 #define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
 #define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
@@ -25,7 +25,7 @@ namespace Matrix
 #define IS_ENUM(T) std::is_enum<T>::value
 #define IS_EMPTY(T) std::is_empty<T>::value
 
-	// PODï¼Œæ˜¯Plain Old Dataçš„ç¼©å†™ï¼Œæ™®é€šæ—§æ•°æ®ç±»å‹ï¼Œæ˜¯C++ä¸­çš„ä¸€ç§æ•°æ®ç±»å‹æ¦‚å¿µ
+	// POD£¬ÊÇPlain Old DataµÄËõĞ´£¬ÆÕÍ¨¾ÉÊı¾İÀàĞÍ£¬ÊÇC++ÖĞµÄÒ»ÖÖÊı¾İÀàĞÍ¸ÅÄî
 	template <typename T>
 	struct TIsPODType
 	{
@@ -48,7 +48,7 @@ namespace Matrix
 		};
 	};
 
-	//å†…å­˜å¯¹é½
+	//ÄÚ´æ¶ÔÆë
 	template <class T>
 	inline T Align(const T Ptr, USIZE_TYPE Alignment)
 	{
@@ -61,15 +61,15 @@ namespace Matrix
 	}
 #else
 #endif
-	//å¼•æ“çš„å†…å­˜ç®¡ç†æ¨¡å—ï¼š 1.é«˜æ•ˆçš„ç®¡ç†è‡ªå·±çš„å†…å­˜  2.é¿å…å‡ºç°å†…å­˜æ³„æ¼
+	//ÒıÇæµÄÄÚ´æ¹ÜÀíÄ£¿é£º 1.¸ßĞ§µÄ¹ÜÀí×Ô¼ºµÄÄÚ´æ  2.±ÜÃâ³öÏÖÄÚ´æĞ¹Â©
 	class MATRIXCORE_API BaseMemoryManager
 	{
 	public:
 		BaseMemoryManager();
 		virtual ~BaseMemoryManager() = 0;
-		//å†…å­˜åˆ†é…
+		//ÄÚ´æ·ÖÅä
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
-		//å†…å­˜ç®¡ç†
+		//ÄÚ´æ¹ÜÀí
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
 		static MTXCriticalSection msMemLock;
@@ -84,9 +84,9 @@ namespace Matrix
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
 	};
 
-	//===========================å †å†…å­˜ç®¡ç†====================================
+	//===========================¶ÑÄÚ´æ¹ÜÀí====================================
 #if !_DEBUG && !_WIN64
-	//é‡‡ç”¨è™šå¹»3çš„å†…å­˜ç®¡ç†ä»£ç åˆ æ”¹è€Œæˆ
+	//²ÉÓÃĞé»Ã3µÄÄÚ´æ¹ÜÀí´úÂëÉ¾¸Ä¶ø³É
 	class MATRIXCORE_API UEWin32MemoryAlloc : public BaseMemoryManager
 	{
 	public:
@@ -94,7 +94,7 @@ namespace Matrix
 		~UEWin32MemoryAlloc();
 
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
-		//å–æ¶ˆå·²ç»åˆ†é…çš„block
+		//È¡ÏûÒÑ¾­·ÖÅäµÄblock
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
 	private:
@@ -114,26 +114,26 @@ namespace Matrix
 		FPoolInfo* CreateIndirect();
 
 	private:
-		//é“¾è¡¨ç®¡ç†è€…
+		//Á´±í¹ÜÀíÕß
 		struct FPoolTable
 		{
-			unsigned int BlockSize;	  //æ¯æ¬¡å¯ä»¥åˆ†é…çš„å†…å­˜å¤§å°,poolinfoä¸­å•ç‹¬å†…å­˜å—çš„å¤§å°
-			FPoolInfo* ExhaustedPool; //åˆ†é…å®Œçš„ PoolInfo é“¾è¡¨å¤´æŒ‡é’ˆ
-			FPoolInfo* FirstPool;	  //æ²¡æœ‰åˆ†é…å®Œçš„ PoolInfo é“¾è¡¨å¤´æŒ‡é’ˆ
+			unsigned int BlockSize;	  //Ã¿´Î¿ÉÒÔ·ÖÅäµÄÄÚ´æ´óĞ¡,poolinfoÖĞµ¥¶ÀÄÚ´æ¿éµÄ´óĞ¡
+			FPoolInfo* ExhaustedPool; //·ÖÅäÍêµÄ PoolInfo Á´±íÍ·Ö¸Õë
+			FPoolInfo* FirstPool;	  //Ã»ÓĞ·ÖÅäÍêµÄ PoolInfo Á´±íÍ·Ö¸Õë
 		};
 
 		struct FPoolInfo
 		{
-			// FPoolInfo* Pre; //æŒ‡å‘è‡ªå·±å‰ä¸€ä¸ªèŠ‚ç‚¹
-			//äº PreLink ä¸ºä»€ä¹ˆæ˜¯æŒ‡é’ˆçš„æŒ‡é’ˆï¼Œå…¶å®è¿™ç§æ–¹å¼ä»ä¸€ä¸ªé“¾è¡¨ä¸­åˆ é™¤ï¼Œæ— é¡»çŸ¥é“å½“å‰é“¾è¡¨çš„å¤´æŒ‡é’ˆ
+			// FPoolInfo* Pre; //Ö¸Ïò×Ô¼ºÇ°Ò»¸ö½Úµã
+			//ÓÚ PreLink ÎªÊ²Ã´ÊÇÖ¸ÕëµÄÖ¸Õë£¬ÆäÊµÕâÖÖ·½Ê½´ÓÒ»¸öÁ´±íÖĞÉ¾³ı£¬ÎŞĞëÖªµÀµ±Ç°Á´±íµÄÍ·Ö¸Õë
 			FPoolInfo** PrevLink;
-			FPoolInfo* Next;	//æŒ‡å‘è‡ªå·±çš„åä¸€ä¸ªèŠ‚ç‚¹
-			FPoolTable* Owner;	//å±äºå“ªä¸ªé“¾è¡¨ç®¡ç†è€…
-			void* MemoryAddr;	//æŒ‡å‘ 32 ä½ Windows ç³»ç»Ÿåˆ†é…ç©ºé—´çš„é¦–åœ°å€
-			unsigned int Taken; //æ¯åˆ†é…ä¸€æ¬¡å°±åŠ  1ï¼Œé‡Šæ”¾ä¸€æ¬¡å°±å‡ 1ï¼Œå¦‚æœé‡Šæ”¾åä¸º 0ï¼Œé‚£ä¹ˆå°±æŠŠ Mem æŒ‡å‘çš„å†…å­˜ç©ºé—´è¿˜ç»™ 32 ä½ Windows ç³»ç»Ÿ
+			FPoolInfo* Next;	//Ö¸Ïò×Ô¼ºµÄºóÒ»¸ö½Úµã
+			FPoolTable* Owner;	//ÊôÓÚÄÄ¸öÁ´±í¹ÜÀíÕß
+			void* MemoryAddr;	//Ö¸Ïò 32 Î» Windows ÏµÍ³·ÖÅä¿Õ¼äµÄÊ×µØÖ·
+			unsigned int Taken; //Ã¿·ÖÅäÒ»´Î¾Í¼Ó 1£¬ÊÍ·ÅÒ»´Î¾Í¼õ 1£¬Èç¹ûÊÍ·ÅºóÎª 0£¬ÄÇÃ´¾Í°Ñ Mem Ö¸ÏòµÄÄÚ´æ¿Õ¼ä»¹¸ø 32 Î» Windows ÏµÍ³
 			FFreeBlock* pAvailableBlock;
-			// Fpoolinfo link åˆ°å‚æ•°ä¸­ï¼Œæ‰€ä»¥éœ€è¦ä½¿ç”¨å¼•ç”¨ä¼ å‚ï¼Œheadæ˜¯æŒ‡å‘æŒ‡é’ˆçš„æŒ‡é’ˆã€‚
-			//å°†thisæ’å…¥åˆ°é“¾è¡¨å¤´ç»“ç‚¹ã€‚
+			// Fpoolinfo link µ½²ÎÊıÖĞ£¬ËùÒÔĞèÒªÊ¹ÓÃÒıÓÃ´«²Î£¬headÊÇÖ¸ÏòÖ¸ÕëµÄÖ¸Õë¡£
+			//½«this²åÈëµ½Á´±íÍ·½áµã¡£
 
 			DWORD Bytes;   // Bytes allocated for pool.
 			DWORD OsBytes; // Bytes aligned to page size.
@@ -157,15 +157,15 @@ namespace Matrix
 				*PrevLink = Next;
 			}
 		};
-		// FreeMemçš„å¤§å°æ˜¯8å­—èŠ‚ï¼Œå¯ä»¥å’Œä¸€ä¸ªblockå•å…ƒå…¬ç”¨ï¼Œå› ä¸ºæœªåˆ†é…æ‰éœ€è¦freememè®°å½•ï¼Œå·²ç»åˆ†é…çš„ä¸éœ€è¦Freememè®°å½•ã€‚
+		// FreeMemµÄ´óĞ¡ÊÇ8×Ö½Ú£¬¿ÉÒÔºÍÒ»¸öblockµ¥Ôª¹«ÓÃ£¬ÒòÎªÎ´·ÖÅä²ÅĞèÒªfreemem¼ÇÂ¼£¬ÒÑ¾­·ÖÅäµÄ²»ĞèÒªFreemem¼ÇÂ¼¡£
 		struct FFreeBlock
 		{
-			FFreeBlock* Next; //åœ¨åŒä¸€ä¸ª PoolInfo ä¸­ï¼Œä¸‹ä¸€ä¸ªå¯ç”¨çš„å•å…ƒ
-			DWORD Blocks;	  //è¿˜å‰©ä¸‹å¤šå°‘å¯ç”¨å•å…ƒ
+			FFreeBlock* Next; //ÔÚÍ¬Ò»¸ö PoolInfo ÖĞ£¬ÏÂÒ»¸ö¿ÉÓÃµÄµ¥Ôª
+			DWORD Blocks;	  //»¹Ê£ÏÂ¶àÉÙ¿ÉÓÃµ¥Ôª
 			FPoolInfo* GetPool()
 			{
-				//åœ¨Poolinfoä¸­çš„ä»»æ„ä¸€ä¸ªåœ°å€å–å‡ºé«˜17ä½å°±å¯ä»¥å®šä½è¿™ä¸ªPoolinfo
-				//å› ä¸ºM ä¸º 32KBï¼Œå³ä½15ä½ä¸ºå—å†…åœ°å€
+				//ÔÚPoolinfoÖĞµÄÈÎÒâÒ»¸öµØÖ·È¡³ö¸ß17Î»¾Í¿ÉÒÔ¶¨Î»Õâ¸öPoolinfo
+				//ÒòÎªM Îª 32KB£¬¼´µÍ15Î»Îª¿éÄÚµØÖ·
 				return (FPoolInfo*)((INT)this & 0xffff8000);
 			}
 		};
@@ -178,14 +178,14 @@ namespace Matrix
 	};
 
 #elif _DEBUG
-	//é‡‡ç”¨æµ®åŠ¨å¤§å°çš„blockå—ï¼ŒBeginMask å’Œ EndMaskéš”ç¦» 
+	//²ÉÓÃ¸¡¶¯´óĞ¡µÄblock¿é£¬BeginMask ºÍ EndMask¸ôÀë 
 	class MATRIXCORE_API DebugMemoryAlloc : public BaseMemoryManager
 	{
 	public:
 		DebugMemoryAlloc();
 		~DebugMemoryAlloc();
 
-		// uiSize æ˜¯è¿™æ¬¡ç”³è¯·çš„å­—èŠ‚æ•°
+		// uiSize ÊÇÕâ´ÎÉêÇëµÄ×Ö½ÚÊı
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
@@ -194,7 +194,7 @@ namespace Matrix
 		{
 			BEGIN_MASK = 0xDEADC0DE,
 			END_MASK = 0xDEADC0DE,
-			RECORD_NUM = 32, //å¿…é¡»å¤§äº2
+			RECORD_NUM = 32, //±ØĞë´óÓÚ2
 			CALLSTACK_NUM = 32
 		};
 
@@ -215,30 +215,30 @@ namespace Matrix
 				mStackInfoNum = 0;
 			}
 
-			void* pStackAddr[CALLSTACK_NUM]; //ç”³è¯·å†…å­˜æ—¶å€™çš„è°ƒç”¨å †æ ˆä¿¡æ¯
-			unsigned int mStackInfoNum;		 //å †æ ˆå±‚æ•°
-			USIZE_TYPE mSize;				 //ç”³è¯·ç©ºé—´çš„å¤§å°
-			bool mbArray;					 //æ˜¯å¦æ˜¯æ•°ç»„
-			bool mbAlignment;				 //æ˜¯å¦å­—èŠ‚å¯¹é½
-			Block* pPrev;					 //å‰ä¸€ä¸ªèŠ‚ç‚¹
-			Block* pNext;					 //åä¸€ä¸ªèŠ‚ç‚¹
+			void* pStackAddr[CALLSTACK_NUM]; //ÉêÇëÄÚ´æÊ±ºòµÄµ÷ÓÃ¶ÑÕ»ĞÅÏ¢
+			unsigned int mStackInfoNum;		 //¶ÑÕ»²ãÊı
+			USIZE_TYPE mSize;				 //ÉêÇë¿Õ¼äµÄ´óĞ¡
+			bool mbArray;					 //ÊÇ·ñÊÇÊı×é
+			bool mbAlignment;				 //ÊÇ·ñ×Ö½Ú¶ÔÆë
+			Block* pPrev;					 //Ç°Ò»¸ö½Úµã
+			Block* pNext;					 //ºóÒ»¸ö½Úµã
 		};
 
 		Block* pHead;
 		Block* pTail;
-		unsigned int mNumNewCalls;			  //è°ƒç”¨ new çš„æ¬¡æ•°
-		unsigned int mNumDeleteCalls;		  //è°ƒç”¨ delete çš„æ¬¡æ•°
-		unsigned int mNumBlocks;			  //å½“å‰æœ‰å¤šå°‘å†…å­˜å—
-		unsigned int mNumBytes;				  //å½“å‰æœ‰å¤šå°‘å­—èŠ‚
-		unsigned int mMaxNumBytes;			  //æœ€å¤šç”³è¯·å¤šå°‘å­—èŠ‚
-		unsigned int mMaxNumBlocks;			  //æœ€å¤šç”³è¯·å¤šå°‘å†…å­˜å—
-		unsigned int mSizeRecord[RECORD_NUM]; //ç»Ÿè®¡å†…å­˜åœ¨2çš„næ¬¡æ–¹çš„åˆ†å¸ƒæƒ…å†µã€‚
+		unsigned int mNumNewCalls;			  //µ÷ÓÃ new µÄ´ÎÊı
+		unsigned int mNumDeleteCalls;		  //µ÷ÓÃ delete µÄ´ÎÊı
+		unsigned int mNumBlocks;			  //µ±Ç°ÓĞ¶àÉÙÄÚ´æ¿é
+		unsigned int mNumBytes;				  //µ±Ç°ÓĞ¶àÉÙ×Ö½Ú
+		unsigned int mMaxNumBytes;			  //×î¶àÉêÇë¶àÉÙ×Ö½Ú
+		unsigned int mMaxNumBlocks;			  //×î¶àÉêÇë¶àÉÙÄÚ´æ¿é
+		unsigned int mSizeRecord[RECORD_NUM]; //Í³¼ÆÄÚ´æÔÚ2µÄn´Î·½µÄ·Ö²¼Çé¿ö¡£
 		void InsertBlock(Block* pBlock);
-		//ä»…ä»…è´Ÿè´£ç§»é™¤ï¼Œä¸åšå†…å­˜é‡Šæ”¾å¤„ç†
+		//½ö½ö¸ºÔğÒÆ³ı£¬²»×öÄÚ´æÊÍ·Å´¦Àí
 		void RemoveBlock(Block* pBlock);
 
 		bool GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_PATH], int& line);
-		//ä¾é  åŠ¨æ€é“¾æ¥åº“dbhelp.dll äº†ã€‚è¿™ä¸ªå¯ä»¥æ ¹æ®å½“å‰æŒ‡ä»¤æ‰€åœ¨ä»£ç æ®µä¸­çš„åœ°å€æ‰“å°å‡ºè¿™è¡Œä»£ç æ‰€åœ¨è¡Œæ•°å’Œæ–‡ä»¶è·¯å¾„çš„å‡½æ•°
+		//ÒÀ¿¿ ¶¯Ì¬Á´½Ó¿âdbhelp.dll ÁË¡£Õâ¸ö¿ÉÒÔ¸ù¾İµ±Ç°Ö¸ÁîËùÔÚ´úÂë¶ÎÖĞµÄµØÖ·´òÓ¡³öÕâĞĞ´úÂëËùÔÚĞĞÊıºÍÎÄ¼şÂ·¾¶µÄº¯Êı
 		bool InitDbgHelpLib();
 		void FreeLeakMem();
 		void PrintInfo();
@@ -256,21 +256,21 @@ namespace Matrix
 	};
 #endif
 
-	//==============================æ ˆå†…å­˜ç®¡ç†===============================
-	//æ ˆå†…å­˜ç®¡ç†ï¼Œ å‚è€ƒUEçš„ä»£ç è®¾è®¡ï¼Œ æ²¡æœ‰è€ƒè™‘çº¿ç¨‹å®‰å…¨ï¼Œæ¯å¸§éƒ½ä¼šæ¸…ç†
+	//==============================Õ»ÄÚ´æ¹ÜÀí===============================
+	//Õ»ÄÚ´æ¹ÜÀí£¬ ²Î¿¼UEµÄ´úÂëÉè¼Æ£¬ Ã»ÓĞ¿¼ÂÇÏß³Ì°²È«£¬Ã¿Ö¡¶¼»áÇåÀí
 
 	class MATRIXCORE_API StackMemoryManager : public BaseMemoryManager
 	{
 	public:
-		//é»˜è®¤åˆ†é…
+		//Ä¬ÈÏ·ÖÅä
 		StackMemoryManager(USIZE_TYPE uiDefaultChunkSize = 65536);
 		~StackMemoryManager();
 
 		virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
-		//æ ˆå†…å­˜æ— é¡»ä¸»åŠ¨é‡Šæ”¾ï¼Œå‡ºæ ˆå³æ¶ˆäº¡ï¼ˆå…¶å®çœŸæ­£çš„é‡Šæ”¾æ“ä½œè¿˜æ˜¯ç”±heap memory managerå†³å®šï¼‰
+		//Õ»ÄÚ´æÎŞĞëÖ÷¶¯ÊÍ·Å£¬³öÕ»¼´ÏûÍö£¨ÆäÊµÕæÕıµÄÊÍ·Å²Ù×÷»¹ÊÇÓÉheap memory manager¾ö¶¨£©
 		virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
-		//æ¯å¸§ç»“æŸæˆ–è€…å¼€å§‹çš„æ—¶å€™è°ƒç”¨,é‡Šæ”¾æ‰€æœ‰
+		//Ã¿Ö¡½áÊø»òÕß¿ªÊ¼µÄÊ±ºòµ÷ÓÃ,ÊÍ·ÅËùÓĞ
 		void Clear();
 
 		template <class T>
@@ -278,7 +278,7 @@ namespace Matrix
 		friend class StackMemTag;
 
 	private:
-		// Chunk æŒ‡é’ˆç»“æ„
+		// Chunk Ö¸Õë½á¹¹
 		struct FTaggedMemory
 		{
 			FTaggedMemory* Next;
@@ -286,21 +286,21 @@ namespace Matrix
 			BYTE Data[1];
 		};
 
-		BYTE* Top;					 //å½“å‰ Chunkå—å†…æ ˆå¤´
-		BYTE* End;					 //å½“å‰ Chunkå—å†…æ ˆå°¾
-		USIZE_TYPE DefaultChunkSize; //é»˜è®¤æ¯æ¬¡åˆ†é…æœ€å¤§ Size
-		FTaggedMemory* TopChunk;	 //å½“å‰å·²åˆ†é… Chunk å¤´æŒ‡é’ˆ
-		FTaggedMemory* UnusedChunks; //å½“å‰ç©ºé—² Chunk å¤´æŒ‡é’ˆ(ä½†æ˜¯å·²ç»åˆ†é…å¥½äº†ï¼‰
+		BYTE* Top;					 //µ±Ç° Chunk¿éÄÚÕ»Í·
+		BYTE* End;					 //µ±Ç° Chunk¿éÄÚÕ»Î²
+		USIZE_TYPE DefaultChunkSize; //Ä¬ÈÏÃ¿´Î·ÖÅä×î´ó Size
+		FTaggedMemory* TopChunk;	 //µ±Ç°ÒÑ·ÖÅä Chunk Í·Ö¸Õë
+		FTaggedMemory* UnusedChunks; //µ±Ç°¿ÕÏĞ Chunk Í·Ö¸Õë(µ«ÊÇÒÑ¾­·ÖÅäºÃÁË£©
 
 		/** The number of marks on this stack. */
 		INT NumMarks;
 
 		BYTE* AllocateNewChunk(USIZE_TYPE MinSize);
-		//é‡Šæ”¾ NewTopChunk åˆ° TopChunk çš„æ‰€æœ‰ Chunk
+		//ÊÍ·Å NewTopChunk µ½ TopChunk µÄËùÓĞ Chunk
 		void FreeChunks(FTaggedMemory* NewTopChunk);
 	};
 
-	//==============================ä»¥ä¸Šä¸ºå¤šå¹³å°çš„å†…å­˜åˆ†é…çš„è®¾è®¡å®ç°====================================
+	//==============================ÒÔÉÏÎª¶àÆ½Ì¨µÄÄÚ´æ·ÖÅäµÄÉè¼ÆÊµÏÖ====================================
 	//=============================================================================================
 	class MATRIXCORE_API MemoryObject
 	{
@@ -332,12 +332,12 @@ namespace Matrix
 				mPtr = (T*)StackMem.Allocate(uiNum * sizeof(T), uiAlignment, 0);
 				MTXENGINE_ASSERT(mPtr);
 
-				//åˆ¤æ–­æ˜¯å¦æœ‰æ„é€ å‡½æ•°ï¼Œ
+				//ÅĞ¶ÏÊÇ·ñÓĞ¹¹Ôìº¯Êı£¬
 				if (ValueBase<T>::NeedsConstructor)
 				{
 					for (unsigned int i = 0; i < uiNum; i++)
 					{
-						//åœ¨å½“å‰å†…å­˜åœ°å€ä¸­æ‰§è¡Œæ„é€ 
+						//ÔÚµ±Ç°ÄÚ´æµØÖ·ÖĞÖ´ĞĞ¹¹Ôì
 						new (mPtr + i) T();
 					}
 				}
@@ -360,17 +360,17 @@ namespace Matrix
 			StackMemoryManager& StackMem = GetStackMemoryManager();
 			// Track the number of outstanding marks on the stack.
 			--StackMem.NumMarks;
-			//é‡Šæ”¾ SavedChunk å‰é¢çš„æ‰€æœ‰ Chunk åˆ°ç©ºé—²åˆ—è¡¨ä¸­
+			//ÊÍ·Å SavedChunk Ç°ÃæµÄËùÓĞ Chunk µ½¿ÕÏĞÁĞ±íÖĞ
 			if (SavedChunk != StackMem.TopChunk)
 			{
 				StackMem.FreeChunks(SavedChunk);
 			}
-			//è¿˜åŸç°åœº
+			//»¹Ô­ÏÖ³¡
 			StackMem.Top = Top;
 			Top = NULL;
 		}
 
-		//å–å¾—åˆ†é…ç©ºé—´çš„æŒ‡é’ˆ
+		//È¡µÃ·ÖÅä¿Õ¼äµÄÖ¸Õë
 		inline T* GetPtr() const
 		{
 			return mPtr;
@@ -384,7 +384,7 @@ namespace Matrix
 		BYTE* Top;
 		StackMemoryManager::FTaggedMemory* SavedChunk;
 		T* mPtr;
-		size_t mNum; //è®°å½•æ„é€ çš„æ•°é‡
+		size_t mNum; //¼ÇÂ¼¹¹ÔìµÄÊıÁ¿
 	};
 
 	class StackMemTag : public MemoryObject

@@ -14,13 +14,10 @@ set_target_properties(${SharedLibName} PROPERTIES FOLDER ${engine_root_dir}/${se
 
 #==============================设置target属性=============================
 target_compile_definitions(${SharedLibName}  PRIVATE  $<$<CONFIG:Debug>: _TEST_MACRO_> )
-target_compile_definitions(${SharedLibName} PRIVATE UNICODE _UNICODE)
-# target_include_directories(${SharedLibName}  INTERFACE ${HeaderFiles})
-# target_link_directories(${SharedLibName} PRIVATE )
-target_link_libraries(${SharedLibName} PRIVATE "dbghelp;Winmm" )
-if(oneTTB_FOUND)
-    message(STATUS  found = xxx)
-endif()
+target_compile_definitions(${SharedLibName} PRIVATE "UNICODE; _UNICODE" )
+target_include_directories(${SharedLibName}  PRIVATE ${THIRD_PARTY_DIR}/TBB/include)
+target_link_directories(${SharedLibName} PRIVATE ${THIRD_PARTY_DIR}/TBB/Lib)
+target_link_libraries(${SharedLibName} PRIVATE "dbghelp;Winmm;tbbmalloc.lib")
 
 # #==========================================生成器表达式 Debug===================================== 
 # file(GENERATE OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/../generator_test.txt" CONTENT "$<$<BOOL:release>:dbghelp>\n")
