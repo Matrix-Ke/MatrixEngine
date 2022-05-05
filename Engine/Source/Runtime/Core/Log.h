@@ -5,14 +5,17 @@
 
 namespace Matrix
 {
-	class MATRIXCORE_API MTXLog : public MTXFile
+	namespace Core
 	{
-	public:
-		MTXLog();
-		~MTXLog();
-		bool Open(const TCHAR* pFileName);
-		bool WriteInfo(const TCHAR* pString);
-	};
 
+		class MATRIX_CORE_API MTXLog : public File
+		{
+		public:
+			MTXLog();
+			~MTXLog();
+			bool Open(const TCHAR* pFileName);
+			bool WriteInfo(const TCHAR* pString);
+		};
+	}
 }
 

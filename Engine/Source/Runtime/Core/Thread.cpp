@@ -1,7 +1,7 @@
 #include "Thread.h"
 #include <process.h>
 
-using namespace Matrix;
+using namespace Matrix::Core;
 
 MTXThread::MTXThread() : mThread(NULL), mPriority(Normal), mStackSize(0), mThreadName(NULL)
 {
@@ -20,7 +20,7 @@ MTXThread::MTXThread() : mThread(NULL), mPriority(Normal), mStackSize(0), mThrea
 
 }
 
-Matrix::MTXThread::~MTXThread()
+Matrix::Core::MTXThread::~MTXThread()
 {
 	if (IsRunning())
 	{
@@ -34,7 +34,7 @@ Matrix::MTXThread::~MTXThread()
 	}
 }
 
-void Matrix::MTXThread::SetPriority(const Priority& p)
+void Matrix::Core::MTXThread::SetPriority(const Priority& p)
 {
 	int nPriority = THREAD_PRIORITY_NORMAL;
 
@@ -48,7 +48,7 @@ void Matrix::MTXThread::SetPriority(const Priority& p)
 	SetThreadPriority(mThread, nPriority);
 }
 
-void Matrix::MTXThread::Start()
+void Matrix::Core::MTXThread::Start()
 {
 	if (mThreadState == TS_SUSPEND)
 	{
@@ -57,7 +57,7 @@ void Matrix::MTXThread::Start()
 	}
 }
 
-void Matrix::MTXThread::Suspend()
+void Matrix::Core::MTXThread::Suspend()
 {
 	if (mThreadState == TS_START)
 	{
@@ -66,7 +66,7 @@ void Matrix::MTXThread::Suspend()
 	}
 }
 
-bool Matrix::MTXThread::IsRunning() const
+bool Matrix::Core::MTXThread::IsRunning() const
 {
 	if (NULL != mThread)
 	{
@@ -83,17 +83,17 @@ bool Matrix::MTXThread::IsRunning() const
 	return false;
 }
 
-void Matrix::MTXThread::Sleep(DWORD dwMillseconds)
+void Matrix::Core::MTXThread::Sleep(DWORD dwMillseconds)
 {
 	::Sleep(dwMillseconds);
 }
 
-bool Matrix::MTXThread::IsStopTrigger()
+bool Matrix::Core::MTXThread::IsStopTrigger()
 {
 	return mStopEvent.IsTrigger();
 }
 
-void Matrix::MTXThread::Stop()
+void Matrix::Core::MTXThread::Stop()
 {
 	if (mThreadState == TS_START)
 	{
@@ -109,7 +109,7 @@ void Matrix::MTXThread::Stop()
 	}
 }
 
-void Matrix::MTXThread::SetThreadName(const char* name)
+void Matrix::Core::MTXThread::SetThreadName(const char* name)
 {
 	//strcpy_s只用于字符串复制，并且它不仅复制字符串内容之外，还会复制字符串的结束符'\0'
 	//strlen()函数求出的字符串长度为有效长度，既不包含字符串末尾结束符 ‘\0’；
@@ -142,12 +142,12 @@ void Matrix::MTXThread::SetThreadName(const char* name)
 	//mThreadName = new char;
 }
 
-const TCHAR* Matrix::MTXThread::GetThreadName()
+const TCHAR* Matrix::Core::MTXThread::GetThreadName()
 {
 	return nullptr;
 }
 
-DWORD THREAD_CALLBACK Matrix::MTXThread::ThreadProc(void* t)
+DWORD THREAD_CALLBACK Matrix::Core::MTXThread::ThreadProc(void* t)
 {
 	return 0;
 }

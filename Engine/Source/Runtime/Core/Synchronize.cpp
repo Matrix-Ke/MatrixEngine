@@ -1,11 +1,11 @@
 #include "Synchronize.h"
 #include "MemoryManager.h"
 
-using namespace Matrix;
+using namespace Matrix::Core;
 MTXCriticalSection gSafeOutputString;
 
 
-unsigned int Matrix::MTXSynchronize::WaitAll(MTXSynchronize** pSynchronize, unsigned int uiNum, bool bWaitAll, DWORD dwMilliseconds)
+unsigned int Matrix::Core::MTXSynchronize::WaitAll(MTXSynchronize** pSynchronize, unsigned int uiNum, bool bWaitAll, DWORD dwMilliseconds)
 {
 	MTXENGINE_ASSERT(uiNum >= 1 && uiNum <= MAXIMUM_WAIT_OBJECTS);
 	static HANDLE handle[MAXIMUM_WAIT_OBJECTS];
@@ -27,7 +27,7 @@ unsigned int Matrix::MTXSynchronize::WaitAll(MTXSynchronize** pSynchronize, unsi
 	return WF_FAILED;
 }
 
-void Matrix::MTXSynchronize::MTXSafeOutputDebugString(const TCHAR* pString, ...)
+void Matrix::Core::MTXSynchronize::MTXSafeOutputDebugString(const TCHAR* pString, ...)
 {
 	MTXCriticalSection::Locker Temp(gSafeOutputString);
 	char* pArgs;
@@ -47,14 +47,14 @@ MTXSemaphore::MTXSemaphore(unsigned int uiCount, unsigned int maxCount)
 	mMaxCount = maxCount;
 }
 
-Matrix::MTXSemaphore::~MTXSemaphore()
+Matrix::Core::MTXSemaphore::~MTXSemaphore()
 {
 	BOOL closed = CloseHandle((HANDLE)mSemaphore);
 	MTXENGINE_ASSERT(closed);
 	mSemaphore = NULL;
 }
 
-void Matrix::MTXSemaphore::Enter()
+void Matrix::Core::MTXSemaphore::Enter()
 {
 	//WAIT_OBJECT_0, 表示等待的对象有信号（对线程来说，表示执行结束）；
 	//WAIT_TIMEOUT, 表示等待指定时间内，对象一直没有信号（线程没执行完）；
@@ -68,25 +68,25 @@ void Matrix::MTXSemaphore::Enter()
 	MTXENGINE_ASSERT(result);
 }
 
-void Matrix::MTXSemaphore::Leave(unsigned int uiReleaseCount)
+void Matrix::Core::MTXSemaphore::Leave(unsigned int uiReleaseCount)
 {
 	BOOL released = ReleaseSemaphore(HANDLE(mSemaphore), uiReleaseCount, NULL);
 }
 
-Matrix::MTXMutex::MTXMutex()
+Matrix::Core::MTXMutex::MTXMutex()
 {
 	mMutex = CreateMutex(NULL, FALSE, NULL);
 	MTXENGINE_ASSERT(mMutex);
 }
 
-Matrix::MTXMutex::~MTXMutex()
+Matrix::Core::MTXMutex::~MTXMutex()
 {
 	BOOL closed = CloseHandle((HANDLE)mMutex);
 	MTXENGINE_ASSERT(closed);
 	mMutex = NULL;
 }
 
-void Matrix::MTXMutex::Enter()
+void Matrix::Core::MTXMutex::Enter()
 {
 	// result:
 	//   WAIT_ABANDONED (0x00000080)
@@ -98,18 +98,18 @@ void Matrix::MTXMutex::Enter()
 
 }
 
-void Matrix::MTXMutex::Leave()
+void Matrix::Core::MTXMutex::Leave()
 {
 	BOOL  released = ReleaseMutex(HANDLE(mMutex));
 	MTXENGINE_ASSERT(released);
 }
 
-Matrix::MTXEvent::MTXEvent()
+Matrix::Core::MTXEvent::MTXEvent()
 {
 	mEvent = NULL;
 }
 
-Matrix::MTXEvent::~MTXEvent()
+Matrix::Core::MTXEvent::~MTXEvent()
 {
 	if (mEvent != NULL)
 	{
@@ -117,55 +117,55 @@ Matrix::MTXEvent::~MTXEvent()
 	}
 }
 
-void Matrix::MTXEvent::Lock()
+void Matrix::Core::MTXEvent::Lock()
 {
 	WaitForSingleObject(mEvent, INFINITE);
 }
 
-void Matrix::MTXEvent::unLock()
+void Matrix::Core::MTXEvent::unLock()
 {
 	PulseEvent(mEvent);
 }
 
-bool Matrix::MTXEvent::Create(bool bManualReset, const TCHAR* InName)
+bool Matrix::Core::MTXEvent::Create(bool bManualReset, const TCHAR* InName)
 {
 	mEvent = CreateEvent(NULL, bManualReset, 0, InName);
 	return mEvent != NULL;
 }
 
-void Matrix::MTXEvent::Trigger(void)
+void Matrix::Core::MTXEvent::Trigger(void)
 {
 	SetEvent(mEvent);
 }
 
-void Matrix::MTXEvent::Reset(void)
+void Matrix::Core::MTXEvent::Reset(void)
 {
 	ResetEvent(mEvent);
 }
 
-void Matrix::MTXEvent::Pulse(void)
+void Matrix::Core::MTXEvent::Pulse(void)
 {
 	PulseEvent(mEvent);
 }
 
-bool Matrix::MTXEvent::Wait(DWORD WaitTime)
+bool Matrix::Core::MTXEvent::Wait(DWORD WaitTime)
 {
 	return WaitForSingleObject(mEvent, WaitTime) == WAIT_OBJECT_0;
 }
 
-bool Matrix::MTXEvent::IsTrigger()
+bool Matrix::Core::MTXEvent::IsTrigger()
 {
 	return Wait(0);
 }
 
-Matrix::MTXTlsValue::MTXTlsValue()
+Matrix::Core::MTXTlsValue::MTXTlsValue()
 {
 	MTXCriticalSection::Locker  lockgurad(mCriticalSection);
 	mSlot = MTXTlsAlloc();
 	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 }
 
-Matrix::MTXTlsValue::~MTXTlsValue()
+Matrix::Core::MTXTlsValue::~MTXTlsValue()
 {
 	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 	for (size_t i = 0; i < mThreadValueNum; i++)
@@ -175,7 +175,7 @@ Matrix::MTXTlsValue::~MTXTlsValue()
 	MTXTlsFree(mSlot);
 }
 
-void Matrix::MTXTlsValue::SetThreadValue(void* pValue)
+void Matrix::Core::MTXTlsValue::SetThreadValue(void* pValue)
 {
 	MTXCriticalSection::Locker Temp(mCriticalSection);
 	pThreadValue[mThreadValueNum] = (StackMemoryManager*)pValue;
@@ -183,7 +183,7 @@ void Matrix::MTXTlsValue::SetThreadValue(void* pValue)
 	MTXSetTlsValue(mSlot, pValue);
 }
 
-void* Matrix::MTXTlsValue::GetThreadValue()
+void* Matrix::Core::MTXTlsValue::GetThreadValue()
 {
 	return MTXGetTlsValue(mSlot);
 }
