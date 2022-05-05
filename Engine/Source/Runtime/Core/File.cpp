@@ -1,8 +1,8 @@
 ﻿#include "File.h"
-using namespace Matrix;
+using namespace Matrix::Core;
 
 
-TCHAR MTXFile::ms_cOpenMode[OM_MAX][5] =
+TCHAR File::ms_cOpenMode[OM_MAX][5] =
 {
 	_T("rb"),
 	_T("wb"),
@@ -10,14 +10,14 @@ TCHAR MTXFile::ms_cOpenMode[OM_MAX][5] =
 	_T("wt"),
 };
 
-unsigned int MTXFile::m_uiSeekFlag[] =
+unsigned int File::m_uiSeekFlag[] =
 {
 	SEEK_CUR,
 	SEEK_END,
 	SEEK_SET
 };
 
-MTXFile::MTXFile()
+File::File()
 {
 	m_pFileHandle = NULL;
 	m_uiOpenMode = OM_MAX;
@@ -25,7 +25,7 @@ MTXFile::MTXFile()
 	//m_tcFileName = nullptr;
 }
 
-MTXFile::~MTXFile()
+File::~File()
 {
 	if (m_pFileHandle)
 	{
@@ -34,12 +34,12 @@ MTXFile::~MTXFile()
 	}
 }
 
-bool MTXFile::Flush()
+bool File::Flush()
 {
 	return(fflush(m_pFileHandle) == 0);
 }
 
-bool MTXFile::Seek(unsigned int uiOffset, unsigned int uiOrigin)
+bool File::Seek(unsigned int uiOffset, unsigned int uiOrigin)
 {
 	MTXENGINE_ASSERT(m_pFileHandle);
 	// fseek()函数用于把文件指针以origin为起点移动offset个字节, origin数字代表含义：
@@ -50,7 +50,7 @@ bool MTXFile::Seek(unsigned int uiOffset, unsigned int uiOrigin)
 }
 
 //打开文件的同时将各种文件信息记录下来
-bool MTXFile::Open(const TCHAR* pFileName, unsigned int uiOpenMode)
+bool File::Open(const TCHAR* pFileName, unsigned int uiOpenMode)
 {
 	if (m_pFileHandle)
 	{
@@ -91,7 +91,7 @@ bool MTXFile::Open(const TCHAR* pFileName, unsigned int uiOpenMode)
 	return true;
 }
 
-bool Matrix::MTXFile::Write(const void* pBuffer, unsigned int uiSize, unsigned int uiCount)
+bool Matrix::Core::File::Write(const void* pBuffer, unsigned int uiSize, unsigned int uiCount)
 {
 	MTXENGINE_ASSERT(m_pFileHandle);
 	//关于fwrite和 write去别， wirte系统调用， 调用write的时候， 先将数据写到操作系统内核缓冲区， 操作系统会定期将内核缓冲区的数据写回磁盘中。
@@ -104,14 +104,14 @@ bool Matrix::MTXFile::Write(const void* pBuffer, unsigned int uiSize, unsigned i
 	return fwrite(pBuffer, uiSize, uiCount, m_pFileHandle);
 }
 
-bool Matrix::MTXFile::Read(void* pBuffer, unsigned int uiSize, unsigned int uiCount)
+bool Matrix::Core::File::Read(void* pBuffer, unsigned int uiSize, unsigned int uiCount)
 {
 	MTXENGINE_ASSERT(m_pFileHandle);
 	// return actually read count. 
 	return fread(pBuffer, uiSize, uiCount, m_pFileHandle);
 }
 
-bool Matrix::MTXFile::GetLine(void* pBuffer, unsigned int uiBufferCount)
+bool Matrix::Core::File::GetLine(void* pBuffer, unsigned int uiBufferCount)
 {
 	MTXENGINE_ASSERT(m_pFileHandle);
 	MTXENGINE_ASSERT(pBuffer);
@@ -122,7 +122,7 @@ bool Matrix::MTXFile::GetLine(void* pBuffer, unsigned int uiBufferCount)
 	return true;
 }
 
-bool MTXFile::IsFileExist(const TCHAR* pFileName)
+bool File::IsFileExist(const TCHAR* pFileName)
 {
 	struct _stat64i32 kStat;
 	if (_tstat(pFileName, &kStat) != 0)

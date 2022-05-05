@@ -1,6 +1,6 @@
 #pragma once
 
-#if _WIN32
+#if _WIN32 //_WIN32 宏定义windows平台
 #define WINDOWS_PLATFORM 1
 #endif
 

@@ -1,21 +1,21 @@
 #include "Timer.h"
 #include <mmsystem.h>
-using namespace Matrix;
+using namespace Matrix::Core;
 
 
 MTXTimer* MTXTimer::msPtrTimer = nullptr;
-Matrix::MTXTimer::MTXTimer()
+Matrix::Core::MTXTimer::MTXTimer()
 {
 	InitGameTime();
 	msPtrTimer = this;
 }
 
-Matrix::MTXTimer::~MTXTimer()
+Matrix::Core::MTXTimer::~MTXTimer()
 {
 
 }
 
-void Matrix::MTXTimer::InitGameTime()
+void Matrix::Core::MTXTimer::InitGameTime()
 {
 	mFrameCount = 0;
 	mFPS = 0;
@@ -37,7 +37,7 @@ void Matrix::MTXTimer::InitGameTime()
 	}
 }
 
-double Matrix::MTXTimer::GetGamePlayTime()
+double Matrix::Core::MTXTimer::GetGamePlayTime()
 {
 	//返回当前时间，单位毫秒
 	__int64  timecurrentCounts;
@@ -52,7 +52,7 @@ double Matrix::MTXTimer::GetGamePlayTime()
 	}
 }
 
-void Matrix::MTXTimer::UpdateFPS()
+void Matrix::Core::MTXTimer::UpdateFPS()
 {
 	mTime = GetGamePlayTime() * 0.001;
 	mDeltaTime = mTime - mLastTime;
@@ -71,7 +71,7 @@ void Matrix::MTXTimer::UpdateFPS()
 
 }
 
-int Matrix::MTXTimer::GetRandSeed()
+int Matrix::Core::MTXTimer::GetRandSeed()
 {
 	return ((LARGE_INTEGER*)mTimeTickStartCounts)->LowPart;
 }
