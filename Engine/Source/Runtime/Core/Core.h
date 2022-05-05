@@ -83,7 +83,7 @@ namespace Matrix
 			return (memcpy_s(pDest, uiDestBufferSize, pSrc, uiCountSize) == 0);
 		}
 
-		inline  unsigned int MTXStrlen(const TCHAR* pStr)
+		inline  unsigned int MTXStrLen(const TCHAR* pStr)
 		{
 			return (unsigned int)_tcslen(pStr);
 		}
@@ -183,7 +183,7 @@ namespace Matrix
 			_vstprintf_s(_DstBuf, _SizeInBytes, _Format, pArgs);
 		}
 
-		inline void MTXScanf(TCHAR* Buf, const TCHAR* _Format, va_list pArgs)
+		inline void MTXScanf(TCHAR* Buf, const TCHAR* _Format, TCHAR pArgs)
 		{
 			_stscanf_s(Buf, _Format, pArgs);
 		}

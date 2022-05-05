@@ -8,7 +8,7 @@ getCurrentDirName(DemoName)
 FILE(GLOB  SourceFiles  ./*.cpp)
 source_group("Source Files" FILES ${SourceFiles})
 add_executable(${DemoName} ${SourceFiles})
-add_dependencies(${DemoName} Core)
+add_dependencies(${DemoName} Container)
 
 
 #=========================
@@ -17,4 +17,4 @@ add_dependencies(${DemoName} Core)
 set_target_properties(${DemoName} PROPERTIES FOLDER  ${SampleName}/${DemoName})
 target_include_directories(${DemoName}   PRIVATE  ${ENGINE_SOURCE_RUNTIME_DIR})
 
-target_link_libraries(${DemoName}  Core)
+target_link_libraries(${DemoName}  Container)

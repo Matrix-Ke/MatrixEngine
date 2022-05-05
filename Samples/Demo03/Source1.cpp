@@ -1,8 +1,9 @@
 //stack memroy unit demo
-#include "MemoryManager.h"
+#include "Core/MemoryManager.h"
 #include <iostream>
 
-using namespace Matrix;
+using namespace Matrix::Core;
+
 class MyStruct
 {
 public:

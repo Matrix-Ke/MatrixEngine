@@ -757,7 +757,7 @@ BYTE* Matrix::Core::StackMemoryManager::AllocateNewChunk(USIZE_TYPE MinSize)
 	}
 	if (!Chunk)
 	{
-		// Create new chunk.
+		// Create MATRIX_NEW chunk.
 		USIZE_TYPE DataSize = Max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
 		Chunk = (FTaggedMemory*)MemoryObject::GetMemoryManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
 		Chunk->DataSize = DataSize;
@@ -808,7 +808,7 @@ StackMemoryManager& Matrix::Core::MemoryObject::GetStackMemoryManager()
 	void* pTlsValue = g_TlsValue.GetThreadValue();
 	if (!pTlsValue)
 	{
-		pTlsValue = new StackMemoryManager();
+		pTlsValue = MATRIX_NEW StackMemoryManager();
 		g_TlsValue.SetThreadValue(pTlsValue);
 	}
 	return *((StackMemoryManager*)pTlsValue);

@@ -12,7 +12,7 @@ namespace Matrix
 {
 	using namespace Core;
 
-	namespace MContainer
+	namespace Container
 	{
 		template<class KEY, class VALUE>
 		class MapElement : public MemoryObject
@@ -360,7 +360,7 @@ namespace Matrix
 			}
 		}
 		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class MContainer : public MTXMemObject
+		class MContainer : public MemoryObject
 		{
 		protected:
 			T* New(unsigned int uiNum)
@@ -370,7 +370,7 @@ namespace Matrix
 					return NULL;
 				}
 				T* pPtr = (T*)m_MemManagerObject.Allocate(uiNum * sizeof(T), 0, true);
-				MTXMAC_ASSERT(pPtr);
+				MTXENGINE_ASSERT(pPtr);
 				if (!pPtr)
 				{
 					return NULL;

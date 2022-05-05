@@ -80,7 +80,7 @@ namespace Matrix
 		//				std::lock_guard<std::mutex>   LockGurad(mMutex);
 		//				if (mInstance == nullptr)
 		//				{
-		//					mInstance = std::unique_ptr<T*>(new T);
+		//					mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
 		//				}
 		//			}
 		//			return *mInstance;
@@ -89,7 +89,7 @@ namespace Matrix
 		//		{
 		//			if (mInstance == nullptr)
 		//			{
-		//				mInstance = std::unique_ptr<T*>(new T);
+		//				mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
 		//			}
 		//			return *mInstance;
 		//		}
