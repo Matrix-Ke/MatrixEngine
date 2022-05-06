@@ -206,7 +206,7 @@ namespace Matrix
 				}
 			}
 			ListElement<T>* pElem = New(1);
-			new(pElem) ListElement<T>();
+			MATRIX_NEW(pElem) ListElement<T>();
 			pElem->Element = Element;
 			pElem->m_pFront = m_pTail;
 			pElem->m_pNext = NULL;

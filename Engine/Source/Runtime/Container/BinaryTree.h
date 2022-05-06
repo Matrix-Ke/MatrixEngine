@@ -151,7 +151,7 @@ namespace Matrix
 				if (m_pRoot == NULL)
 				{
 					MTXBinaryTreeNode<T>* pElem = New(1);
-					new(pElem) MTXBinaryTreeNode<T>();
+					MATRIX_NEW(pElem) MTXBinaryTreeNode<T>();
 					pElem->Element = Element;
 					m_pRoot = pElem;
 					m_uiNodeNum++;
@@ -165,7 +165,7 @@ namespace Matrix
 							if (pCurrentNode->m_pLeft == NULL)
 							{
 								MTXBinaryTreeNode<T>* pElem = New(1);
-								new(pElem) MTXBinaryTreeNode<T>();
+								MATRIX_NEW(pElem) MTXBinaryTreeNode<T>();
 								pElem->Element = Element;
 								pCurrentNode->m_pLeft = pElem;
 								pElem->m_pParent = pCurrentNode;
@@ -183,7 +183,7 @@ namespace Matrix
 							if (pCurrentNode->m_pRight == NULL)
 							{
 								MTXBinaryTreeNode<T>* pElem = New(1);
-								new(pElem) MTXBinaryTreeNode<T>();
+								MATRIX_NEW(pElem) MTXBinaryTreeNode<T>();
 								pElem->Element = Element;
 
 								pCurrentNode->m_pRight = pElem;

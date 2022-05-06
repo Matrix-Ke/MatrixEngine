@@ -79,7 +79,7 @@ namespace Matrix
 			{
 				MTXENGINE_DELETE(m_pBuffer);
 				m_uiSize = BitArray.m_uiSize;
-				m_pBuffer = new unsigned int[m_uiSize];
+				m_pBuffer = MATRIX_NEW unsigned int[m_uiSize];
 				MTXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
 			}
 			MTXBitArray(unsigned int uiSize = 0)
@@ -108,7 +108,7 @@ namespace Matrix
 				else
 					uiSize = (uiSize / BYTE_SIZE) + 1;
 
-				pNewVector = new unsigned int[uiSize];
+				pNewVector = MATRIX_NEW unsigned int[uiSize];
 
 				MTXENGINE_ASSERT(pNewVector);
 
@@ -142,7 +142,7 @@ namespace Matrix
 			{
 				m_uiSize = BitArray.m_uiSize;
 				MTXENGINE_DELETE(m_pBuffer);
-				m_pBuffer = new unsigned int[m_uiSize];
+				m_pBuffer = MATRIX_NEW unsigned int[m_uiSize];
 				MTXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
 			}
 			void Set(unsigned int uiIndex, bool bValue)
