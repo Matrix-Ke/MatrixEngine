@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/Core.h"
-#include "Core/MemoryManager.h"
+#include "System/Core.h"
+#include "System/MemoryManager.h"
 #include "Container.h"
 namespace Matrix
 {

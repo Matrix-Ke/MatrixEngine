@@ -15,6 +15,6 @@ add_dependencies(${DemoName} Core)
 # message(STATUS ENGINE_SOURCE_RUNTIME_DIR = ${ENGINE_SOURCE_RUNTIME_DIR})
 # target_compile_definitions(${DemoName}  "")
 set_target_properties(${DemoName} PROPERTIES FOLDER  ${SampleName}/${DemoName})
-target_include_directories(${DemoName}   PRIVATE  ${ENGINE_SOURCE_RUNTIME_DIR})
+target_include_directories(${DemoName}   PRIVATE  ${ENGINE_SOURCE_RUNTIME_DIR}/Core)
 
 target_link_libraries(${DemoName}  Core)

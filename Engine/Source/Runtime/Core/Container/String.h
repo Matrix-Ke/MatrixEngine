@@ -5,7 +5,7 @@ namespace Matrix
 {
 	namespace Container
 	{
-		class MATRIX_CONTAINER_API MTXString : public MContainer<TCHAR>
+		class MATRIX_CORE_API MTXString : public MContainer<TCHAR>
 		{
 		public:
 			enum
@@ -63,39 +63,39 @@ namespace Matrix
 
 		};
 		//重载+操作符
-		MATRIX_CONTAINER_API MTXString operator +(const MTXString& String1, const MTXString& String2);
-		MATRIX_CONTAINER_API MTXString operator +(const MTXString& String1, const TCHAR* String2);
-		MATRIX_CONTAINER_API MTXString operator +(const TCHAR* String1, const MTXString& String2);
+		MATRIX_CORE_API MTXString operator +(const MTXString& String1, const MTXString& String2);
+		MATRIX_CORE_API MTXString operator +(const MTXString& String1, const TCHAR* String2);
+		MATRIX_CORE_API MTXString operator +(const TCHAR* String1, const MTXString& String2);
 
 		//大于返回大于0，小于返回小于0，等于返回0 
-		MATRIX_CONTAINER_API int CompareString(const MTXString& String1, const MTXString& String2);
-		MATRIX_CONTAINER_API int CompareString(const MTXString& String1, const TCHAR* String2);
-		MATRIX_CONTAINER_API int CompareString(const TCHAR* String1, const MTXString& String2);
+		MATRIX_CORE_API int CompareString(const MTXString& String1, const MTXString& String2);
+		MATRIX_CORE_API int CompareString(const MTXString& String1, const TCHAR* String2);
+		MATRIX_CORE_API int CompareString(const TCHAR* String1, const MTXString& String2);
 
 		//重载==操作符
-		MATRIX_CONTAINER_API bool operator ==(const MTXString& String1, const MTXString& String2);
-		MATRIX_CONTAINER_API bool operator ==(const MTXString& String1, const TCHAR* String2);
-		MATRIX_CONTAINER_API bool operator ==(const TCHAR* String1, MTXString& String2);
+		MATRIX_CORE_API bool operator ==(const MTXString& String1, const MTXString& String2);
+		MATRIX_CORE_API bool operator ==(const MTXString& String1, const TCHAR* String2);
+		MATRIX_CORE_API bool operator ==(const TCHAR* String1, MTXString& String2);
 		//重载!=操作符
-		MATRIX_CONTAINER_API bool operator !=(const MTXString& String1, const MTXString& String2);
-		MATRIX_CONTAINER_API bool operator !=(const MTXString& String1, const TCHAR* String2);
-		MATRIX_CONTAINER_API bool operator !=(const TCHAR* String1, const MTXString& String2);
+		MATRIX_CORE_API bool operator !=(const MTXString& String1, const MTXString& String2);
+		MATRIX_CORE_API bool operator !=(const MTXString& String1, const TCHAR* String2);
+		MATRIX_CORE_API bool operator !=(const TCHAR* String1, const MTXString& String2);
 
-		MATRIX_CONTAINER_API int StringToInt(const MTXString& String);
-		MATRIX_CONTAINER_API MTXString IntToString(int i);
+		MATRIX_CORE_API int StringToInt(const MTXString& String);
+		MATRIX_CORE_API MTXString IntToString(int i);
 
-		MATRIX_CONTAINER_API unsigned int StringToUInt(const MTXString& String);
-		MATRIX_CONTAINER_API MTXString UIntToString(unsigned int i);
+		MATRIX_CORE_API unsigned int StringToUInt(const MTXString& String);
+		MATRIX_CORE_API MTXString UIntToString(unsigned int i);
 
-		MATRIX_CONTAINER_API bool StringToBool(const MTXString& String);
-		MATRIX_CONTAINER_API MTXString BoolToString(bool i);
-		MATRIX_CONTAINER_API MTXString BoolToString(unsigned int i);
+		MATRIX_CORE_API bool StringToBool(const MTXString& String);
+		MATRIX_CORE_API MTXString BoolToString(bool i);
+		MATRIX_CORE_API MTXString BoolToString(unsigned int i);
 
-		MATRIX_CONTAINER_API float StringToReal(const MTXString& String);
-		MATRIX_CONTAINER_API MTXString RealToString(float Value);
+		MATRIX_CORE_API float StringToReal(const MTXString& String);
+		MATRIX_CORE_API MTXString RealToString(float Value);
 
 
-		class MATRIX_CONTAINER_API MTXFileName : public MTXString
+		class MATRIX_CORE_API MTXFileName : public MTXString
 		{
 		public:
 			MTXFileName()

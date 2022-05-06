@@ -5,19 +5,21 @@ namespace Matrix
 	namespace Container
 	{
 		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class MArray : public MContainer<T, MemoryManagerClass>
+		class  MArray : public MContainer<T, MemoryManagerClass>
 		{
 		public:
-			enum
+			enum // 默认增长步幅
 			{
 				DEFAULT_GROWBY = 10
 			};
 			MArray(unsigned int uiGrowBy = DEFAULT_GROWBY);
 			~MArray();
 			MArray(const MArray<T, MemoryManagerClass>& Array);
+			//设置元素个数，并初始化
 			void SetBufferNum(unsigned int uiBufferNum);
+			//添加 uiBufferNum 个元素，没有初始化
 			void AddBufferNum(unsigned int uiBufferNum);
-			void operator= (const MArray<T, MemoryManagerClass>& Array);
+			void operator = (const MArray<T, MemoryManagerClass>& Array);
 
 
 			inline unsigned int GetNum()   const;
@@ -128,11 +130,11 @@ namespace Matrix
 				return End();
 			}
 		protected:
-			T* m_pBuffer;
-			unsigned int m_uiGrowBy;
-			unsigned int m_uiCurUse;
-			unsigned int m_uiBufferNum;
-			unsigned int m_uiAllocNum;
+			T* m_pBuffer; //空间地址指针
+			unsigned int m_uiGrowBy; //增长幅度
+			unsigned int m_uiCurUse; //当前元素个数
+			unsigned int m_uiBufferNum; //当前总空间个数
+			unsigned int m_uiAllocNum; //记录分配次数
 
 
 		private:
@@ -140,7 +142,7 @@ namespace Matrix
 		};
 		//有序数组
 		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class MArrayOrder : public MArray<T, MemoryManagerClass>
+		class  MArrayOrder : public MArray<T, MemoryManagerClass>
 		{
 		public:
 			MArrayOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
@@ -159,5 +161,7 @@ namespace Matrix
 			unsigned int FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const T& Element);
 		};
 
+
+#include "Array.inl"
 	}
 }

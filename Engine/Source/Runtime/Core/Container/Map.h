@@ -164,5 +164,7 @@ namespace Matrix
 
 			unsigned int FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const KEY& Key)const;
 		};
+
+#include "Map.inl"
 	}
 }

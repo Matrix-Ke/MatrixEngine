@@ -449,14 +449,15 @@ namespace Matrix
 	}
 }
 
-#define USE_CUSTOM_NEW
-#ifdef USE_CUSTOM_NEW
-inline void* operator MATRIX_NEW(size_t uiSize)
+//#define USE_CUSTOM_NEW
+//#ifdef USE_CUSTOM_NEW
+//void* operator new(size_t size);
+inline void* operator new(size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, false);
 }
-inline void* operator MATRIX_NEW[](size_t uiSize)
+inline void* operator new [](size_t uiSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, true);
@@ -472,7 +473,7 @@ inline void operator delete[](void* pvAddr)
 	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
 }
-#endif // USE_CUSTOM_NEW
+//#endif 
 
 //使用宏定义处理这些容易忘记的指针删除操作
 #define MTXENGINE_DELETE(p) if(p){delete p; p = 0;}
