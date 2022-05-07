@@ -60,7 +60,7 @@ bool File::Open(const TCHAR* pFileName, unsigned int uiOpenMode)
 	//
 	MTXENGINE_ASSERT(uiOpenMode < OM_MAX);
 
-	unsigned int uiLen = MTXStrlen(pFileName);
+	unsigned int uiLen = MTXStrLen(pFileName);
 	if (uiLen < MTXMAX_PATH - 1)
 	{
 		if (!MTXMemcpy(m_tcFileName, pFileName, static_cast<unsigned long long>(uiLen) + 1))

@@ -1,10 +1,13 @@
 #pragma once
 #include "Core/MemoryManager.h"
-#ifdef  Container_EXPORTS
-#define MATRIX_CONTAINER_API __declspec(dllexport) 
+
+#ifdef Container_EXPORTS
+#define MATRIX_CONTAINER_API  __declspec(dllexport)
 #else 
-#define MATRIX_CONTAINER_API __declspec(dllimport) 
-#endif
+#define MATRIX_CONTAINER_API  __declspec(dllimport)
+#endif // Container_EXPORTS
+
+
 
 //container 是所有容器的基类， 申请的空间会大于实际需求空间，以避免频繁释放申请。 
 //只有有实际需求空间的时候才会调用对应的元素的构造函数。 所以申请空间未必调用构造，释放未必调用析构函数。 
@@ -12,7 +15,7 @@ namespace Matrix
 {
 	using namespace Core;
 
-	namespace MContainer
+	namespace Container
 	{
 		template<class KEY, class VALUE>
 		class MapElement : public MemoryObject
@@ -360,9 +363,10 @@ namespace Matrix
 			}
 		}
 		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class MContainer : public MTXMemObject
+		class MContainer : public MemoryObject
 		{
 		protected:
+			//单纯用于申请空间
 			T* New(unsigned int uiNum)
 			{
 				if (!uiNum)
@@ -370,7 +374,7 @@ namespace Matrix
 					return NULL;
 				}
 				T* pPtr = (T*)m_MemManagerObject.Allocate(uiNum * sizeof(T), 0, true);
-				MTXMAC_ASSERT(pPtr);
+				MTXENGINE_ASSERT(pPtr);
 				if (!pPtr)
 				{
 					return NULL;

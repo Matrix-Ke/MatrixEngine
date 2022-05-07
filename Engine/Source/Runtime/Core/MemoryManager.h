@@ -3,8 +3,11 @@
 #include "Synchronize.h"
 #include <Windows.h>
 
-//实现一套自己的内存管理机制，最好要重载全局new函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
+//实现一套自己的内存管理机制，最好要重载全局operator MATRIX_NEW函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
 #include <new.h>
+#define MATRIX_NEW  new
+#define MATRIX_DELETE delete
+
 #define USE_STL_TYPE_TRAIT
 #ifdef USE_STL_TYPE_TRAIT
 // stl 类型萃取
@@ -74,6 +77,7 @@ namespace Matrix
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
 			static MTXCriticalSection msMemLock;
+			static void printInfo();
 		};
 
 		class MATRIX_CORE_API CMemoryManager : public BaseMemoryManager
@@ -227,7 +231,7 @@ namespace Matrix
 
 			Block* pHead;
 			Block* pTail;
-			unsigned int mNumNewCalls;			  //调用 new 的次数
+			unsigned int mNumNewCalls;			  //调用 MATRIX_NEW 的次数
 			unsigned int mNumDeleteCalls;		  //调用 delete 的次数
 			unsigned int mNumBlocks;			  //当前有多少内存块
 			unsigned int mNumBytes;				  //当前有多少字节
@@ -339,7 +343,7 @@ namespace Matrix
 						for (unsigned int i = 0; i < uiNum; i++)
 						{
 							//在当前内存地址中执行构造
-							new (mPtr + i) T();
+							MATRIX_NEW(mPtr + i) T();
 						}
 					}
 				}
@@ -406,7 +410,7 @@ namespace Matrix
 
 				StackMemoryManager& StackMem = GetStackMemoryManager();
 
-				// Unlock any new chunks that were allocated.
+				// Unlock any MATRIX_NEW chunks that were allocated.
 				if (SavedChunk != StackMem.TopChunk)
 					StackMem.FreeChunks(SavedChunk);
 
@@ -446,16 +450,17 @@ namespace Matrix
 	}
 }
 
-#define USE_CUSTOM_NEW
-#ifdef USE_CUSTOM_NEW
+//#define USE_CUSTOM_NEW
+//#ifdef USE_CUSTOM_NEW
+//void* operator new(size_t size);
 inline void* operator new(size_t uiSize)
 {
-	// Matrix::MTXOutputDebugString(_T("operator new has been called!"));
+	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, false);
 }
-inline void* operator new[](size_t uiSize)
+inline void* operator new [](size_t uiSize)
 {
-	// Matrix::MTXOutputDebugString(_T("operator new[] has been called!"));
+	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, true);
 }
 
@@ -469,9 +474,9 @@ inline void operator delete[](void* pvAddr)
 	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
 }
-#endif // USE_CUSTOM_NEW
+//#endif 
 
-
+//使用宏定义处理这些容易忘记的指针删除操作
 #define MTXENGINE_DELETE(p) if(p){delete p; p = 0;}
 #define MTXENGINE_DELETEA(p) if(p){delete []p; p = 0;}
 #define MTXENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) MTXENGINE_DELETEA(p[i]); MTXENGINE_DELETEA(p);}
