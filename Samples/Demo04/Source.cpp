@@ -1,4 +1,4 @@
-﻿//这个示例的主要目的是，演示在容器里面初始化会调用构造函数，构造函数里面下个断点看看
+//这个示例的主要目的是，演示在容器里面初始化会调用构造函数，构造函数里面下个断点看看
 
 #include <iostream>
 #include "Container/Array.h"
@@ -23,6 +23,7 @@ MyClass::~MyClass()
 	i = 2;
 	std::cout << "deconstructor has been called \n";
 }
+
 void main()
 {
 	MArray<MyClass> k1;

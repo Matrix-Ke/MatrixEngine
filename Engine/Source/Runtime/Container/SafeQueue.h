@@ -1,6 +1,6 @@
 #pragma once
 #include "Queue.h"
-#include "System/Synchronize.h"
+#include "Core/Synchronize.h"
 namespace Matrix
 {
 	namespace Container

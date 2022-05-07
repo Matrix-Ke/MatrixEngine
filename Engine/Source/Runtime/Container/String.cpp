@@ -63,8 +63,6 @@ void MTXString::Clear()
 }
 MTXString& MTXString::operator =(const MTXString& String)
 {
-
-
 	MTXENGINE_DELETE(m_pBuffer);
 	unsigned int  uiLength = String.GetLength();
 	m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];

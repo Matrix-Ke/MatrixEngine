@@ -77,6 +77,7 @@ namespace Matrix
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
 			static MTXCriticalSection msMemLock;
+			static void printInfo();
 		};
 
 		class MATRIX_CORE_API CMemoryManager : public BaseMemoryManager

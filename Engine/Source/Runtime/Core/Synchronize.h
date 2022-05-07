@@ -1,5 +1,7 @@
 #pragma once
 #include "Core.h"
+//关于线程同步机制可以参考《windows核心编程第五版》  
+//在matrix引擎中相关文档见: Doc/线程同步机制
 namespace Matrix
 {
 	namespace Core
@@ -30,14 +32,14 @@ namespace Matrix
 			CRITICAL_SECTION   mCriticalSection;
 
 		public:
-			MTXCriticalSection(void)
+			MTXCriticalSection()
 			{
 				InitializeCriticalSection(&mCriticalSection);
 				//由于将线程切换到等待状态的开销较大，因此为了提高关键段的性能，Microsoft将旋转锁合并到关键段中，
 				//这样EnterCriticalSection()会先用一个旋转锁不断循环，尝试一段时间才会将线程切换到等待状态,旋转次数一般设置为4000。
 				SetCriticalSectionSpinCount(&mCriticalSection, 4000);
 			}
-			~MTXCriticalSection(void)
+			~MTXCriticalSection()
 			{
 				DeleteCriticalSection(&mCriticalSection);
 			}

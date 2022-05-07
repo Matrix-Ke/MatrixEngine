@@ -2,6 +2,7 @@
 
 using namespace Matrix::Core;
 
+MTXCriticalSection BaseMemoryManager::msMemLock = MTXCriticalSection();
 
 Matrix::Core::BaseMemoryManager::BaseMemoryManager()
 {
@@ -9,7 +10,11 @@ Matrix::Core::BaseMemoryManager::BaseMemoryManager()
 Matrix::Core::BaseMemoryManager::~BaseMemoryManager()
 {
 }
-MTXCriticalSection BaseMemoryManager::msMemLock;
+
+void Matrix::Core::BaseMemoryManager::printInfo()
+{
+	printf_s("base MemoryManager has been called\n");
+}
 
 Matrix::Core::CMemoryManager::CMemoryManager()
 {

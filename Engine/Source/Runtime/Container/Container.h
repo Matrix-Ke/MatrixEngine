@@ -1,5 +1,13 @@
 #pragma once
-#include "System/MemoryManager.h"
+#include "Core/MemoryManager.h"
+
+#ifdef Container_EXPORTS
+#define MATRIX_CONTAINER_API  __declspec(dllexport)
+#else 
+#define MATRIX_CONTAINER_API  __declspec(dllimport)
+#endif // Container_EXPORTS
+
+
 
 //container 是所有容器的基类， 申请的空间会大于实际需求空间，以避免频繁释放申请。 
 //只有有实际需求空间的时候才会调用对应的元素的构造函数。 所以申请空间未必调用构造，释放未必调用析构函数。 
