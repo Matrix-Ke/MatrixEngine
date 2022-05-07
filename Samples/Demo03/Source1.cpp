@@ -1,8 +1,9 @@
 //stack memroy unit demo
-#include "MemoryManager.h"
+#include "Core/MemoryManager.h"
 #include <iostream>
 
-using namespace Matrix;
+using namespace Matrix::Core;
+
 class MyStruct
 {
 public:
@@ -24,6 +25,12 @@ void Fun5()
 
 int  main()
 {
+
+	if (!std::is_pod<MTXCriticalSection>::value)
+	{
+		printf("is_pod!\n");
+	}
+
 	StackMemoryAdaptor<MyStruct> Temp(2);
 	StackMemoryAdaptor<MyStruct> Temp1(2);
 

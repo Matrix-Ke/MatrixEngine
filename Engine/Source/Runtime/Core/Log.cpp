@@ -16,5 +16,5 @@ bool Matrix::Core::MTXLog::Open(const TCHAR* pFileName)
 bool Matrix::Core::MTXLog::WriteInfo(const TCHAR* pString)
 {
 	//时时刻刻记得字符数组不要越界
-	return File::Write(pString, MTXStrlen(pString) + 1, 1);
+	return File::Write(pString, MTXStrLen(pString) + 1, 1);
 }

@@ -4,6 +4,7 @@
 - 原则：
     - 功能单元划分清晰，模块高内聚低耦合
 - 文件夹设计：
+
 ```
     ---Root
         --- MatrixEngine
@@ -11,7 +12,6 @@
                 --- Editor
                 --- Runtime
                     --- Core
-                    --- Platform
                     --- Render
                     --- Physics
                 --- Developer

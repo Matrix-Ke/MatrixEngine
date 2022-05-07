@@ -115,7 +115,7 @@ void Matrix::Core::MTXThread::SetThreadName(const char* name)
 	//strlen()函数求出的字符串长度为有效长度，既不包含字符串末尾结束符 ‘\0’；
 	//sizeof()操作符求出的长度包含字符串末尾的结束符 ‘\0’；
 	//当在函数内部使用sizeof()求解由函数的形参传入的字符数组的长度时，得到的结果为指针的长度，既对应变量的字节数，而不是字符串的长度，此处一定要小心。
-	//char* a = new char[100];
+	//char* a = MATRIX_NEW char[100];
 	// update the Windows thread name so that it shows up correctly
 	// in the Debugger
 	struct THREADNAME_INFO
@@ -139,7 +139,7 @@ void Matrix::Core::MTXThread::SetThreadName(const char* name)
 	{
 	}
 
-	//mThreadName = new char;
+	//mThreadName = MATRIX_NEW char;
 }
 
 const TCHAR* Matrix::Core::MTXThread::GetThreadName()
