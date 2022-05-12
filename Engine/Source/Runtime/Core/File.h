@@ -9,50 +9,63 @@ namespace Matrix
 		class MATRIX_CORE_API File
 		{
 		public:
-			enum //Open Mode
+			//选出几种代表的openmode
+			enum  EOpenMode
 			{
 				OM_RB,
-				OM_WB,
 				OM_RT,
-				OM_WT,
+				OM_WB, //Open a text file for reading. (The file must exist.)
+				OM_WT, //Open a text file for writing. If the file already exists, its contents are destroyed.
+				OM_AB,
+				OM_AT,
 				OM_MAX
 			};
-			enum
+			enum  ESeekFlag
 			{
-				MTXMAX_PATH = 256
-			};
-			enum	//Seek Flag
-			{
+				// fseek()函数用于把文件指针以origin为起点移动offset个字节, origin数字代表含义：
+				//SEEK_SET 0 文件开头
+				//SEEK_CUR 1 文件指针当前位置
+				//SEEK_END 2 文件尾
 				SF_CUR,
 				SF_END,
 				SF_SET,
 				SF_MAX
-
 			};
 			File();
+			File(const TCHAR* pFileName, EOpenMode openMode = EOpenMode::OM_WT);
 			~File();
-			bool Flush();
 
-			bool Seek(unsigned int uiOffset, unsigned int uiOrigin);
-			bool Open(const TCHAR* pFileName, unsigned int uiOpenMode);
-			bool Write(const void* pBuffer, unsigned int uiSize, unsigned int uiCount);
-			bool Read(void* pBuffer, unsigned int uiSize, unsigned int uiCount);
+			//文件的基本IO操作
+			bool Open(const TCHAR* pFileName, EOpenMode openMode = EOpenMode::OM_WT);
+			void Fclose();
+			USIZE_TYPE Read(void* pBuffer, unsigned int uSize, unsigned int uCount);
+			USIZE_TYPE Write(const void* pBuffer, unsigned int uSize, unsigned int uCount);
 
-			bool GetLine(void* pBuffer, unsigned int uiBufferCount);
-			inline unsigned int GetFileSize()const
+
+			bool GetLine(void* pBuffer, unsigned int uiBufferCount)  const;
+			inline unsigned int GetFileSize() const
 			{
-				return m_uiFileSize;
+				return mFileSize;
 			}
+
+
+			bool Flush();
+			bool Seek(unsigned int uiOffset, unsigned int uiOrigin);
+
+			bool IsValid() const;
+			void DebugInfo() const;
 			static bool IsFileExist(const TCHAR* pFileName);
+		private:
+			bool OpenFile(const TCHAR* pFileName, EOpenMode openMode);
 
 		protected:
-			static TCHAR ms_cOpenMode[OM_MAX][5];
-			static unsigned int m_uiSeekFlag[];
-			FILE* m_pFileHandle;
-			unsigned int m_uiOpenMode;
-			unsigned int m_uiFileSize;
-			//左右值区分的关键是能否取得内存地址
-			TCHAR m_tcFileName[MTXMAX_PATH];
+			static TCHAR msOpenModeArray[(unsigned int)EOpenMode::OM_MAX][7];
+			static unsigned int msSeekFlag[(unsigned int)ESeekFlag::SF_MAX];
+
+			FILE* pFileHandle;
+			EOpenMode    mOpenMode;
+			unsigned int mFileSize; //将需要系统调用获取的数据保存下来
+			TCHAR mFileName[MAX_FILE_PATH_SIZE];
 		};
 
 

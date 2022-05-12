@@ -22,17 +22,17 @@ Matrix::Core::CMemoryManager::CMemoryManager()
 Matrix::Core::CMemoryManager::~CMemoryManager()
 {
 }
-void* Matrix::Core::CMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Core::CMemoryManager::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
 	if (uiAlignment == 0)
 	{
-		return malloc(uiSize);
+		return malloc(uSize);
 	}
 	else
 	{
 		//变分配器默认行为（默认是提供32-byte或者64-byte对齐）
-		return _aligned_malloc(uiSize, uiAlignment);
+		return _aligned_malloc(uSize, uiAlignment);
 	}
 	return NULL;
 }
@@ -128,17 +128,17 @@ Matrix::Core::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
 	}
 }
 
-void* Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	//内存锁，防止两个线程同时申请内存
 	MTXCriticalSection::Locker Temp(msMemLock);
 	FFreeBlock* Free;
 	//大于pool_MAX大内存采用操作系统的内存分配
-	if (uiSize < POOL_MAX)
+	if (uSize < POOL_MAX)
 	{
 		// 根据申请内存的大小找到相关的内存table
-		FPoolTable* Table = MemSizeToPoolTable[uiSize];
-		MTXENGINE_ASSERT(uiSize < Table->BlockSize);
+		FPoolTable* Table = MemSizeToPoolTable[uSize];
+		MTXENGINE_ASSERT(uSize < Table->BlockSize);
 		FPoolInfo* Pool = Table->FirstPool;
 		if (!Pool)
 		{
@@ -204,7 +204,7 @@ void* Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE u
 	else
 	{
 		//大的内存采用操作系统自身的
-		INT AlignedSize = Align(uiSize, PageSize);
+		INT AlignedSize = Align(uSize, PageSize);
 		Free = (FFreeBlock*)VirtualAlloc(NULL, AlignedSize, MEM_COMMIT, PAGE_READWRITE);
 		if (!Free)
 		{
@@ -218,7 +218,7 @@ void* Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE u
 		// init pool
 		FPoolInfo* Pool = &Indirect[((DWORD)Free >> 16) & 2047];
 		Pool->MemoryAddr = (BYTE*)Free;
-		Pool->Bytes = uiSize;
+		Pool->Bytes = uSize;
 		Pool->OsBytes = AlignedSize;
 		Pool->Owner = &OsTable;
 	}
@@ -456,19 +456,19 @@ void Matrix::Core::DebugMemoryAlloc::FreeDbgHelpLib()
 	fnSymInitializeW = NULL;
 }
 
-void* Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	MTXCriticalSection::Locker Temp(msMemLock);
-	MTXENGINE_ASSERT(uiSize);
+	MTXENGINE_ASSERT(uSize);
 	mNumNewCalls++;
 
 	//申请的总空间
-	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uiSize + sizeof(unsigned int);
+	USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uSize + sizeof(unsigned int);
 	char* pcAddr = (char*)MemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
 	MTXENGINE_ASSERT(pcAddr);
 	//填写 Block 信息
 	Block* pBlock = (Block*)pcAddr;
-	pBlock->mSize = uiSize;
+	pBlock->mSize = uSize;
 	pBlock->mbArray = bIsArray;
 
 	bool bAlignment = (uiAlignment > 0) ? true : false;
@@ -501,12 +501,12 @@ void* Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiA
 	*pBeginMask = BEGIN_MASK;
 	pcAddr += sizeof(unsigned int);
 	//填写尾标识
-	unsigned int* pEndMask = (unsigned int*)(pcAddr + uiSize);
+	unsigned int* pEndMask = (unsigned int*)(pcAddr + uSize);
 	*pEndMask = END_MASK;
 
 	// todo list
 	mNumBlocks++;
-	mNumBytes += (unsigned int)uiSize;
+	mNumBytes += (unsigned int)uSize;
 	//记录最大字节数量和最大块数量
 	if (mNumBytes > mMaxNumBytes)
 	{
@@ -517,14 +517,14 @@ void* Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiA
 		mMaxNumBlocks = mNumBlocks;
 	}
 
-	// uiSize 是这次申请的字节数，上面这段代码会根据 uiSize 落到 2n的哪个范围内来做统计。
+	// uSize 是这次申请的字节数，上面这段代码会根据 uSize 落到 2n的哪个范围内来做统计。
 	//如果申请 15 字节，i 等于 4 的时候，uiTwoPowerI 等于 16，15 小于 16，它落在 23和 24之间，
 	//这样就可以统计出以 2 为基数不同大小内存的分配情况
 	unsigned int uiTwoPowerI = 1;
 	int i;
 	for (i = 0; i <= RECORD_NUM - 2; i++, uiTwoPowerI <<= 1)
 	{
-		if (uiSize <= uiTwoPowerI)
+		if (uSize <= uiTwoPowerI)
 		{
 			mSizeRecord[i]++;
 			break;
@@ -651,16 +651,16 @@ Matrix::Core::Win64MemoryAlloc::~Win64MemoryAlloc()
 {
 }
 
-void* Matrix::Core::Win64MemoryAlloc::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Core::Win64MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
 	if (uiAlignment != 0)
 	{
-		uiAlignment = Max(uiSize >= 16 ? (USIZE_TYPE)16 : (USIZE_TYPE)8, uiAlignment);
-		return scalable_aligned_malloc(uiSize, uiAlignment);
+		uiAlignment = Max(uSize >= 16 ? (USIZE_TYPE)16 : (USIZE_TYPE)8, uiAlignment);
+		return scalable_aligned_malloc(uSize, uiAlignment);
 	}
 	else
 	{
-		return scalable_malloc(uiSize);
+		return scalable_malloc(uSize);
 	}
 }
 void Matrix::Core::Win64MemoryAlloc::Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
@@ -706,9 +706,9 @@ Matrix::Core::StackMemoryManager::~StackMemoryManager()
 	//核验是否取消分配完毕
 	MTXENGINE_ASSERT(NumMarks == 0);
 }
-void* Matrix::Core::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+void* Matrix::Core::StackMemoryManager::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-	MTXENGINE_ASSERT(uiSize >= 0);
+	MTXENGINE_ASSERT(uSize >= 0);
 	if (uiAlignment > 0)
 	{
 		MTXENGINE_ASSERT((uiAlignment & (uiAlignment - 1)) == 0);
@@ -723,12 +723,12 @@ void* Matrix::Core::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE u
 		//字节对齐
 		Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
 	}
-	Top = Result + uiSize;
+	Top = Result + uSize;
 	//超出当前chunk大小， 分配新的Chunk
 	if (Top > End)
 	{
 		//分配足够字节对齐的空间
-		AllocateNewChunk(uiSize + uiAlignment);
+		AllocateNewChunk(uSize + uiAlignment);
 		Result = Top;
 		if (uiAlignment > 0)
 		{
@@ -736,7 +736,7 @@ void* Matrix::Core::StackMemoryManager::Allocate(USIZE_TYPE uiSize, USIZE_TYPE u
 			Result = (BYTE*)(((USIZE_TYPE)Top + (uiAlignment - 1)) & ~(uiAlignment - 1));
 		}
 		//增加 Top 指针
-		Top = Result + uiSize;
+		Top = Result + uSize;
 	}
 	return Result;
 }
@@ -813,7 +813,7 @@ StackMemoryManager& Matrix::Core::MemoryObject::GetStackMemoryManager()
 	void* pTlsValue = g_TlsValue.GetThreadValue();
 	if (!pTlsValue)
 	{
-		pTlsValue = MATRIX_NEW StackMemoryManager();
+		pTlsValue = MX_NEW StackMemoryManager();
 		g_TlsValue.SetThreadValue(pTlsValue);
 	}
 	return *((StackMemoryManager*)pTlsValue);
@@ -834,3 +834,4 @@ BaseMemoryManager& Matrix::Core::MemoryObject::GetCMemoryManager()
 	static CMemoryManager g_MemManager;
 	return g_MemManager;
 }
+
