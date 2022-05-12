@@ -3,10 +3,14 @@
 #include "Synchronize.h"
 #include <Windows.h>
 
-//实现一套自己的内存管理机制，最好要重载全局operator MATRIX_NEW函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
 #include <new.h>
-#define MATRIX_NEW  new
-#define MATRIX_DELETE delete
+//实现一套自己的内存管理机制，最好要重载全局operator MATRIX_NEW函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
+//去除C4595 编译警告，Visual Studio 2015开始会对inline operator new操作进行警告 （避免无意中引入全局new操作，出了问题极其难以定位）
+//相关链接： https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warnings-by-compiler-version?view=msvc-170
+#pragma warning(disable:4595)
+#define MX_NEW  new
+#define MX_DELETE delete
+#define USE_MATRIX_NEW
 
 #define USE_STL_TYPE_TRAIT
 #ifdef USE_STL_TYPE_TRAIT
@@ -72,7 +76,7 @@ namespace Matrix
 			BaseMemoryManager();
 			virtual ~BaseMemoryManager() = 0;
 			//内存分配
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 			//内存管理
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
@@ -85,7 +89,7 @@ namespace Matrix
 		public:
 			CMemoryManager();
 			~CMemoryManager();
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray);
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray);
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray);
 		};
 
@@ -98,7 +102,7 @@ namespace Matrix
 			UEWin32MemoryAlloc();
 			~UEWin32MemoryAlloc();
 
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 			//取消已经分配的block
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
@@ -190,8 +194,8 @@ namespace Matrix
 			DebugMemoryAlloc();
 			~DebugMemoryAlloc();
 
-			// uiSize 是这次申请的字节数
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+			// uSize 是这次申请的字节数
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
 		private:
@@ -256,7 +260,7 @@ namespace Matrix
 			Win64MemoryAlloc();
 			~Win64MemoryAlloc();
 
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 		};
 #endif
@@ -271,7 +275,7 @@ namespace Matrix
 			StackMemoryManager(USIZE_TYPE uiDefaultChunkSize = 65536);
 			~StackMemoryManager();
 
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray) override;
 			//栈内存无须主动释放，出栈即消亡（其实真正的释放操作还是由heap memory manager决定）
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) override;
 
@@ -343,7 +347,7 @@ namespace Matrix
 						for (unsigned int i = 0; i < uiNum; i++)
 						{
 							//在当前内存地址中执行构造
-							MATRIX_NEW(mPtr + i) T();
+							MX_NEW(mPtr + i) T();
 						}
 					}
 				}
@@ -436,9 +440,9 @@ namespace Matrix
 			{
 			}
 
-			virtual void* Allocate(USIZE_TYPE uiSize, USIZE_TYPE uiAlignment, bool bIsArray)
+			virtual void* Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 			{
-				return MemoryObject::GetMemoryManager().Allocate(uiSize, uiAlignment, bIsArray);
+				return MemoryObject::GetMemoryManager().Allocate(uSize, uiAlignment, bIsArray);
 			}
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 			{
@@ -451,19 +455,17 @@ namespace Matrix
 }
 
 //#define USE_CUSTOM_NEW
-//#ifdef USE_CUSTOM_NEW
-//void* operator new(size_t size);
-inline void* operator new(size_t uiSize)
+#ifdef USE_MATRIX_NEW
+inline void* operator new(size_t uSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW has been called!"));
-	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, false);
+	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uSize, 0, false);
 }
-inline void* operator new [](size_t uiSize)
+inline void* operator new[](size_t uSize)
 {
 	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW[] has been called!"));
-	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uiSize, 0, true);
+	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uSize, 0, true);
 }
-
 inline void operator delete(void* pvAddr)
 {
 	// Matrix::MTXOutputDebugString(_T("operator delete has been called!"));
@@ -474,26 +476,13 @@ inline void operator delete[](void* pvAddr)
 	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
 }
-//#endif 
+#endif 
+
 
 //使用宏定义处理这些容易忘记的指针删除操作
-#define MTXENGINE_DELETE(p) if(p){delete p; p = 0;}
-#define MTXENGINE_DELETEA(p) if(p){delete []p; p = 0;}
-#define MTXENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) MTXENGINE_DELETEA(p[i]); MTXENGINE_DELETEA(p);}
-	// use by inner mac
-	template<typename T>
-inline void MTXDelete(T*& p)
-{
-	if (p) { delete p; p = 0; }
-}
-template<typename T>
-inline void MTXDeleteA(T*& p)
-{
-	if (p) { delete[]p; p = 0; }
-}
-template<typename T, typename N>
-inline void MTXDeleteAB(T*& p, N num)
-{
-	if (p) { for (int i = 0; i < num; i++) MTXENGINE_DELETEA(p[i]); MTXENGINE_DELETEA(p); }
-}
+#define ENGINE_DELETE(p) if(p){delete p; p = 0;}
+#define ENGINE_DELETEA(p) if(p){delete []p; p = 0;}
+#define ENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) ENGINE_DELETEA(p[i]); ENGINE_DELETEA(p);}
+
+
 

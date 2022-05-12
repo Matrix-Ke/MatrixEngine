@@ -1,2 +1,2 @@
-rmdir /S  /Q ./build 
+rmdir /S  /Q  build 
 cmake -B  ./build

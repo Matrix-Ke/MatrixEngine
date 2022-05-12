@@ -79,7 +79,7 @@ namespace Matrix
 		class MATRIX_CORE_API  MTXSemaphore : public  MTXSynchronize
 		{
 		public:
-			MTXSemaphore(unsigned int uiCount, unsigned int maxCount);
+			MTXSemaphore(unsigned int uCount, unsigned int maxCount);
 			virtual ~MTXSemaphore();
 
 			virtual void Enter();

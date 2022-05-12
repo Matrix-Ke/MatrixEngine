@@ -64,7 +64,7 @@ void MArray<T, MemoryManagerClass>::SetBufferNum(unsigned int uiBufferNum)
 		m_uiCurUse = uiBufferNum;
 		for (unsigned int i = 0; i < m_uiBufferNum; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) T();
+			MX_NEW(m_pBuffer + i) T();
 
 		}
 	}
@@ -87,7 +87,7 @@ void MArray<T, MemoryManagerClass>::AddBufferNum(unsigned int uiBufferNum)
 	{
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MATRIX_NEW(pBuffer + i) T(m_pBuffer[i]);
+			MX_NEW(pBuffer + i) T(m_pBuffer[i]);
 
 		}
 
@@ -128,7 +128,7 @@ unsigned int MArray<T, MemoryManagerClass>::AddElement(const T& Element)
 	{
 		AddBufferNum(m_uiGrowBy);
 	}
-	MATRIX_NEW(m_pBuffer + m_uiCurUse) T(Element);
+	MX_NEW(m_pBuffer + m_uiCurUse) T(Element);
 	m_uiCurUse++;
 	return m_uiCurUse - 1;
 }
@@ -177,7 +177,7 @@ void MArray<T, MemoryManagerClass>::AddElement(const MArray<N, MTXMemManagerClas
 		N* pBuffer = Array.GetBuffer();
 		for (unsigned int i = m_uiCurUse; i < (unsigned int)iAddNum + m_uiCurUse; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) T(pBuffer[uiBegin]);
+			MX_NEW(m_pBuffer + i) T(pBuffer[uiBegin]);
 			uiBegin++;
 		}
 		m_uiCurUse += iAddNum;
@@ -195,7 +195,7 @@ void MArray<T, MemoryManagerClass>::operator= (const MArray<T, MemoryManagerClas
 		T* pBuffer = Array.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) T(pBuffer[i]);
+			MX_NEW(m_pBuffer + i) T(pBuffer[i]);
 		}
 	}
 	else
@@ -211,7 +211,7 @@ void MArray<T, MemoryManagerClass>::operator= (const MArray<T, MemoryManagerClas
 		T* pBuffer = Array.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) T(pBuffer[i]);
+			MX_NEW(m_pBuffer + i) T(pBuffer[i]);
 		}
 
 
@@ -284,7 +284,7 @@ void MArray<T, MemoryManagerClass>::Erase(unsigned int uiBegin, unsigned int uiE
 		uiMoveIndex = uiEnd + k + 1;
 		if (uiMoveIndex < m_uiCurUse)
 		{
-			MATRIX_NEW(m_pBuffer + uiBegin + k) T(m_pBuffer[uiMoveIndex]);
+			MX_NEW(m_pBuffer + uiBegin + k) T(m_pBuffer[uiMoveIndex]);
 			if (ValueBase<T>::NeedsDestructor)
 			{
 				m_pBuffer[uiMoveIndex].~T();
@@ -314,7 +314,7 @@ void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEn
 	T* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MATRIX_NEW(pBuffer + i) T();
+		MX_NEW(pBuffer + i) T();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -357,7 +357,7 @@ void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEn
 	T* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MATRIX_NEW(pBuffer + i) T();
+		MX_NEW(pBuffer + i) T();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1, Compare);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -437,12 +437,12 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::AddElement(const T& Element)
 
 	if (m_uiCurUse == uiIndex)
 	{
-		MATRIX_NEW(m_pBuffer + uiIndex) T(Element);
+		MX_NEW(m_pBuffer + uiIndex) T(Element);
 
 	}
 	else
 	{
-		MATRIX_NEW(m_pBuffer + m_uiCurUse) T(m_pBuffer[m_uiCurUse - 1]);
+		MX_NEW(m_pBuffer + m_uiCurUse) T(m_pBuffer[m_uiCurUse - 1]);
 		for (int i = (int)m_uiCurUse - 2; i >= (int)uiIndex; i--)
 		{
 			m_pBuffer[i + 1] = m_pBuffer[i];

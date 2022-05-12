@@ -1,0 +1,73 @@
+{
+    "root": {
+        "data": {
+            "id": "cjvra6xe82o0",
+            "created": 1652152783814,
+            "text": "C 语言文件操作"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "cjvrai1sc600",
+                    "created": 1652152808024,
+                    "text": "打开文件\nfopen() ",
+                    "layout_mind_offset": {
+                        "x": 9,
+                        "y": -47
+                    },
+                    "note": "FILE *fopen( const char * filename, const char * mode );"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "cjvrbeydne80",
+                            "created": 1652152879652,
+                            "text": "创建或者打开一个文件， 产生一个FILE类型的对象， 该对象包含了所有用来控制文件流 必要的信息 "
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "cjvrdi41jgw0",
+                            "created": 1652153043253,
+                            "text": "OpenMode类型： "
+                        },
+                        "children": [
+                            {
+                                "data": {
+                                    "id": "cjvrizr0jjs0",
+                                    "created": 1652153473468,
+                                    "text": "r:  readonly， 只读打开   w: 从头写入内容（无则创建）\na ： append   追加模式     w+ ： 允许读写文件",
+                                    "layout": null,
+                                    "font-size": 10
+                                },
+                                "children": [
+                                    {
+                                        "data": {
+                                            "id": "cjvtywqnvjc0",
+                                            "created": 1652160362963,
+                                            "text": "topic",
+                                            "note": "r\t打开一个已有的文本文件，允许读取文件。\nw\t打开一个文本文件，允许写入文件。如果文件不存在，则会创建一个新文件。在这里，您的程序会从文件的开头写入内容。如果文件存在，则该会被截断为零长度，重新写入。\na\t打开一个文本文件，以追加模式写入文件。如果文件不存在，则会创建一个新文件。在这里，您的程序会在已有的文件内容中追加内容。\nr+\t打开一个文本文件，允许读写文件。\nw+\t打开一个文本文件，允许读写文件。如果文件已存在，则文件会被截断为零长度，如果文件不存在，则会创建一个新文件。\na+\t打开一个文本文件，允许读写文件。如果文件不存在，则会创建一个新文件。读取会从文件的开头开始，写入则只能是追加模式。\n如果处理的是二进制文件，则需使用下面的访问模式来取代上面的访问模式：\n\n\"rb\", \"wb\", \"ab\", \"rb+\", \"r+b\", \"wb+\", \"w+b\", \"ab+\", \"a+b\"\n"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "cjvrasyvm5c0",
+                    "created": 1652152831793,
+                    "text": "topic"
+                },
+                "children": []
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-blue-compat",
+    "version": "1.4.43"
+}

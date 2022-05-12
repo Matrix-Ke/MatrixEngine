@@ -114,7 +114,7 @@ namespace Matrix
 				}
 			}
 			QueueElement<T>* pElem = New(1);
-			MATRIX_NEW(pElem) QueueElement<T>();
+			MX_NEW(pElem) QueueElement<T>();
 			pElem->Element = Element;
 			pElem->m_pFront = NULL;
 			pElem->m_pNext = m_pHead;
