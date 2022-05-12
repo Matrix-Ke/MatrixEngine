@@ -13,9 +13,11 @@ namespace Matrix
 			enum  EOpenMode
 			{
 				OM_RB,
-				OM_WB,
-				OM_RT, //Open a text file for reading. (The file must exist.)
+				OM_RT,
+				OM_WB, //Open a text file for reading. (The file must exist.)
 				OM_WT, //Open a text file for writing. If the file already exists, its contents are destroyed.
+				OM_AB,
+				OM_AT,
 				OM_MAX
 			};
 			enum  ESeekFlag
@@ -34,13 +36,13 @@ namespace Matrix
 			~File();
 
 			//文件的基本IO操作
-			bool Open(const TCHAR* pFileName, EOpenMode openMode);
+			bool Open(const TCHAR* pFileName, EOpenMode openMode = EOpenMode::OM_WT);
 			void Fclose();
 			USIZE_TYPE Read(void* pBuffer, unsigned int uSize, unsigned int uCount);
 			USIZE_TYPE Write(const void* pBuffer, unsigned int uSize, unsigned int uCount);
 
 
-			bool GetLine(void* pBuffer, unsigned int uiBufferCount);
+			bool GetLine(void* pBuffer, unsigned int uiBufferCount)  const;
 			inline unsigned int GetFileSize() const
 			{
 				return mFileSize;
@@ -51,12 +53,13 @@ namespace Matrix
 			bool Seek(unsigned int uiOffset, unsigned int uiOrigin);
 
 			bool IsValid() const;
+			void DebugInfo() const;
 			static bool IsFileExist(const TCHAR* pFileName);
 		private:
 			bool OpenFile(const TCHAR* pFileName, EOpenMode openMode);
 
 		protected:
-			static TCHAR msOpenModeArray[(unsigned int)EOpenMode::OM_MAX][5];
+			static TCHAR msOpenModeArray[(unsigned int)EOpenMode::OM_MAX][7];
 			static unsigned int msSeekFlag[(unsigned int)ESeekFlag::SF_MAX];
 
 			FILE* pFileHandle;

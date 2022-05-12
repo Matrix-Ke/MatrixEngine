@@ -2,12 +2,14 @@
 
 using namespace Matrix::Core;
 
-TCHAR File::msOpenModeArray[(unsigned int)File::EOpenMode::OM_MAX][5] =
+TCHAR File::msOpenModeArray[(unsigned int)File::EOpenMode::OM_MAX][7] =
 {
 	_T("rb"),
-	_T("w+b"),
 	_T("rt"),
-	_T("w+t")
+	_T("wb"),
+	_T("wt"),
+	_T("a+b"),
+	_T("a+t")
 };
 
 unsigned int File::msSeekFlag[(unsigned int)File::ESeekFlag::SF_MAX] =
@@ -27,7 +29,6 @@ Matrix::Core::File::File()
 
 Matrix::Core::File::File(const TCHAR* pFileName, EOpenMode openMode)
 {
-	MTXENGINE_ASSERT(!pFileHandle);
 	this->OpenFile(pFileName, openMode);
 }
 
@@ -67,14 +68,14 @@ USIZE_TYPE Matrix::Core::File::Read(void* pBuffer, unsigned int uSize, unsigned 
 USIZE_TYPE Matrix::Core::File::Write(const void* pBuffer, unsigned int uSize, unsigned int uCount)
 {
 	MTXENGINE_ASSERT(pFileHandle);
-	if (EOpenMode::OM_WB == mOpenMode || EOpenMode::OM_WT == mOpenMode)
+	if (EOpenMode::OM_RB != mOpenMode && EOpenMode::OM_RT != mOpenMode)
 	{
 		return MTXWrite(pBuffer, uSize, uCount, pFileHandle);
 	}
 	return 0;
 }
 
-bool Matrix::Core::File::GetLine(void* pBuffer, unsigned int uiBufferCount)
+bool Matrix::Core::File::GetLine(void* pBuffer, unsigned int uiBufferCount) const
 {
 	MTXENGINE_ASSERT(pFileHandle);
 
@@ -101,7 +102,18 @@ bool Matrix::Core::File::IsValid() const
 {
 	return (pFileHandle != NULL);
 }
-
+void Matrix::Core::File::DebugInfo() const
+{
+	TCHAR    strLine[MAX_FILE_PATH_SIZE];
+	if (pFileHandle)
+	{
+		MTXSprintf(_T("File DebugInfo:\n"));
+		while (GetLine(strLine, MAX_FILE_PATH_SIZE))
+		{
+			MTXSprintf(_T("%s"), strLine);
+		}
+	}
+}
 bool Matrix::Core::File::IsFileExist(const TCHAR* pFileName)
 {
 	struct _stat64i32 kStat;
