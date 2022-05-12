@@ -17,7 +17,7 @@
 //		MTXImage();
 //		virtual ~MTXImage() = 0;
 //		virtual bool Load(const TCHAR* pFileName) = 0;
-//		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize) = 0;
+//		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uSize) = 0;
 //		virtual const unsigned char* GetPixel(unsigned int x, unsigned int y)const = 0;
 //		inline unsigned int GetBPP()const
 //		{
@@ -62,7 +62,7 @@
 //		VSBMPImage();
 //		~VSBMPImage();
 //		virtual bool Load(const TCHAR* pFilename);
-//		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize);
+//		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uSize);
 //		virtual const unsigned char* GetPixel(unsigned int x, unsigned int y)const;
 //
 //

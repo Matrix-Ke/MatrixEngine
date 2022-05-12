@@ -12,6 +12,7 @@ enum class EPLATFORM
 	EP_MAX
 };
 
+
 #if WINDOWS_PLATFORM
 #if _WIN64
 #define SYSTEM_BIT_WIDTH 64
@@ -23,3 +24,4 @@ enum class EPLATFORM
 #define SIZE_TYPE int
 #endif
 #endif
+

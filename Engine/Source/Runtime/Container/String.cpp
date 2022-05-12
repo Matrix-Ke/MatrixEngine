@@ -9,7 +9,7 @@ TCHAR	MTXString::TempBuffer[BUFFER_SIZE] = { 0 };
 MTXString::MTXString()
 {
 	m_pBuffer = NULL;
-	m_pBuffer = MATRIX_NEW TCHAR[1];
+	m_pBuffer = MX_NEW TCHAR[1];
 	MTXENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
@@ -20,14 +20,14 @@ MTXString::MTXString(const TCHAR* String)
 	if (String)
 	{
 		unsigned int  uiLength = (unsigned int)MTXStrLen(String);
-		m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 		MTXENGINE_ASSERT(m_pBuffer);
 
 		MTXStrCopy(m_pBuffer, uiLength + 1, String);
 	}
 	else
 	{
-		m_pBuffer = MATRIX_NEW TCHAR[1];
+		m_pBuffer = MX_NEW TCHAR[1];
 		MTXENGINE_ASSERT(m_pBuffer);
 		m_pBuffer[0] = _T('\0');
 	}
@@ -36,7 +36,7 @@ MTXString::MTXString(const MTXString& String)
 {
 	m_pBuffer = NULL;
 	unsigned int  uiLength = String.GetLength();
-	m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 	MTXENGINE_ASSERT(m_pBuffer);
 
 	MTXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
@@ -44,28 +44,28 @@ MTXString::MTXString(const MTXString& String)
 MTXString::~MTXString()
 {
 
-	MTXENGINE_DELETE(m_pBuffer);
+	ENGINE_DELETE(m_pBuffer);
 
 }
 void MTXString::SetTCHARBufferNum(unsigned int uiLength)
 {
-	MTXENGINE_DELETE(m_pBuffer);
-	m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+	ENGINE_DELETE(m_pBuffer);
+	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 	m_pBuffer[uiLength] = _T('\0');
 }
 void MTXString::Clear()
 {
 
-	MTXENGINE_DELETE(m_pBuffer);
-	m_pBuffer = MATRIX_NEW TCHAR[1];
+	ENGINE_DELETE(m_pBuffer);
+	m_pBuffer = MX_NEW TCHAR[1];
 	MTXENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
 MTXString& MTXString::operator =(const MTXString& String)
 {
-	MTXENGINE_DELETE(m_pBuffer);
+	ENGINE_DELETE(m_pBuffer);
 	unsigned int  uiLength = String.GetLength();
-	m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 	MTXENGINE_ASSERT(m_pBuffer);
 
 	MTXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
@@ -73,11 +73,11 @@ MTXString& MTXString::operator =(const MTXString& String)
 }
 MTXString& MTXString::operator =(const TCHAR* String)
 {
-	MTXENGINE_DELETE(m_pBuffer);
+	ENGINE_DELETE(m_pBuffer);
 	if (String)
 	{
 		unsigned int  uiLength = (unsigned int)MTXStrLen(String);
-		m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 		MTXENGINE_ASSERT(m_pBuffer);
 
 		MTXStrCopy(m_pBuffer, uiLength + 1, String);
@@ -109,13 +109,13 @@ const MTXString& MTXString::operator +=(const MTXString& String)
 	{
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
-		pBuffer = MATRIX_NEW TCHAR[uiLength];
+		pBuffer = MX_NEW TCHAR[uiLength];
 		MTXENGINE_ASSERT(pBuffer);
 
 		MTXStrCopy(pBuffer, uiLength, GetBuffer());
 		MTXStrcat(pBuffer, uiLength, String.GetBuffer());
 
-		MTXENGINE_DELETE(m_pBuffer);
+		ENGINE_DELETE(m_pBuffer);
 		m_pBuffer = pBuffer;
 		return *this;
 
@@ -140,13 +140,13 @@ const MTXString& MTXString::operator +=(const TCHAR* String)
 	{
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
-		pBuffer = MATRIX_NEW TCHAR[uiLength];
+		pBuffer = MX_NEW TCHAR[uiLength];
 		MTXENGINE_ASSERT(pBuffer);
 
 		MTXStrCopy(pBuffer, uiLength, GetBuffer());
 		MTXStrcat(pBuffer, uiLength, String);
 
-		MTXENGINE_DELETE(m_pBuffer);
+		ENGINE_DELETE(m_pBuffer);
 		m_pBuffer = pBuffer;
 		return *this;
 
@@ -183,8 +183,8 @@ bool MTXString::GetString(const MTXString& String, unsigned int uiFind, bool bIs
 	{
 		return false;
 	}
-	MTXENGINE_DELETE(m_pBuffer);
-	m_pBuffer = MATRIX_NEW TCHAR[uiLength + 1];
+	ENGINE_DELETE(m_pBuffer);
+	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
 	MTXMemcpy(m_pBuffer, &String.m_pBuffer[uiIndex], uiLength, uiLength + 1);
 	m_pBuffer[uiLength] = _T('\0');
 	return true;
@@ -309,7 +309,7 @@ void MTXString::Remove(unsigned int i, unsigned int j)
 	}
 	unsigned int uiLength = j - i + 1;
 	unsigned DeltaLength = GetLength() - uiLength;
-	TCHAR* pBuffer = MATRIX_NEW TCHAR[DeltaLength + 1];
+	TCHAR* pBuffer = MX_NEW TCHAR[DeltaLength + 1];
 	pBuffer[DeltaLength] = _T('\0');
 	if (i > 0)
 	{
@@ -320,7 +320,7 @@ void MTXString::Remove(unsigned int i, unsigned int j)
 	{
 		MTXMemcpy(pBuffer + i, m_pBuffer + i + uiLength, LeftNum);
 	}
-	MTXENGINE_DELETE(m_pBuffer);
+	ENGINE_DELETE(m_pBuffer);
 	m_pBuffer = pBuffer;
 }
 bool MTXString::StripChars(const MTXString& String, const TCHAR* pStripChars)
@@ -495,13 +495,13 @@ namespace Matrix
 			{
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
-				pBuffer = MATRIX_NEW TCHAR[uiLength];
+				pBuffer = MX_NEW TCHAR[uiLength];
 				MTXENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MTXStrcat(pBuffer, uiLength, String2.GetBuffer());
 				MTXString ReturnValue(pBuffer);
-				MTXENGINE_DELETE(pBuffer);
+				ENGINE_DELETE(pBuffer);
 				return ReturnValue;
 			}
 		}
@@ -523,13 +523,13 @@ namespace Matrix
 			{
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
-				pBuffer = MATRIX_NEW TCHAR[uiLength];
+				pBuffer = MX_NEW TCHAR[uiLength];
 				MTXENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MTXStrcat(pBuffer, uiLength, String2);
 				MTXString ReturnValue(pBuffer);
-				MTXENGINE_DELETE(pBuffer);
+				ENGINE_DELETE(pBuffer);
 				return ReturnValue;
 			}
 		}
@@ -551,13 +551,13 @@ namespace Matrix
 			{
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
-				pBuffer = MATRIX_NEW TCHAR[uiLength];
+				pBuffer = MX_NEW TCHAR[uiLength];
 				MTXENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1);
 				MTXStrcat(pBuffer, uiLength, String2.GetBuffer());
 				MTXString ReturnValue(pBuffer);
-				MTXENGINE_DELETE(pBuffer);
+				ENGINE_DELETE(pBuffer);
 				return ReturnValue;
 			}
 		}

@@ -1,9 +1,6 @@
 # ignores following folders
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-[Bb]uild/
+bin/
+build/
 .vs/
 
 #other
@@ -12,11 +9,6 @@
 
 # Prerequisites
 *.d
-
-# visual studio porject
-*.sln
-*.vcxproj
-*.filters
 
 # Compiled Object files
 *.slo

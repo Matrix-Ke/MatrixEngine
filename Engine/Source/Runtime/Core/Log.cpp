@@ -10,7 +10,7 @@ Matrix::Core::MTXLog::~MTXLog()
 
 bool Matrix::Core::MTXLog::Open(const TCHAR* pFileName)
 {
-	return File::Open(pFileName, OM_WT);
+	return File::Open(pFileName, EOpenMode::OM_WT);
 }
 
 bool Matrix::Core::MTXLog::WriteInfo(const TCHAR* pString)

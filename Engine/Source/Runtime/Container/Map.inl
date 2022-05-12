@@ -34,7 +34,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::SetBufferNum(unsigned int uiBufferN
 		m_uiCurUse = uiBufferNum;
 		for (unsigned int i = 0; i < m_uiBufferNum; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>();
+			MX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>();
 		}
 	}
 
@@ -58,7 +58,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::AddBufferNum(unsigned int uiBufferN
 		{
 			for (unsigned int i = 0; i < m_uiCurUse; i++)
 			{
-				MATRIX_NEW(pBuffer + i) MapElement<KEY, VALUE>(m_pBuffer[i]);
+				MX_NEW(pBuffer + i) MapElement<KEY, VALUE>(m_pBuffer[i]);
 			}
 
 		}
@@ -105,7 +105,7 @@ unsigned int MTXMap<KEY, VALUE, MTXMemManagerClass>::AddElement(const KEY& Key, 
 	MapElement<KEY, VALUE> Element;
 	Element.Key = Key;
 	Element.Value = Value;
-	MATRIX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(Element);
+	MX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(Element);
 	m_uiCurUse++;
 	return m_uiCurUse - 1;
 }
@@ -119,7 +119,7 @@ unsigned int MTXMap<KEY, VALUE, MTXMemManagerClass>::AddElement(const MapElement
 	{
 		AddBufferNum(m_uiGrowBy);
 	}
-	MATRIX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(Element);
+	MX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(Element);
 	m_uiCurUse++;
 	return m_uiCurUse - 1;
 }
@@ -170,7 +170,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::operator= (const MTXMap<KEY, VALUE,
 		MapElement<KEY, VALUE>* pBuffer = Map.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>(pBuffer[i]);
+			MX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>(pBuffer[i]);
 		}
 
 	}
@@ -188,7 +188,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::operator= (const MTXMap<KEY, VALUE,
 		MapElement<KEY, VALUE>* pBuffer = Map.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MATRIX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>(pBuffer[i]);
+			MX_NEW(m_pBuffer + i) MapElement<KEY, VALUE>(pBuffer[i]);
 		}
 
 
@@ -248,7 +248,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::Erase(unsigned int uiBegin, unsigne
 		uiMoveIndex = uiEnd + k + 1;
 		if (uiMoveIndex < m_uiCurUse)
 		{
-			MATRIX_NEW(m_pBuffer + uiBegin + k) MapElement<KEY, VALUE>(m_pBuffer[uiMoveIndex]);
+			MX_NEW(m_pBuffer + uiBegin + k) MapElement<KEY, VALUE>(m_pBuffer[uiMoveIndex]);
 			m_pBuffer[uiMoveIndex].~MapElement<KEY, VALUE>();
 		}
 
@@ -268,7 +268,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::Sort(unsigned int uiBegin, unsigned
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MATRIX_NEW(pBuffer + i) MapElement<KEY, VALUE>();
+		MX_NEW(pBuffer + i) MapElement<KEY, VALUE>();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1, Compare);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -313,7 +313,7 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::Sort(unsigned int uiBegin, unsigned
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MATRIX_NEW(pBuffer + i) MapElement<KEY, VALUE>();
+		MX_NEW(pBuffer + i) MapElement<KEY, VALUE>();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -499,12 +499,12 @@ unsigned int MTXMapOrder<KEY, VALUE, MTXMemManagerClass>::AddElement(const MapEl
 	}
 	if (m_uiCurUse == uiIndex)
 	{
-		MATRIX_NEW(m_pBuffer + uiIndex) MapElement<KEY, VALUE>(Element);
+		MX_NEW(m_pBuffer + uiIndex) MapElement<KEY, VALUE>(Element);
 
 	}
 	else
 	{
-		MATRIX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(m_pBuffer[m_uiCurUse - 1]);
+		MX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(m_pBuffer[m_uiCurUse - 1]);
 		for (int i = (int)m_uiCurUse - 2; i >= (int)uiIndex; i--)
 		{
 			m_pBuffer[i + 1] = m_pBuffer[i];

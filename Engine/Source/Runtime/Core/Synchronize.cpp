@@ -38,11 +38,11 @@ void Matrix::Core::MTXSynchronize::MTXSafeOutputDebugString(const TCHAR* pString
 }
 
 
-MTXSemaphore::MTXSemaphore(unsigned int uiCount, unsigned int maxCount)
+MTXSemaphore::MTXSemaphore(unsigned int uCount, unsigned int maxCount)
 {
-	MTXENGINE_ASSERT(uiCount <= maxCount);
+	MTXENGINE_ASSERT(uCount <= maxCount);
 	//
-	mSemaphore = CreateSemaphore(NULL, uiCount, maxCount, NULL);
+	mSemaphore = CreateSemaphore(NULL, uCount, maxCount, NULL);
 
 	mMaxCount = maxCount;
 }
@@ -170,7 +170,7 @@ Matrix::Core::MTXTlsValue::~MTXTlsValue()
 	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 	for (size_t i = 0; i < mThreadValueNum; i++)
 	{
-		MTXDelete(pThreadValue[i]);
+		ENGINE_DELETE(pThreadValue[i]);
 	}
 	MTXTlsFree(mSlot);
 }
