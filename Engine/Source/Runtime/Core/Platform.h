@@ -22,7 +22,6 @@ enum class EPLATFORM
 #define SYSTEM_BIT_WIDTH 64
 #define USIZE_TYPE unsigned long long
 #define SIZE_TYPE long long
-
 #else
 #define SYSTEM_BIT_WIDTH 32
 #define USIZE_TYPE unsigned int
@@ -32,6 +31,10 @@ enum class EPLATFORM
 
 #define VSUSHORT_INDEX	unsigned short
 #define VSUINT_INDEX	unsigned int
+//#define  VSFLOAT 
+//#ifdef VSFLOAT 
+#define VSREAL 		float
+#define VSREAL 		float
 #endif // MATRIX_ENGINE_BASIX_TYPE
 
 

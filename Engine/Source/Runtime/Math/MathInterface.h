@@ -13,11 +13,6 @@ namespace Matrix
 {
 	namespace Math
 	{
-
-#define  VSFLOAT 
-#ifdef VSFLOAT 
-#define VSREAL 		float
-
 		//Trigonometric functions  三角函数
 #define SIN(x)		sinf(x)
 #define COS(x)		cosf(x)
@@ -54,7 +49,7 @@ namespace Matrix
 //asinh Compute area hyperbolic sine(function)
 //atanh Compute area hyperbolic tangent(function)
 
-#endif
+
 //Macro constants  浮点数精确度宏定义
 #define EPSILON_E3 (VSREAL)(1E-3) 
 #define EPSILON_E4 (VSREAL)(1E-4) 

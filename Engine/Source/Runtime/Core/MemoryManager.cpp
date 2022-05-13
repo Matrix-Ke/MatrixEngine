@@ -655,7 +655,7 @@ void* Matrix::Core::Win64MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAl
 {
 	if (uiAlignment != 0)
 	{
-		uiAlignment = Max(uSize >= 16 ? (USIZE_TYPE)16 : (USIZE_TYPE)8, uiAlignment);
+		uiAlignment = __max(uSize >= 16 ? (USIZE_TYPE)16 : (USIZE_TYPE)8, uiAlignment);
 		return scalable_aligned_malloc(uSize, uiAlignment);
 	}
 	else
