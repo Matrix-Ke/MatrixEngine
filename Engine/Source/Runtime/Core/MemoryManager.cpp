@@ -763,7 +763,8 @@ BYTE* Matrix::Core::StackMemoryManager::AllocateNewChunk(USIZE_TYPE MinSize)
 	if (!Chunk)
 	{
 		// Create MATRIX_NEW chunk.
-		USIZE_TYPE DataSize = Max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
+
+		USIZE_TYPE DataSize = max(MinSize, DefaultChunkSize - sizeof(FTaggedMemory));
 		Chunk = (FTaggedMemory*)MemoryObject::GetMemoryManager().Allocate(DataSize + sizeof(FTaggedMemory), 0, true);
 		Chunk->DataSize = DataSize;
 	}
