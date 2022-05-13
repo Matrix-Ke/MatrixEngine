@@ -12,63 +12,13 @@
 #define MX_DELETE delete
 #define USE_MATRIX_NEW
 
-#define USE_STL_TYPE_TRAIT
-#ifdef USE_STL_TYPE_TRAIT
-// stl 类型萃取
-#include <type_traits>
-#endif // USE_STL_TYPE_TRAIT
+
 
 namespace Matrix
 {
 	namespace Core
 	{
-#ifdef USE_STL_TYPE_TRAIT
-		// C++ STL的std::is_trivially_constructible模板用于检查给定类型T是否是带有参数集的平凡可构造类型。
-		//如果T是平凡可构造的类型，则它返回布尔值true，否则返回false。
-#define HAS_TRIVIAL_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
-#define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
-#define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
-#define HAS_TRIVIAL_COPY(T) std::is_trivially_copyable<T>::value
-#define IS_POD(T) std::is_pod<T>::value
-#define IS_ENUM(T) std::is_enum<T>::value
-#define IS_EMPTY(T) std::is_empty<T>::value
 
-	// POD，是Plain Old Data的缩写，普通旧数据类型，是C++中的一种数据类型概念
-		template <typename T>
-		struct TIsPODType
-		{
-			enum
-			{
-				Value = IS_POD(T)
-			};
-		};
-
-		template <typename T>
-		struct ValueBase
-		{
-			enum
-			{
-				NeedsConstructor = !HAS_TRIVIAL_CONSTRUCTOR(T) && !TIsPODType<T>::Value
-			};
-			enum
-			{
-				NeedsDestructor = !HAS_TRIVIAL_DESTRUCTOR(T) && !TIsPODType<T>::Value
-			};
-		};
-
-		//内存对齐
-		template <class T>
-		inline T Align(const T Ptr, USIZE_TYPE Alignment)
-		{
-			return (T)(((USIZE_TYPE)Ptr + Alignment - 1) & ~(Alignment - 1));
-		}
-		template <class T>
-		inline T Align1(const T Ptr, USIZE_TYPE Alignment)
-		{
-			return (T)((USIZE_TYPE)Ptr + Alignment - (Ptr & (Alignment - 1)));
-		}
-#else
-#endif
 		//引擎的内存管理模块： 1.高效的管理自己的内存  2.避免出现内存泄漏
 		class MATRIX_CORE_API BaseMemoryManager
 		{
