@@ -1,6 +1,7 @@
 # MaxtirxEngine
 
-## 引擎结构
+## 引擎开发设计
+- [引擎开发日志](./Doc/TodoList.md)
 - 原则：
     - 功能单元划分清晰，模块高内聚低耦合
 - 文件夹设计：
@@ -55,5 +56,5 @@
 * 开发分支： dev
 * 修复分支： debug
 ### 代码提交规范
-* commit形式： 【tag】：xxxxx； 目前可用tag如下：feature， debug， doc， cmake，demo
+* commit形式： 【tag】：xxxxx； 目前可用tag如下: feature,bug, doc, cmake，demo
 * master分支只允许feature和debug分支merge，其他分支无合并权限
