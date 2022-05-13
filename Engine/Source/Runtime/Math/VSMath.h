@@ -1,7 +1,4 @@
 #pragma once
-//#include "VSSystem.h"
-//#include <math.h>  
-//#include "VSMemManager.h"
 #include "MathInterface.h"
 
 namespace Matrix

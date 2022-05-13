@@ -1,6 +1,5 @@
 #pragma once
-#define MATRIX_ENGINE_BASIC_TYPE
-#ifdef MATRIX_ENGINE_BASIC_TYPE
+
 
 #if _WIN32 //_WIN32 宏定义windows平台
 #define WINDOWS_PLATFORM 1
@@ -16,6 +15,8 @@ enum class EPLATFORM
 
 
 //开始定义MatrixEngine 的跨平台数据类型 
+#define MATRIX_ENGINE_BASIC_TYPE
+#ifdef MATRIX_ENGINE_BASIC_TYPE
 #if WINDOWS_PLATFORM
 #if _WIN64
 #define SYSTEM_BIT_WIDTH 64
@@ -32,6 +33,17 @@ enum class EPLATFORM
 #define VSUSHORT_INDEX	unsigned short
 #define VSUINT_INDEX	unsigned int
 #endif // MATRIX_ENGINE_BASIX_TYPE
+
+
+#ifdef WINDOWS_PLATFORM
+//Use __declspec(align(#)) to precisely control the alignment of user - defined data
+//(for example, static allocations or automatic data in a function).
+#define ALIGN(n) __declspec(align(n))
+#else
+#define ALIGN(n)
+#endif
+
+#define BIT(i) (1 << i)
 
 
 

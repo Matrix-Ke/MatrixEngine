@@ -1,3 +1,5 @@
+// 硬件加速simd运算， 使用硬件加速必须要进行内存对齐
+// 因为用的simd是4个32bit的，128字节，所以需要16字节对齐
 #pragma once
 #include <emmintrin.h>
 typedef __m128	VSVectorRegister;

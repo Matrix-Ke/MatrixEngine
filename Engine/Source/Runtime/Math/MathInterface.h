@@ -1,8 +1,9 @@
 #pragma once
-#include "Platform.h"
 #include <math.h>
 #include <tchar.h>
 #include <stdlib.h>
+#include "Core/Platform.h"
+#include "Core/Core.h"
 #ifdef   Math_EXPORTS
 #define  MATRIX_MATH_API __declspec(dllexport) 
 #else
@@ -316,6 +317,7 @@ namespace Matrix
 		inline unsigned int CalcAlign(unsigned int n, unsigned int align)
 		{
 			return ((n + align - 1) & (~(align - 1)));
+			//return Matrix::Core::MXAlign<unsigned int>(n, align);
 		}
 		inline VSREAL RadianToAngle(VSREAL Radian)
 		{
