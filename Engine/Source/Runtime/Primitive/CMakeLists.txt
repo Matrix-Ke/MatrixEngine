@@ -14,7 +14,6 @@ set_target_properties(${SharedLibName} PROPERTIES FOLDER ${ENGINE_ROOT_DIR}/${SE
 target_compile_definitions(${SharedLibName} PRIVATE $<$<CONFIG:Debug>: _TEST_MACRO_>)
 target_compile_definitions(${SharedLibName} PUBLIC "UNICODE; _UNICODE")
 target_include_directories(${SharedLibName} PRIVATE "${ENGINE_SOURCE_RUNTIME_DIR}")
-target_include_directories(${SharedLibName} PRIVATE "${ENGINE_SOURCE_RUNTIME_DIR}/Math")
 
 # public 和 private 尽量多注意
 target_link_libraries(${SharedLibName} PRIVATE "Core;Math")

@@ -1,6 +1,6 @@
 #pragma once
 #include "VSLine3.h"
-#include "VSVector2.h"
+#include "Math/VSVector2.h"
 #include "Math/VSMath.h"
 
 

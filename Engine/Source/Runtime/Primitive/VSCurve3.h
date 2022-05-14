@@ -1,6 +1,6 @@
 #pragma once
 #include "VSLine3.h"
-#include "VSMatrix3X3.h"
+#include "Math/VSMatrix3X3.h"
 #include "Core/MemoryManager.h"
 /*
 ÇúÏßÀà

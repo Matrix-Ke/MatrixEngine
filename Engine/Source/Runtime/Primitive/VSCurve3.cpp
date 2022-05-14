@@ -1,5 +1,5 @@
 #include "VSCurve3.h"
-#include "VSMatrix3X3W.h"
+#include "Math/VSMatrix3X3W.h"
 
 
 using namespace Matrix::Primitive;
