@@ -1,5 +1,6 @@
 #pragma once
-#include "VSMath.h"
+#include "CMathInterface.h"
+
 namespace Matrix::Math
 {
 	class MATRIX_MATH_API VSVector2

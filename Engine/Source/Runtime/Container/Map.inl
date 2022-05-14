@@ -11,7 +11,7 @@ MTXMap<KEY, VALUE, MTXMemManagerClass>::~MTXMap()
 template<class KEY, class VALUE, class MTXMemManagerClass>
 MTXMap<KEY, VALUE, MTXMemManagerClass>::MTXMap(unsigned int uiGrowBy)
 {
-	MTXENGINE_ASSERT(uiGrowBy);
+	MX_ENGINE_ASSERT(uiGrowBy);
 	m_uiGrowBy = uiGrowBy;
 	m_pBuffer = NULL;
 	m_uiCurUse = 0;
@@ -127,9 +127,9 @@ template<class KEY, class VALUE, class MTXMemManagerClass>
 template<class KEY1, class VALUE1, class MTXMemManagerClass1>
 void MTXMap<KEY, VALUE, MTXMemManagerClass>::AddElement(const MTXMap<KEY1, VALUE1, MTXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd)
 {
-	MTXENGINE_ASSERT(uiBegin <= uiEnd);
+	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
 
-	MTXENGINE_ASSERT(uiEnd < Map.GetNum());
+	MX_ENGINE_ASSERT(uiEnd < Map.GetNum());
 
 
 	unsigned int iAddNum = uiEnd - uiBegin + 1;
@@ -219,7 +219,7 @@ template<class KEY, class VALUE, class MTXMemManagerClass>
 MapElement<KEY, VALUE>& MTXMap<KEY, VALUE, MTXMemManagerClass>::operator[] (unsigned int i)const
 {
 
-	MTXENGINE_ASSERT(i < m_uiBufferNum);
+	MX_ENGINE_ASSERT(i < m_uiBufferNum);
 	return m_pBuffer[i];
 
 
@@ -232,9 +232,9 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::Erase(unsigned int i)
 template<class KEY, class VALUE, class MTXMemManagerClass>
 void MTXMap<KEY, VALUE, MTXMemManagerClass>::Erase(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MTXENGINE_ASSERT(uiEnd < m_uiCurUse);
+	MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
 
-	MTXENGINE_ASSERT(uiBegin <= uiEnd);
+	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
 
 	unsigned int k;
 	unsigned int uiMoveNum = m_uiCurUse - 1 - uiEnd;
@@ -261,8 +261,8 @@ template<class KEY, class VALUE, class MTXMemManagerClass>
 template <class N>
 void MTXMap<KEY, VALUE, MTXMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd, N& Compare)
 {
-	MTXENGINE_ASSERT(uiEnd < m_uiCurUse);
-	MTXENGINE_ASSERT(uiBegin <= uiEnd);
+	MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
 
 	//¹é²¢ÅÅÐò ¸´ÔÓ¶È nlogn
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
@@ -307,8 +307,8 @@ void MTXMap<KEY, VALUE, MTXMemManagerClass>::SortAll()
 template<class KEY, class VALUE, class MTXMemManagerClass>
 void MTXMap<KEY, VALUE, MTXMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MTXENGINE_ASSERT(uiEnd < m_uiCurUse);
-	MTXENGINE_ASSERT(uiBegin <= uiEnd);
+	MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
 	//¹é²¢ÅÅÐò ¸´ÔÓ¶È nlogn
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)

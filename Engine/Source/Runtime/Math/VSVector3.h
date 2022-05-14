@@ -1,5 +1,6 @@
 #pragma once
-#include "VSMath.h"
+#include "CMathInterface.h"
+
 namespace Matrix
 {
 	namespace Math

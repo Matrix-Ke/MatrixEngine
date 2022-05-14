@@ -5,14 +5,14 @@ using namespace Matrix::Core;
 
 MTXThread::MTXThread() : mThread(NULL), mPriority(Normal), mStackSize(0), mThreadName(NULL)
 {
-	MTXENGINE_ASSERT(!IsRunning());
+	MX_ENGINE_ASSERT(!IsRunning());
 	//CreateThread: 系统会创建一个线程内核对象，这个线程内核对象不是线程本身而是一个较小的数据结构，操作系统用这个数据结构来管理线程。
 	//security_attibutes: 如果想使用线程内核默认安全属性，传入NULL。
 	//cbStackSize:  指定线程栈使用多少地址空间，如果是0， 就会预定一个区域，并根据由/STACK链接器，开关指定的存储量来调拨存储器。
 	//其实更加建议使用： _beginthreadex, 不使用CreateThreads是因为最早的标准c/c++不是为多线程应用程序而设计。 全局的变量会导致程序会出错。
 	mThread = ::CreateThread(0, mStackSize, ThreadProc, this, CREATE_SUSPENDED, NULL);
 	//mThread = (HANDLE)_beginthreadex(0, mStackSize, ThreadProc, this, CREATE_SUSPENDED, NULL);
-	MTXENGINE_ASSERT(mThread);
+	MX_ENGINE_ASSERT(mThread);
 	mThreadState = TS_SUSPEND;
 	SetPriority(mPriority);
 	mStopEvent.Create(true);
@@ -97,8 +97,8 @@ void Matrix::Core::MTXThread::Stop()
 {
 	if (mThreadState == TS_START)
 	{
-		MTXENGINE_ASSERT(this->IsRunning());
-		MTXENGINE_ASSERT(NULL != mThread);
+		MX_ENGINE_ASSERT(this->IsRunning());
+		MX_ENGINE_ASSERT(NULL != mThread);
 
 		mStopEvent.Trigger();
 		mThreadState = TS_STOP;

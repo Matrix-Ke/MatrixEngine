@@ -1,4 +1,4 @@
-#include "VSMath.h"
+#include "CMathInterface.h"
 #include "VSQuat.h"
 #include "VSVector3.h"
 #include "VSMatrix3X3.h"

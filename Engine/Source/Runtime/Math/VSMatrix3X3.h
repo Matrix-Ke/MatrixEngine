@@ -1,6 +1,9 @@
 #pragma once
 #include "VSVector3.h"
 #include "VSQuat.h"
+
+
+
 namespace Matrix
 {
 	namespace Math

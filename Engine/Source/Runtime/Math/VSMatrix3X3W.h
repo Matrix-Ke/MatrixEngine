@@ -2,7 +2,8 @@
 #include "VSVector3.h"
 #include "VSVector3W.h"
 #include "VSMatrix3X3.h"
-//#include "VSPlane3.h"
+
+
 namespace Matrix
 {
 	namespace Math

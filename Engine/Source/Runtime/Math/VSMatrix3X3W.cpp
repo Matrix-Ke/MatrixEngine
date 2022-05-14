@@ -1,5 +1,5 @@
 #include "VSMatrix3X3W.h"
-#include "VSMath.h"
+#include "CMathInterface.h"
 using namespace Matrix::Math;
 
 

@@ -1,4 +1,4 @@
-#include "VSMath.h"
+#include "CMathInterface.h"
 /*----------------------------------------------------------------*/
 inline void VSMatrix3X3W::Identity(void)
 {

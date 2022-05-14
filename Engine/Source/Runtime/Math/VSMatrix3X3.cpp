@@ -1,6 +1,9 @@
 #include "VSMatrix3X3.h"
-#include "VSMath.h"
+#include "CMathInterface.h"
+
+
 using namespace Matrix::Math;
+
 
 const VSMatrix3X3 VSMatrix3X3::ms_CameraViewRight = VSMatrix3X3(0.0f, 0.0f, -1.0f,
 	0.0f, 1.0f, 0.0f,
