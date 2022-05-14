@@ -824,7 +824,7 @@ bool Matrix4::operator==(const Matrix4& v) const
 	}
 	return true;
 }
-/*void VSMatrix3X3W::CreatePointLightPlaneShadow(const Vector3 & LightPoint,const VSPlane3 &Plane)
+/*void VSMatrix3X3W::CreatePointLightPlaneShadow(const Vector3 & LightPoint,const Plane3 &Plane)
 {
 	Vector3 PlaneN = Plane.GetN();
 	VSREAL fD = Plane.GetfD();
@@ -851,7 +851,7 @@ bool Matrix4::operator==(const Matrix4& v) const
 	_33 = PlaneN * LightPoint;
 }
 /*----------------------------------------------------------------*/
-/*void VSMatrix3X3W::CreateInfiniteLightPlaneShadow(const Vector3 & LightDir,const VSPlane3 &Plane)
+/*void VSMatrix3X3W::CreateInfiniteLightPlaneShadow(const Vector3 & LightDir,const Plane3 &Plane)
 {
 
 	Vector3 PlaneN = Plane.GetN();

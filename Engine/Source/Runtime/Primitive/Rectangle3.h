@@ -52,58 +52,58 @@ namespace Matrix
 			// VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fRectangleParameter[2])const;
 
 			////矩形和矩形距离
-			// VSREAL SquaredDistance(const VSRectangle3& Rectangle,
+			// VSREAL SquaredDistance(const Rectangle3& Rectangle,
 			//	VSREAL fRectangle1Parameter[2], VSREAL fRectangle2Parameter[2])const;
 
 			////三角形和矩形距离
 			// VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL fRectangleParameter[2], VSREAL fTriangleParameter[3])const;
 
 			////直线和矩形距离
-			// VSREAL SquaredDistance(const VSLine3& Line, VSREAL fRectangleParameter[2], VSREAL& fLineParameter)const;
+			// VSREAL SquaredDistance(const Line3& Line, VSREAL fRectangleParameter[2], VSREAL& fLineParameter)const;
 			////射线和矩形距离
-			// VSREAL SquaredDistance(const VSRay3& Ray, VSREAL fRectangleParameter[2], VSREAL& fRayParameter)const;
+			// VSREAL SquaredDistance(const Ray3& Ray, VSREAL fRectangleParameter[2], VSREAL& fRayParameter)const;
 			////线段和矩形距离
-			// VSREAL SquaredDistance(const VSSegment3& Segment, VSREAL fRectangleParameter[2], VSREAL& fSegmentParameter)const;
+			// VSREAL SquaredDistance(const Segment3& Segment, VSREAL fRectangleParameter[2], VSREAL& fSegmentParameter)const;
 			////矩形和OBB距离
 			// VSREAL SquaredDistance(const OBB3& OBB, VSREAL RectangleParameter[2], VSREAL OBBParameter[3])const;
 			////矩形和球的距离
-			// VSREAL Distance(const VSSphere3& Sphere, VSREAL fRectangleParameter[2], Matrix::Math::Vector3& SpherePoint)const;
+			// VSREAL Distance(const Sphere3& Sphere, VSREAL fRectangleParameter[2], Matrix::Math::Vector3& SpherePoint)const;
 			////矩形和平面距离
-			// VSREAL Distance(const VSPlane3& Plane, Matrix::Math::Vector3& RectanglePoint, Matrix::Math::Vector3& PlanePoint)const;
+			// VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& RectanglePoint, Matrix::Math::Vector3& PlanePoint)const;
 			////矩形和AABB距离
-			// VSREAL SquaredDistance(const VSAABB3& AABB, VSREAL RectangleParameter[2]
+			// VSREAL SquaredDistance(const AABB3& AABB, VSREAL RectangleParameter[2]
 			//	, VSREAL AABBParameter[3])const;
 
 			////多边形和矩形距离
-			// VSREAL SquaredDistance(const VSPolygon3& Polygon,
+			// VSREAL SquaredDistance(const Polygon3& Polygon,
 			//	VSREAL fRectangleParameter[2],
 			//	int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3])const;
 			///********************************RelationWith******************************************/
 			////测试直线与矩形位置关系
 			////VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSLine3& Line, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fLineParameter)const;
+			// int RelationWith(const Line3& Line, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fLineParameter)const;
 			////测试射线与矩形位置关系
 			////VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSRay3& Ray, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fRayParameter)const;
+			// int RelationWith(const Ray3& Ray, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fRayParameter)const;
 			////测试线段与矩形位置关系
 			////VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSSegment3& Segment, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fSegmentParameter)const;
+			// int RelationWith(const Segment3& Segment, bool bCull, VSREAL fRectangleParameter[2], VSREAL& fSegmentParameter)const;
 			////平面和矩形位置关系
 			////VSON VSFRONT VSBACK VSINTERSECT
-			// int RelationWith(const VSPlane3& Plane)const;
-			// int RelationWith(const VSPlane3& Plane, VSSegment3& Segment)const;
+			// int RelationWith(const Plane3& Plane)const;
+			// int RelationWith(const Plane3& Plane, Segment3& Segment)const;
 			////三角形和矩形位置关系
 			////VSNOINTERSECT VSINTERSECT
 			// int RelationWith(const Triangle3& Triangle)const;
-			// int RelationWith(const Triangle3& Triangle, VSSegment3& Segment)const;
+			// int RelationWith(const Triangle3& Triangle, Segment3& Segment)const;
 			////矩形和矩形位置关系
 			////VSNOINTERSECT VSINTERSECT
-			// int RelationWith(const VSRectangle3& Rectangle)const;
-			// int RelationWith(const VSRectangle3& Rectangle, VSSegment3& Segment)const;
+			// int RelationWith(const Rectangle3& Rectangle)const;
+			// int RelationWith(const Rectangle3& Rectangle, Segment3& Segment)const;
 			////矩形和AABB位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
-			// int RelationWith(const VSAABB3& AABB)const;
+			// int RelationWith(const AABB3& AABB)const;
 
 			////矩形和OBB位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
@@ -111,7 +111,7 @@ namespace Matrix
 
 			////矩形和圆位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
-			// int RelationWith(const VSSphere3& Sphere)const;
+			// int RelationWith(const Sphere3& Sphere)const;
 		};
 
 #include "Rectangle3.inl"

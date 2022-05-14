@@ -40,67 +40,67 @@ namespace Matrix
 			//	VSREAL fTriangle1Parameter[3],
 			//	VSREAL fTriangle2Parameter[3])const;
 			////多边形和矩形距离
-			// VSREAL SquaredDistance(const VSRectangle3& Rectangle,
+			// VSREAL SquaredDistance(const Rectangle3& Rectangle,
 			//	int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3],
 			//	VSREAL fRectangleParameter[2])const;
 
 			////直线和多边形距离
-			// VSREAL SquaredDistance(const VSLine3& Line, int& IndexTriangle,
+			// VSREAL SquaredDistance(const Line3& Line, int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3], VSREAL& fLineParameter)const;
 			////射线和多边形距离
-			// VSREAL SquaredDistance(const VSRay3& Ray, int& IndexTriangle,
+			// VSREAL SquaredDistance(const Ray3& Ray, int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3], VSREAL& fRayParameter)const;
 			////线段和多边形距离
-			// VSREAL SquaredDistance(const VSSegment3& Segment, int& IndexTriangle,
+			// VSREAL SquaredDistance(const Segment3& Segment, int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3], VSREAL& fSegmentParameter)const;
 			////多边形和OBB距离
 			// VSREAL SquaredDistance(const OBB3& OBB, int& IndexTriangle,
 			//	VSREAL TriangleParameter[3], VSREAL OBBParameter[3])const;
 			////多边形和球的距离
-			// VSREAL Distance(const VSSphere3& Sphere, int& IndexTriangle,
+			// VSREAL Distance(const Sphere3& Sphere, int& IndexTriangle,
 			//	VSREAL fTriangleParameter[3], Matrix::Math::Vector3& SpherePoint)const;
 
 			////平面和多边形距离
-			// VSREAL Distance(const VSPlane3& Plane, int& IndexTriangle,
+			// VSREAL Distance(const Plane3& Plane, int& IndexTriangle,
 			//	Matrix::Math::Vector3& TrianglePoint, Matrix::Math::Vector3& PlanePoint)const;
 			////多边形和AABB距离
-			// VSREAL SquaredDistance(const VSAABB3& AABB, int& IndexTriangle,
+			// VSREAL SquaredDistance(const AABB3& AABB, int& IndexTriangle,
 			//	VSREAL TriangleParameter[3]
 			//	, VSREAL AABBParameter[3])const;
 
 			////多边形和多边形距离
-			// VSREAL SquaredDistance(const VSPolygon3& Polygon, int& Index1Triangle,
+			// VSREAL SquaredDistance(const Polygon3& Polygon, int& Index1Triangle,
 			//	VSREAL Triangle1Parameter[3], int& Index2Triangle,
 			//	VSREAL Triangle2Parameter[3])const;
 			///********************************RelationWith******************************************/
 			//	//测试直线与多边形位置关系 bCull为是否为背面剪裁,是否考虑朝向,t返回相交长度
 			//	//VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSLine3& Line, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
+			// int RelationWith(const Line3& Line, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
 			//	VSREAL& fLineParameter)const;
 			////测试射线与多边形位置关系
 			////VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSRay3& Ray, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
+			// int RelationWith(const Ray3& Ray, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
 			//	VSREAL& fRayParameter)const;
 			////测试线段与多边形位置关系
 			////VSNOINTERSECT VSNTERSECT
-			// int RelationWith(const VSSegment3& Segment, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
+			// int RelationWith(const Segment3& Segment, bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3],
 			//	VSREAL& fSegmentParameter)const;
 			////平面和多边形位置关系
 			////VSON VSFRONT VSBACK VSINTERSECT
-			// int RelationWith(const VSPlane3& Plane)const;
-			// int RelationWith(const VSPlane3& Plane, VSSegment3& Segment)const;
+			// int RelationWith(const Plane3& Plane)const;
+			// int RelationWith(const Plane3& Plane, Segment3& Segment)const;
 			////多边形和三角形位置关系
 			////VSNOINTERSECT VSINTERSECT
 			// int RelationWith(const Triangle3& Triangle)const;
-			// int RelationWith(const Triangle3& Triangle, VSSegment3& Segment)const;
+			// int RelationWith(const Triangle3& Triangle, Segment3& Segment)const;
 			////多边形和矩形位置关系
 			////VSNOINTERSECT VSINTERSECT
-			// int RelationWith(const VSRectangle3& Rectangle)const;
-			// int RelationWith(const VSRectangle3& Rectangle, VSSegment3& Segment)const;
+			// int RelationWith(const Rectangle3& Rectangle)const;
+			// int RelationWith(const Rectangle3& Rectangle, Segment3& Segment)const;
 			////多边形和AABB位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
-			// int RelationWith(const VSAABB3& AABB)const;
+			// int RelationWith(const AABB3& AABB)const;
 
 			////多边形和OBB位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
@@ -108,15 +108,15 @@ namespace Matrix
 
 			////多边形和圆位置关系
 			////VSNOINTERSECT VSINTERSECT VSIN
-			// int RelationWith(const VSSphere3& Sphere)const;
+			// int RelationWith(const Sphere3& Sphere)const;
 
 			///*************************************** Clip *********************************/
 			////平面减切多边形
-			// void	Clip(const VSPlane3& Plane,
-			//	VSPolygon3& pFront,
-			//	VSPolygon3& pBack)const;
+			// void	Clip(const Plane3& Plane,
+			//	Polygon3& pFront,
+			//	Polygon3& pBack)const;
 			////用AABB剪切多边形用来适合AABB
-			// void	Clip(const VSAABB3& ABBB);
+			// void	Clip(const AABB3& ABBB);
 		};
 #include "Polygon3.inl"
 	}

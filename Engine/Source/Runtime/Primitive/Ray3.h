@@ -25,10 +25,10 @@ namespace Matrix
 			//		VSREAL fTriangleParameter[3])const;
 			//	//测试射线与平面位置关系
 			//	//VSNOINTERSECT VSNTERSECT VSON VSBACK VSFRONT
-			//	int RelationWith(const VSPlane3& Plane, bool bCull, VSREAL& fRayParameter)const;
+			//	int RelationWith(const Plane3& Plane, bool bCull, VSREAL& fRayParameter)const;
 			//	//测试射线与矩形位置关系
 			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const VSRectangle3& Rectangle, bool bCull, VSREAL& fRayParameter,
+			//	int RelationWith(const Rectangle3& Rectangle, bool bCull, VSREAL& fRayParameter,
 			//		VSREAL fRectangleParameter[2])const;
 
 			//	//测试射线与OBB位置关系
@@ -36,37 +36,37 @@ namespace Matrix
 			//	int RelationWith(const OBB3& OBB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			//	//测试直线与AABB位置关系
 			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const VSAABB3& AABB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//	int RelationWith(const AABB3& AABB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			//	//测试射线与球位置关系
 			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const VSSphere3& sphere, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//	int RelationWith(const Sphere3& sphere, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			//	//测试射线与多边形位置关系
 			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const VSPolygon3& Polygon, VSREAL& fRayParameter,
+			//	int RelationWith(const Polygon3& Polygon, VSREAL& fRayParameter,
 			//		bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3])const;
 			//	/*************************************距离************************************************/
 			//	//点和射线距离
 			//	VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL& fLineParameter)const;
 			//	//直线和射线距离
-			//	VSREAL SquaredDistance(const VSLine3& Line, VSREAL& fRayParameter, VSREAL& fLineParameter)const;
+			//	VSREAL SquaredDistance(const Line3& Line, VSREAL& fRayParameter, VSREAL& fLineParameter)const;
 			//	//射线和射线距离
-			//	VSREAL SquaredDistance(const VSRay3& Ray, VSREAL& fRay1Parameter, VSREAL& fRay2Parameter)const;
+			//	VSREAL SquaredDistance(const Ray3& Ray, VSREAL& fRay1Parameter, VSREAL& fRay2Parameter)const;
 			//	//射线和线段距离
-			//	VSREAL SquaredDistance(const VSSegment3& Segment, VSREAL& fRayParameter, VSREAL& fSegmentParameter)const;
+			//	VSREAL SquaredDistance(const Segment3& Segment, VSREAL& fRayParameter, VSREAL& fSegmentParameter)const;
 			//	//射线和三角形距离
 			//	VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL& fRayParameter, VSREAL fTriangleParameter[3])const;
 			//	//射线和矩形距离
-			//	VSREAL SquaredDistance(const VSRectangle3& Rectangle, VSREAL& fRayParameter, VSREAL fRectangleParameter[2])const;
+			//	VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL& fRayParameter, VSREAL fRectangleParameter[2])const;
 			//	//射线和OBB距离
 			//	VSREAL SquaredDistance(const OBB3& OBB, VSREAL& fRayParameter, VSREAL fOBBParameter[3])const;
 			//	//射线和球的距离
-			//	VSREAL Distance(const VSSphere3& Sphere, VSREAL& fRayParameter, Matrix::Math::Vector3& SpherePoint)const;
+			//	VSREAL Distance(const Sphere3& Sphere, VSREAL& fRayParameter, Matrix::Math::Vector3& SpherePoint)const;
 			//	//射线和平面距离
-			//	VSREAL Distance(const VSPlane3& Plane, Matrix::Math::Vector3& RayPoint, Matrix::Math::Vector3& PlanePoint)const;
+			//	VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& RayPoint, Matrix::Math::Vector3& PlanePoint)const;
 			//	//射线和AABB距离
-			//	VSREAL SquaredDistance(const VSAABB3& AABB, VSREAL& fRayParameter, VSREAL fAABBParameter[3])const;
+			//	VSREAL SquaredDistance(const AABB3& AABB, VSREAL& fRayParameter, VSREAL fAABBParameter[3])const;
 			//	//射线和多边形距离
-			//	VSREAL SquaredDistance(const VSPolygon3& Polygon, VSREAL& fRayParameter,
+			//	VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fRayParameter,
 			//		int& IndexTriangle,
 			//		VSREAL fTriangleParameter[3])const;
 			//}; // class

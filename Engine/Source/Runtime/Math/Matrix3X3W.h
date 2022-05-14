@@ -58,8 +58,8 @@ namespace Matrix
 				VSREAL fZF);
 			//建立视口矩阵
 			bool CreateViewPort(VSREAL fX, VSREAL fY, VSREAL fWidth, VSREAL fHeight, VSREAL fMinz, VSREAL fMaxz);
-			// void CreatePointLightPlaneShadow(const Vector3 & LightPoint,const VSPlane3 &Plane);
-			// void CreateInfiniteLightPlaneShadow(const Vector3 & LightDir,const VSPlane3 &Plane);
+			// void CreatePointLightPlaneShadow(const Vector3 & LightPoint,const Plane3 &Plane);
+			// void CreateInfiniteLightPlaneShadow(const Vector3 & LightDir,const Plane3 &Plane);
 			Matrix4 operator*(VSREAL f) const;
 			Matrix4 operator+(VSREAL f) const;
 			Matrix4 operator-(VSREAL f) const;

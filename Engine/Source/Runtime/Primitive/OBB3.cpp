@@ -282,11 +282,11 @@ Matrix::Primitive::OBB3 Matrix::Primitive::OBB3::MergeOBB(const OBB3& OBB) const
 	return Temp;
 }
 
-// Matrix::Primitive::VSAABB3 Matrix::Primitive::OBB3::GetAABB() const
+// Matrix::Primitive::AABB3 Matrix::Primitive::OBB3::GetAABB() const
 //{
 //	Matrix::Math::Vector3 Point[8];
 //	this->GetPoint(Point);
-//	Primitive::VSAABB3 Temp;
+//	Primitive::AABB3 Temp;
 //	Temp.CreateAABB(Point, 8);
 //	return Temp;
 // }
