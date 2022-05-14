@@ -2,22 +2,22 @@
 
 using namespace Matrix::Primitive;
 
-VSSegmentCurve3::VSSegmentCurve3()
+SegmentCurve3::SegmentCurve3()
 {
 }
 /*----------------------------------------------------------------*/
-VSSegmentCurve3::~VSSegmentCurve3()
+SegmentCurve3::~SegmentCurve3()
 {
 }
 /*----------------------------------------------------------------*/
-void VSSegmentCurve3::Set(const VSSegment3 &Segment)
+void SegmentCurve3::Set(const Segment3& Segment)
 {
 
-    m_Segment = Segment;
+	m_Segment = Segment;
 }
 /*----------------------------------------------------------------*/
-VSSegment3 &VSSegmentCurve3::GetSegment()
+Segment3& SegmentCurve3::GetSegment()
 {
-    return m_Segment;
+	return m_Segment;
 }
 /*----------------------------------------------------------------*/

@@ -5,10 +5,10 @@ namespace Matrix
 {
 	namespace Math
 	{
-		class VSVector3;
-		class VSVector3W;
-		class VSMatrix3X3;
-		class  VSQuat;
+		class Vector3;
+		class Vector4;
+		class Matrix3;
+		class  Quat;
 
 		class MATRIX_MATH_API VSMathInstance
 		{
@@ -40,15 +40,15 @@ namespace Matrix
 
 
 		bool MATRIX_MATH_API IsUniformScale(VSREAL fScale);
-		bool MATRIX_MATH_API IsZeroTranslate(const VSVector3& Translate);
-		bool MATRIX_MATH_API IsIdentityRotate(const VSMatrix3X3& Rotate);
-		bool MATRIX_MATH_API IsIdentityRotate(const VSQuat& Rotate);
+		bool MATRIX_MATH_API IsZeroTranslate(const Vector3& Translate);
+		bool MATRIX_MATH_API IsIdentityRotate(const Matrix3& Rotate);
+		bool MATRIX_MATH_API IsIdentityRotate(const Quat& Rotate);
 
 
 		VSREAL MATRIX_MATH_API LineInterpolation(VSREAL t1, VSREAL t2, VSREAL t);
-		VSVector3 MATRIX_MATH_API LineInterpolation(const VSVector3& t1, const VSVector3& t2, VSREAL t);
-		VSQuat MATRIX_MATH_API LineInterpolation(const VSQuat& t1, const VSQuat& t2, VSREAL t);
-		VSVector3W MATRIX_MATH_API LineInterpolation(const VSVector3W& t1, const VSVector3W& t2, VSREAL t);
+		Vector3 MATRIX_MATH_API LineInterpolation(const Vector3& t1, const Vector3& t2, VSREAL t);
+		Quat MATRIX_MATH_API LineInterpolation(const Quat& t1, const Quat& t2, VSREAL t);
+		Vector4 MATRIX_MATH_API LineInterpolation(const Vector4& t1, const Vector4& t2, VSREAL t);
 
 
 	}

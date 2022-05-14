@@ -1,15 +1,15 @@
 
 /*----------------------------------------------------------------*/
-inline void VSVector3W::Set(VSREAL _x, VSREAL _y, VSREAL _z, VSREAL _w) 
+inline void Vector4::Set(VSREAL _x, VSREAL _y, VSREAL _z, VSREAL _w)
 {
-	x=_x; y=_y; z=_z; w=_w;
+	x = _x; y = _y; z = _z; w = _w;
 }
-VSVector3 VSVector3W::GetV3()const
+Vector3 Vector4::GetV3()const
 {
-	return VSVector3(x,y,z);
+	return Vector3(x, y, z);
 }
 /*----------------------------------------------------------------*/
-inline void VSVector3W::GetV3(VSVector3 & V)const
+inline void Vector4::GetV3(Vector3& V)const
 {
 
 	V.x = x;
@@ -17,10 +17,10 @@ inline void VSVector3W::GetV3(VSVector3 & V)const
 	V.z = z;
 }
 /*----------------------------------------------------------------*/
-inline void VSVector3W::Set(const VSVector3 & V)
+inline void Vector4::Set(const Vector3& V)
 {
-	x = V.x; 
-	y = V.y; 
-	z = V.z; 
+	x = V.x;
+	y = V.y;
+	z = V.z;
 	w = 1.0f;
 }

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------*/
-inline void VSOBB3::Set(const Matrix::Math::VSVector3 A[3], VSREAL fA[3], const Matrix::Math::VSVector3& Center)
+inline void OBB3::Set(const Matrix::Math::Vector3 A[3], VSREAL fA[3], const Matrix::Math::Vector3& Center)
 {
 	m_A[0] = A[0];
 	m_A[1] = A[1];
@@ -14,9 +14,9 @@ inline void VSOBB3::Set(const Matrix::Math::VSVector3 A[3], VSREAL fA[3], const 
 
 }
 /*----------------------------------------------------------------*/
-inline void VSOBB3::Set(const Matrix::Math::VSVector3& A0, const Matrix::Math::VSVector3& A1, const Matrix::Math::VSVector3& A2,
+inline void OBB3::Set(const Matrix::Math::Vector3& A0, const Matrix::Math::Vector3& A1, const Matrix::Math::Vector3& A2,
 	VSREAL fA0, VSREAL fA1, VSREAL fA2,
-	const Matrix::Math::VSVector3& Center)
+	const Matrix::Math::Vector3& Center)
 {
 
 	m_A[0] = A0;
@@ -33,7 +33,7 @@ inline void VSOBB3::Set(const Matrix::Math::VSVector3& A0, const Matrix::Math::V
 	m_Center = Center;
 }
 /*----------------------------------------------------------------*/
-inline void VSOBB3::GetA(Matrix::Math::VSVector3 A[3])const
+inline void OBB3::GetA(Matrix::Math::Vector3 A[3])const
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -41,7 +41,7 @@ inline void VSOBB3::GetA(Matrix::Math::VSVector3 A[3])const
 	}
 }
 /*----------------------------------------------------------------*/
-inline void VSOBB3::GetfA(VSREAL fA[3])const
+inline void OBB3::GetfA(VSREAL fA[3])const
 {
 	for (int i = 0; i < 3; i++)
 	{
@@ -49,18 +49,18 @@ inline void VSOBB3::GetfA(VSREAL fA[3])const
 	}
 }
 /*----------------------------------------------------------------*/
-inline const Matrix::Math::VSVector3& VSOBB3::GetCenter()const
+inline const Matrix::Math::Vector3& OBB3::GetCenter()const
 {
 
 	return m_Center;
 }
 /*----------------------------------------------------------------*/
-inline Matrix::Math::VSVector3 VSOBB3::GetParameterPoint(VSREAL fOBBParameter[3])const
+inline Matrix::Math::Vector3 OBB3::GetParameterPoint(VSREAL fOBBParameter[3])const
 {
 	return (m_Center + m_A[0] * fOBBParameter[0] + m_A[1] * fOBBParameter[1] + m_A[2] * fOBBParameter[2]);
 
 }
-inline Matrix::Math::VSVector3 VSOBB3::GetParameterPoint(VSREAL fOBBParameter0, VSREAL fOBBParameter1, VSREAL fOBBParameter2)const
+inline Matrix::Math::Vector3 OBB3::GetParameterPoint(VSREAL fOBBParameter0, VSREAL fOBBParameter1, VSREAL fOBBParameter2)const
 {
 
 	return (m_Center + m_A[0] * fOBBParameter0 + m_A[1] * fOBBParameter1 + m_A[2] * fOBBParameter2);

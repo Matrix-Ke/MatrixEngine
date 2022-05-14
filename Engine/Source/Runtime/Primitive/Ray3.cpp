@@ -1,32 +1,32 @@
 #include "Ray3.h"
 using namespace Matrix::Primitive;
 /*----------------------------------------------------------------*/
-VSRay3::VSRay3()
+Ray3::Ray3()
 {
 }
 /*----------------------------------------------------------------*/
-VSRay3::VSRay3(const Matrix::Math::VSVector3 &Orig, const Matrix::Math::VSVector3 &Dir)
+Ray3::Ray3(const Matrix::Math::Vector3& Orig, const Matrix::Math::Vector3& Dir)
 {
-    Set(Orig, Dir);
+	Set(Orig, Dir);
 }
 /*----------------------------------------------------------------*/
-VSRay3::~VSRay3()
+Ray3::~Ray3()
 {
 }
 /*----------------------------------------------------------------*/
-bool VSRay3::GetParameter(const Matrix::Math::VSVector3 &Point, VSREAL &fRayParameter) const
+bool Ray3::GetParameter(const Matrix::Math::Vector3& Point, VSREAL& fRayParameter) const
 {
-    if (!Matrix::Primitive::VSLine3::GetParameter(Point, fRayParameter))
-        return 0;
+	if (!Matrix::Primitive::Line3::GetParameter(Point, fRayParameter))
+		return 0;
 
-    if (fRayParameter < 0)
-        return 0;
+	if (fRayParameter < 0)
+		return 0;
 
-    return 1;
+	return 1;
 }
 /*----------------------------------------------------------------*/
-void VSRay3::Transform(const VSRay3 &Ray, const Matrix::Math::VSMatrix3X3W &Mat)
+void Ray3::Transform(const Ray3& Ray, const Matrix::Math::Matrix4& Mat)
 {
 
-    Matrix::Primitive::VSLine3::Transform(Ray, Mat);
+	Matrix::Primitive::Line3::Transform(Ray, Mat);
 }

@@ -1,12 +1,12 @@
 #include "CMathInterface.h"
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3::Identity(void)
+inline void Matrix3::Identity(void)
 {
-	Matrix::Core::MTXMemset(m, 0, sizeof(VSMatrix3X3));
+	Matrix::Core::MTXMemset(m, 0, sizeof(Matrix3));
 	_00 = _11 = _22 = 1.0f;
 }
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3::TransposeOf(const VSMatrix3X3& Matrix)
+inline void Matrix3::TransposeOf(const Matrix3& Matrix)
 {
 	_00 = Matrix._00;
 	_10 = Matrix._01;
@@ -25,14 +25,14 @@ inline void VSMatrix3X3::TransposeOf(const VSMatrix3X3& Matrix)
 }
 
 /*----------------------------------------------------------------*/
-inline VSREAL VSMatrix3X3::Det()const
+inline VSREAL Matrix3::Det()const
 {
 	return (M[0][0] * (M[1][1] * M[2][2] - M[2][1] * M[1][2]) -
 		M[0][1] * (M[1][0] * M[2][2] - M[2][0] * M[1][2]) +
 		M[0][2] * (M[1][0] * M[2][1] - M[2][0] * M[1][1]));
 
 }
-inline void VSMatrix3X3::InverseOf(const VSMatrix3X3& Matirx)
+inline void Matrix3::InverseOf(const Matrix3& Matirx)
 {
 
 	VSREAL det = Matirx.Det();
@@ -59,9 +59,9 @@ inline void VSMatrix3X3::InverseOf(const VSMatrix3X3& Matirx)
 } // func
 /*----------------------------------------------------------------*/
 
-inline VSMatrix3X3 VSMatrix3X3::operator * (const VSMatrix3X3& Matirx) const
+inline Matrix3 Matrix3::operator * (const Matrix3& Matirx) const
 {
-	VSMatrix3X3 mResult;
+	Matrix3 mResult;
 	mResult.M[0][0] = 0;
 	mResult.M[1][1] = 0;
 	mResult.M[2][2] = 0;
@@ -107,13 +107,13 @@ inline VSMatrix3X3 VSMatrix3X3::operator * (const VSMatrix3X3& Matirx) const
 	return mResult;
 }
 /*----------------------------------------------------------------*/
-inline VSVector3 VSMatrix3X3::operator * (const VSVector3& vc) const
+inline Vector3 Matrix3::operator * (const Vector3& vc) const
 {
 	return vc * (*this);
 }
 
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3::CreateFromTwoVector(const VSVector3& v1, const VSVector3& v2)
+inline void Matrix3::CreateFromTwoVector(const Vector3& v1, const Vector3& v2)
 {
 
 	for (int i = 0; i < 3; i++)
@@ -127,7 +127,7 @@ inline void VSMatrix3X3::CreateFromTwoVector(const VSVector3& v1, const VSVector
 
 }
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3::SetZero()
+inline void Matrix3::SetZero()
 {
-	Matrix::Core::MTXMemset(m, 0, sizeof(VSMatrix3X3));
+	Matrix::Core::MTXMemset(m, 0, sizeof(Matrix3));
 }

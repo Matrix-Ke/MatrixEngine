@@ -1,19 +1,19 @@
 #include "CMathInterface.h"
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3W::Identity(void)
+inline void Matrix4::Identity(void)
 {
-	Matrix::Core::MTXMemset(m, 0, sizeof(VSMatrix3X3W));
+	Matrix::Core::MTXMemset(m, 0, sizeof(Matrix4));
 	_00 = _11 = _22 = _33 = 1.0f;
 }
 /*----------------------------------------------------------------*/
-inline VSVector3 VSMatrix3X3W::GetTranslation(void)const
+inline Vector3 Matrix4::GetTranslation(void)const
 {
-	return VSVector3(_30, _31, _32);
+	return Vector3(_30, _31, _32);
 }
 /*----------------------------------------------------------------*/
-inline VSMatrix3X3W VSMatrix3X3W::operator * (const VSMatrix3X3W& Matirx) const
+inline Matrix4 Matrix4::operator * (const Matrix4& Matirx) const
 {
-	VSMatrix3X3W mResult;
+	Matrix4 mResult;
 #ifdef VS_SSE
 
 	VSVectorRegister A0 = VectorLoad(&m[0]);
@@ -67,9 +67,9 @@ inline VSMatrix3X3W VSMatrix3X3W::operator * (const VSMatrix3X3W& Matirx) const
 	return mResult;
 }
 /*----------------------------------------------------------------*/
-inline VSVector3W VSMatrix3X3W::operator * (const VSVector3W& vc)const
+inline Vector4 Matrix4::operator * (const Vector4& vc)const
 {
-	VSVector3W vcResult;
+	Vector4 vcResult;
 
 
 	vcResult.x = vc.x * _00 + vc.y * _10 + vc.z * _20 + _30;
@@ -86,9 +86,9 @@ inline VSVector3W VSMatrix3X3W::operator * (const VSVector3W& vc)const
 
 }
 /*----------------------------------------------------------------*/
-inline VSVector3 VSMatrix3X3W::operator * (const VSVector3& vc) const
+inline Vector3 Matrix4::operator * (const Vector3& vc) const
 {
-	VSVector3 vcResult;
+	Vector3 vcResult;
 
 	vcResult.x = vc.x * _00 + vc.y * _10 + vc.z * _20 + _30;
 	vcResult.y = vc.x * _01 + vc.y * _11 + vc.z * _21 + _31;
@@ -104,23 +104,23 @@ inline VSVector3 VSMatrix3X3W::operator * (const VSVector3& vc) const
 	return vcResult;
 }
 /*----------------------------------------------------------------*/
-inline VSVector3 VSMatrix3X3W::Apply3X3(const VSVector3& v)const
+inline Vector3 Matrix4::Apply3X3(const Vector3& v)const
 {
 	VSREAL x, y, z;
 	x = v.x * _00 + v.y * _10 + v.z * _20;
 	y = v.x * _01 + v.y * _11 + v.z * _21;
 	z = v.x * _02 + v.y * _12 + v.z * _22;
 
-	return VSVector3(x, y, z);
+	return Vector3(x, y, z);
 }
 /*----------------------------------------------------------------*/
-inline VSVector3 VSMatrix3X3W::ApplyTranlaste(const VSVector3& Point)const
+inline Vector3 Matrix4::ApplyTranlaste(const Vector3& Point)const
 {
 
-	return VSVector3(Point.x + _30, Point.y + _31, Point.z + _32);
+	return Vector3(Point.x + _30, Point.y + _31, Point.z + _32);
 }
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3W::TransposeOf(const VSMatrix3X3W& Matrix)
+inline void Matrix4::TransposeOf(const Matrix4& Matrix)
 {
 	_00 = Matrix._00;
 	_10 = Matrix._01;
@@ -143,24 +143,24 @@ inline void VSMatrix3X3W::TransposeOf(const VSMatrix3X3W& Matrix)
 	_33 = Matrix._33;
 }
 /*----------------------------------------------------------------*/
-VSMatrix3X3W VSMatrix3X3W::GetTranspose()const
+Matrix4 Matrix4::GetTranspose()const
 {
-	VSMatrix3X3W Temp;
+	Matrix4 Temp;
 	Temp.TransposeOf(*this);
 	return Temp;
 }
 /*----------------------------------------------------------------*/
-VSMatrix3X3W VSMatrix3X3W::GetInverse()const
+Matrix4 Matrix4::GetInverse()const
 {
-	VSMatrix3X3W Temp;
+	Matrix4 Temp;
 	Temp.InverseOf(*this);
 	return Temp;
 }
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3W::InverseOf(const VSMatrix3X3W& Matirx)
+inline void Matrix4::InverseOf(const Matrix4& Matirx)
 {
 
-	VSMatrix3X3W mTrans;
+	Matrix4 mTrans;
 	VSREAL    fTemp[12], fDet;
 
 
@@ -257,7 +257,7 @@ inline void VSMatrix3X3W::InverseOf(const VSMatrix3X3W& Matirx)
 
 } // func
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3W::Get3X3(VSMatrix3X3& Mat)const
+inline void Matrix4::Get3X3(Matrix3& Mat)const
 {
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++)
@@ -268,7 +268,7 @@ inline void VSMatrix3X3W::Get3X3(VSMatrix3X3& Mat)const
 
 }
 /*----------------------------------------------------------------*/
-inline void VSMatrix3X3W::SetZero()
+inline void Matrix4::SetZero()
 {
-	Matrix::Core::MTXMemset(M, 0, sizeof(VSMatrix3X3W));
+	Matrix::Core::MTXMemset(M, 0, sizeof(Matrix4));
 }

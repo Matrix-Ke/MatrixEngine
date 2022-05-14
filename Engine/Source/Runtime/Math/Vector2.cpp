@@ -1,110 +1,110 @@
 #include "Vector2.h"
 using namespace Matrix::Math;
 /*----------------------------------------------------------------*/
-VSVector2::VSVector2(void)
+Vector2::Vector2(void)
 {
-    x = 0;
-    y = 0;
+	x = 0;
+	y = 0;
 }
 /*----------------------------------------------------------------*/
-VSVector2::VSVector2(VSREAL _x, VSREAL _y)
+Vector2::Vector2(VSREAL _x, VSREAL _y)
 {
-    x = _x;
-    y = _y;
+	x = _x;
+	y = _y;
 }
 /*----------------------------------------------------------------*/
-void VSVector2::operator+=(const VSVector2 &v)
+void Vector2::operator+=(const Vector2& v)
 {
-    x += v.x;
-    y += v.y;
-}
-/*----------------------------------------------------------------*/
-
-VSVector2 VSVector2::operator+(const VSVector2 &v) const
-{
-    return VSVector2(x + v.x, y + v.y);
-}
-/*----------------------------------------------------------------*/
-void VSVector2::operator-=(const VSVector2 &v)
-{
-    x -= v.x;
-    y -= v.y;
+	x += v.x;
+	y += v.y;
 }
 /*----------------------------------------------------------------*/
 
-VSVector2 VSVector2::operator-(const VSVector2 &v) const
+Vector2 Vector2::operator+(const Vector2& v) const
 {
-    return VSVector2(x - v.x, y - v.y);
+	return Vector2(x + v.x, y + v.y);
+}
+/*----------------------------------------------------------------*/
+void Vector2::operator-=(const Vector2& v)
+{
+	x -= v.x;
+	y -= v.y;
 }
 /*----------------------------------------------------------------*/
 
-void VSVector2::operator*=(VSREAL f)
+Vector2 Vector2::operator-(const Vector2& v) const
 {
-    x *= f;
-    y *= f;
+	return Vector2(x - v.x, y - v.y);
 }
 /*----------------------------------------------------------------*/
 
-void VSVector2::operator/=(VSREAL f)
+void Vector2::operator*=(VSREAL f)
 {
-    x /= f;
-    y /= f;
+	x *= f;
+	y *= f;
 }
 /*----------------------------------------------------------------*/
 
-VSVector2 VSVector2::operator*(VSREAL f) const
+void Vector2::operator/=(VSREAL f)
 {
-    return VSVector2(x * f, y * f);
+	x /= f;
+	y /= f;
 }
 /*----------------------------------------------------------------*/
 
-VSVector2 VSVector2::operator/(VSREAL f) const
+Vector2 Vector2::operator*(VSREAL f) const
 {
-    return VSVector2(x / f, y / f);
+	return Vector2(x * f, y * f);
 }
 /*----------------------------------------------------------------*/
 
-void VSVector2::operator+=(VSREAL f)
+Vector2 Vector2::operator/(VSREAL f) const
 {
-    x += f;
-    y += f;
+	return Vector2(x / f, y / f);
 }
 /*----------------------------------------------------------------*/
 
-void VSVector2::operator-=(VSREAL f)
+void Vector2::operator+=(VSREAL f)
 {
-    x -= f;
-    y -= f;
+	x += f;
+	y += f;
 }
 /*----------------------------------------------------------------*/
 
-VSVector2 VSVector2::operator+(VSREAL f) const
+void Vector2::operator-=(VSREAL f)
 {
-    return VSVector2(x + f, y + f);
+	x -= f;
+	y -= f;
 }
 /*----------------------------------------------------------------*/
 
-VSVector2 VSVector2::operator-(VSREAL f) const
+Vector2 Vector2::operator+(VSREAL f) const
 {
-    return VSVector2(x - f, y - f);
+	return Vector2(x + f, y + f);
 }
 /*----------------------------------------------------------------*/
 
-VSREAL VSVector2::operator*(const VSVector2 &v) const
+Vector2 Vector2::operator-(VSREAL f) const
 {
-    return (v.x * x + v.y * y);
+	return Vector2(x - f, y - f);
 }
 /*----------------------------------------------------------------*/
-bool VSVector2::operator==(const VSVector2 &v) const
+
+VSREAL Vector2::operator*(const Vector2& v) const
 {
-    for (unsigned int i = 0; i < 2; i++)
-    {
-        if (ABS(m[i] - v.m[i]) > EPSILON_E4)
-        {
-            return false;
-        }
-    }
-    return true;
-    // 	return (ABS(x-v.x) < EPSILON_E4 &&
-    // 		ABS(y-v.y) < EPSILON_E4);
+	return (v.x * x + v.y * y);
+}
+/*----------------------------------------------------------------*/
+bool Vector2::operator==(const Vector2& v) const
+{
+	for (unsigned int i = 0; i < 2; i++)
+	{
+		if (ABS(m[i] - v.m[i]) > EPSILON_E4)
+		{
+			return false;
+		}
+	}
+	return true;
+	// 	return (ABS(x-v.x) < EPSILON_E4 &&
+	// 		ABS(y-v.y) < EPSILON_E4);
 }

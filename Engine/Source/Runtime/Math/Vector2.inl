@@ -1,10 +1,10 @@
 /*----------------------------------------------------------------*/
-inline void VSVector2::Set(VSREAL _x, VSREAL _y) 
+inline void Vector2::Set(VSREAL _x, VSREAL _y)
 {
-	x=_x; y=_y; 
+	x = _x; y = _y;
 }
 /*----------------------------------------------------------------*/
-inline void VSVector2::Normalize(void) 
+inline void Vector2::Normalize(void)
 {
 	VSREAL f = x * x + y * y;
 	if (f > EPSILON_E4)

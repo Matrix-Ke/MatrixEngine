@@ -1,4 +1,4 @@
-inline void VSPolygon3::Set(const Matrix::Math::VSVector3* pPoint, unsigned int PointNum)
+inline void Polygon3::Set(const Matrix::Math::Vector3* pPoint, unsigned int PointNum)
 {
 	if (!pPoint || !PointNum)
 		return;
@@ -8,9 +8,9 @@ inline void VSPolygon3::Set(const Matrix::Math::VSVector3* pPoint, unsigned int 
 
 	MX_ENGINE_DELETEA(m_pPoint);
 	MX_ENGINE_DELETEA(m_pIndex);
-	m_pPoint = MX_NEW Matrix::Math::VSVector3[m_PointNum];
+	m_pPoint = MX_NEW Matrix::Math::Vector3[m_PointNum];
 	m_pIndex = MX_NEW VSUSHORT_INDEX[m_IndexNum];
-	Core::MTXMemcpy(m_pPoint, pPoint, sizeof(Matrix::Math::VSVector3) * PointNum);
+	Core::MTXMemcpy(m_pPoint, pPoint, sizeof(Matrix::Math::Vector3) * PointNum);
 
 	m_Flag = 1;
 
@@ -26,8 +26,8 @@ inline void VSPolygon3::Set(const Matrix::Math::VSVector3* pPoint, unsigned int 
 	}
 
 
-	Matrix::Math::VSVector3 vcEdge0 = m_pPoint[1] - m_pPoint[0];
-	Matrix::Math::VSVector3 vcEdge1;
+	Matrix::Math::Vector3 vcEdge0 = m_pPoint[1] - m_pPoint[0];
+	Matrix::Math::Vector3 vcEdge1;
 	//计算所在平面,直到找到不平行的两个线段为止。
 	for (unsigned int i = 2; i < PointNum; i++)
 	{
@@ -42,34 +42,34 @@ inline void VSPolygon3::Set(const Matrix::Math::VSVector3* pPoint, unsigned int 
 			break;
 	} // for
 
-	Matrix::Math::VSVector3 N;
+	Matrix::Math::Vector3 N;
 	N.Cross(vcEdge0, vcEdge1);
-	VSPlane3::Set(N, m_pPoint[0]);
+	Plane3::Set(N, m_pPoint[0]);
 }
 /*----------------------------------------------------------------*/
-inline unsigned int VSPolygon3::GetPointNum()const
+inline unsigned int Polygon3::GetPointNum()const
 {
 	return m_PointNum;
 
 }
 /*----------------------------------------------------------------*/
-inline unsigned int VSPolygon3::GetIndexNum()const
+inline unsigned int Polygon3::GetIndexNum()const
 {
 	return m_IndexNum;
 }
 /*----------------------------------------------------------------*/
-inline const Matrix::Math::VSVector3* const VSPolygon3::GetpPoint()const
+inline const Matrix::Math::Vector3* const Polygon3::GetpPoint()const
 {
 
 	return m_pPoint;
 }
 /*----------------------------------------------------------------*/
-inline const VSUSHORT_INDEX* const VSPolygon3::GetpIndex()const
+inline const VSUSHORT_INDEX* const Polygon3::GetpIndex()const
 {
 	return m_pIndex;
 }
 /*----------------------------------------------------------------*/
-inline unsigned int VSPolygon3::GetFlag()const
+inline unsigned int Polygon3::GetFlag()const
 {
 	return m_Flag;
 }

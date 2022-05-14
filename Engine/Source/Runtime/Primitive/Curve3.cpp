@@ -3,31 +3,31 @@
 
 using namespace Matrix::Primitive;
 
-VSCurve3::VSCurve3()
+Curve3::Curve3()
 {
 }
 /*----------------------------------------------------------------*/
-VSCurve3::~VSCurve3()
+Curve3::~Curve3()
 {
 }
 /*----------------------------------------------------------------*/
-void VSCurve3::GetFixedUpBNT(VSREAL t, Math::VSVector3 &B, Math::VSVector3 &N, Math::VSVector3 &T)
+void Curve3::GetFixedUpBNT(VSREAL t, Math::Vector3& B, Math::Vector3& N, Math::Vector3& T)
 {
-    Math::VSMatrix3X3W Mat;
-    Math::VSVector3 Point(0, 0, 0);
-    Math::VSVector3 FD = GetFirstDerivative(t);
-    FD.Normalize();
-    Mat.CreateFromLookAt(Point, FD);
-    B.x = Mat._00;
-    B.y = Mat._10;
-    B.z = Mat._20;
+	Math::Matrix4 Mat;
+	Math::Vector3 Point(0, 0, 0);
+	Math::Vector3 FD = GetFirstDerivative(t);
+	FD.Normalize();
+	Mat.CreateFromLookAt(Point, FD);
+	B.x = Mat._00;
+	B.y = Mat._10;
+	B.z = Mat._20;
 
-    N.x = Mat._01;
-    N.y = Mat._11;
-    N.z = Mat._21;
+	N.x = Mat._01;
+	N.y = Mat._11;
+	N.z = Mat._21;
 
-    T.x = Mat._02;
-    T.y = Mat._12;
-    T.z = Mat._22;
+	T.x = Mat._02;
+	T.y = Mat._12;
+	T.z = Mat._22;
 }
 /*----------------------------------------------------------------*/

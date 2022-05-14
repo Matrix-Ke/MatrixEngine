@@ -5,15 +5,15 @@
 
 namespace Matrix
 {
-    namespace Primitive
-    {
-        class MATRIX_PRIMITIVE_API VSRect2
-        {
-        public:
-            Math::VSVector2 m_Min;
-            Math::VSVector2 m_Max;
-            VSRect2(void);
-            VSRect2(const Math::VSVector2 &Min, const Math::VSVector2 &Max);
-        };
-    }
+	namespace Primitive
+	{
+		class MATRIX_PRIMITIVE_API Rect2
+		{
+		public:
+			Math::Vector2 m_Min;
+			Math::Vector2 m_Max;
+			Rect2(void);
+			Rect2(const Math::Vector2& Min, const Math::Vector2& Max);
+		};
+	}
 }
