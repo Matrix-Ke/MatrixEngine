@@ -12,7 +12,7 @@ namespace Matrix
 		class Plane3;
 		class Ray3;
 		class Segment3;
-		class VSTriangle3;
+		class Triangle3;
 		class Rectangle3;
 		class OBB3;
 		class Sphere3;
@@ -93,7 +93,7 @@ namespace Matrix
 			////点和线段距离
 			// VSREAL SquaredDistance(const Segment3& Segment, VSREAL& fSegmentParameter)const;
 			////点和三角形距离
-			// VSREAL SquaredDistance(const VSTriangle3& Triangle, VSREAL fTriangleParameter[3])const;
+			// VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL fTriangleParameter[3])const;
 			////点和矩形距离
 			// VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL fRectangleParameter[2])const;
 			////点和OBB距离
@@ -108,16 +108,16 @@ namespace Matrix
 			// VSREAL SquaredDistance(const Polygon3& Polygon, int& IndexTriangle, VSREAL fTriangleParameter[3])const;
 			///********************************RelationWith******************************************/
 			////点和球位置关系
-			////VSIN VSOUT VSON
+			////IT_In IT_Out IT_On
 			// int RelationWith(const Sphere3& Sphere)const;
 			////点和平面位置关系
-			////VSFRONT VSBACK VSON
+			////IT_Front IT_Back IT_On
 			// int RelationWith(const Plane3& Plane)const;
 			////点和OBB位置关系
-			////VSIN VSOUT VSON
+			////IT_In IT_Out IT_On
 			// int RelationWith(const OBB3& OBB)const;
 			////点和AABB位置关系
-			////VSIN VSOUT VSON
+			////IT_In IT_Out IT_On
 			// int RelationWith(const AABB3& AABB)const;
 			const static Vector3 ms_Up;
 			const static Vector3 ms_Right;

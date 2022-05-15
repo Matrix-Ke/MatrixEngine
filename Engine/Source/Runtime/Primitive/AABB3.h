@@ -92,33 +92,33 @@ namespace Matrix
 			//	VSREAL TriangleParameter[3])const;
 			///********************************RelationWith******************************************/
 			////点和AABB位置关系
-			////VSIN VSOUT VSON
+			////IT_In IT_Out IT_On
 			// int RelationWith(const Matrix::Math::Vector3& Point)const;
 			////测试直线与AABB位置关系
-			////VSNOINTERSECT VSNTERSECT
+			////IT_NoIntersect VSNTERSECT
 			// int RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			////测试射线与AABB位置关系
-			////VSNOINTERSECT VSNTERSECT
+			////IT_NoIntersect VSNTERSECT
 			// int RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			////测试线段与AABB位置关系
-			////VSNOINTERSECT VSNTERSECT VSIN
+			////IT_NoIntersect VSNTERSECT IT_In
 			// int RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 			////测试平面和AABB位置关系
-			////VSFRONT VSBACK VSINTERSECT
+			////IT_Front IT_Back IT_Intersect
 			// int RelationWith(const Plane3& Plane)const;
 			////三角形和AABB位置关系
-			////VSNOINTERSECT VSINTERSECT VSIN
+			////IT_NoIntersect IT_Intersect IT_In
 			// int RelationWith(const Triangle3& Triangle)const;
 			////矩形和AABB位置关系
-			////VSNOINTERSECT VSINTERSECT VSIN
+			////IT_NoIntersect IT_Intersect IT_In
 			// int RelationWith(const Rectangle3& Rectangle)const;
 
 			////AABB和AABB位置关系
-			////VSNOINTERSECT VSINTERSECT
+			////IT_NoIntersect IT_Intersect
 			// int RelationWith(const AABB3& AABB)const;
 
 			////AABB和圆位置关系
-			////VSNOINTERSECT VSINTERSECT
+			////IT_NoIntersect IT_Intersect
 			// int RelationWith(const Sphere3& Sphere)const;
 		};
 

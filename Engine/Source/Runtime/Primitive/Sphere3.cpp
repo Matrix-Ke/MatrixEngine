@@ -111,3 +111,192 @@ AABB3 Sphere3::GetAABB() const
 	Matrix::Math::Vector3 Min = m_Center + Matrix::Math::Vector3(-m_fRadius, -m_fRadius, -m_fRadius);
 	return AABB3(Max, Min);
 }
+
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Matrix::Math::Vector3& Point, Matrix::Math::Vector3& SpherePoint) const
+{
+	VSREAL sqrDist = Point.SquaredDistance(m_Center);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 Line(m_Center, Point);
+
+	SpherePoint = Line.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Line3& Line, Matrix::Math::Vector3& SpherePoint, VSREAL& fLineParameter) const
+{
+
+	VSREAL sqrDist = Line.SquaredDistance(m_Center, fLineParameter);
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, Line.GetParameterPoint(fLineParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Ray3& Ray, Matrix::Math::Vector3& SpherePoint, VSREAL& fRayParameter) const
+{
+	VSREAL sqrDist = Ray.SquaredDistance(m_Center, fRayParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, Ray.GetParameterPoint(fRayParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Segment3& Segment, Matrix::Math::Vector3& SpherePoint, VSREAL& fSegmentParameter) const
+{
+	VSREAL sqrDist = Segment.SquaredDistance(m_Center, fSegmentParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, Segment.GetParameterPoint(fSegmentParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const OBB3& OBB, Matrix::Math::Vector3& SpherePoint, VSREAL fOBBParameter[3]) const
+{
+	VSREAL sqrDist = OBB.SquaredDistance(m_Center, fOBBParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, OBB.GetParameterPoint(fOBBParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Plane3& Plane, Matrix::Math::Vector3& SpherePoint) const
+{
+	Matrix::Math::Vector3 PlanePoint;
+	VSREAL sqrDist = Plane.Distance(m_Center, PlanePoint);
+
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, PlanePoint);
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Rectangle3& Rectangle, Matrix::Math::Vector3& SpherePoint, VSREAL fRectangleParameter[2]) const
+{
+	VSREAL sqrDist = Rectangle.SquaredDistance(m_Center, fRectangleParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, Rectangle.GetParameterPoint(fRectangleParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Triangle3 Triangle, Matrix::Math::Vector3& SpherePoint, VSREAL fTriangleParameter[3]) const
+{
+	VSREAL sqrDist = Triangle.SquaredDistance(m_Center, fTriangleParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, Triangle.GetParameterPoint(fTriangleParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const AABB3& AABB, Matrix::Math::Vector3& SpherePoint, VSREAL fAABBParameter[3]) const
+{
+	VSREAL sqrDist = AABB.SquaredDistance(m_Center, fAABBParameter);
+
+	sqrDist = SQRT(sqrDist);
+	sqrDist = sqrDist - m_fRadius;
+
+	Line3 LineTemp(m_Center, AABB.GetParameterPoint(fAABBParameter));
+
+	SpherePoint = LineTemp.GetParameterPoint(m_fRadius);
+	return sqrDist;
+}
+/*----------------------------------------------------------------*/
+VSREAL Sphere3::Distance(const Polygon3& Polygon, Matrix::Math::Vector3& SpherePoint, int& IndexTriangle,
+	VSREAL fTriangleParameter[3]) const
+{
+
+	return Polygon.Distance(*this, IndexTriangle, fTriangleParameter, SpherePoint);
+}
+
+int Sphere3::RelationWith(const Matrix::Math::Vector3& Point) const
+{
+
+	return Point.RelationWith(*this);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar) const
+{
+	return Line.RelationWith(*this, Quantity, tNear, tFar);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar) const
+{
+	return Ray.RelationWith(*this, Quantity, tNear, tFar);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar) const
+{
+	return Segment.RelationWith(*this, Quantity, tNear, tFar);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Plane3& Plane) const
+{
+	Matrix::Math::Vector3 N = Plane.GetN();
+	VSREAL fD = Plane.GetfD();
+
+	VSREAL test = m_Center.Dot(N) + fD;
+	if (test > m_fRadius)
+		return IT_Front;
+	else if (test < -m_fRadius)
+		return IT_Back;
+	else
+		return IT_Intersect;
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Triangle3 Triangle) const
+{
+	return Triangle.RelationWith(*this);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Rectangle3& Rectangle) const
+{
+	return Rectangle.RelationWith(*this);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const OBB3& OBB) const
+{
+	return OBB.RelationWith(*this);
+}
+/*----------------------------------------------------------------*/
+int Sphere3::RelationWith(const Sphere3& Sphere) const
+{
+	VSREAL Sum = m_fRadius + Sphere.m_fRadius;
+
+	Sum *= Sum;
+
+	Matrix::Math::Vector3 Sub = m_Center - Sphere.m_Center;
+
+	if (Sub.GetSqrLength() > Sum)
+		return IT_NoIntersect;
+
+	return IT_Intersect;
+}

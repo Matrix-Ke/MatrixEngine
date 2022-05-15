@@ -76,86 +76,86 @@ namespace Matrix
 			inline Matrix::Math::Vector3 GetParameterPoint(VSREAL fOBBParameter[3]) const;
 			inline Matrix::Math::Vector3 GetParameterPoint(VSREAL fOBBParameter0, VSREAL fOBBParameter1, VSREAL fOBBParameter2) const;
 
-			//	/*************************************距离************************************************/
-			//	//点和OBB距离
-			//	VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fOBBParameter[3])const;
-			//	//直线和OBB距离
-			//	VSREAL SquaredDistance(const Line3& Line, VSREAL fOBBParameter[3], VSREAL& fLineParameter)const;
-			//	//射线和OBB距离
-			//	VSREAL SquaredDistance(const Ray3& Ray, VSREAL fOBBParameter[3], VSREAL& fRayParameter)const;
-			//	//线段和OBB距离
-			//	VSREAL SquaredDistance(const Segment3& Segment, VSREAL fOBBParameter[3], VSREAL& fSegmentParameter)const;
+			/*************************************距离************************************************/
+			//点和OBB距离
+			VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fOBBParameter[3])const;
+			//直线和OBB距离
+			VSREAL SquaredDistance(const Line3& Line, VSREAL fOBBParameter[3], VSREAL& fLineParameter)const;
+			//射线和OBB距离
+			VSREAL SquaredDistance(const Ray3& Ray, VSREAL fOBBParameter[3], VSREAL& fRayParameter)const;
+			//线段和OBB距离
+			VSREAL SquaredDistance(const Segment3& Segment, VSREAL fOBBParameter[3], VSREAL& fSegmentParameter)const;
 
-			//	//三角形和OBB距离
-			//	VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL OBBParameter[3],
-			//		VSREAL TriangleParameter[3])const;
+			//三角形和OBB距离
+			VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL OBBParameter[3],
+				VSREAL TriangleParameter[3])const;
 
-			//	//矩形和OBB距离
-			//	VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL OBBParameter[3],
-			//		VSREAL RectangleParameter[2])const;
-			//	//OBB和OBB距离
-			//	VSREAL SquaredDistance(const OBB3& OBB, VSREAL OBB1Parameter[3],
-			//		VSREAL OBB2Parameter[3])const;
+			//矩形和OBB距离
+			VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL OBBParameter[3],
+				VSREAL RectangleParameter[2])const;
+			//OBB和OBB距离
+			VSREAL SquaredDistance(const OBB3& OBB, VSREAL OBB1Parameter[3],
+				VSREAL OBB2Parameter[3])const;
 
-			//	//OBB和球的距离
-			//	VSREAL Distance(const Sphere3& Sphere, VSREAL fOBBParameter[3], Matrix::Math::Vector3& SpherePoint)const;
+			//OBB和球的距离
+			VSREAL Distance(const Sphere3& Sphere, VSREAL fOBBParameter[3], Matrix::Math::Vector3& SpherePoint)const;
 
-			//	//OBB和平面距离
-			//	VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& OBBPoint, Matrix::Math::Vector3& PlanePoint)const;
+			//OBB和平面距离
+			VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& OBBPoint, Matrix::Math::Vector3& PlanePoint)const;
 
-			//	//多边形和OBB距离
-			//	VSREAL SquaredDistance(const Polygon3& Polygon,
-			//		VSREAL OBBParameter[3], int& IndexTriangle,
-			//		VSREAL TriangleParameter[3])const;
-			//	/********************************RelationWith******************************************/
-			//	//点和OBB位置关系
-			//	//VSIN VSOUT VSON
-			//	int RelationWith(const Matrix::Math::Vector3& Point)const;
-			//	//测试直线与OBB位置关系
-			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			//	//测试射线与OBB位置关系
-			//	//VSNOINTERSECT VSNTERSECT
-			//	int RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			//	//测试线段与OBB位置关系
-			//	//VSNOINTERSECT VSNTERSECT VSIN
-			//	int RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			//	//测试平面和OBB位置关系
-			//	//VSFRONT VSBACK VSINTERSECT
-			//	int RelationWith(const Plane3& Plane)const;
-			//	//测试三角形与OBB位置关系
-			//	//VSNOINTERSECT VSINTERSECT VSIN
-			//	int RelationWith(const Triangle3& Triangle)const;
+			//多边形和OBB距离
+			VSREAL SquaredDistance(const Polygon3& Polygon,
+				VSREAL OBBParameter[3], int& IndexTriangle,
+				VSREAL TriangleParameter[3])const;
+			/********************************RelationWith******************************************/
+			//点和OBB位置关系
+			//IT_In IT_Out IT_On
+			int RelationWith(const Matrix::Math::Vector3& Point)const;
+			//测试直线与OBB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试射线与OBB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试线段与OBB位置关系
+			//IT_NoIntersect VSNTERSECT IT_In
+			int RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试平面和OBB位置关系
+			//IT_Front IT_Back IT_Intersect
+			int RelationWith(const Plane3& Plane)const;
+			//测试三角形与OBB位置关系
+			//IT_NoIntersect IT_Intersect IT_In
+			int RelationWith(const Triangle3& Triangle)const;
 
-			//	//矩形和OBB位置关系
-			//	//VSNOINTERSECT VSINTERSECT VSIN
-			//	int RelationWith(const Rectangle3& Rectangle)const;
+			//矩形和OBB位置关系
+			//IT_NoIntersect IT_Intersect IT_In
+			int RelationWith(const Rectangle3& Rectangle)const;
 
-			//	//OBB和OBB位置关系
-			//	//VSNOINTERSECT VSINTERSECT
-			//	int RelationWith(const OBB3& OBB)const;
+			//OBB和OBB位置关系
+			//IT_NoIntersect IT_Intersect
+			int RelationWith(const OBB3& OBB)const;
 
-			//	//OBB和圆位置关系
-			//	//VSNOINTERSECT VSINTERSECT
-			//	int RelationWith(const Sphere3& Sphere)const;
-			// private:
-			//	/*void OBBProj(const OBB3 &OBB, const Matrix::Math::Vector3 &vcV,
-			//		VSREAL *pfMin, VSREAL *pfMax)const;
-			//	void TriProj(const Matrix::Math::Vector3 &v0, const Matrix::Math::Vector3 &v1,
-			//		const Matrix::Math::Vector3 &v2, const Matrix::Math::Vector3 &vcV,
-			//		VSREAL *pfMin, VSREAL *pfMax)const;
+			//OBB和圆位置关系
+			//IT_NoIntersect IT_Intersect
+			int RelationWith(const Sphere3& Sphere)const;
+		private:
+			/*void OBBProj(const OBB3 &OBB, const Matrix::Math::Vector3 &vcV,
+				VSREAL *pfMin, VSREAL *pfMax)const;
+			void TriProj(const Matrix::Math::Vector3 &v0, const Matrix::Math::Vector3 &v1,
+				const Matrix::Math::Vector3 &v2, const Matrix::Math::Vector3 &vcV,
+				VSREAL *pfMin, VSREAL *pfMax)const;
 
-			//	void Face (int i0, int i1, int i2, Matrix::Math::Vector3 Pnt,
-			//				Matrix::Math::Vector3 Dir, Matrix::Math::Vector3 PmE,
-			//				VSREAL& rfSqrDistance,VSREAL &fLParam)const;
-			//	void CaseNoZeros (Matrix::Math::Vector3& Pnt,
-			//					const Matrix::Math::Vector3& Dir, VSREAL& rfSqrDistance,VSREAL &fLParam)const;
-			//	void Case0 (int i0, int i1, int i2, Matrix::Math::Vector3& Pnt,
-			//				const Matrix::Math::Vector3& Dir, VSREAL& rfSqrDistance,VSREAL &fLParam)const;
+			void Face (int i0, int i1, int i2, Matrix::Math::Vector3 Pnt,
+						Matrix::Math::Vector3 Dir, Matrix::Math::Vector3 PmE,
+						VSREAL& rfSqrDistance,VSREAL &fLParam)const;
+			void CaseNoZeros (Matrix::Math::Vector3& Pnt,
+							const Matrix::Math::Vector3& Dir, VSREAL& rfSqrDistance,VSREAL &fLParam)const;
+			void Case0 (int i0, int i1, int i2, Matrix::Math::Vector3& Pnt,
+						const Matrix::Math::Vector3& Dir, VSREAL& rfSqrDistance,VSREAL &fLParam)const;
 
-			//	void Case00 (int i0, int i1, int i2,
-			//					Matrix::Math::Vector3& Pnt, const Matrix::Math::Vector3& Dir,  VSREAL& rfSqrDistance,VSREAL &fLParam)const;
-			//	void Case000 (Matrix::Math::Vector3& Pnt, VSREAL& rfSqrDistance)const;*/
+			void Case00 (int i0, int i1, int i2,
+							Matrix::Math::Vector3& Pnt, const Matrix::Math::Vector3& Dir,  VSREAL& rfSqrDistance,VSREAL &fLParam)const;
+			void Case000 (Matrix::Math::Vector3& Pnt, VSREAL& rfSqrDistance)const;*/
 		};
 
 #include "OBB3.inl"

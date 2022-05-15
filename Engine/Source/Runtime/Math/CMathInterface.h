@@ -101,7 +101,7 @@ namespace Matrix
 			}
 			return Value;
 		}
-		template <class T>
+		template <typename T>
 		inline void Swap(T& t1, T& t2)
 		{
 			T temp;

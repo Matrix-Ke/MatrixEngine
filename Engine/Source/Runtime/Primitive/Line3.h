@@ -1,11 +1,7 @@
 #pragma once
 #include "Math/Math.h"
 #include "Math/Vector3.h"
-//#include "Plane3.h"
-//#include "OBB3.h"
-//#include "Sphere3.h"
-//#include "Triangle3.h"
-//#include "Rectangle3.h"
+
 /*
 	直线类
 */
@@ -18,9 +14,25 @@ namespace Matrix
 {
 	namespace Primitive
 	{
+		//判断两个物体的位置关系的，通过其英文名称都可以判断出它们的具体含义
+		enum IntersectionType
+		{
+			IT_Front = 0,
+			IT_Back = 1,
+			IT_On = 2,
+			IT_Clipped = 3,
+			IT_Culled = 4,
+			IT_Visible = 5,
+			IT_Intersect = 7,			//3
+			IT_Out = 8,					//4
+			IT_In = 9,					//5
+			IT_NoIntersect = 10			//6
+		};
+
 		// using namespace Matrix::Math;
 		class Ray3;
 		class Segment3;
+		class Polygon3;
 		class MATRIX_PRIMITIVE_API Line3
 		{
 		protected:
@@ -39,34 +51,7 @@ namespace Matrix
 
 			inline Matrix::Math::Vector3 GetParameterPoint(VSREAL fLineParameter) const;
 
-			/********************************RelationWith******************************************/
-			//测试直线与三角形位置关系 bCull为是否为背面剪裁,是否考虑朝向,t返回相交长度
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const Triangle3& Triangle, bool bCull, VSREAL& fLineParameter,
-				VSREAL fTriangleParameter[3])const;
-			//测试直线与平面位置关系
-			//VSNOINTERSECT VSNTERSECT VSON VSBACK VSFRONT
-			int RelationWith(const Plane3& Plane, bool bCull, VSREAL& fLineParameter)const;
-			//测试直线与矩形位置关系
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const Rectangle3& Rectangle, bool bCull, VSREAL& fLineParameter,
-				VSREAL fRectangleParameter[2])const;
-			//测试直线与球位置关系
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const Sphere3& sphere, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			//测试直线与OBB位置关系
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const OBB3& OBB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
 
-			//测试直线与AABB位置关系
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const AABB3& AABB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-
-			//测试直线与多边形位置关系 bCull为是否为背面剪裁,是否考虑朝向,t返回相交长度
-			//VSNOINTERSECT VSNTERSECT
-			int RelationWith(const Polygon3& Polygon, VSREAL& fLineParameter,
-				bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3])const;
-			/*************************************距离************************************************/
 
 			//点到直线距离
 			VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL& fLineParameter)const;
@@ -93,6 +78,36 @@ namespace Matrix
 			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fLineParameter,
 				int& IndexTriangle,
 				VSREAL fTriangleParameter[3])const;
+
+
+			/********************************RelationWith******************************************/
+			//测试直线与三角形位置关系 bCull为是否为背面剪裁,是否考虑朝向,t返回相交长度
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Triangle3& Triangle, bool bCull, VSREAL& fLineParameter,
+				VSREAL fTriangleParameter[3])const;
+			//测试直线与平面位置关系
+			//IT_NoIntersect VSNTERSECT IT_On IT_Back IT_Front
+			int RelationWith(const Plane3& Plane, bool bCull, VSREAL& fLineParameter)const;
+			//测试直线与矩形位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Rectangle3& Rectangle, bool bCull, VSREAL& fLineParameter,
+				VSREAL fRectangleParameter[2])const;
+			//测试直线与球位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Sphere3& sphere, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试直线与OBB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const OBB3& OBB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+
+			//测试直线与AABB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const AABB3& AABB, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+
+			//测试直线与多边形位置关系 bCull为是否为背面剪裁,是否考虑朝向,t返回相交长度
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Polygon3& Polygon, VSREAL& fLineParameter,
+				bool bCull, int& iIndexTriangle, VSREAL fTriangleParameter[3])const;
+			/*************************************距离************************************************/
 		};
 
 #include "Line3.inl"
