@@ -429,7 +429,7 @@ int Polygon3::RelationWith(const Plane3& Plane) const
 	for (unsigned int i = 0; i < m_PointNum; i++)
 	{
 
-		int iFlag = m_pPoint[i].RelationWith(Plane);
+		int iFlag = Point3(m_pPoint[i]).RelationWith(Plane);
 		if (iFlag == IT_Back)
 			iBackNum++;
 		else if (iFlag == IT_Front)
@@ -682,7 +682,7 @@ int Polygon3::RelationWith(const AABB3& AABB) const
 
 	for (unsigned int i = 0; i < m_PointNum; i++)
 	{
-		int iFlag = m_pPoint[i].RelationWith(AABB);
+		int iFlag = Point3(m_pPoint[i]).RelationWith(AABB);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;
@@ -712,7 +712,7 @@ int Polygon3::RelationWith(const OBB3& OBB) const
 
 	for (unsigned int i = 0; i < m_PointNum; i++)
 	{
-		int iFlag = m_pPoint[i].RelationWith(OBB);
+		int iFlag = Point3(m_pPoint[i]).RelationWith(OBB);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;
@@ -742,7 +742,7 @@ int Polygon3::RelationWith(const Sphere3& Sphere) const
 
 	for (unsigned int i = 0; i < m_PointNum; i++)
 	{
-		int iFlag = m_pPoint[i].RelationWith(Sphere);
+		int iFlag = Point3(m_pPoint[i]).RelationWith(Sphere);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;

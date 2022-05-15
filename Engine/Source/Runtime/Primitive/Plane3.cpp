@@ -87,7 +87,7 @@ VSREAL Plane3::Distance(const Line3& Line, Matrix::Math::Vector3& PlanePoint, Ma
 	if (Math::ABS(fDot) < EPSILON_E4)
 	{
 		LinePoint = Line.GetOrig();
-		return LinePoint.Distance(*this, PlanePoint);
+		return Point3(LinePoint).Distance(*this, PlanePoint);
 	}
 	else
 		return 0;
@@ -100,7 +100,7 @@ VSREAL Plane3::Distance(const Ray3& Ray, Matrix::Math::Vector3& PlanePoint, Matr
 
 	VSREAL f = RayPoint.Dot(m_N) + m_fD;
 	if (fDot * f > 0)
-		return RayPoint.Distance(*this, PlanePoint);
+		return Point3(RayPoint).Distance(*this, PlanePoint);
 	else
 		return 0;
 }
@@ -116,10 +116,10 @@ VSREAL Plane3::Distance(const Segment3& Segment, Matrix::Math::Vector3& PlanePoi
 	if (f0 * f1 > 0)
 	{
 		Matrix::Math::Vector3 PPoint;
-		VSREAL dist = SegmentOrig.Distance(*this, PPoint);
+		VSREAL dist = Point3(SegmentOrig).Distance(*this, PPoint);
 		SegmentPoint = SegmentOrig;
 		PlanePoint = PPoint;
-		VSREAL distTemp = SegmentEnd.Distance(*this, PPoint);
+		VSREAL distTemp = Point3(SegmentEnd).Distance(*this, PPoint);
 		if (dist > distTemp)
 		{
 			dist = distTemp;
@@ -137,7 +137,7 @@ VSREAL Plane3::Distance(const Plane3& Plane, Matrix::Math::Vector3& Plane1Point,
 	if (m_N.IsParallel(Plane.m_N))
 	{
 		Plane1Point = GetPoint();
-		return Plane1Point.Distance(Plane, Plane2Point);
+		return Point3(Plane1Point).Distance(Plane, Plane2Point);
 	}
 	else
 		return 0;
@@ -182,9 +182,9 @@ VSREAL Plane3::Distance(const Triangle3& Triangle, Matrix::Math::Vector3& PlaneP
 
 	VSREAL dist[3], distTemp;
 	Matrix::Math::Vector3 PlanePointTemp[3];
-	dist[0] = Point[0].Distance(*this, PlanePointTemp[0]);
-	dist[1] = Point[1].Distance(*this, PlanePointTemp[1]);
-	dist[2] = Point[2].Distance(*this, PlanePointTemp[2]);
+	dist[0] = Point3(Point[0]).Distance(*this, PlanePointTemp[0]);
+	dist[1] = Point3(Point[1]).Distance(*this, PlanePointTemp[1]);
+	dist[2] = Point3(Point[2]).Distance(*this, PlanePointTemp[2]);
 	distTemp = dist[0];
 	PlanePoint = PlanePointTemp[0];
 	TrianglePoint = Point[0];
@@ -242,7 +242,7 @@ VSREAL Plane3::Distance(const Rectangle3& Rectangle, Matrix::Math::Vector3& Plan
 	VSREAL dist[4], distTemp;
 	Matrix::Math::Vector3 PlanePointTemp[4];
 	for (int i = 0; i < 4; i++)
-		dist[i] = Point[i].Distance(*this, PlanePointTemp[i]);
+		dist[i] = Point3(Point[i]).Distance(*this, PlanePointTemp[i]);
 
 	distTemp = dist[0];
 	PlanePoint = PlanePointTemp[0];
@@ -299,7 +299,7 @@ VSREAL Plane3::Distance(const OBB3& OBB, Matrix::Math::Vector3& PlanePoint, Matr
 	VSREAL dist[4], distTemp;
 	Matrix::Math::Vector3 PlanePointTemp[8];
 	for (int i = 0; i < 8; i++)
-		dist[i] = Point[i].Distance(*this, PlanePointTemp[i]);
+		dist[i] = Point3(Point[i]).Distance(*this, PlanePointTemp[i]);
 
 	distTemp = dist[0];
 	PlanePoint = PlanePointTemp[0];
@@ -356,7 +356,7 @@ VSREAL Plane3::Distance(const AABB3& AABB, Matrix::Math::Vector3& PlanePoint, Ma
 	VSREAL dist[4], distTemp;
 	Matrix::Math::Vector3 PlanePointTemp[8];
 	for (int i = 0; i < 8; i++)
-		dist[i] = Point[i].Distance(*this, PlanePointTemp[i]);
+		dist[i] = Point3(Point[i]).Distance(*this, PlanePointTemp[i]);
 
 	distTemp = dist[0];
 	PlanePoint = PlanePointTemp[0];

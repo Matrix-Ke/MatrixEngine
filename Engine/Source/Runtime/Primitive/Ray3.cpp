@@ -99,7 +99,7 @@ VSREAL Ray3::SquaredDistance(const Triangle3& Triangle, VSREAL& fRayParameter, V
 	{
 		fRayParameter = 0;
 		//sqrDist = Triangle.SquaredDistance(m_Orig, )
-		sqrDist = m_Orig.SquaredDistance(Triangle, fTriangleParameter);
+		sqrDist = Point3(m_Orig).SquaredDistance(Triangle, fTriangleParameter);
 	}
 
 	return sqrDist;
@@ -111,7 +111,7 @@ VSREAL Ray3::SquaredDistance(const Rectangle3& Rectangle, VSREAL& fRayParameter,
 	if (fRayParameter < 0)
 	{
 		fRayParameter = 0;
-		sqrDist = m_Orig.SquaredDistance(Rectangle, fRectangleParameter);
+		sqrDist = Point3(m_Orig).SquaredDistance(Rectangle, fRectangleParameter);
 	}
 
 	return sqrDist;
@@ -177,7 +177,7 @@ int Ray3::RelationWith(const Plane3& Plane, bool bCull, VSREAL& fRayParameter) c
 		return iFlag;
 	if (fRayParameter < 0.0f)
 	{
-		iFlag = m_Orig.RelationWith(Plane);
+		iFlag = Point3(m_Orig).RelationWith(Plane);
 		return iFlag;
 	}
 	return IT_Intersect;

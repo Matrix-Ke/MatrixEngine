@@ -126,7 +126,7 @@ AABB3 Sphere3::GetAABB() const
 /*----------------------------------------------------------------*/
 VSREAL Sphere3::Distance(const Matrix::Math::Vector3& Point, Matrix::Math::Vector3& SpherePoint) const
 {
-	VSREAL sqrDist = Point.SquaredDistance(m_Center);
+	VSREAL sqrDist = Point3(Point).SquaredDistance(m_Center);
 
 	sqrDist = SQRT(sqrDist);
 	sqrDist = sqrDist - m_fRadius;
@@ -251,7 +251,7 @@ VSREAL Sphere3::Distance(const Polygon3& Polygon, Matrix::Math::Vector3& SphereP
 int Sphere3::RelationWith(const Matrix::Math::Vector3& Point) const
 {
 
-	return Point.RelationWith(*this);
+	return Point3(Point).RelationWith(*this);
 }
 /*----------------------------------------------------------------*/
 int Sphere3::RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar) const

@@ -1,26 +1,59 @@
+#pragma once
 #include "Math/Vector3.h"
+
+/*
+直线类
+*/
+#ifdef Primitive_EXPORTS
+#define MATRIX_PRIMITIVE_API __declspec(dllexport)
+#else   MATRIX_PRIMITIVE_API __declspec(dllimport)
+#endif // Primitive_EXPORT
+
 
 namespace Matrix
 {
-	class Matrix3;
-	class Quat;
-	class Ray3;
-	class Line3;
-	class Plane3;
-	class Ray3;
-	class Segment3;
-	class Triangle3;
-	class Rectangle3;
-	class OBB3;
-	class Sphere3;
-	class AABB3;
-	class Matrix4;
-	class Polygon3;
-
 	namespace Primitive
 	{
-		class Point3 : public  Math::Vector3
+
+		//判断两个物体的位置关系的，通过其英文名称都可以判断出它们的具体含义
+		enum IntersectionType
 		{
+			IT_Front = 0,
+			IT_Back = 1,
+			IT_On = 2,
+			IT_Clipped = 3,
+			IT_Culled = 4,
+			IT_Visible = 5,
+			IT_Intersect = 7,			//3
+			IT_Out = 8,					//4
+			IT_In = 9,					//5
+			IT_NoIntersect = 10			//6
+		};
+
+		class Matrix3;
+		class Quat;
+		class Ray3;
+		class Line3;
+		class Plane3;
+		class Ray3;
+		class Segment3;
+		class Triangle3;
+		class Rectangle3;
+		class OBB3;
+		class Sphere3;
+		class AABB3;
+		class Matrix4;
+		class Polygon3;
+
+
+		class MATRIX_PRIMITIVE_API Point3 : public  Math::Vector3
+		{
+		public:
+
+			Point3(const Point3& rhs);
+			Point3(const Vector3& rhs);
+			Point3& operator = (const Vector3& rhs);
+
 		public:
 			/********************************距离******************************************/
 			//点和点距离
@@ -59,5 +92,7 @@ namespace Matrix
 			//IT_In IT_Out IT_On
 			int RelationWith(const AABB3& AABB)const;
 		};
+
+
 	}
 }

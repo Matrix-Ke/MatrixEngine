@@ -5,7 +5,9 @@ namespace Matrix
 {
 	namespace Math
 	{
-
+		class Matrix3;
+		class Matrix4;
+		class Quat;
 		//œÚ¡ø
 		class MATRIX_MATH_API Vector3
 		{

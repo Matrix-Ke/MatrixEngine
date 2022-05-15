@@ -169,7 +169,7 @@ VSREAL Triangle3::SquaredDistance(const Segment3& Segment, VSREAL fTriangleParam
 //点和三角形距离
 VSREAL Triangle3::SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fTriangleParameter[3]) const
 {
-	return Point.SquaredDistance(*this, fTriangleParameter);
+	return Point3(Point).SquaredDistance(*this, fTriangleParameter);
 }
 /*----------------------------------------------------------------*/
 VSREAL Triangle3::SquaredDistance(const Triangle3& Triangle,
@@ -454,7 +454,7 @@ int Triangle3::RelationWith(const Plane3& Plane) const
 
 	for (int i = 0; i < 3; i++)
 	{
-		int iFlag = m_V[i].RelationWith(Plane);
+		int iFlag = Point3(m_V[i]).RelationWith(Plane);
 		if (iFlag == IT_Front)
 		{
 			iFrontNum++;
@@ -546,7 +546,7 @@ int Triangle3::RelationWith(const AABB3& AABB) const
 	GetPoint(Point);
 	for (int i = 0; i < 3; i++)
 	{
-		int iFlag = Point[i].RelationWith(AABB);
+		int iFlag = Point3(Point[i]).RelationWith(AABB);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;
@@ -599,7 +599,7 @@ int Triangle3::RelationWith(const OBB3& OBB) const
 	GetPoint(Point);
 	for (int i = 0; i < 3; i++)
 	{
-		int iFlag = Point[i].RelationWith(OBB);
+		int iFlag = Point3(Point[i]).RelationWith(OBB);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;
@@ -655,7 +655,7 @@ int Triangle3::RelationWith(const Sphere3& Sphere) const
 	GetPoint(Point);
 	for (int i = 0; i < 3; i++)
 	{
-		int iFlag = Point[i].RelationWith(Sphere);
+		int iFlag = Point3(Point[i]).RelationWith(Sphere);
 		if (iFlag == IT_In || iFlag == IT_On)
 		{
 			InNum++;

@@ -319,14 +319,13 @@ int Matrix::Primitive::Line3::RelationWith(const Matrix::Primitive::Plane3& Plan
 
 	if (Math::ABS(Vd) < EPSILON_E4)
 	{
-
-		return m_Orig.RelationWith(Plane);
+		return Point3(m_Orig).RelationWith(Plane);
 	}
 
 	if (bCull && (Vd > 0.0f))
 		return IT_NoIntersect;
 
-	VSREAL Vo = -((Plane.GetN().Dot(m_Orig)) + Plane.GetfD());
+	VSREAL Vo = -((Plane.GetN().Dot(Point3(m_Orig))) + Plane.GetfD());
 
 	VSREAL _t = Vo / Vd;
 
@@ -341,7 +340,7 @@ int Matrix::Primitive::Line3::RelationWith(const Rectangle3& Rectangle, bool bCu
 	Math::Vector3 PlanePoint;
 	if (bCull)
 	{
-		if (m_Orig.RelationWith(Plane) == IT_Back)
+		if (Point3(m_Orig).RelationWith(Plane) == IT_Back)
 			return IT_NoIntersect;
 	}
 	if (RelationWith(Plane, bCull, fLineParameter) == IT_Intersect)

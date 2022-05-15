@@ -671,7 +671,7 @@ VSREAL OBB3::SquaredDistance(const Polygon3& Polygon,
 
 int OBB3::RelationWith(const Matrix::Math::Vector3& Point) const
 {
-	return Point.RelationWith(*this);
+	return Point3(Point).RelationWith(*this);
 }
 /*----------------------------------------------------------------*/
 int OBB3::RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar) const
@@ -849,7 +849,7 @@ int OBB3::RelationWith(const OBB3& OBB) const
 int OBB3::RelationWith(const Sphere3& Sphere) const
 {
 	VSREAL fOBBParameter[3];
-	VSREAL Dist = Sphere.m_Center.SquaredDistance(*this, fOBBParameter);
+	VSREAL Dist = Point3(Sphere.m_Center).SquaredDistance(*this, fOBBParameter);
 	Dist = SQRT(Dist);
 	if (Dist - Sphere.m_fRadius < 0.0f)
 		return IT_Intersect;

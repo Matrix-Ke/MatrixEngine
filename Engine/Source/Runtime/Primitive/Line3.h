@@ -1,33 +1,13 @@
 #pragma once
-#include "Math/Math.h"
-#include "Math/Vector3.h"
+#include "Point3.h"
 
-/*
-	直线类
-*/
-#ifdef Primitive_EXPORTS
-#define MATRIX_PRIMITIVE_API __declspec(dllexport)
-#else MATRIX_PRIMITIVE_API __declspec(dllimport)
-#endif // Primitive_EXPORT
+
 
 namespace Matrix
 {
 	namespace Primitive
 	{
-		//判断两个物体的位置关系的，通过其英文名称都可以判断出它们的具体含义
-		enum IntersectionType
-		{
-			IT_Front = 0,
-			IT_Back = 1,
-			IT_On = 2,
-			IT_Clipped = 3,
-			IT_Culled = 4,
-			IT_Visible = 5,
-			IT_Intersect = 7,			//3
-			IT_Out = 8,					//4
-			IT_In = 9,					//5
-			IT_NoIntersect = 10			//6
-		};
+
 
 		class Ray3;
 		class Segment3;
