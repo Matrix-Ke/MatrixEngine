@@ -255,10 +255,10 @@
                         <mxPoint x="461.1199999999999" y="1370.3600000000004" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="97" value="&lt;span style=&quot;font-size: 12px&quot;&gt;MTXStackMemAlloc&lt;br&gt;（调用stackMem接口，不做生命周期管理）&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;fontColor=default;fillColor=none;fontStyle=0;verticalAlign=bottom;" parent="1" vertex="1">
+                <mxCell id="97" value="&lt;span style=&quot;font-size: 12px&quot;&gt;MXStackMemAlloc&lt;br&gt;（调用stackMem接口，不做生命周期管理）&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;fontColor=default;fillColor=none;fontStyle=0;verticalAlign=bottom;" parent="1" vertex="1">
                     <mxGeometry x="120" y="1160" width="160" height="330" as="geometry"/>
                 </mxCell>
-                <mxCell id="94" value="MTXStackMem" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontColor=default;fillColor=none;fontStyle=1" parent="1" vertex="1">
+                <mxCell id="94" value="MXStackMem" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontColor=default;fillColor=none;fontStyle=1" parent="1" vertex="1">
                     <mxGeometry x="140" y="1280" width="130" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="136" value="" style="edgeStyle=none;html=1;endArrow=block;endFill=1;" parent="1" source="135" target="94" edge="1">
@@ -269,7 +269,7 @@
                         <mxPoint x="3" y="-3" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="135" value="MTXTlsValue" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontColor=default;fillColor=none;fontStyle=0" parent="1" vertex="1">
+                <mxCell id="135" value="MXTlsValue" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontColor=default;fillColor=none;fontStyle=0" parent="1" vertex="1">
                     <mxGeometry x="-80" y="1300" width="100" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="204" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=none;startFill=0;endArrow=block;endFill=0;startSize=12;endSize=6;" parent="1" source="142" target="153" edge="1">
@@ -432,7 +432,7 @@
                 <mxCell id="209" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;startArrow=diamondThin;startFill=1;endArrow=open;endFill=0;startSize=12;endSize=6;" parent="1" source="205" target="165" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="205" value="MTXTlsValue" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                <mxCell id="205" value="MXTlsValue" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="1460" y="1320" width="160" height="86" as="geometry"/>
                 </mxCell>
                 <mxCell id="206" value="+ field: type" style="text;strokeColor=none;fillColor=default;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="205" vertex="1">

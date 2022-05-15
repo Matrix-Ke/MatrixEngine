@@ -2,260 +2,256 @@
 #include "Array.h"
 namespace Matrix
 {
-	namespace Container
-	{
-		template <typename TSignature> class MTXDelegate;
-		template <typename TSignature> class MTXDelegateEvent;
-		template<typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
-		class  MTXDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
-		{
-		public:
-			~MTXDelegate()
-			{
-			}
-			MTXDelegate(const MTXDelegate& Delegate)
-			{
-				*this = Delegate;
-			}
-			void operator= (const MTXDelegate& Delegate)
-			{
-				m_F = Delegate.m_F;
-				if (!Delegate.LambdaBuffer.GetNum())
-				{
-					m_p = Delegate.m_p;
-					LambdaBuffer.Destroy();
-				}
-				else
-				{
-					LambdaBuffer = Delegate.LambdaBuffer;
-					m_p = (void*)LambdaBuffer.GetBuffer();
-				}
-			}
-		protected:
-			typedef RETUREN_TYPE(*STATIC_FUNCTION_TYPE)(void* p, DELEGATE_TEMPLATE_TYPE...);
+    namespace Container
+    {
+        template <typename TSignature>
+        class MXDelegate;
+        template <typename TSignature>
+        class MXDelegateEvent;
+        template <typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
+        class MXDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
+        {
+        public:
+            ~MXDelegate()
+            {
+            }
+            MXDelegate(const MXDelegate &Delegate)
+            {
+                *this = Delegate;
+            }
+            void operator=(const MXDelegate &Delegate)
+            {
+                m_F = Delegate.m_F;
+                if (!Delegate.LambdaBuffer.GetNum())
+                {
+                    m_p = Delegate.m_p;
+                    LambdaBuffer.Destroy();
+                }
+                else
+                {
+                    LambdaBuffer = Delegate.LambdaBuffer;
+                    m_p = (void *)LambdaBuffer.GetBuffer();
+                }
+            }
 
-			MTXDelegate(void* p, STATIC_FUNCTION_TYPE Funtion, unsigned int BufferSize)
-			{
-				m_F = Funtion;
-				if (BufferSize)
-				{
-					LambdaBuffer.SetBufferNum(BufferSize);
-					MTXMemcpy(LambdaBuffer.GetBuffer(), p, BufferSize);
-					m_p = (void*)LambdaBuffer.GetBuffer();
-				}
-				else
-				{
-					m_p = p;
-				}
-			}
+        protected:
+            typedef RETUREN_TYPE (*STATIC_FUNCTION_TYPE)(void *p, DELEGATE_TEMPLATE_TYPE...);
 
-			void* m_p;
-			STATIC_FUNCTION_TYPE m_F;
-			MArray<unsigned char> LambdaBuffer;
+            MXDelegate(void *p, STATIC_FUNCTION_TYPE Funtion, unsigned int BufferSize)
+            {
+                m_F = Funtion;
+                if (BufferSize)
+                {
+                    LambdaBuffer.SetBufferNum(BufferSize);
+                    MXMemcpy(LambdaBuffer.GetBuffer(), p, BufferSize);
+                    m_p = (void *)LambdaBuffer.GetBuffer();
+                }
+                else
+                {
+                    m_p = p;
+                }
+            }
 
+            void *m_p;
+            STATIC_FUNCTION_TYPE m_F;
+            MArray<unsigned char> LambdaBuffer;
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			static RETUREN_TYPE MethodStub(void* p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
-			{
-				T* Ap = (T*)p;
-				return (Ap->*FunName)(DELEGATE_VALUE...);
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            static RETUREN_TYPE MethodStub(void *p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
+            {
+                T *Ap = (T *)p;
+                return (Ap->*FunName)(DELEGATE_VALUE...);
+            }
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)const>
-			static RETUREN_TYPE ConstMethodStub(void* p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
-			{
-				T* Ap = (T*)p;
-				return (Ap->*FunName)(DELEGATE_VALUE...);
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...) const>
+            static RETUREN_TYPE ConstMethodStub(void *p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
+            {
+                T *Ap = (T *)p;
+                return (Ap->*FunName)(DELEGATE_VALUE...);
+            }
 
-			template<RETUREN_TYPE(*FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			static RETUREN_TYPE FunStub(void* p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
-			{
-				return (FunName)(DELEGATE_VALUE...);
-			}
+            template <RETUREN_TYPE (*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            static RETUREN_TYPE FunStub(void *p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
+            {
+                return (FunName)(DELEGATE_VALUE...);
+            }
 
-			template<typename LAMBDA>
-			static RETUREN_TYPE LambdaStub(void* p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
-			{
-				return (*((LAMBDA*)p))(DELEGATE_VALUE...);
-			}
+            template <typename LAMBDA>
+            static RETUREN_TYPE LambdaStub(void *p, DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
+            {
+                return (*((LAMBDA *)p))(DELEGATE_VALUE...);
+            }
 
-			static MTXDelegate Create(void* p, STATIC_FUNCTION_TYPE Funtion)
-			{
-				return MTXDelegate(p, Funtion, 0);
-			}
-			template<typename LAMBDA>
-			static MTXDelegate Create(LAMBDA& L, STATIC_FUNCTION_TYPE Funtion)
-			{
-				return MTXDelegate((void*)&L, Funtion, sizeof(LAMBDA));
-			}
-		public:
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)const>
-			static MTXDelegate FromMethod(T* p)
-			{
-				return Create((void*)p, &ConstMethodStub<T, FunName>);
-			}
+            static MXDelegate Create(void *p, STATIC_FUNCTION_TYPE Funtion)
+            {
+                return MXDelegate(p, Funtion, 0);
+            }
+            template <typename LAMBDA>
+            static MXDelegate Create(LAMBDA &L, STATIC_FUNCTION_TYPE Funtion)
+            {
+                return MXDelegate((void *)&L, Funtion, sizeof(LAMBDA));
+            }
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			static MTXDelegate FromMethod(T* p)
-			{
-				return Create((void*)p, &MethodStub<T, FunName>);
-			}
+        public:
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...) const>
+            static MXDelegate FromMethod(T *p)
+            {
+                return Create((void *)p, &ConstMethodStub<T, FunName>);
+            }
 
-			template<RETUREN_TYPE(*FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			static MTXDelegate FromFun()
-			{
-				return Create(NULL, &FunStub<FunName>);
-			}
-			template<typename LAMBDA>
-			static MTXDelegate FromLambda(LAMBDA&& L)
-			{
-				return Create<LAMBDA>(L, &LambdaStub<LAMBDA>);
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            static MXDelegate FromMethod(T *p)
+            {
+                return Create((void *)p, &MethodStub<T, FunName>);
+            }
 
-			RETUREN_TYPE Execute(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
-			{
-				return (*m_F)(m_p, DELEGATE_VALUE...);
-			}
-			RETUREN_TYPE operator()(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
-			{
-				return (*m_F)(m_p, DELEGATE_VALUE...);
-			}
+            template <RETUREN_TYPE (*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            static MXDelegate FromFun()
+            {
+                return Create(NULL, &FunStub<FunName>);
+            }
+            template <typename LAMBDA>
+            static MXDelegate FromLambda(LAMBDA &&L)
+            {
+                return Create<LAMBDA>(L, &LambdaStub<LAMBDA>);
+            }
 
-			operator bool() const
-			{
-				return m_F != NULL;
-			}
+            RETUREN_TYPE Execute(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE)
+            {
+                return (*m_F)(m_p, DELEGATE_VALUE...);
+            }
+            RETUREN_TYPE operator()(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
+            {
+                return (*m_F)(m_p, DELEGATE_VALUE...);
+            }
 
-			bool operator!() const
-			{
-				return !(operator bool());
-			}
+            operator bool() const
+            {
+                return m_F != NULL;
+            }
 
-			bool operator==(const MTXDelegate& rhs) const
-			{
-				return (m_p == rhs.m_p && m_F == rhs.m_F);
-			}
-			bool operator!=(const MTXDelegate& rhs) const
-			{
-				return (m_p = !rhs.m_p || m_F != rhs.m_F);
-			}
-		};
-		template <typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
-		class  MTXDelegateEvent<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
-		{
-		public:
-			typedef MTXDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)> Handler;
-		public:
-			MTXDelegateEvent() {}
+            bool operator!() const
+            {
+                return !(operator bool());
+            }
 
-			void operator+=(const Handler& handler)
-			{
-				this->Add(handler);
-			}
-			void Add(const Handler& handler)
-			{
-				assert(!this->Has(handler));
+            bool operator==(const MXDelegate &rhs) const
+            {
+                return (m_p == rhs.m_p && m_F == rhs.m_F);
+            }
+            bool operator!=(const MXDelegate &rhs) const
+            {
+                return (m_p = !rhs.m_p || m_F != rhs.m_F);
+            }
+        };
+        template <typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
+        class MXDelegateEvent<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
+        {
+        public:
+            typedef MXDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)> Handler;
 
-				m_handlers.AddElement(handler);
-			}
+        public:
+            MXDelegateEvent() {}
 
-			template<RETUREN_TYPE(*FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			void AddFun()
-			{
-				Add(Handler::FromFun<FunName>());
-			}
+            void operator+=(const Handler &handler)
+            {
+                this->Add(handler);
+            }
+            void Add(const Handler &handler)
+            {
+                assert(!this->Has(handler));
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)const>
-			void AddMethod(T* p)
-			{
-				Add(Handler::FromMethod<T, FunName>(p));
-			}
+                m_handlers.AddElement(handler);
+            }
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			void AddMethod(T* p)
-			{
-				Add(Handler::FromMethod<T, FunName>(p));
-			}
-			void operator-=(const Handler& handler)
-			{
-				this->Remove(handler);
-			}
-			void Remove(const Handler& handler)
-			{
-				unsigned int i = m_handlers.FindElement(handler);
+            template <RETUREN_TYPE (*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            void AddFun()
+            {
+                Add(Handler::FromFun<FunName>());
+            }
 
-				if (i < m_handlers.GetNum())
-				{
-					m_handlers.Erase(i);
-				}
-			}
-			template<RETUREN_TYPE(*FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			void RemoveFun()
-			{
-				Remove(Handler::FromFun<FunName>());
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...) const>
+            void AddMethod(T *p)
+            {
+                Add(Handler::FromMethod<T, FunName>(p));
+            }
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)const>
-			void RemoveMethod(T* p)
-			{
-				Remove(Handler::FromMethod<T, FunName>(p));
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            void AddMethod(T *p)
+            {
+                Add(Handler::FromMethod<T, FunName>(p));
+            }
+            void operator-=(const Handler &handler)
+            {
+                this->Remove(handler);
+            }
+            void Remove(const Handler &handler)
+            {
+                unsigned int i = m_handlers.FindElement(handler);
 
-			template<class T, RETUREN_TYPE(T::* FunName)(DELEGATE_TEMPLATE_TYPE...)>
-			void RemoveMethod(T* p)
-			{
-				Remove(Handler::FromMethod<T, FunName>(p));
-			}
-			bool Has(const Handler& handler)
-			{
-				unsigned int i = m_handlers.FindElement(handler);
-				return i != m_handlers.GetNum();
-			}
-			/// 是否有效
-			bool IsValid() const
-			{
-				return m_handlers.GetNum() > 0;
-			}
+                if (i < m_handlers.GetNum())
+                {
+                    m_handlers.Erase(i);
+                }
+            }
+            template <RETUREN_TYPE (*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            void RemoveFun()
+            {
+                Remove(Handler::FromFun<FunName>());
+            }
 
-			void Reset()
-			{
-				m_handlers.Clear();
-			}
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...) const>
+            void RemoveMethod(T *p)
+            {
+                Remove(Handler::FromMethod<T, FunName>(p));
+            }
 
+            template <class T, RETUREN_TYPE (T::*FunName)(DELEGATE_TEMPLATE_TYPE...)>
+            void RemoveMethod(T *p)
+            {
+                Remove(Handler::FromMethod<T, FunName>(p));
+            }
+            bool Has(const Handler &handler)
+            {
+                unsigned int i = m_handlers.FindElement(handler);
+                return i != m_handlers.GetNum();
+            }
+            /// 是否有效
+            bool IsValid() const
+            {
+                return m_handlers.GetNum() > 0;
+            }
 
-			void operator()(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
-			{
-				this->Invoke(DELEGATE_VALUE...);
-			}
-			void Invoke(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
-			{
-				for (unsigned int i = 0; i < m_handlers.GetNum(); ++i)
-				{
-					m_handlers[i](DELEGATE_VALUE...);
-				}
-			}
-			void InvokeWithEmitter(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE, const Handler& emitter) const
-			{
-				for (unsigned i = 0; i < m_handlers.GetNum(); ++i)
-				{
-					if (m_handlers[i] != emitter)
-					{
-						m_handlers[i](DELEGATE_VALUE...);
-					}
-				}
-			}
+            void Reset()
+            {
+                m_handlers.Clear();
+            }
 
-		private:
-			typedef MArray<Handler> DelegateList;
-			DelegateList m_handlers;
-		};
-	}
+            void operator()(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
+            {
+                this->Invoke(DELEGATE_VALUE...);
+            }
+            void Invoke(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE) const
+            {
+                for (unsigned int i = 0; i < m_handlers.GetNum(); ++i)
+                {
+                    m_handlers[i](DELEGATE_VALUE...);
+                }
+            }
+            void InvokeWithEmitter(DELEGATE_TEMPLATE_TYPE... DELEGATE_VALUE, const Handler &emitter) const
+            {
+                for (unsigned i = 0; i < m_handlers.GetNum(); ++i)
+                {
+                    if (m_handlers[i] != emitter)
+                    {
+                        m_handlers[i](DELEGATE_VALUE...);
+                    }
+                }
+            }
+
+        private:
+            typedef MArray<Handler> DelegateList;
+            DelegateList m_handlers;
+        };
+    }
 }
-
-
-
-
-
-
-

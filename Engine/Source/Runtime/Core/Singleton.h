@@ -5,111 +5,104 @@
 
 namespace Matrix
 {
-	namespace Core
-	{
-		//关于单例的其他实现方  式， 利用static关键字来实现 
-		template <typename T>
-		class MTXSingleton
-		{
-		public:
-			static T& GetInstance()
-			{
-				static T instance;
-				return instance;
-			}
-			//相关构造函数全部隐藏
-			MTXSingleton(const T& rhs) = delete;
-			MTXSingleton(const T&& rhs) = delete;
-			void operator= (const T& rhs) = delete;
+    namespace Core
+    {
+        //关于单例的其他实现方  式， 利用static关键字来实现
+        template <typename T>
+        class MXSingleton
+        {
+        public:
+            static T &GetInstance()
+            {
+                static T instance;
+                return instance;
+            }
+            //相关构造函数全部隐藏
+            MXSingleton(const T &rhs) = delete;
+            MXSingleton(const T &&rhs) = delete;
+            void operator=(const T &rhs) = delete;
 
-		protected:
-			MTXSingleton() = default;
-			virtual ~MTXSingleton() = default;
-		};
+        protected:
+            MXSingleton() = default;
+            virtual ~MXSingleton() = default;
+        };
 
+        ////此种单例模式不是很好
+        // template <typename T>
+        // class MXSingleton
+        //{
+        //	static  T* mPtrSingleton;
+        // public:
+        //	MXSingleton()
+        //	{
+        //		MX_ENGINE_ASSERT(!mPtrSingleton);
+        //		mPtrSingleton = static_cast<T*>(this);
+        //	}
 
+        //	~MXSingleton()
+        //	{
+        //		MX_ENGINE_ASSERT(mPtrSingleton);
+        //		mPtrSingleton = NULL;
+        //	}
 
-		////此种单例模式不是很好
-		//template <typename T>
-		//class MTXSingleton
-		//{
-		//	static  T* mPtrSingleton;
-		//public:
-		//	MTXSingleton()
-		//	{
-		//		MX_ENGINE_ASSERT(!mPtrSingleton);
-		//		mPtrSingleton = static_cast<T*>(this);
-		//	}
+        //	static T& GetInstance()
+        //	{
+        //		MX_ENGINE_ASSERT(mPtrSingleton);
+        //		return (*mPtrSingleton);
+        //	}
+        //	static T* GetInstancePtr()
+        //	{
+        //		return (mPtrSingleton);
+        //	}
 
-		//	~MTXSingleton()
-		//	{
-		//		MX_ENGINE_ASSERT(mPtrSingleton);
-		//		mPtrSingleton = NULL;
-		//	}
+        //};
 
-		//	static T& GetInstance()
-		//	{
-		//		MX_ENGINE_ASSERT(mPtrSingleton);
-		//		return (*mPtrSingleton);
-		//	}
-		//	static T* GetInstancePtr()
-		//	{
-		//		return (mPtrSingleton);
-		//	}
+        // template <typename T>
+        // T* MXSingleton<T>::mPtrSingleton = NULL;
 
-		//};
+        ////利用锁来实现，lazeySingleTon
+        // template<typename T, bool is_thread_safe = true>
+        // class LazySingleton
+        //{
+        // public:
+        //	static T& GetInstance()
+        //	{
+        //		if (is_thread_safe == true)
+        //		{
+        //			if (mInstance == nullptr)
+        //			{
+        //				std::lock_guard<std::mutex>   LockGurad(mMutex);
+        //				if (mInstance == nullptr)
+        //				{
+        //					mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
+        //				}
+        //			}
+        //			return *mInstance;
+        //		}
+        //		else
+        //		{
+        //			if (mInstance == nullptr)
+        //			{
+        //				mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
+        //			}
+        //			return *mInstance;
+        //		}
+        //	}
 
-		//template <typename T>
-		//T* MTXSingleton<T>::mPtrSingleton = NULL;
+        // protected:
+        //	LazySingleton() = default;
+        //	virtual ~LazySingleton() = default;
+        // private:
+        //	LazySingleton(const T&&) = delete;
+        //	LazySingleton(const T& rhs) = delete;
+        //	void operator =(const T& rhs) = delete;
 
+        // private:
+        //	std::unique_ptr<T*>   mInstance;
+        //	//std::mutex   mMutexl;
+        //	//std::lock_guard<std::mutex>  mLockMtx;
+        //	static std::mutex    mMutex;
 
-
-
-
-		////利用锁来实现，lazeySingleTon
-		//template<typename T, bool is_thread_safe = true>
-		//class LazySingleton
-		//{
-		//public:
-		//	static T& GetInstance()
-		//	{
-		//		if (is_thread_safe == true)
-		//		{
-		//			if (mInstance == nullptr)
-		//			{
-		//				std::lock_guard<std::mutex>   LockGurad(mMutex);
-		//				if (mInstance == nullptr)
-		//				{
-		//					mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
-		//				}
-		//			}
-		//			return *mInstance;
-		//		}
-		//		else
-		//		{
-		//			if (mInstance == nullptr)
-		//			{
-		//				mInstance = std::unique_ptr<T*>(MATRIX_NEW T);
-		//			}
-		//			return *mInstance;
-		//		}
-		//	}
-
-		//protected:
-		//	LazySingleton() = default;
-		//	virtual ~LazySingleton() = default;
-		//private:
-		//	LazySingleton(const T&&) = delete;
-		//	LazySingleton(const T& rhs) = delete;
-		//	void operator =(const T& rhs) = delete;
-
-		//private:
-		//	std::unique_ptr<T*>   mInstance;
-		//	//std::mutex   mMutexl;
-		//	//std::lock_guard<std::mutex>  mLockMtx;
-		//	static std::mutex    mMutex;
-
-		//};
-	}
+        //};
+    }
 }
-
