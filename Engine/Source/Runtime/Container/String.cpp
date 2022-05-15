@@ -10,25 +10,25 @@ MTXString::MTXString()
 {
 	m_pBuffer = NULL;
 	m_pBuffer = MX_NEW TCHAR[1];
-	MTXENGINE_ASSERT(m_pBuffer);
+	MX_ENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
 MTXString::MTXString(const TCHAR* String)
 {
-	MTXENGINE_ASSERT(String);
+	MX_ENGINE_ASSERT(String);
 	m_pBuffer = NULL;
 	if (String)
 	{
 		unsigned int  uiLength = (unsigned int)MTXStrLen(String);
 		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-		MTXENGINE_ASSERT(m_pBuffer);
+		MX_ENGINE_ASSERT(m_pBuffer);
 
 		MTXStrCopy(m_pBuffer, uiLength + 1, String);
 	}
 	else
 	{
 		m_pBuffer = MX_NEW TCHAR[1];
-		MTXENGINE_ASSERT(m_pBuffer);
+		MX_ENGINE_ASSERT(m_pBuffer);
 		m_pBuffer[0] = _T('\0');
 	}
 }
@@ -37,7 +37,7 @@ MTXString::MTXString(const MTXString& String)
 	m_pBuffer = NULL;
 	unsigned int  uiLength = String.GetLength();
 	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-	MTXENGINE_ASSERT(m_pBuffer);
+	MX_ENGINE_ASSERT(m_pBuffer);
 
 	MTXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
 }
@@ -58,7 +58,7 @@ void MTXString::Clear()
 
 	ENGINE_DELETE(m_pBuffer);
 	m_pBuffer = MX_NEW TCHAR[1];
-	MTXENGINE_ASSERT(m_pBuffer);
+	MX_ENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
 MTXString& MTXString::operator =(const MTXString& String)
@@ -66,7 +66,7 @@ MTXString& MTXString::operator =(const MTXString& String)
 	ENGINE_DELETE(m_pBuffer);
 	unsigned int  uiLength = String.GetLength();
 	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-	MTXENGINE_ASSERT(m_pBuffer);
+	MX_ENGINE_ASSERT(m_pBuffer);
 
 	MTXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
 	return *this;
@@ -78,7 +78,7 @@ MTXString& MTXString::operator =(const TCHAR* String)
 	{
 		unsigned int  uiLength = (unsigned int)MTXStrLen(String);
 		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-		MTXENGINE_ASSERT(m_pBuffer);
+		MX_ENGINE_ASSERT(m_pBuffer);
 
 		MTXStrCopy(m_pBuffer, uiLength + 1, String);
 	}
@@ -110,7 +110,7 @@ const MTXString& MTXString::operator +=(const MTXString& String)
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
 		pBuffer = MX_NEW TCHAR[uiLength];
-		MTXENGINE_ASSERT(pBuffer);
+		MX_ENGINE_ASSERT(pBuffer);
 
 		MTXStrCopy(pBuffer, uiLength, GetBuffer());
 		MTXStrcat(pBuffer, uiLength, String.GetBuffer());
@@ -141,7 +141,7 @@ const MTXString& MTXString::operator +=(const TCHAR* String)
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
 		pBuffer = MX_NEW TCHAR[uiLength];
-		MTXENGINE_ASSERT(pBuffer);
+		MX_ENGINE_ASSERT(pBuffer);
 
 		MTXStrCopy(pBuffer, uiLength, GetBuffer());
 		MTXStrcat(pBuffer, uiLength, String);
@@ -496,7 +496,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MTXENGINE_ASSERT(pBuffer);
+				MX_ENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MTXStrcat(pBuffer, uiLength, String2.GetBuffer());
@@ -507,7 +507,7 @@ namespace Matrix
 		}
 		MTXString operator +(const MTXString& String1, const TCHAR* String2)
 		{
-			MTXENGINE_ASSERT(String2);
+			MX_ENGINE_ASSERT(String2);
 			unsigned int uiLength1 = String1.GetLength();
 			unsigned int uiLength2 = 0;
 			if (String2)
@@ -524,7 +524,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MTXENGINE_ASSERT(pBuffer);
+				MX_ENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MTXStrcat(pBuffer, uiLength, String2);
@@ -535,7 +535,7 @@ namespace Matrix
 		}
 		MTXString operator +(const TCHAR* String1, const MTXString& String2)
 		{
-			MTXENGINE_ASSERT(String1);
+			MX_ENGINE_ASSERT(String1);
 			unsigned int uiLength2 = String2.GetLength();
 			unsigned int uiLength1 = 0;
 			if (String1)
@@ -552,7 +552,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MTXENGINE_ASSERT(pBuffer);
+				MX_ENGINE_ASSERT(pBuffer);
 
 				MTXStrCopy(pBuffer, uiLength, String1);
 				MTXStrcat(pBuffer, uiLength, String2.GetBuffer());

@@ -1,5 +1,5 @@
 #include <xmmintrin.h>
-#include "Math/MathInterface.h"
+#include "Math/CMathInterface.h"
 
 //msvc 不支持64位寄存器
 //__m128 addWithAsm(const __m128 a, const __m128 b)
