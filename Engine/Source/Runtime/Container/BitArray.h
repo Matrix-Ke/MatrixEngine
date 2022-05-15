@@ -110,7 +110,7 @@ namespace Matrix
 
 				pNewVector = MX_NEW unsigned int[uiSize];
 
-				MTXENGINE_ASSERT(pNewVector);
+				MX_ENGINE_ASSERT(pNewVector);
 
 				MTXMemset(pNewVector, 0, uiSize * sizeof(unsigned int));
 				unsigned int uiMin;

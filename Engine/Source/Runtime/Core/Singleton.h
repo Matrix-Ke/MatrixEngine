@@ -37,19 +37,19 @@ namespace Matrix
 		//public:
 		//	MTXSingleton()
 		//	{
-		//		MTXENGINE_ASSERT(!mPtrSingleton);
+		//		MX_ENGINE_ASSERT(!mPtrSingleton);
 		//		mPtrSingleton = static_cast<T*>(this);
 		//	}
 
 		//	~MTXSingleton()
 		//	{
-		//		MTXENGINE_ASSERT(mPtrSingleton);
+		//		MX_ENGINE_ASSERT(mPtrSingleton);
 		//		mPtrSingleton = NULL;
 		//	}
 
 		//	static T& GetInstance()
 		//	{
-		//		MTXENGINE_ASSERT(mPtrSingleton);
+		//		MX_ENGINE_ASSERT(mPtrSingleton);
 		//		return (*mPtrSingleton);
 		//	}
 		//	static T* GetInstancePtr()

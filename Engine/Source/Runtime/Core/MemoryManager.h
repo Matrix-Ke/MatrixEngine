@@ -11,6 +11,10 @@
 #define MX_NEW  new
 #define MX_DELETE delete
 #define USE_MATRIX_NEW
+//使用宏定义处理这些容易忘记的指针删除操作
+#define ENGINE_DELETE(p) if(p){delete p; p = 0;}
+#define MX_ENGINE_DELETEA(p) if(p){delete []p; p = 0;}
+#define ENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) MX_ENGINE_DELETEA(p[i]); MX_ENGINE_DELETEA(p);}
 
 
 
@@ -289,7 +293,7 @@ namespace Matrix
 					// track
 					StackMem.NumMarks++;
 					mPtr = (T*)StackMem.Allocate(uiNum * sizeof(T), uiAlignment, 0);
-					MTXENGINE_ASSERT(mPtr);
+					MX_ENGINE_ASSERT(mPtr);
 
 					//判断是否有构造函数，
 					if (ValueBase<T>::NeedsConstructor)
@@ -404,7 +408,7 @@ namespace Matrix
 	}
 }
 
-//#define USE_CUSTOM_NEW
+#define USE_MATRIX_NEW
 #ifdef USE_MATRIX_NEW
 inline void* operator new(size_t uSize)
 {
@@ -429,10 +433,6 @@ inline void operator delete[](void* pvAddr)
 #endif 
 
 
-//使用宏定义处理这些容易忘记的指针删除操作
-#define ENGINE_DELETE(p) if(p){delete p; p = 0;}
-#define ENGINE_DELETEA(p) if(p){delete []p; p = 0;}
-#define ENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) ENGINE_DELETEA(p[i]); ENGINE_DELETEA(p);}
 
 
 

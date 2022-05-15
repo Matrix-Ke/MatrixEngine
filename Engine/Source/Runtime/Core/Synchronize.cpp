@@ -7,7 +7,7 @@ MTXCriticalSection gSafeOutputString;
 
 unsigned int Matrix::Core::MTXSynchronize::WaitAll(MTXSynchronize** pSynchronize, unsigned int uiNum, bool bWaitAll, DWORD dwMilliseconds)
 {
-	MTXENGINE_ASSERT(uiNum >= 1 && uiNum <= MAXIMUM_WAIT_OBJECTS);
+	MX_ENGINE_ASSERT(uiNum >= 1 && uiNum <= MAXIMUM_WAIT_OBJECTS);
 	static HANDLE handle[MAXIMUM_WAIT_OBJECTS];
 	for (unsigned int i = 0; i < uiNum; i++)
 	{
@@ -40,7 +40,7 @@ void Matrix::Core::MTXSynchronize::MTXSafeOutputDebugString(const TCHAR* pString
 
 MTXSemaphore::MTXSemaphore(unsigned int uCount, unsigned int maxCount)
 {
-	MTXENGINE_ASSERT(uCount <= maxCount);
+	MX_ENGINE_ASSERT(uCount <= maxCount);
 	//
 	mSemaphore = CreateSemaphore(NULL, uCount, maxCount, NULL);
 
@@ -50,7 +50,7 @@ MTXSemaphore::MTXSemaphore(unsigned int uCount, unsigned int maxCount)
 Matrix::Core::MTXSemaphore::~MTXSemaphore()
 {
 	BOOL closed = CloseHandle((HANDLE)mSemaphore);
-	MTXENGINE_ASSERT(closed);
+	MX_ENGINE_ASSERT(closed);
 	mSemaphore = NULL;
 }
 
@@ -65,7 +65,7 @@ void Matrix::Core::MTXSemaphore::Enter()
 	//   WAIT_TIMEOUT   (0x00000102), [not possible with INFINITE]
 	//   WAIT_FAILED    (0xFFFFFFFF), not signaled
 	DWORD result = WaitForSingleObject((HANDLE)mSemaphore, INFINITE);
-	MTXENGINE_ASSERT(result);
+	MX_ENGINE_ASSERT(result);
 }
 
 void Matrix::Core::MTXSemaphore::Leave(unsigned int uiReleaseCount)
@@ -76,13 +76,13 @@ void Matrix::Core::MTXSemaphore::Leave(unsigned int uiReleaseCount)
 Matrix::Core::MTXMutex::MTXMutex()
 {
 	mMutex = CreateMutex(NULL, FALSE, NULL);
-	MTXENGINE_ASSERT(mMutex);
+	MX_ENGINE_ASSERT(mMutex);
 }
 
 Matrix::Core::MTXMutex::~MTXMutex()
 {
 	BOOL closed = CloseHandle((HANDLE)mMutex);
-	MTXENGINE_ASSERT(closed);
+	MX_ENGINE_ASSERT(closed);
 	mMutex = NULL;
 }
 
@@ -94,14 +94,14 @@ void Matrix::Core::MTXMutex::Enter()
 	//   WAIT_TIMEOUT   (0x00000102), [not possible with INFINITE]
 	//   WAIT_FAILED    (0xFFFFFFFF), not signaled
 	DWORD result = WaitForSingleObject((HANDLE)mMutex, INFINITE);
-	MTXENGINE_ASSERT(result != WAIT_FAILED);
+	MX_ENGINE_ASSERT(result != WAIT_FAILED);
 
 }
 
 void Matrix::Core::MTXMutex::Leave()
 {
 	BOOL  released = ReleaseMutex(HANDLE(mMutex));
-	MTXENGINE_ASSERT(released);
+	MX_ENGINE_ASSERT(released);
 }
 
 Matrix::Core::MTXEvent::MTXEvent()
@@ -162,12 +162,12 @@ Matrix::Core::MTXTlsValue::MTXTlsValue()
 {
 	MTXCriticalSection::Locker  lockgurad(mCriticalSection);
 	mSlot = MTXTlsAlloc();
-	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
+	MX_ENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 }
 
 Matrix::Core::MTXTlsValue::~MTXTlsValue()
 {
-	MTXENGINE_ASSERT(mSlot != 0XFFFFFFFF);
+	MX_ENGINE_ASSERT(mSlot != 0XFFFFFFFF);
 	for (size_t i = 0; i < mThreadValueNum; i++)
 	{
 		ENGINE_DELETE(pThreadValue[i]);
