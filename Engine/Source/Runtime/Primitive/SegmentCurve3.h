@@ -9,6 +9,7 @@ namespace Matrix
 {
 	namespace Primitive
 	{
+
 		class MATRIX_PRIMITIVE_API SegmentCurve3 : public Curve3
 		{
 		public:

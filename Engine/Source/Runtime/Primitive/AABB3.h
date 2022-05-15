@@ -61,65 +61,65 @@ namespace Matrix
 
 			bool GetIntersect(AABB3& AABB, AABB3& OutAABB) const;
 
-			///*************************************距离************************************************/
-			////点和AABB距离
-			// VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fAABBParameter[3])const;
-			////直线和AABB距离
-			// VSREAL SquaredDistance(const Line3& Line, VSREAL fAABBParameter[3], VSREAL& fLineParameter)const;
-			////射线和AABB距离
-			// VSREAL SquaredDistance(const Ray3& Ray, VSREAL fAABBParameter[3], VSREAL& fRayParameter)const;
-			////线段和AABB距离
-			// VSREAL SquaredDistance(const Segment3& Segment, VSREAL fAABBParameter[3], VSREAL& fSegmentParameter)const;
+			/*************************************距离************************************************/
+			//点和AABB距离
+			VSREAL SquaredDistance(const Matrix::Math::Vector3& Point, VSREAL fAABBParameter[3])const;
+			//直线和AABB距离
+			VSREAL SquaredDistance(const Line3& Line, VSREAL fAABBParameter[3], VSREAL& fLineParameter)const;
+			//射线和AABB距离
+			VSREAL SquaredDistance(const Ray3& Ray, VSREAL fAABBParameter[3], VSREAL& fRayParameter)const;
+			//线段和AABB距离
+			VSREAL SquaredDistance(const Segment3& Segment, VSREAL fAABBParameter[3], VSREAL& fSegmentParameter)const;
 
-			////三角形和AABB距离
-			// VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL AABBParameter[3],
-			//	VSREAL TriangleParameter[3])const;
+			//三角形和AABB距离
+			VSREAL SquaredDistance(const Triangle3& Triangle, VSREAL AABBParameter[3],
+				VSREAL TriangleParameter[3])const;
 
-			////矩形和AABB距离
-			// VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL AABBParameter[3],
-			//	VSREAL RectangleParameter[2])const;
-			////AABB和AABB距离
-			// VSREAL SquaredDistance(const AABB3& AABB, VSREAL AABB1Parameter[3],
-			//	VSREAL AABB2Parameter[3])const;
-			////AABB和球的距离
-			// VSREAL Distance(const Sphere3& Sphere, VSREAL fAABBParameter[3], Matrix::Math::Vector3& SpherePoint)const;
+			//矩形和AABB距离
+			VSREAL SquaredDistance(const Rectangle3& Rectangle, VSREAL AABBParameter[3],
+				VSREAL RectangleParameter[2])const;
+			//AABB和AABB距离
+			VSREAL SquaredDistance(const AABB3& AABB, VSREAL AABB1Parameter[3],
+				VSREAL AABB2Parameter[3])const;
+			//AABB和球的距离
+			VSREAL Distance(const Sphere3& Sphere, VSREAL fAABBParameter[3], Matrix::Math::Vector3& SpherePoint)const;
 
-			////AABB和平面距离
-			// VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& AABBPoint, Matrix::Math::Vector3& PlanePoint)const;
+			//AABB和平面距离
+			VSREAL Distance(const Plane3& Plane, Matrix::Math::Vector3& AABBPoint, Matrix::Math::Vector3& PlanePoint)const;
 
-			////多边形和AABB距离
-			// VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL AABBParameter[3], int& IndexTriangle,
-			//	VSREAL TriangleParameter[3])const;
-			///********************************RelationWith******************************************/
-			////点和AABB位置关系
-			////IT_In IT_Out IT_On
-			// int RelationWith(const Matrix::Math::Vector3& Point)const;
-			////测试直线与AABB位置关系
-			////IT_NoIntersect VSNTERSECT
-			// int RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			////测试射线与AABB位置关系
-			////IT_NoIntersect VSNTERSECT
-			// int RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			////测试线段与AABB位置关系
-			////IT_NoIntersect VSNTERSECT IT_In
-			// int RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
-			////测试平面和AABB位置关系
-			////IT_Front IT_Back IT_Intersect
-			// int RelationWith(const Plane3& Plane)const;
-			////三角形和AABB位置关系
-			////IT_NoIntersect IT_Intersect IT_In
-			// int RelationWith(const Triangle3& Triangle)const;
-			////矩形和AABB位置关系
-			////IT_NoIntersect IT_Intersect IT_In
-			// int RelationWith(const Rectangle3& Rectangle)const;
+			//多边形和AABB距离
+			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL AABBParameter[3], int& IndexTriangle,
+				VSREAL TriangleParameter[3])const;
+			/********************************RelationWith******************************************/
+			//点和AABB位置关系
+			//IT_In IT_Out IT_On
+			int RelationWith(const Matrix::Math::Vector3& Point)const;
+			//测试直线与AABB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Line3& Line, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试射线与AABB位置关系
+			//IT_NoIntersect VSNTERSECT
+			int RelationWith(const Ray3& Ray, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试线段与AABB位置关系
+			//IT_NoIntersect VSNTERSECT IT_In
+			int RelationWith(const Segment3& Segment, unsigned int& Quantity, VSREAL& tNear, VSREAL& tFar)const;
+			//测试平面和AABB位置关系
+			//IT_Front IT_Back IT_Intersect
+			int RelationWith(const Plane3& Plane)const;
+			//三角形和AABB位置关系
+			//IT_NoIntersect IT_Intersect IT_In
+			int RelationWith(const Triangle3& Triangle)const;
+			//矩形和AABB位置关系
+			//IT_NoIntersect IT_Intersect IT_In
+			int RelationWith(const Rectangle3& Rectangle)const;
 
-			////AABB和AABB位置关系
-			////IT_NoIntersect IT_Intersect
-			// int RelationWith(const AABB3& AABB)const;
+			//AABB和AABB位置关系
+			//IT_NoIntersect IT_Intersect
+			int RelationWith(const AABB3& AABB)const;
 
-			////AABB和圆位置关系
-			////IT_NoIntersect IT_Intersect
-			// int RelationWith(const Sphere3& Sphere)const;
+			//AABB和圆位置关系
+			//IT_NoIntersect IT_Intersect
+			int RelationWith(const Sphere3& Sphere)const;
 		};
 
 #include "AABB3.inl"

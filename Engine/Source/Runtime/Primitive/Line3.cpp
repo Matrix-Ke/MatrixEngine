@@ -1,14 +1,21 @@
 #include "Line3.h"
 #include "Math/Matrix3X3W.h"
+#include "Ray3.h"
+#include "Segment3.h"
+
 #include "Plane3.h"
-#include "OBB3.h"
-#include "Sphere3.h"
 #include "Triangle3.h"
 #include "Rectangle3.h"
 #include "Polygon3.h"
 
+#include "OBB3.h"
+#include "AABB3.h"
+#include "Sphere3.h"
 
-using namespace Matrix;
+
+//using namespace Matrix::Math;
+
+
 /*----------------------------------------------------------------*/
 Matrix::Primitive::Line3::Line3()
 {
@@ -33,6 +40,11 @@ bool Matrix::Primitive::Line3::GetParameter(const Matrix::Math::Vector3& Point, 
 	}
 	else
 		return 0;
+}
+Matrix::Primitive::Line3::Line3(const Line3& rhs)
+{
+	this->m_Orig = rhs.m_Orig;
+	this->m_Dir = rhs.m_Dir;
 }
 /*----------------------------------------------------------------*/
 void Matrix::Primitive::Line3::Transform(const Line3& Line, const Matrix::Math::Matrix4& Mat)
@@ -63,7 +75,7 @@ VSREAL Matrix::Primitive::Line3::SquaredDistance(const Line3& Line, VSREAL& fLin
 	VSREAL c = Diff.GetSqrLength();
 	VSREAL det = 1 - a01 * a01;
 
-	if (ABS(det) >= EPSILON_E4)
+	if (Math::ABS(det) >= EPSILON_E4)
 	{
 		VSREAL b1 = -(Line.m_Dir.Dot(Diff));
 		VSREAL invDet = 1 / det;
@@ -113,52 +125,6 @@ VSREAL Matrix::Primitive::Line3::SquaredDistance(const Triangle3& Triangle, VSRE
 {
 	Matrix::Math::Vector3 TrianglePoint[3];
 	Triangle.GetPoint(TrianglePoint);
-
-	/*Matrix::Math::Vector3 Diff = TrianglePoint[0] - m_Orig;
-	Matrix::Math::Vector3 Edge0 = TrianglePoint[1] - TrianglePoint[0];
-	Matrix::Math::Vector3 Edge1 = TrianglePoint[2] - TrianglePoint[0];
-	VSREAL fA00 = m_Dir * m_Dir;
-	VSREAL fA01 = m_Dir * Edge0;
-	VSREAL fA02 = m_Dir * Edge1;
-	VSREAL fA11 = Edge0.GetSqrLength();
-	VSREAL fA12 = Edge0 * Edge1;
-	VSREAL fA22 = Edge1 * Edge1;
-	VSREAL fB0  = Diff * m_Dir;
-	VSREAL fB1  = Diff * Edge0;
-	VSREAL fB2  = Diff * Edge1;
-	Matrix::Math::Vector3 Normal;
-	Normal.Cross(Edge0,Edge1);
-	VSREAL fDot = Normal * m_Dir;
-	if (ABS(fDot) >= EPSILON_E4)
-	{
-
-		VSREAL fCof00 = fA11*fA22-fA12*fA12;
-		VSREAL fCof01 = fA02*fA12-fA01*fA22;
-		VSREAL fCof02 = fA01*fA12-fA02*fA11;
-		VSREAL fCof11 = fA00*fA22-fA02*fA02;
-		VSREAL fCof12 = fA02*fA01-fA00*fA12;
-		VSREAL fCof22 = fA00*fA11-fA01*fA01;
-		VSREAL fInvDet = (1.0f)/(fA00*fCof00+fA01*fCof01+fA02*fCof02);
-		VSREAL fRhs0 = -fB0*fInvDet;
-		VSREAL fRhs1 = -fB1*fInvDet;
-		VSREAL fRhs2 = -fB2*fInvDet;
-
-
-		fLineParameter = fCof00*fRhs0+fCof01*fRhs1+fCof02*fRhs2;
-
-
-		fTriangleParameter[1] = fCof01*fRhs0+fCof11*fRhs1+fCof12*fRhs2;
-		fTriangleParameter[2] = fCof02*fRhs0+fCof12*fRhs1+fCof22*fRhs2;
-		fTriangleParameter[0] = 1.0f - fTriangleParameter[1] - fTriangleParameter[2];
-
-		if (fTriangleParameter[0] >= 0.0f
-			&&  fTriangleParameter[1]>= 0.0f
-			&&  fTriangleParameter[2] >= 0.0f)
-		{
-
-			return 0.0f;
-		}
-	}*/
 
 	VSREAL fSqrDist = VSMAX_REAL;
 	VSREAL fSqrDistTmp;
@@ -285,6 +251,7 @@ VSREAL Matrix::Primitive::Line3::SquaredDistance(const OBB3& OBB, VSREAL& fLineP
 	return OBB.SquaredDistance(*this, fOBBParameter, fLineParameter);
 }
 /*----------------------------------------------------------------*/
+//直线和球的距离
 VSREAL Matrix::Primitive::Line3::Distance(const Sphere3& Sphere, VSREAL& fLineParameter, Matrix::Math::Vector3& SpherePoint) const
 {
 	return Sphere.Distance(*this, SpherePoint, fLineParameter);
@@ -346,11 +313,11 @@ int Matrix::Primitive::Line3::RelationWith(const Triangle3& Triangle, bool bCull
 	return IT_Intersect;
 }
 /*----------------------------------------------------------------*/
-int Matrix::Primitive::Line3::RelationWith(const Plane3& Plane, bool bCull, VSREAL& fLineParameter) const
+int Matrix::Primitive::Line3::RelationWith(const Matrix::Primitive::Plane3& Plane, bool bCull, VSREAL& fLineParameter) const
 {
 	VSREAL Vd = Plane.GetN().Dot(m_Dir);
 
-	if (ABS(Vd) < EPSILON_E4)
+	if (Math::ABS(Vd) < EPSILON_E4)
 	{
 
 		return m_Orig.RelationWith(Plane);
@@ -371,6 +338,7 @@ int Matrix::Primitive::Line3::RelationWith(const Plane3& Plane, bool bCull, VSRE
 int Matrix::Primitive::Line3::RelationWith(const Rectangle3& Rectangle, bool bCull, VSREAL& fLineParameter, VSREAL fRectangleParameter[2]) const
 {
 	Plane3 Plane = Rectangle.GetPlane();
+	Math::Vector3 PlanePoint;
 	if (bCull)
 	{
 		if (m_Orig.RelationWith(Plane) == IT_Back)
@@ -401,7 +369,7 @@ int Matrix::Primitive::Line3::RelationWith(const OBB3& OBB, unsigned int& Quanti
 	{
 		e = A[i].Dot(vcP);
 		f = A[i].Dot(m_Dir);
-		if (ABS(f) > EPSILON_E4)
+		if (Math::ABS(f) > EPSILON_E4)
 		{
 
 			t1 = (e + fA[i]) / f;
@@ -471,7 +439,7 @@ int Matrix::Primitive::Line3::RelationWith(const AABB3& AABB, unsigned int& Quan
 
 	for (int i = 0; i < 3; i++)
 	{
-		if (ABS(m_Dir.m[i]) < EPSILON_E4)
+		if (Math::ABS(m_Dir.m[i]) < EPSILON_E4)
 		{
 			if ((m_Orig.m[i] < Min.m[i]) ||
 				(m_Orig.m[i] > Max.m[i]))

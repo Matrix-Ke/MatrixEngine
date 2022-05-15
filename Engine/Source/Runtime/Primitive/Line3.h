@@ -29,10 +29,19 @@ namespace Matrix
 			IT_NoIntersect = 10			//6
 		};
 
-		// using namespace Matrix::Math;
 		class Ray3;
 		class Segment3;
+
+		class Plane3;
 		class Polygon3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class OBB3;
+		class Sphere3;
+
+
 		class MATRIX_PRIMITIVE_API Line3
 		{
 		protected:
@@ -42,6 +51,9 @@ namespace Matrix
 			Line3();
 			Line3(const Matrix::Math::Vector3& Orig, const Matrix::Math::Vector3& Dir);
 			~Line3();
+			//¿½±´¹¹Ôìº¯Êý
+			Line3(const Line3& rhs);
+
 			void Transform(const Line3& Line, const Matrix::Math::Matrix4& Mat);
 			bool GetParameter(const Matrix::Math::Vector3& Point, VSREAL& fLineParameter) const;
 			/************************inline***************************************/

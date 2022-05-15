@@ -28,10 +28,17 @@ namespace Matrix
 	namespace Primitive
 	{
 		class Math::Matrix3;
-		class Line3;
 		class Ray3;
-		class Rectangle3;
 		class Segment3;
+
+		class Plane3;
+		class Polygon3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class Sphere3;
+
 		class MATRIX_PRIMITIVE_API OBB3
 		{
 		private:

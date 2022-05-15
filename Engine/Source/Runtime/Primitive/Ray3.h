@@ -6,6 +6,17 @@ namespace Matrix
 {
 	namespace Primitive
 	{
+		class Segment3;
+
+		class Plane3;
+		class Polygon3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class OBB3;
+		class Sphere3;
+
 		//射线
 		class MATRIX_PRIMITIVE_API Ray3 : public Line3
 		{
@@ -13,6 +24,7 @@ namespace Matrix
 			Ray3();
 			Ray3(const Matrix::Math::Vector3& Orig, const Matrix::Math::Vector3& Dir);
 			~Ray3();
+
 			bool GetParameter(const Matrix::Math::Vector3& Point, VSREAL& fRayParameter) const;
 			void Transform(const Ray3& Ray, const Matrix::Math::Matrix4& Mat);
 			/************************inline***************************************/
@@ -66,13 +78,14 @@ namespace Matrix
 			//射线和AABB距离
 			VSREAL SquaredDistance(const AABB3& AABB, VSREAL& fRayParameter, VSREAL fAABBParameter[3])const;
 			//射线和多边形距离
-			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fRayParameter,
-				int& IndexTriangle,
-				VSREAL fTriangleParameter[3])const;
+			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fRayParameter, int& IndexTriangle, VSREAL fTriangleParameter[3])const;
 		}; // class
 		/*----------------------------------------------------------------*/
-	};
+
+
+
 #include "Ray3.inl"
 
-}
-}
+	};
+
+};

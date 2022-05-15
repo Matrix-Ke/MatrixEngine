@@ -1,4 +1,15 @@
 #include "SegmentCurve3.h"
+#include "Ray3.h"
+#include "Segment3.h"
+
+#include "Plane3.h"
+#include "Triangle3.h"
+#include "Rectangle3.h"
+#include "Polygon3.h"
+
+#include "OBB3.h"
+#include "AABB3.h"
+#include "Sphere3.h"
 
 using namespace Matrix::Primitive;
 

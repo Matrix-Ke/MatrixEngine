@@ -1,8 +1,19 @@
 #include "OBB3.h"
 #include "Math/Matrix3X3.h"
 #include "Math/Matrix3X3W.h"
+#include "Ray3.h"
+#include "Segment3.h"
 
-using namespace Matrix;
+#include "Plane3.h"
+#include "Triangle3.h"
+#include "Rectangle3.h"
+#include "Polygon3.h"
+
+#include "OBB3.h"
+#include "AABB3.h"
+#include "Sphere3.h"
+
+using namespace Matrix::Primitive;
 
 /*----------------------------------------------------------------*/
 Matrix::Primitive::OBB3::OBB3()
@@ -291,7 +302,7 @@ Matrix::Primitive::OBB3 Matrix::Primitive::OBB3::MergeOBB(const OBB3& OBB) const
 //	return Temp;
 // }
 
-Primitive::AABB3 Matrix::Primitive::OBB3::GetAABB() const
+Matrix::Primitive::AABB3 Matrix::Primitive::OBB3::GetAABB() const
 {
 	return Primitive::AABB3();
 }
@@ -684,7 +695,7 @@ int OBB3::RelationWith(const Plane3& Plane) const
 {
 	Matrix::Math::Vector3 N = Plane.GetN();
 	VSREAL fD = Plane.GetfD();
-	VSREAL fRadius = ABS(m_fA[0] * (N.Dot(m_A[0]))) + ABS(m_fA[1] * (N.Dot(m_A[1]))) + ABS(m_fA[2] * (N.Dot(m_A[2])));
+	VSREAL fRadius = Math::ABS(m_fA[0] * (N.Dot(m_A[0]))) + Math::ABS(m_fA[1] * (N.Dot(m_A[1]))) + Math::ABS(m_fA[2] * (N.Dot(m_A[2])));
 
 	VSREAL fTest = N.Dot(m_Center) + fD;
 
@@ -721,12 +732,12 @@ int OBB3::RelationWith(const OBB3& OBB) const
 	matM[0][1] = m_A[0].Dot(OBB.m_A[1]);
 	matM[0][2] = m_A[0].Dot(OBB.m_A[2]);
 	ra = m_fA[0];
-	rb = OBB.m_fA[0] * ABS(matM[0][0]) +
-		OBB.m_fA[1] * ABS(matM[0][1]) +
-		OBB.m_fA[2] * ABS(matM[0][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[0][0]) +
+		OBB.m_fA[1] * Math::ABS(matM[0][1]) +
+		OBB.m_fA[2] * Math::ABS(matM[0][2]);
 
 	T[0] = vcD.Dot(m_A[0]);
-	t = ABS(T[0]);
+	t = Math::ABS(T[0]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
@@ -734,11 +745,11 @@ int OBB3::RelationWith(const OBB3& OBB) const
 	matM[1][1] = m_A[1].Dot(OBB.m_A[1]);
 	matM[1][2] = m_A[1].Dot(OBB.m_A[2]);
 	ra = m_fA[1];
-	rb = OBB.m_fA[0] * ABS(matM[1][0]) +
-		OBB.m_fA[1] * ABS(matM[1][1]) +
-		OBB.m_fA[2] * ABS(matM[1][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[1][0]) +
+		OBB.m_fA[1] * Math::ABS(matM[1][1]) +
+		OBB.m_fA[2] * Math::ABS(matM[1][2]);
 	T[1] = vcD.Dot(m_A[1]);
-	t = ABS(T[1]);
+	t = Math::ABS(T[1]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
@@ -746,89 +757,89 @@ int OBB3::RelationWith(const OBB3& OBB) const
 	matM[2][1] = m_A[2].Dot(OBB.m_A[1]);
 	matM[2][2] = m_A[2].Dot(OBB.m_A[2]);
 	ra = m_fA[2];
-	rb = OBB.m_fA[0] * ABS(matM[2][0]) +
-		OBB.m_fA[1] * ABS(matM[2][1]) +
-		OBB.m_fA[2] * ABS(matM[2][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[2][0]) +
+		OBB.m_fA[1] * Math::ABS(matM[2][1]) +
+		OBB.m_fA[2] * Math::ABS(matM[2][2]);
 	T[2] = vcD.Dot(m_A[2]);
-	t = ABS(T[2]);
+	t = Math::ABS(T[2]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[0][0]) +
-		m_fA[1] * ABS(matM[1][0]) +
-		m_fA[2] * ABS(matM[2][0]);
+	ra = m_fA[0] * Math::ABS(matM[0][0]) +
+		m_fA[1] * Math::ABS(matM[1][0]) +
+		m_fA[2] * Math::ABS(matM[2][0]);
 	rb = OBB.m_fA[0];
-	t = ABS(T[0] * matM[0][0] + T[1] * matM[1][0] + T[2] * matM[2][0]);
+	t = Math::ABS(T[0] * matM[0][0] + T[1] * matM[1][0] + T[2] * matM[2][0]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[0][1]) +
-		m_fA[1] * ABS(matM[1][1]) +
-		m_fA[2] * ABS(matM[2][1]);
+	ra = m_fA[0] * Math::ABS(matM[0][1]) +
+		m_fA[1] * Math::ABS(matM[1][1]) +
+		m_fA[2] * Math::ABS(matM[2][1]);
 	rb = OBB.m_fA[1];
-	t = ABS(T[0] * matM[0][1] + T[1] * matM[1][1] + T[2] * matM[2][1]);
+	t = Math::ABS(T[0] * matM[0][1] + T[1] * matM[1][1] + T[2] * matM[2][1]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[0][2]) +
-		m_fA[1] * ABS(matM[1][2]) +
-		m_fA[2] * ABS(matM[2][2]);
+	ra = m_fA[0] * Math::ABS(matM[0][2]) +
+		m_fA[1] * Math::ABS(matM[1][2]) +
+		m_fA[2] * Math::ABS(matM[2][2]);
 	rb = OBB.m_fA[2];
-	t = ABS(T[0] * matM[0][2] + T[1] * matM[1][2] + T[2] * matM[2][2]);
+	t = Math::ABS(T[0] * matM[0][2] + T[1] * matM[1][2] + T[2] * matM[2][2]);
 	if (t > (ra + rb))
 		return IT_NoIntersect;
 
-	ra = m_fA[1] * ABS(matM[2][0]) + m_fA[2] * ABS(matM[1][0]);
-	rb = OBB.m_fA[1] * ABS(matM[0][2]) + OBB.m_fA[2] * ABS(matM[0][1]);
-	t = ABS(T[2] * matM[1][0] - T[1] * matM[2][0]);
+	ra = m_fA[1] * Math::ABS(matM[2][0]) + m_fA[2] * Math::ABS(matM[1][0]);
+	rb = OBB.m_fA[1] * Math::ABS(matM[0][2]) + OBB.m_fA[2] * Math::ABS(matM[0][1]);
+	t = Math::ABS(T[2] * matM[1][0] - T[1] * matM[2][0]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[1] * ABS(matM[2][1]) + m_fA[2] * ABS(matM[1][1]);
-	rb = OBB.m_fA[0] * ABS(matM[0][2]) + OBB.m_fA[2] * ABS(matM[0][0]);
-	t = ABS(T[2] * matM[1][1] - T[1] * matM[2][1]);
+	ra = m_fA[1] * Math::ABS(matM[2][1]) + m_fA[2] * Math::ABS(matM[1][1]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[0][2]) + OBB.m_fA[2] * Math::ABS(matM[0][0]);
+	t = Math::ABS(T[2] * matM[1][1] - T[1] * matM[2][1]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[1] * ABS(matM[2][2]) + m_fA[2] * ABS(matM[1][2]);
-	rb = OBB.m_fA[0] * ABS(matM[0][1]) + OBB.m_fA[1] * ABS(matM[0][0]);
-	t = ABS(T[2] * matM[1][2] - T[1] * matM[2][2]);
+	ra = m_fA[1] * Math::ABS(matM[2][2]) + m_fA[2] * Math::ABS(matM[1][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[0][1]) + OBB.m_fA[1] * Math::ABS(matM[0][0]);
+	t = Math::ABS(T[2] * matM[1][2] - T[1] * matM[2][2]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[2][0]) + m_fA[2] * ABS(matM[0][0]);
-	rb = OBB.m_fA[1] * ABS(matM[1][2]) + OBB.m_fA[2] * ABS(matM[1][1]);
-	t = ABS(T[0] * matM[2][0] - T[2] * matM[0][0]);
+	ra = m_fA[0] * Math::ABS(matM[2][0]) + m_fA[2] * Math::ABS(matM[0][0]);
+	rb = OBB.m_fA[1] * Math::ABS(matM[1][2]) + OBB.m_fA[2] * Math::ABS(matM[1][1]);
+	t = Math::ABS(T[0] * matM[2][0] - T[2] * matM[0][0]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[2][1]) + m_fA[2] * ABS(matM[0][1]);
-	rb = OBB.m_fA[0] * ABS(matM[1][2]) + OBB.m_fA[2] * ABS(matM[1][0]);
-	t = ABS(T[0] * matM[2][1] - T[2] * matM[0][1]);
+	ra = m_fA[0] * Math::ABS(matM[2][1]) + m_fA[2] * Math::ABS(matM[0][1]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[1][2]) + OBB.m_fA[2] * Math::ABS(matM[1][0]);
+	t = Math::ABS(T[0] * matM[2][1] - T[2] * matM[0][1]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[2][2]) + m_fA[2] * ABS(matM[0][2]);
-	rb = OBB.m_fA[0] * ABS(matM[1][1]) + OBB.m_fA[1] * ABS(matM[1][0]);
-	t = ABS(T[0] * matM[2][2] - T[2] * matM[0][2]);
+	ra = m_fA[0] * Math::ABS(matM[2][2]) + m_fA[2] * Math::ABS(matM[0][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[1][1]) + OBB.m_fA[1] * Math::ABS(matM[1][0]);
+	t = Math::ABS(T[0] * matM[2][2] - T[2] * matM[0][2]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[1][0]) + m_fA[1] * ABS(matM[0][0]);
-	rb = OBB.m_fA[1] * ABS(matM[2][2]) + OBB.m_fA[2] * ABS(matM[2][1]);
-	t = ABS(T[1] * matM[0][0] - T[0] * matM[1][0]);
+	ra = m_fA[0] * Math::ABS(matM[1][0]) + m_fA[1] * Math::ABS(matM[0][0]);
+	rb = OBB.m_fA[1] * Math::ABS(matM[2][2]) + OBB.m_fA[2] * Math::ABS(matM[2][1]);
+	t = Math::ABS(T[1] * matM[0][0] - T[0] * matM[1][0]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[1][1]) + m_fA[1] * ABS(matM[0][1]);
-	rb = OBB.m_fA[0] * ABS(matM[2][2]) + OBB.m_fA[2] * ABS(matM[2][0]);
-	t = ABS(T[1] * matM[0][1] - T[0] * matM[1][1]);
+	ra = m_fA[0] * Math::ABS(matM[1][1]) + m_fA[1] * Math::ABS(matM[0][1]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[2][2]) + OBB.m_fA[2] * Math::ABS(matM[2][0]);
+	t = Math::ABS(T[1] * matM[0][1] - T[0] * matM[1][1]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 
-	ra = m_fA[0] * ABS(matM[1][2]) + m_fA[1] * ABS(matM[0][2]);
-	rb = OBB.m_fA[0] * ABS(matM[2][1]) + OBB.m_fA[1] * ABS(matM[2][0]);
-	t = ABS(T[1] * matM[0][2] - T[0] * matM[1][2]);
+	ra = m_fA[0] * Math::ABS(matM[1][2]) + m_fA[1] * Math::ABS(matM[0][2]);
+	rb = OBB.m_fA[0] * Math::ABS(matM[2][1]) + OBB.m_fA[1] * Math::ABS(matM[2][0]);
+	t = Math::ABS(T[1] * matM[0][2] - T[0] * matM[1][2]);
 	if (t > ra + rb)
 		return IT_NoIntersect;
 

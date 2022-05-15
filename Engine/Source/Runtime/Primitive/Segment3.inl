@@ -1,4 +1,4 @@
-inline const Matrix::Math::Vector3& Segment3::GetEnd()const
+inline const Matrix::Math::Vector3& Segment3::GetEnd() const
 {
 	return m_End;
 }

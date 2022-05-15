@@ -3,23 +3,28 @@
 #include "Math/Vector3.h"
 #include "math/Matrix3X3.h"
 
-//#ifdef Primitive_EXPORTS
-//#define MATRIX_PRIMITIVE_API   __declspec(dllexport)
-//#else   MATRIX_PRIMITIVE_API   __declspec(dllimport)
-//#endif // Primitive_EXPORT
 
 namespace Matrix
 {
 	namespace Primitive
 	{
-		class Line3;
+		class Ray3;
+		class Segment3;
+
+		class Polygon3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class OBB3;
 		class Sphere3;
-		class VSCylinder3;
+
 		class MATRIX_PRIMITIVE_API Plane3
 		{
 		protected:
 			Matrix::Math::Vector3 m_N; //平面法向量
 			VSREAL m_fD;                 // 到原点的距离(ax+by+cz+d=0)
+
 		public:
 			Plane3();
 			Plane3(const Matrix::Math::Vector3& N, const Matrix::Math::Vector3& P);
@@ -64,7 +69,7 @@ namespace Matrix
 			VSREAL Distance(const AABB3& AABB, Matrix::Math::Vector3& PlanePoint, Matrix::Math::Vector3& AABBPoint)const;
 			//平面和多边形距离
 			VSREAL Distance(const Polygon3& Polygon, Matrix::Math::Vector3& PlanePoint, int& IndexTriangle,
-				Matrix::Math::Vector3& TrianglePoint)const;
+				Matrix::Math::Vector3& TrianglePoint) const;
 			/********************************RelationWith******************************************/
 			//点和平面的位置关系(IT_Front IT_Back VSPLANAR)
 			int RelationWith(const Matrix::Math::Vector3& Point)const;
@@ -104,12 +109,10 @@ namespace Matrix
 			int RelationWith(const Polygon3& Polygon)const;
 			int RelationWith(const Polygon3& Polygon, Segment3& Segment)const;
 
-			//平面和圆柱位置关系
-			int RelationWith(const VSCylinder3& Cylinder3)const;
 
 		}; // class
 		   /*----------------------------------------------------------------*/
 #include "Plane3.inl"
 
-	}
+	};
 }

@@ -6,6 +6,17 @@ namespace Matrix
 {
 	namespace Primitive
 	{
+		class Ray3;
+		class Segment3;
+
+		class Plane3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class OBB3;
+		class Sphere3;
+
 		class MATRIX_PRIMITIVE_API Polygon3 : public Plane3, public Core::MemoryObject
 		{
 		private:

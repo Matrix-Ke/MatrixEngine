@@ -6,12 +6,24 @@ namespace Matrix
 {
 	namespace Primitive
 	{
+
+		class Ray3;
+
+		class Plane3;
+		class Polygon3;
+		class Triangle3;
+		class Rectangle3;
+
+		class AABB3;
+		class OBB3;
+		class Sphere3;
+
+
 		class MATRIX_PRIMITIVE_API Segment3 : public Ray3
 		{
 		private:
 			Matrix::Math::Vector3 m_End;
 			VSREAL m_fLen;
-
 		public:
 			Segment3();
 			~Segment3();
@@ -80,9 +92,7 @@ namespace Matrix
 			VSREAL SquaredDistance(const AABB3& AABB, VSREAL& fSegmentParameter, VSREAL fAABBParameter[3])const;
 
 			//线段和多边形距离
-			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fSegmentParameter,
-				int& IndexTriangle,
-				VSREAL fTriangleParameter[3])const;
+			VSREAL SquaredDistance(const Polygon3& Polygon, VSREAL& fSegmentParameter, int& IndexTriangle, VSREAL fTriangleParameter[3])const;
 		};
 
 #include "Segment3.inl"

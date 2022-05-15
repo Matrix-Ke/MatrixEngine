@@ -2,6 +2,17 @@
 #include "Line3.h"
 #include "Math/Vector3.h"
 #include "Math/Matrix3X3W.h"
+#include "Ray3.h"
+#include "Segment3.h"
+
+#include "Plane3.h"
+#include "Triangle3.h"
+#include "Rectangle3.h"
+#include "Polygon3.h"
+
+#include "OBB3.h"
+#include "AABB3.h"
+#include "Sphere3.h"
 
 using namespace Matrix::Primitive;
 /*----------------------------------------------------------------*/
@@ -57,7 +68,7 @@ void Plane3::GetReverse(Plane3& OutPlane) const
 VSREAL Plane3::Distance(const Matrix::Math::Vector3& Point, Matrix::Math::Vector3& PlanePoint) const
 {
 
-	VSREAL Dist = ABS((m_N.Dot(Point)) - m_fD);
+	VSREAL Dist = Math::ABS((m_N.Dot(Point)) - m_fD);
 
 	Line3 Line(Point, m_N * (-1));
 	PlanePoint = Line.GetParameterPoint(Dist);
@@ -73,7 +84,7 @@ VSREAL Plane3::Distance(const Sphere3& Sphere, Matrix::Math::Vector3& SpherePoin
 VSREAL Plane3::Distance(const Line3& Line, Matrix::Math::Vector3& PlanePoint, Matrix::Math::Vector3& LinePoint) const
 {
 	VSREAL fDot = Line.GetDir().Dot(m_N);
-	if (ABS(fDot) < EPSILON_E4)
+	if (Math::ABS(fDot) < EPSILON_E4)
 	{
 		LinePoint = Line.GetOrig();
 		return LinePoint.Distance(*this, PlanePoint);
@@ -436,7 +447,7 @@ int Plane3::RelationWith(const Plane3& Plane) const
 	VSREAL fN11 = Plane.m_N.GetSqrLength();
 	VSREAL fDet = fN00*fN11 - fN01*fN01;
 
-	if (ABS(fDet) < EPSILON_E4)
+	if (Math::ABS(fDet) < EPSILON_E4)
 		return Plane.m_Point.RelationWith(*this);
 
 	VSREAL fInvDet = 1.0f/fDet;
@@ -469,7 +480,7 @@ int Plane3::RelationWith(const Plane3& Plane, Line3& Line) const
 	VSREAL fN11 = Plane.m_N.GetSqrLength();
 	VSREAL fDet = fN00 * fN11 - fN01 * fN01;
 
-	if (ABS(fDet) < EPSILON_E4)
+	if (Math::ABS(fDet) < EPSILON_E4)
 		return IT_NoIntersect;
 
 	VSREAL fInvDet = 1.0f / fDet;
@@ -498,8 +509,4 @@ int Plane3::RelationWith(const Polygon3& Polygon, Segment3& Segment) const
 {
 
 	return Polygon.RelationWith(*this, Segment);
-}
-int Plane3::RelationWith(const VSCylinder3& Cylinder3) const
-{
-	return IT_Intersect;
 }

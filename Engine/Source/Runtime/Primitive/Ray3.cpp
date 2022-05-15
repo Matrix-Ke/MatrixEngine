@@ -1,4 +1,16 @@
 #include "Ray3.h"
+#include "Ray3.h"
+#include "Segment3.h"
+
+#include "Plane3.h"
+#include "Triangle3.h"
+#include "Rectangle3.h"
+#include "Polygon3.h"
+
+#include "OBB3.h"
+#include "AABB3.h"
+#include "Sphere3.h"
+
 using namespace Matrix::Primitive;
 /*----------------------------------------------------------------*/
 Ray3::Ray3()
@@ -13,6 +25,7 @@ Ray3::Ray3(const Matrix::Math::Vector3& Orig, const Matrix::Math::Vector3& Dir)
 Ray3::~Ray3()
 {
 }
+
 /*----------------------------------------------------------------*/
 bool Ray3::GetParameter(const Matrix::Math::Vector3& Point, VSREAL& fRayParameter) const
 {
@@ -85,6 +98,7 @@ VSREAL Ray3::SquaredDistance(const Triangle3& Triangle, VSREAL& fRayParameter, V
 	if (fRayParameter < 0)
 	{
 		fRayParameter = 0;
+		//sqrDist = Triangle.SquaredDistance(m_Orig, )
 		sqrDist = m_Orig.SquaredDistance(Triangle, fTriangleParameter);
 	}
 
