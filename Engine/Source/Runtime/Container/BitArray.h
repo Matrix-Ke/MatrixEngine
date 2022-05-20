@@ -2,185 +2,185 @@
 #include "Container.h"
 namespace Matrix
 {
-    namespace Container
-    {
-        template <class T>
-        class MXBit
-        {
-        public:
-            enum
-            {
-                BYTE_SIZE = sizeof(T) * 8
-            };
-            MXBit(const MXBit<T> &Bit)
-            {
-                m_Member = Bit.m_Member;
-            }
-            MXBit()
-            {
-                m_Member = 0;
-            }
-            bool operator[](unsigned int uiIndex)
-            {
-                int bit = uiIndex % BYTE_SIZE;
-                return (((m_Member & (1 << bit)) >> bit) == 1);
-            }
+	namespace Container
+	{
+		template <class T>
+		class MBit
+		{
+		public:
+			enum
+			{
+				BYTE_SIZE = sizeof(T) * 8
+			};
+			MBit(const MBit<T>& Bit)
+			{
+				m_Member = Bit.m_Member;
+			}
+			MBit()
+			{
+				m_Member = 0;
+			}
+			bool operator[](unsigned int uiIndex)
+			{
+				int bit = uiIndex % BYTE_SIZE;
+				return (((m_Member & (1 << bit)) >> bit) == 1);
+			}
 
-            void operator=(const MXBit<T> &Bit)
-            {
-                m_Member = Bit.m_Member;
-            }
-            void Set(unsigned int uiIndex, bool bValue)
-            {
+			void operator=(const MBit<T>& Bit)
+			{
+				m_Member = Bit.m_Member;
+			}
+			void Set(unsigned int uiIndex, bool bValue)
+			{
 
-                int bit = uiIndex % BYTE_SIZE;
+				int bit = uiIndex % BYTE_SIZE;
 
-                if (bValue == true)
+				if (bValue == true)
 
-                    m_Member = (m_Member | (1 << bit));
-                else
+					m_Member = (m_Member | (1 << bit));
+				else
 
-                    m_Member = (m_Member & (~(1 << bit)));
-            }
+					m_Member = (m_Member & (~(1 << bit)));
+			}
 
-            void ClearAll()
-            {
+			void ClearAll()
+			{
 
-                m_Member = 0;
-            }
+				m_Member = 0;
+			}
 
-            void SetAll()
-            {
-                m_Member = 0xFFFFFFFF;
-            }
+			void SetAll()
+			{
+				m_Member = 0xFFFFFFFF;
+			}
 
-            bool HasValue()
-            {
-                return m_Member > 0;
-            }
-            unsigned int GetNum()
-            {
-                return BYTE_SIZE;
-            }
+			bool HasValue()
+			{
+				return m_Member > 0;
+			}
+			unsigned int GetNum()
+			{
+				return BYTE_SIZE;
+			}
 
-        protected:
-            T m_Member;
-        };
-        class MXBitArray
-        {
-        public:
-            enum
-            {
-                BYTE_SIZE = sizeof(unsigned int) * 8
-            };
-            MXBitArray(const MXBitArray &BitArray)
-            {
-                ENGINE_DELETE(m_pBuffer);
-                m_uiSize = BitArray.m_uiSize;
-                m_pBuffer = MX_NEW unsigned int[m_uiSize];
-                MXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
-            }
-            MXBitArray(unsigned int uiSize = 0)
-            {
-                m_pBuffer = 0;
-                m_uiSize = 0;
-                Resize(uiSize);
-            }
+		protected:
+			T m_Member;
+		};
+		class MXBitArray
+		{
+		public:
+			enum
+			{
+				BYTE_SIZE = sizeof(unsigned int) * 8
+			};
+			MXBitArray(const MXBitArray& BitArray)
+			{
+				ENGINE_DELETE(m_pBuffer);
+				m_uiSize = BitArray.m_uiSize;
+				m_pBuffer = MX_NEW unsigned int[m_uiSize];
+				MXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
+			}
+			MXBitArray(unsigned int uiSize = 0)
+			{
+				m_pBuffer = 0;
+				m_uiSize = 0;
+				Resize(uiSize);
+			}
 
-            ~MXBitArray()
-            {
-                ENGINE_DELETE(m_pBuffer);
-            }
+			~MXBitArray()
+			{
+				ENGINE_DELETE(m_pBuffer);
+			}
 
-            void Resize(unsigned int uiSize)
-            {
-                if (uiSize == 0)
-                {
-                    return;
-                }
-                unsigned int *pNewVector = 0;
+			void Resize(unsigned int uiSize)
+			{
+				if (uiSize == 0)
+				{
+					return;
+				}
+				unsigned int* pNewVector = 0;
 
-                if (uiSize % BYTE_SIZE == 0)
-                    uiSize = uiSize / BYTE_SIZE;
-                else
-                    uiSize = (uiSize / BYTE_SIZE) + 1;
+				if (uiSize % BYTE_SIZE == 0)
+					uiSize = uiSize / BYTE_SIZE;
+				else
+					uiSize = (uiSize / BYTE_SIZE) + 1;
 
-                pNewVector = MX_NEW unsigned int[uiSize];
+				pNewVector = MX_NEW unsigned int[uiSize];
 
-                MX_ENGINE_ASSERT(pNewVector);
+				MX_ENGINE_ASSERT(pNewVector);
 
-                MXMemset(pNewVector, 0, uiSize * sizeof(unsigned int));
-                unsigned int uiMin;
-                if (uiSize < m_uiSize)
-                    uiMin = uiSize;
-                else
-                    uiMin = m_uiSize;
+				MXMemset(pNewVector, 0, uiSize * sizeof(unsigned int));
+				unsigned int uiMin;
+				if (uiSize < m_uiSize)
+					uiMin = uiSize;
+				else
+					uiMin = m_uiSize;
 
-                for (unsigned int uiIndex = 0; uiIndex < uiMin; uiIndex++)
-                    pNewVector[uiIndex] = m_pBuffer[uiIndex];
+				for (unsigned int uiIndex = 0; uiIndex < uiMin; uiIndex++)
+					pNewVector[uiIndex] = m_pBuffer[uiIndex];
 
-                m_uiSize = uiSize;
+				m_uiSize = uiSize;
 
-                ENGINE_DELETE(m_pBuffer);
+				ENGINE_DELETE(m_pBuffer);
 
-                m_pBuffer = pNewVector;
-            }
+				m_pBuffer = pNewVector;
+			}
 
-            bool operator[](unsigned int uiIndex)
-            {
-                int cell = uiIndex / BYTE_SIZE;
-                int bit = uiIndex % BYTE_SIZE;
-                return (((m_pBuffer[cell] & (1 << bit)) >> bit) == 1);
-            }
+			bool operator[](unsigned int uiIndex)
+			{
+				int cell = uiIndex / BYTE_SIZE;
+				int bit = uiIndex % BYTE_SIZE;
+				return (((m_pBuffer[cell] & (1 << bit)) >> bit) == 1);
+			}
 
-            void operator=(const MXBitArray &BitArray)
-            {
-                m_uiSize = BitArray.m_uiSize;
-                ENGINE_DELETE(m_pBuffer);
-                m_pBuffer = MX_NEW unsigned int[m_uiSize];
-                MXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
-            }
-            void Set(unsigned int uiIndex, bool bValue)
-            {
-                int cell = uiIndex / BYTE_SIZE;
+			void operator=(const MXBitArray& BitArray)
+			{
+				m_uiSize = BitArray.m_uiSize;
+				ENGINE_DELETE(m_pBuffer);
+				m_pBuffer = MX_NEW unsigned int[m_uiSize];
+				MXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
+			}
+			void Set(unsigned int uiIndex, bool bValue)
+			{
+				int cell = uiIndex / BYTE_SIZE;
 
-                int bit = uiIndex % BYTE_SIZE;
+				int bit = uiIndex % BYTE_SIZE;
 
-                if (bValue == true)
+				if (bValue == true)
 
-                    m_pBuffer[cell] = (m_pBuffer[cell] | (1 << bit));
-                else
+					m_pBuffer[cell] = (m_pBuffer[cell] | (1 << bit));
+				else
 
-                    m_pBuffer[cell] = (m_pBuffer[cell] & (~(1 << bit)));
-            }
+					m_pBuffer[cell] = (m_pBuffer[cell] & (~(1 << bit)));
+			}
 
-            void ClearAll()
-            {
+			void ClearAll()
+			{
 
-                for (unsigned int uiIndex = 0; uiIndex < m_uiSize; uiIndex++)
-                    m_pBuffer[uiIndex] = 0;
-            }
+				for (unsigned int uiIndex = 0; uiIndex < m_uiSize; uiIndex++)
+					m_pBuffer[uiIndex] = 0;
+			}
 
-            void SetAll()
-            {
+			void SetAll()
+			{
 
-                for (unsigned int uiIndex = 0; uiIndex < m_uiSize; uiIndex++)
-                    m_pBuffer[uiIndex] = 0xFFFFFFFF;
-            }
+				for (unsigned int uiIndex = 0; uiIndex < m_uiSize; uiIndex++)
+					m_pBuffer[uiIndex] = 0xFFFFFFFF;
+			}
 
-            unsigned int Size()
-            {
-                return m_uiSize * BYTE_SIZE;
-            }
+			unsigned int Size()
+			{
+				return m_uiSize * BYTE_SIZE;
+			}
 
-            unsigned int GetCell(int uiIndex)
-            {
-                return m_pBuffer[uiIndex];
-            }
+			unsigned int GetCell(int uiIndex)
+			{
+				return m_pBuffer[uiIndex];
+			}
 
-            unsigned int *m_pBuffer;
+			unsigned int* m_pBuffer;
 
-            unsigned int m_uiSize;
-        };
-    }
+			unsigned int m_uiSize;
+		};
+	}
 }

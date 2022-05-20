@@ -1,14 +1,14 @@
 #include "Map.h"
 using namespace Matrix::Container;
 
-template <class KEY, class VALUE, class MXMemManagerClass>
-MXMap<KEY, VALUE, MXMemManagerClass>::~MXMap()
+template <class KEY, class VALUE, class MMemManagerClass>
+MMap<KEY, VALUE, MMemManagerClass>::~MMap()
 {
     Delete(m_pBuffer, m_uiCurUse);
 }
 
-template <class KEY, class VALUE, class MXMemManagerClass>
-MXMap<KEY, VALUE, MXMemManagerClass>::MXMap(unsigned int uiGrowBy)
+template <class KEY, class VALUE, class MMemManagerClass>
+MMap<KEY, VALUE, MMemManagerClass>::MMap(unsigned int uiGrowBy)
 {
     MX_ENGINE_ASSERT(uiGrowBy);
     m_uiGrowBy = uiGrowBy;
@@ -17,8 +17,8 @@ MXMap<KEY, VALUE, MXMemManagerClass>::MXMap(unsigned int uiGrowBy)
     m_uiBufferNum = 0;
     m_uiAllocNum = 0;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::SetBufferNum(unsigned int uiBufferNum)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::SetBufferNum(unsigned int uiBufferNum)
 {
     if (uiBufferNum != m_uiBufferNum)
     {
@@ -37,8 +37,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::SetBufferNum(unsigned int uiBufferNum
         }
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::AddBufferNum(unsigned int uiBufferNum)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::AddBufferNum(unsigned int uiBufferNum)
 {
     if (uiBufferNum)
     {
@@ -65,33 +65,33 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::AddBufferNum(unsigned int uiBufferNum
         m_pBuffer = pBuffer;
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-inline unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::GetNum() const
+template <class KEY, class VALUE, class MMemManagerClass>
+inline unsigned int MMap<KEY, VALUE, MMemManagerClass>::GetNum() const
 {
     return m_uiCurUse;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-inline unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::GetBufferNum() const
+template <class KEY, class VALUE, class MMemManagerClass>
+inline unsigned int MMap<KEY, VALUE, MMemManagerClass>::GetBufferNum() const
 {
     return m_uiBufferNum;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-inline MapElement<KEY, VALUE> *MXMap<KEY, VALUE, MXMemManagerClass>::GetBuffer() const
+template <class KEY, class VALUE, class MMemManagerClass>
+inline MapElement<KEY, VALUE> *MMap<KEY, VALUE, MMemManagerClass>::GetBuffer() const
 {
     return m_pBuffer;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-inline void MXMap<KEY, VALUE, MXMemManagerClass>::SetGrowBy(unsigned int uiGrowBy)
+template <class KEY, class VALUE, class MMemManagerClass>
+inline void MMap<KEY, VALUE, MMemManagerClass>::SetGrowBy(unsigned int uiGrowBy)
 {
     m_uiGrowBy = uiGrowBy;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-inline unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::GetSize() const
+template <class KEY, class VALUE, class MMemManagerClass>
+inline unsigned int MMap<KEY, VALUE, MMemManagerClass>::GetSize() const
 {
     return sizeof(unsigned int) * 4 + sizeof(MapElement<KEY, VALUE> *) + sizeof(MapElement<KEY, VALUE>) * m_uiBufferNum;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const KEY &Key, const VALUE &Value)
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MMap<KEY, VALUE, MMemManagerClass>::AddElement(const KEY &Key, const VALUE &Value)
 {
     if (Find(Key) != m_uiCurUse)
         return -1;
@@ -107,9 +107,9 @@ unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const KEY &Key, co
     m_uiCurUse++;
     return m_uiCurUse - 1;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1>
-unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const MapElement<KEY1, VALUE1> &Element)
+unsigned int MMap<KEY, VALUE, MMemManagerClass>::AddElement(const MapElement<KEY1, VALUE1> &Element)
 {
     if (Find(Element.Key) != m_uiCurUse)
         return -1;
@@ -122,9 +122,9 @@ unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const MapElement<K
     m_uiCurUse++;
     return m_uiCurUse - 1;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1, class MXMemManagerClass1>
-void MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const MXMap<KEY1, VALUE1, MXMemManagerClass1> &Map, unsigned int uiBegin, unsigned int uiEnd)
+void MMap<KEY, VALUE, MMemManagerClass>::AddElement(const MMap<KEY1, VALUE1, MXMemManagerClass1> &Map, unsigned int uiBegin, unsigned int uiEnd)
 {
     MX_ENGINE_ASSERT(uiBegin <= uiEnd);
 
@@ -158,8 +158,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(const MXMap<KEY1, VALUE1, 
         AddElement(Map[uiBegin + i]);
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::operator=(const MXMap<KEY, VALUE, MXMemManagerClass> &Map)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::operator=(const MMap<KEY, VALUE, MMemManagerClass> &Map)
 {
     if (m_uiBufferNum >= Map.GetNum())
     {
@@ -192,8 +192,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::operator=(const MXMap<KEY, VALUE, MXM
     return;
 }
 
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Clear()
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::Clear()
 {
 
     for (unsigned int i = 0; i < m_uiCurUse; i++)
@@ -203,27 +203,27 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::Clear()
 
     m_uiCurUse = 0;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Destroy()
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::Destroy()
 {
     Clear();
     // MXENGINE_DELETE(m_pBuffer);
     Delete(m_pBuffer, m_uiCurUse);
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-MapElement<KEY, VALUE> &MXMap<KEY, VALUE, MXMemManagerClass>::operator[](unsigned int i) const
+template <class KEY, class VALUE, class MMemManagerClass>
+MapElement<KEY, VALUE> &MMap<KEY, VALUE, MMemManagerClass>::operator[](unsigned int i) const
 {
 
     MX_ENGINE_ASSERT(i < m_uiBufferNum);
     return m_pBuffer[i];
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Erase(unsigned int i)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::Erase(unsigned int i)
 {
     Erase(i, i);
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Erase(unsigned int uiBegin, unsigned int uiEnd)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::Erase(unsigned int uiBegin, unsigned int uiEnd)
 {
     MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
 
@@ -249,9 +249,9 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::Erase(unsigned int uiBegin, unsigned 
     m_uiCurUse -= ((uiEnd - uiBegin) + 1);
 }
 
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class N>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd, N &Compare)
+void MMap<KEY, VALUE, MMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd, N &Compare)
 {
     MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
     MX_ENGINE_ASSERT(uiBegin <= uiEnd);
@@ -277,9 +277,9 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::Sort(unsigned int uiBegin, unsigned i
     // 		}
     // 	}
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class N>
-void MXMap<KEY, VALUE, MXMemManagerClass>::SortAll(N &Compare)
+void MMap<KEY, VALUE, MMemManagerClass>::SortAll(N &Compare)
 {
     if (!m_uiCurUse)
     {
@@ -287,8 +287,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::SortAll(N &Compare)
     }
     Sort(0, m_uiCurUse, N);
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::SortAll()
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::SortAll()
 {
     if (!m_uiCurUse)
     {
@@ -296,8 +296,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::SortAll()
     }
     Sort(0, m_uiCurUse);
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-void MXMap<KEY, VALUE, MXMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd)
+template <class KEY, class VALUE, class MMemManagerClass>
+void MMap<KEY, VALUE, MMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd)
 {
     MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
     MX_ENGINE_ASSERT(uiBegin <= uiEnd);
@@ -323,8 +323,8 @@ void MXMap<KEY, VALUE, MXMemManagerClass>::Sort(unsigned int uiBegin, unsigned i
     // 	}
 }
 
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::Find(const KEY &Key) const
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MMap<KEY, VALUE, MMemManagerClass>::Find(const KEY &Key) const
 {
     unsigned int i = 0;
     for (i = 0; i < m_uiCurUse; i++)
@@ -336,8 +336,8 @@ unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::Find(const KEY &Key) const
     }
     return i;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::FindValueIndex(const VALUE &Value) const
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MMap<KEY, VALUE, MMemManagerClass>::FindValueIndex(const VALUE &Value) const
 {
     unsigned int i = 0;
     for (i = 0; i < m_uiCurUse; i++)
@@ -349,17 +349,17 @@ unsigned int MXMap<KEY, VALUE, MXMemManagerClass>::FindValueIndex(const VALUE &V
     }
     return i;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-MXMapOrder<KEY, VALUE, MXMemManagerClass>::~MXMapOrder()
+template <class KEY, class VALUE, class MMemManagerClass>
+MXMapOrder<KEY, VALUE, MMemManagerClass>::~MXMapOrder()
 {
 }
 
-template <class KEY, class VALUE, class MXMemManagerClass>
-MXMapOrder<KEY, VALUE, MXMemManagerClass>::MXMapOrder(unsigned int uiGrowBy)
+template <class KEY, class VALUE, class MMemManagerClass>
+MXMapOrder<KEY, VALUE, MMemManagerClass>::MXMapOrder(unsigned int uiGrowBy)
 {
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const KEY &Key) const
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MXMapOrder<KEY, VALUE, MMemManagerClass>::FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const KEY &Key) const
 {
     if (uiIndex0 == uiIndex1)
     {
@@ -404,9 +404,9 @@ unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::FindElement(unsigned int
         }
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1>
-unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::Process(unsigned int uiIndex0, unsigned int uiIndex1, const MapElement<KEY1, VALUE1> &Element)
+unsigned int MXMapOrder<KEY, VALUE, MMemManagerClass>::Process(unsigned int uiIndex0, unsigned int uiIndex1, const MapElement<KEY1, VALUE1> &Element)
 {
     if (uiIndex0 == uiIndex1)
     {
@@ -433,17 +433,17 @@ unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::Process(unsigned int uiI
         }
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::AddElement(const KEY &Key, const VALUE &Value)
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MXMapOrder<KEY, VALUE, MMemManagerClass>::AddElement(const KEY &Key, const VALUE &Value)
 {
     MapElement<KEY, VALUE> Element;
     Element.Key = Key;
     Element.Value = Value;
     return AddElement(Element);
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1>
-unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::AddElement(const MapElement<KEY1, VALUE1> &Element)
+unsigned int MXMapOrder<KEY, VALUE, MMemManagerClass>::AddElement(const MapElement<KEY1, VALUE1> &Element)
 {
     if (Find(Element.Key) != m_uiCurUse)
         return -1;
@@ -501,8 +501,8 @@ unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::AddElement(const MapElem
     m_uiCurUse++;
     return uiIndex;
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
-unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::Find(const KEY &Key) const
+template <class KEY, class VALUE, class MMemManagerClass>
+unsigned int MXMapOrder<KEY, VALUE, MMemManagerClass>::Find(const KEY &Key) const
 {
     if (m_uiCurUse)
     {
@@ -524,9 +524,9 @@ unsigned int MXMapOrder<KEY, VALUE, MXMemManagerClass>::Find(const KEY &Key) con
         return m_uiCurUse;
     }
 }
-template <class KEY, class VALUE, class MXMemManagerClass>
+template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1, class MXMemManagerClass1>
-void MXMapOrder<KEY, VALUE, MXMemManagerClass>::AddElement(const MXMap<KEY1, VALUE1, MXMemManagerClass1> &Map, unsigned int uiBegin, unsigned int uiEnd)
+void MXMapOrder<KEY, VALUE, MMemManagerClass>::AddElement(const MMap<KEY1, VALUE1, MXMemManagerClass1> &Map, unsigned int uiBegin, unsigned int uiEnd)
 {
-    return MXMap<KEY, VALUE, MXMemManagerClass>::AddElement(Map, uiBegin, uiEnd);
+    return MMap<KEY, VALUE, MMemManagerClass>::AddElement(Map, uiBegin, uiEnd);
 }

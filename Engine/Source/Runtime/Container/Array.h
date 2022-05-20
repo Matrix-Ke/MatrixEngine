@@ -4,7 +4,7 @@ namespace Matrix
 {
     namespace Container
     {
-        template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
+        template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
         class MArray : public MContainer<T, MemoryManagerClass>
         {
         public:
@@ -139,7 +139,7 @@ namespace Matrix
         private:
         };
         //ÓÐÐòÊý×é
-        template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
+        template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
         class MArrayOrder : public MArray<T, MemoryManagerClass>
         {
         public:

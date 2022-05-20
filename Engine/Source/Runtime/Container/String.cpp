@@ -3,16 +3,16 @@
 using namespace Matrix::Container;
 using namespace Matrix::Core;
 
-MXString MXString::ms_StringNULL;
-TCHAR MXString::TempBuffer[BUFFER_SIZE] = {0};
-MXString::MXString()
+MString MString::ms_StringNULL;
+TCHAR MString::TempBuffer[BUFFER_SIZE] = {0};
+MString::MString()
 {
     m_pBuffer = NULL;
     m_pBuffer = MX_NEW TCHAR[1];
     MX_ENGINE_ASSERT(m_pBuffer);
     m_pBuffer[0] = _T('\0');
 }
-MXString::MXString(const TCHAR *String)
+MString::MString(const TCHAR *String)
 {
     MX_ENGINE_ASSERT(String);
     m_pBuffer = NULL;
@@ -31,7 +31,7 @@ MXString::MXString(const TCHAR *String)
         m_pBuffer[0] = _T('\0');
     }
 }
-MXString::MXString(const MXString &String)
+MString::MString(const MString &String)
 {
     m_pBuffer = NULL;
     unsigned int uiLength = String.GetLength();
@@ -40,18 +40,18 @@ MXString::MXString(const MXString &String)
 
     MXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
 }
-MXString::~MXString()
+MString::~MString()
 {
 
     ENGINE_DELETE(m_pBuffer);
 }
-void MXString::SetTCHARBufferNum(unsigned int uiLength)
+void MString::SetTCHARBufferNum(unsigned int uiLength)
 {
     ENGINE_DELETE(m_pBuffer);
     m_pBuffer = MX_NEW TCHAR[uiLength + 1];
     m_pBuffer[uiLength] = _T('\0');
 }
-void MXString::Clear()
+void MString::Clear()
 {
 
     ENGINE_DELETE(m_pBuffer);
@@ -59,7 +59,7 @@ void MXString::Clear()
     MX_ENGINE_ASSERT(m_pBuffer);
     m_pBuffer[0] = _T('\0');
 }
-MXString &MXString::operator=(const MXString &String)
+MString &MString::operator=(const MString &String)
 {
     ENGINE_DELETE(m_pBuffer);
     unsigned int uiLength = String.GetLength();
@@ -69,7 +69,7 @@ MXString &MXString::operator=(const MXString &String)
     MXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
     return *this;
 }
-MXString &MXString::operator=(const TCHAR *String)
+MString &MString::operator=(const TCHAR *String)
 {
     ENGINE_DELETE(m_pBuffer);
     if (String)
@@ -82,17 +82,17 @@ MXString &MXString::operator=(const TCHAR *String)
     }
     else
     {
-        MXString();
+        MString();
     }
     return *this;
 }
 
-TCHAR &MXString::operator[](unsigned int i)
+TCHAR &MString::operator[](unsigned int i)
 {
     return m_pBuffer[i];
 }
 
-const MXString &MXString::operator+=(const MXString &String)
+const MString &MString::operator+=(const MString &String)
 {
     unsigned int uiLength1 = GetLength();
     unsigned int uiLength2 = String.GetLength();
@@ -118,7 +118,7 @@ const MXString &MXString::operator+=(const MXString &String)
         return *this;
     }
 }
-const MXString &MXString::operator+=(const TCHAR *String)
+const MString &MString::operator+=(const TCHAR *String)
 {
     unsigned int uiLength1 = GetLength();
     unsigned int uiLength2 = 0;
@@ -148,7 +148,7 @@ const MXString &MXString::operator+=(const TCHAR *String)
         return *this;
     }
 }
-bool MXString::GetString(const MXString &String, unsigned int uiFind, bool bIsFront, bool bIsHaveFind)
+bool MString::GetString(const MString &String, unsigned int uiFind, bool bIsFront, bool bIsHaveFind)
 {
     if (uiFind >= String.GetLength())
     {
@@ -185,7 +185,7 @@ bool MXString::GetString(const MXString &String, unsigned int uiFind, bool bIsFr
     m_pBuffer[uiLength] = _T('\0');
     return true;
 }
-bool MXString::GetString(const MXString &String, TCHAR cFind, int iFIndNum, bool bIsFront, bool bIsHaveFind)
+bool MString::GetString(const MString &String, TCHAR cFind, int iFIndNum, bool bIsFront, bool bIsHaveFind)
 {
     if (iFIndNum == 0)
     {
@@ -211,7 +211,7 @@ bool MXString::GetString(const MXString &String, TCHAR cFind, int iFIndNum, bool
     }
     return GetString(String, uiIndex, bIsFront, bIsHaveFind);
 }
-int MXString::GetSubStringIndex(const MXString &String, int iFindNum) const
+int MString::GetSubStringIndex(const MString &String, int iFindNum) const
 {
     if (GetLength() < String.GetLength())
     {
@@ -248,7 +248,7 @@ int MXString::GetSubStringIndex(const MXString &String, int iFindNum) const
 
     return iFindIndex;
 }
-bool MXString::RemoveSubString(const MXString &String, int iFindNum)
+bool MString::RemoveSubString(const MString &String, int iFindNum)
 {
     if (GetLength() < String.GetLength())
     {
@@ -289,7 +289,7 @@ bool MXString::RemoveSubString(const MXString &String, int iFindNum)
     }
     return false;
 }
-void MXString::Remove(unsigned int i, unsigned int j)
+void MString::Remove(unsigned int i, unsigned int j)
 {
     if (j > GetLength() - 1)
     {
@@ -315,7 +315,7 @@ void MXString::Remove(unsigned int i, unsigned int j)
     ENGINE_DELETE(m_pBuffer);
     m_pBuffer = pBuffer;
 }
-bool MXString::StripChars(const MXString &String, const TCHAR *pStripChars)
+bool MString::StripChars(const MString &String, const TCHAR *pStripChars)
 {
     if (String.GetLength() > BUFFER_SIZE || !pStripChars)
     {
@@ -347,7 +347,7 @@ bool MXString::StripChars(const MXString &String, const TCHAR *pStripChars)
     return true;
 }
 
-bool MXString::ReplaceChars(const MXString &String, const TCHAR *pReplaceChars, TCHAR UseChar)
+bool MString::ReplaceChars(const MString &String, const TCHAR *pReplaceChars, TCHAR UseChar)
 {
     if (String.GetLength() > BUFFER_SIZE || !pReplaceChars)
     {
@@ -383,7 +383,7 @@ bool MXString::ReplaceChars(const MXString &String, const TCHAR *pReplaceChars, 
     return true;
 }
 
-void MXString::StringLtrim(const MXString &String)
+void MString::StringLtrim(const MString &String)
 {
     int index = 0;
     TCHAR *pString = String.GetBuffer();
@@ -399,7 +399,7 @@ void MXString::StringLtrim(const MXString &String)
     }
 }
 
-void MXString::StringRtrim(const MXString &String)
+void MString::StringRtrim(const MString &String)
 {
     unsigned int uiLength = String.GetLength();
     if (!uiLength)
@@ -416,7 +416,7 @@ void MXString::StringRtrim(const MXString &String)
     TempBuffer[index] = _T('\0');
     *this = TempBuffer;
 }
-void MXString::Format(const TCHAR *pcString, ...)
+void MString::Format(const TCHAR *pcString, ...)
 {
     static TCHAR LogBuffer[LOG_BUFFER_SIZE];
     char *pArgs;
@@ -424,18 +424,18 @@ void MXString::Format(const TCHAR *pcString, ...)
     MXSprintf(LogBuffer, LOG_BUFFER_SIZE, pcString, pArgs);
     *this = LogBuffer;
 }
-bool MXFileName::GetExtension(MXString &Extension)
+bool MFileName::GetExtension(MString &Extension)
 {
     return Extension.GetString(*this, _T('.'), -1, false, false);
 }
-bool MXFileName::GetPathAndName(MXString &PathAndName)
+bool MFileName::GetPathAndName(MString &PathAndName)
 {
     return PathAndName.GetString(*this, _T('.'), -1);
 }
-bool MXFileName::GetBaseName(MXString &BaseName)
+bool MFileName::GetBaseName(MString &BaseName)
 {
     bool bResult = false;
-    MXString BaseNameAndExtension;
+    MString BaseNameAndExtension;
     bResult = GetBaseNameAndExtension(BaseNameAndExtension);
     if (!bResult)
     {
@@ -444,7 +444,7 @@ bool MXFileName::GetBaseName(MXString &BaseName)
     bResult = BaseName.GetString(BaseNameAndExtension, _T('.'), -1);
     return bResult;
 }
-bool MXFileName::GetBaseNameAndExtension(MXString &BaseNameAndExtension)
+bool MFileName::GetBaseNameAndExtension(MString &BaseNameAndExtension)
 {
     bool bResult = false;
     bResult = BaseNameAndExtension.GetString(*this, _T('\\'), -1, false, false);
@@ -454,7 +454,7 @@ bool MXFileName::GetBaseNameAndExtension(MXString &BaseNameAndExtension)
     }
     return bResult;
 }
-bool MXFileName::GetPath(MXString &Path)
+bool MFileName::GetPath(MString &Path)
 {
     bool bResult = false;
     bResult = Path.GetString(*this, _T('\\'), -1, true, false);
@@ -468,7 +468,7 @@ namespace Matrix
 {
     namespace Container
     {
-        MXString operator+(const MXString &String1, const MXString &String2)
+        MString operator+(const MString &String1, const MString &String2)
         {
             unsigned int uiLength1 = String1.GetLength();
             unsigned int uiLength2 = String2.GetLength();
@@ -485,12 +485,12 @@ namespace Matrix
 
                 MXStrCopy(pBuffer, uiLength, String1.GetBuffer());
                 MXStrcat(pBuffer, uiLength, String2.GetBuffer());
-                MXString ReturnValue(pBuffer);
+                MString ReturnValue(pBuffer);
                 ENGINE_DELETE(pBuffer);
                 return ReturnValue;
             }
         }
-        MXString operator+(const MXString &String1, const TCHAR *String2)
+        MString operator+(const MString &String1, const TCHAR *String2)
         {
             MX_ENGINE_ASSERT(String2);
             unsigned int uiLength1 = String1.GetLength();
@@ -503,7 +503,7 @@ namespace Matrix
             if (!uiLength2)
                 return String1;
             else if (!uiLength1)
-                return MXString(String2);
+                return MString(String2);
             else
             {
                 TCHAR *pBuffer = NULL;
@@ -513,12 +513,12 @@ namespace Matrix
 
                 MXStrCopy(pBuffer, uiLength, String1.GetBuffer());
                 MXStrcat(pBuffer, uiLength, String2);
-                MXString ReturnValue(pBuffer);
+                MString ReturnValue(pBuffer);
                 ENGINE_DELETE(pBuffer);
                 return ReturnValue;
             }
         }
-        MXString operator+(const TCHAR *String1, const MXString &String2)
+        MString operator+(const TCHAR *String1, const MString &String2)
         {
             MX_ENGINE_ASSERT(String1);
             unsigned int uiLength2 = String2.GetLength();
@@ -531,7 +531,7 @@ namespace Matrix
             if (!uiLength1)
                 return String2;
             else if (!uiLength2)
-                return MXString(String1);
+                return MString(String1);
             else
             {
                 TCHAR *pBuffer = NULL;
@@ -541,83 +541,83 @@ namespace Matrix
 
                 MXStrCopy(pBuffer, uiLength, String1);
                 MXStrcat(pBuffer, uiLength, String2.GetBuffer());
-                MXString ReturnValue(pBuffer);
+                MString ReturnValue(pBuffer);
                 ENGINE_DELETE(pBuffer);
                 return ReturnValue;
             }
         }
-        int CompareString(const MXString &String1, const MXString &String2)
+        int CompareString(const MString &String1, const MString &String2)
         {
             return MXStrCmp(String1.GetBuffer(), String2.GetBuffer());
         }
-        int CompareString(const MXString &String1, const TCHAR *String2)
+        int CompareString(const MString &String1, const TCHAR *String2)
         {
             return MXStrCmp(String1.GetBuffer(), String2);
         }
-        int CompareString(const TCHAR *String1, const MXString &String2)
+        int CompareString(const TCHAR *String1, const MString &String2)
         {
             return MXStrCmp(String1, String2.GetBuffer());
         }
 
-        bool operator==(const MXString &String1, const MXString &String2)
+        bool operator==(const MString &String1, const MString &String2)
         {
             return (MXStrCmp(String1.GetBuffer(), String2.GetBuffer()) == 0);
         }
-        bool operator==(const MXString &String1, const TCHAR *String2)
+        bool operator==(const MString &String1, const TCHAR *String2)
         {
             return (MXStrCmp(String1.GetBuffer(), String2) == 0);
         }
-        bool operator==(const TCHAR *String1, MXString &String2)
+        bool operator==(const TCHAR *String1, MString &String2)
         {
             return (MXStrCmp(String1, String2.GetBuffer()) == 0);
         }
 
-        bool operator!=(const MXString &String1, const MXString &String2)
+        bool operator!=(const MString &String1, const MString &String2)
         {
             return (MXStrCmp(String1.GetBuffer(), String2.GetBuffer()) != 0);
         }
-        bool operator!=(const MXString &String1, const TCHAR *String2)
+        bool operator!=(const MString &String1, const TCHAR *String2)
         {
             return (MXStrCmp(String1.GetBuffer(), String2) != 0);
         }
-        bool operator!=(const TCHAR *String1, const MXString &String2)
+        bool operator!=(const TCHAR *String1, const MString &String2)
         {
             return (MXStrCmp(String1, String2.GetBuffer()) != 0);
         }
-        int StringToInt(const MXString &String)
+        int StringToInt(const MString &String)
         {
             int i = 0;
             // MXScanf(String.GetBuffer(), "%d", (TCHAR*)&i);
             return i;
         }
-        MXString IntToString(int Value)
+        MString IntToString(int Value)
         {
-            MXSprintf(MXString::TempBuffer, 2048, _T("%d"), Value);
-            return MXString(MXString::TempBuffer);
+            MXSprintf(MString::TempBuffer, 2048, _T("%d"), Value);
+            return MString(MString::TempBuffer);
         }
-        unsigned int StringToUInt(const MXString &String)
+        unsigned int StringToUInt(const MString &String)
         {
             unsigned int i = 0;
             // MXScanf(String.GetBuffer(), "%d", (TCHAR*)&i);
             return i;
         }
-        MXString UIntToString(unsigned int Value)
+        MString UIntToString(unsigned int Value)
         {
-            MXSprintf(MXString::TempBuffer, 2048, _T("%d"), Value);
-            return MXString(MXString::TempBuffer);
+            MXSprintf(MString::TempBuffer, 2048, _T("%d"), Value);
+            return MString(MString::TempBuffer);
         }
-        float StringToReal(const MXString &String)
+        float StringToReal(const MString &String)
         {
             float f = 0.0f;
             // MXScanf(String.GetBuffer(), "%f", (TCHAR*)&f);
             return f;
         }
-        MXString RealToString(float Value)
+        MString RealToString(float Value)
         {
-            MXSprintf(MXString::TempBuffer, 2048, _T("%f"), Value);
-            return MXString(MXString::TempBuffer);
+            MXSprintf(MString::TempBuffer, 2048, _T("%f"), Value);
+            return MString(MString::TempBuffer);
         }
-        bool StringToBool(const MXString &String)
+        bool StringToBool(const MString &String)
         {
             if (String == _T("True") || String == _T("true") || String == _T("TRUE"))
             {
@@ -636,7 +636,7 @@ namespace Matrix
             else
                 return false;
         }
-        MXString BoolToString(bool i)
+        MString BoolToString(bool i)
         {
             if (i)
             {
@@ -647,7 +647,7 @@ namespace Matrix
                 return _T("False");
             }
         }
-        MXString BoolToString(unsigned int i)
+        MString BoolToString(unsigned int i)
         {
             if (i)
             {

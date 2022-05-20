@@ -3,7 +3,13 @@
 ## 引擎开发设计
 - [引擎开发日志](./Doc/TodoList.md)
 - 原则：
-    - 功能单元划分清晰，模块高内聚低耦合
+    - 功能分层架构（按照王希老师的课程体系设计）
+        >   5.Tool layer
+        >   4.Function layer
+        >   3.Resource layer
+        >   2.Core layer
+        >   1.platform layer
+
 - 文件夹设计：
 
 ```
