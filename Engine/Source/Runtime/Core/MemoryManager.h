@@ -306,7 +306,7 @@ namespace Matrix
 					// track
 					StackMem.NumMarks++;
 					mPtr = (T*)StackMem.Allocate(uiNum * sizeof(T), uiAlignment, 0);
-					MX_ENGINE_ASSERT(mPtr);
+					MATRIX_ENGINE_ASSERT(mPtr);
 
 					//判断是否有构造函数，
 					if (ValueBase<T>::NeedsConstructor)

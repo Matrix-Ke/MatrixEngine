@@ -44,10 +44,10 @@ bool Polygon3::CopyFrom(const Polygon3 &Polygon)
     MX_ENGINE_DELETEA(m_pPoint);
     MX_ENGINE_DELETEA(m_pIndex);
     m_pPoint = MX_NEW Matrix::Math::Vector3[m_PointNum];
-    MX_ENGINE_ASSERT(m_pPoint);
+    MATRIX_ENGINE_ASSERT(m_pPoint);
 
     m_pIndex = MX_NEW VSUSHORT_INDEX[m_IndexNum];
-    MX_ENGINE_ASSERT(m_pIndex);
+    MATRIX_ENGINE_ASSERT(m_pIndex);
     Core::MXMemcpy(m_pPoint, Polygon.m_pPoint, sizeof(Matrix::Math::Vector3) * m_PointNum);
     Core::MXMemcpy(m_pIndex, Polygon.m_pIndex, sizeof(VSUSHORT_INDEX) * m_IndexNum);
     return 1;

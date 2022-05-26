@@ -91,7 +91,7 @@ namespace Matrix
             void CreateFromABGR(DWORD ABGR);
         }; // class
 
-        typedef class Vector4 VSColorRGBA;
+        typedef class Vector4 ColorRGBA;
         inline DWORD VSDWCOLORARGB(unsigned char a, unsigned char r, unsigned char g, unsigned char b)
         {
             return ((DWORD)((((a)&0xff) << 24) | (((r)&0xff) << 16) | (((g)&0xff) << 8) | ((b)&0xff)));

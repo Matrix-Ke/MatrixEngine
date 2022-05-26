@@ -35,19 +35,19 @@ namespace Matrix
         // public:
         //	MXSingleton()
         //	{
-        //		MX_ENGINE_ASSERT(!mPtrSingleton);
+        //		MATRIX_ENGINE_ASSERT(!mPtrSingleton);
         //		mPtrSingleton = static_cast<T*>(this);
         //	}
 
         //	~MXSingleton()
         //	{
-        //		MX_ENGINE_ASSERT(mPtrSingleton);
+        //		MATRIX_ENGINE_ASSERT(mPtrSingleton);
         //		mPtrSingleton = NULL;
         //	}
 
         //	static T& GetInstance()
         //	{
-        //		MX_ENGINE_ASSERT(mPtrSingleton);
+        //		MATRIX_ENGINE_ASSERT(mPtrSingleton);
         //		return (*mPtrSingleton);
         //	}
         //	static T* GetInstancePtr()

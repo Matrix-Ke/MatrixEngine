@@ -7,7 +7,7 @@ namespace Matrix
 		template <typename TSignature>
 		class MDelegate;
 		template <typename TSignature>
-		class MXDelegateEvent;
+		class DelegateEvent;
 		template <typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
 		class MDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
 		{
@@ -145,13 +145,13 @@ namespace Matrix
 			}
 		};
 		template <typename RETUREN_TYPE, typename... DELEGATE_TEMPLATE_TYPE>
-		class MXDelegateEvent<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
+		class DelegateEvent<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)>
 		{
 		public:
 			typedef MDelegate<RETUREN_TYPE(DELEGATE_TEMPLATE_TYPE...)> Handler;
 
 		public:
-			MXDelegateEvent() {}
+			DelegateEvent() {}
 
 			void operator+=(const Handler& handler)
 			{

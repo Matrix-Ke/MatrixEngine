@@ -141,11 +141,11 @@ namespace Matrix
 		};
 
 		template <class KEY, class VALUE, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
-		class MXMapOrder : public MMap<KEY, VALUE, MMemManagerClass>
+		class MMapOrder : public MMap<KEY, VALUE, MMemManagerClass>
 		{
 		public:
-			MXMapOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
-			~MXMapOrder();
+			MMapOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
+			~MMapOrder();
 
 			template <class KEY1, class VALUE1>
 			unsigned int AddElement(const MapElement<KEY1, VALUE1>& Element);

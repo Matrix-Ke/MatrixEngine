@@ -59,7 +59,7 @@ Matrix::Core::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
     GetSystemInfo(&SI);
     PageSize = SI.dwPageSize;
     // pagesize首位为1其他位需要为0；
-    MX_ENGINE_ASSERT(!(PageSize & (PageSize - 1)));
+    MATRIX_ENGINE_ASSERT(!(PageSize & (PageSize - 1)));
 
     //初始化Pool table
     OsTable.FirstPool = NULL;
@@ -93,7 +93,7 @@ Matrix::Core::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
         DWORD Index;
         for (Index = 0; PoolTable[Index].BlockSize < i; Index++)
             ;
-        MX_ENGINE_ASSERT(Index < POOL_CATEGORY);
+        MATRIX_ENGINE_ASSERT(Index < POOL_CATEGORY);
         //每一个pooltable内的blocksize都必须要大于i （i就是申请内存的大小, 即申请内存的大小不能超过table的blocksize）
         MemSizeToPoolTable[i] = &PoolTable[Index];
     }
@@ -103,7 +103,7 @@ Matrix::Core::UEWin32MemoryAlloc::UEWin32MemoryAlloc()
         PoolIndirect[i] = NULL;
     }
     //判断是否数据对应的上
-    MX_ENGINE_ASSERT(POOL_MAX - 1 == PoolTable[POOL_CATEGORY - 1].BlockSize);
+    MATRIX_ENGINE_ASSERT(POOL_MAX - 1 == PoolTable[POOL_CATEGORY - 1].BlockSize);
 }
 
 Matrix::Core::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
@@ -138,7 +138,7 @@ void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE ui
     {
         // 根据申请内存的大小找到相关的内存table
         FPoolTable *Table = MemSizeToPoolTable[uSize];
-        MX_ENGINE_ASSERT(uSize < Table->BlockSize);
+        MATRIX_ENGINE_ASSERT(uSize < Table->BlockSize);
         FPoolInfo *Pool = Table->FirstPool;
         if (!Pool)
         {
@@ -146,8 +146,8 @@ void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE ui
             //根据当前 PoolTable 管理每个单元大小，计算出总块数
             DWORD Blocks = 65536 / Table->BlockSize;
             DWORD Bytes = Blocks * Table->BlockSize;
-            MX_ENGINE_ASSERT(Blocks >= 1);
-            MX_ENGINE_ASSERT(Blocks * Table->BlockSize <= Bytes);
+            MATRIX_ENGINE_ASSERT(Blocks >= 1);
+            MATRIX_ENGINE_ASSERT(Blocks * Table->BlockSize <= Bytes);
 
             //分配内存，一共从  Windows 系统申请 3 类内存， 这个是第一类，申请 PoolInfo，即使 Bytes 小于 64KB，
             //按照page单位（64KB）分配, 分配类型: MEM_COMMIT 为指定地址空间提交物理内存。这个函数初始化内在为零
@@ -185,8 +185,8 @@ void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE ui
 
         // Pick first available block and unlink it.
         Pool->Taken++;
-        MX_ENGINE_ASSERT(Pool->pAvailableBlock);
-        MX_ENGINE_ASSERT(Pool->pAvailableBlock->Blocks > 0);
+        MATRIX_ENGINE_ASSERT(Pool->pAvailableBlock);
+        MATRIX_ENGINE_ASSERT(Pool->pAvailableBlock->Blocks > 0);
         //从后往前覆盖可以巧妙的利用地位地址来存放FFreeBlocks数据。
         Free = (FFreeBlock *)((BYTE *)Pool->pAvailableBlock + --Pool->pAvailableBlock->Blocks * Table->BlockSize);
         if (Pool->pAvailableBlock->Blocks == 0)
@@ -228,14 +228,14 @@ void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE ui
 void Matrix::Core::UEWin32MemoryAlloc::Deallocate(char *pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
     MXCriticalSection::Locker Temp(msMemLock);
-    MX_ENGINE_ASSERT(pcAddr);
+    MATRIX_ENGINE_ASSERT(pcAddr);
     if (!pcAddr)
     {
         return;
     }
     //通过二维数组找到对应的PoolInfo
     FPoolInfo *Pool = &PoolIndirect[(DWORD)pcAddr >> 27][((DWORD)pcAddr >> 16) & 2047];
-    MX_ENGINE_ASSERT(Pool->Bytes != 0);
+    MATRIX_ENGINE_ASSERT(Pool->Bytes != 0);
     if (Pool->Owner != &OsTable)
     {
         if (!Pool->pAvailableBlock)
@@ -251,7 +251,7 @@ void Matrix::Core::UEWin32MemoryAlloc::Deallocate(char *pcAddr, USIZE_TYPE uiAli
         //链接到 PoolInfo 第一个可用的 pAvailableBlock
         Free->Next = Pool->pAvailableBlock;
         Pool->pAvailableBlock = Free;
-        MX_ENGINE_ASSERT(Pool->Taken >= 1);
+        MATRIX_ENGINE_ASSERT(Pool->Taken >= 1);
         if (--Pool->Taken == 0)
         {
             // Free the OS memory.
@@ -352,7 +352,7 @@ bool Matrix::Core::DebugMemoryAlloc::InitDbgHelpLib()
 
     // 查找当前目录的DLL
     s_DbgHelpLib = LoadLibrary(szDbgName);
-    MX_ENGINE_ASSERT(s_DbgHelpLib);
+    MATRIX_ENGINE_ASSERT(s_DbgHelpLib);
     //根据代码地址调用 fnSymGetLineFromAddr64 函数就可以获得堆栈代码所在文件的行数和所在文件的名称。
     //一旦出现内存泄露，就可以准确地找到泄漏的整个调用过程。用这种方法查找内存泄露时最好用 Debug 模式
     fnSymGetLineFromAddr64 = (tFSymGetLineFromAddr64)GetProcAddress(s_DbgHelpLib, "SymGetLineFromAddr64");
@@ -459,13 +459,13 @@ void Matrix::Core::DebugMemoryAlloc::FreeDbgHelpLib()
 void *Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
     MXCriticalSection::Locker Temp(msMemLock);
-    MX_ENGINE_ASSERT(uSize);
+    MATRIX_ENGINE_ASSERT(uSize);
     mNumNewCalls++;
 
     //申请的总空间
     USIZE_TYPE extendedSize = sizeof(Block) + sizeof(unsigned int) + uSize + sizeof(unsigned int);
     char *pcAddr = (char *)MemoryObject::GetCMemoryManager().Allocate(extendedSize, uiAlignment, bIsArray);
-    MX_ENGINE_ASSERT(pcAddr);
+    MATRIX_ENGINE_ASSERT(pcAddr);
     //填写 Block 信息
     Block *pBlock = (Block *)pcAddr;
     pBlock->mSize = uSize;
@@ -543,22 +543,22 @@ void DebugMemoryAlloc::Deallocate(char *pcAddr, USIZE_TYPE uiAlignment, bool bIs
     MXCriticalSection::Locker Temp(msMemLock);
     //调用 delete 的次数统计
     mNumDeleteCalls++;
-    MX_ENGINE_ASSERT(pcAddr);
+    MATRIX_ENGINE_ASSERT(pcAddr);
 
     //判断头标识
     pcAddr -= sizeof(unsigned int);
     unsigned int *pBeginMask = (unsigned int *)(pcAddr);
-    MX_ENGINE_ASSERT(*pBeginMask == BEGIN_MASK);
+    MATRIX_ENGINE_ASSERT(*pBeginMask == BEGIN_MASK);
     pcAddr -= sizeof(Block);
     Block *pBlock = (Block *)pcAddr;
 
-    MX_ENGINE_ASSERT(pBlock->mbArray == bIsArray);
-    MX_ENGINE_ASSERT(mNumBlocks > 0 && mNumBytes >= pBlock->mSize);
+    MATRIX_ENGINE_ASSERT(pBlock->mbArray == bIsArray);
+    MATRIX_ENGINE_ASSERT(mNumBlocks > 0 && mNumBytes >= pBlock->mSize);
     bool bAlignment = (uiAlignment > 0) ? true : false;
-    MX_ENGINE_ASSERT(pBlock->mbAlignment == bAlignment);
+    MATRIX_ENGINE_ASSERT(pBlock->mbAlignment == bAlignment);
     //判断尾标识
     unsigned int *pEndMask = (unsigned int *)(pcAddr + sizeof(Block) + sizeof(unsigned int) + pBlock->mSize);
-    MX_ENGINE_ASSERT(*pEndMask == END_MASK);
+    MATRIX_ENGINE_ASSERT(*pEndMask == END_MASK);
 
     //更新统计数据
     mNumBlocks--;
@@ -684,7 +684,7 @@ Matrix::Core::StackMemoryManager::StackMemoryManager(USIZE_TYPE uiDefaultChunkSi
 
 {
     //默认size 需要大于 FTaggedMemory 大小
-    MX_ENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
+    MATRIX_ENGINE_ASSERT(uiDefaultChunkSize > sizeof(FTaggedMemory));
     Top = NULL;
     End = NULL;
     DefaultChunkSize = uiDefaultChunkSize;
@@ -703,18 +703,18 @@ Matrix::Core::StackMemoryManager::~StackMemoryManager()
         MemoryObject::GetMemoryManager().Deallocate((char *)Old, 0, true);
     }
     //核验是否取消分配完毕
-    MX_ENGINE_ASSERT(NumMarks == 0);
+    MATRIX_ENGINE_ASSERT(NumMarks == 0);
 }
 void *Matrix::Core::StackMemoryManager::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MX_ENGINE_ASSERT(uSize >= 0);
+    MATRIX_ENGINE_ASSERT(uSize >= 0);
     if (uiAlignment > 0)
     {
-        MX_ENGINE_ASSERT((uiAlignment & (uiAlignment - 1)) == 0);
+        MATRIX_ENGINE_ASSERT((uiAlignment & (uiAlignment - 1)) == 0);
     }
 
-    MX_ENGINE_ASSERT(Top <= End);
-    MX_ENGINE_ASSERT(NumMarks > 0);
+    MATRIX_ENGINE_ASSERT(Top <= End);
+    MATRIX_ENGINE_ASSERT(NumMarks > 0);
     //从当前chunk里分配空间
     BYTE *Result = Top;
     if (uiAlignment > 0)

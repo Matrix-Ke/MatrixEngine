@@ -1,6 +1,7 @@
 #pragma once
 #include "Container.h"
 #include "Math.h"
+
 namespace Matrix
 {
 	namespace Container
@@ -115,5 +116,5 @@ namespace Matrix
 			bool GetPath(MString& Path);
 			bool GetPathAndName(MString& PathAndName);
 		};
-	}
-}
+	};
+};
