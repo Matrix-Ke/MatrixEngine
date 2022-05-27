@@ -5,32 +5,32 @@ namespace Matrix
 	namespace Container
 	{
 
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXStack
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MStack
 		{
 		public:
-			MTXStack();
-			~MTXStack();
+			MStack();
+			~MStack();
 			bool GetTop(T& Element);
 			void Push(const T& Element);
 			bool Pop(T& Element);
 			unsigned int GetNum();
 			void Clear();
 			void Destroy();
-		protected:
-			MArray<T, MTXMemManagerClass> m_Array;
-		};
-		template <class T, class MTXMemManagerClass>
-		MTXStack<T, MTXMemManagerClass>::MTXStack()
-		{
-		}
-		template <class T, class MTXMemManagerClass>
-		MTXStack<T, MTXMemManagerClass>::~MTXStack()
-		{
 
+		protected:
+			MArray<T, MMemManagerClass> m_Array;
+		};
+		template <class T, class MMemManagerClass>
+		MStack<T, MMemManagerClass>::MStack()
+		{
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXStack<T, MTXMemManagerClass>::GetTop(T& Element)
+		template <class T, class MMemManagerClass>
+		MStack<T, MMemManagerClass>::~MStack()
+		{
+		}
+		template <class T, class MMemManagerClass>
+		bool MStack<T, MMemManagerClass>::GetTop(T& Element)
 		{
 			if (m_Array.GetNum() == 0)
 			{
@@ -39,13 +39,13 @@ namespace Matrix
 			Element = m_Array[m_Array.GetNum() - 1];
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXStack<T, MTXMemManagerClass>::Push(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MStack<T, MMemManagerClass>::Push(const T& Element)
 		{
 			m_Array.AddElement(Element);
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXStack<T, MTXMemManagerClass>::Pop(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MStack<T, MMemManagerClass>::Pop(T& Element)
 		{
 			if (m_Array.GetNum() == 0)
 			{
@@ -55,18 +55,18 @@ namespace Matrix
 			m_Array.Erase(m_Array.GetNum() - 1);
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		unsigned int MTXStack<T, MTXMemManagerClass>::GetNum()
+		template <class T, class MMemManagerClass>
+		unsigned int MStack<T, MMemManagerClass>::GetNum()
 		{
 			return m_Array.GetNum();
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXStack<T, MTXMemManagerClass>::Clear()
+		template <class T, class MMemManagerClass>
+		void MStack<T, MMemManagerClass>::Clear()
 		{
 			m_Array.Clear();
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXStack<T, MTXMemManagerClass>::Destroy()
+		template <class T, class MMemManagerClass>
+		void MStack<T, MMemManagerClass>::Destroy()
 		{
 			m_Array.Destroy();
 		}

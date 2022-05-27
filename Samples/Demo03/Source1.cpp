@@ -2,11 +2,11 @@
 //#include "Core/MemoryManager.h"
 //#include <iostream>
 //
-//using namespace Matrix::Core;
+// using namespace Matrix::Core;
 //
-//class MyStruct
+// class MyStruct
 //{
-//public:
+// public:
 //	int a;
 //	char c;
 //	//~MyStruct()
@@ -15,7 +15,7 @@
 //	//}
 //};
 //
-//void Fun5()
+// void Fun5()
 //{
 //	StackMemoryAdaptor<MyStruct> Temp(10000);
 //	MyStruct* p = Temp.GetPtr();
@@ -23,10 +23,10 @@
 //	p[2].c = 'k';
 //}
 //
-//int  main()
+// int  main()
 //{
 //
-//	if (!std::is_pod<MTXCriticalSection>::value)
+//	if (!std::is_pod<MXCriticalSection>::value)
 //	{
 //		printf("is_pod!\n");
 //	}

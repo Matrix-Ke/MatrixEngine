@@ -24,17 +24,16 @@ namespace Matrix
 			QueueElement* m_pNext;
 			QueueElement* m_pFront;
 		};
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXQueue : public MContainer<QueueElement<T>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MQueue : public MContainer<QueueElement<T>, MMemManagerClass>
 		{
 		public:
+			MQueue(bool bUnique = false);
+			~MQueue();
 
-			MTXQueue(bool bUnique = false);
-			~MTXQueue();
+			void operator=(const MQueue& Queue);
 
-			void operator= (const MTXQueue& Queue);
-
-			inline unsigned int GetNum()const;
+			inline unsigned int GetNum() const;
 
 			void Enqueue(const T& Element);
 
@@ -49,32 +48,29 @@ namespace Matrix
 			bool Has(const T& Element);
 
 		protected:
-
 			QueueElement<T>* m_pHead;
 			QueueElement<T>* m_pTail;
 			unsigned int m_uiNum;
-			bool	m_bUnique;
-
+			bool m_bUnique;
 
 		private:
-
 		};
-		template <class T, class MTXMemManagerClass>
-		MTXQueue<T, MTXMemManagerClass>::~MTXQueue()
+		template <class T, class MMemManagerClass>
+		MQueue<T, MMemManagerClass>::~MQueue()
 		{
 			Clear();
 		}
 
-		template <class T, class MTXMemManagerClass>
-		MTXQueue<T, MTXMemManagerClass>::MTXQueue(bool bUnique)
+		template <class T, class MMemManagerClass>
+		MQueue<T, MMemManagerClass>::MQueue(bool bUnique)
 		{
 			m_pHead = NULL;
 			m_pTail = NULL;
 			m_bUnique = bUnique;
 			m_uiNum = 0;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXQueue<T, MTXMemManagerClass>::Clear()
+		template <class T, class MMemManagerClass>
+		void MQueue<T, MMemManagerClass>::Clear()
 		{
 			QueueElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -87,24 +83,23 @@ namespace Matrix
 			m_pTail = NULL;
 			m_uiNum = 0;
 		}
-		template <class T, class MTXMemManagerClass>
-		unsigned int MTXQueue<T, MTXMemManagerClass>::GetNum()const
+		template <class T, class MMemManagerClass>
+		unsigned int MQueue<T, MMemManagerClass>::GetNum() const
 		{
 			return m_uiNum;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXQueue<T, MTXMemManagerClass>::operator= (const MTXQueue& Queue)
+		template <class T, class MMemManagerClass>
+		void MQueue<T, MMemManagerClass>::operator=(const MQueue& Queue)
 		{
 			QueueElement<T>* pTemp = Queue.m_pHead;
 			while (pTemp)
 			{
 				Enqueue(pTemp->Element);
 				pTemp = pTemp->m_pNext;
-
 			}
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXQueue<T, MTXMemManagerClass>::Enqueue(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MQueue<T, MMemManagerClass>::Enqueue(const T& Element)
 		{
 			if (m_bUnique)
 			{
@@ -114,7 +109,8 @@ namespace Matrix
 				}
 			}
 			QueueElement<T>* pElem = New(1);
-			MX_NEW(pElem) QueueElement<T>();
+			MX_NEW(pElem)
+				QueueElement<T>();
 			pElem->Element = Element;
 			pElem->m_pFront = NULL;
 			pElem->m_pNext = m_pHead;
@@ -129,8 +125,8 @@ namespace Matrix
 			}
 			m_uiNum++;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXQueue<T, MTXMemManagerClass>::GetTop(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MQueue<T, MMemManagerClass>::GetTop(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -139,8 +135,8 @@ namespace Matrix
 			Element = m_pTail->Element;
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXQueue<T, MTXMemManagerClass>::Dequeue(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MQueue<T, MMemManagerClass>::Dequeue(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -164,8 +160,8 @@ namespace Matrix
 			m_uiNum--;
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXQueue<T, MTXMemManagerClass>::Erase(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MQueue<T, MMemManagerClass>::Erase(const T& Element)
 		{
 			QueueElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -200,14 +196,12 @@ namespace Matrix
 					{
 						break;
 					}
-
 				}
 				pTemp = pTemp->m_pNext;
-
 			}
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXQueue<T, MTXMemManagerClass>::Has(const T& Element)
+		template <class T, class MMemManagerClass>
+		bool MQueue<T, MMemManagerClass>::Has(const T& Element)
 		{
 			QueueElement<T>* pTemp = m_pHead;
 			while (pTemp)

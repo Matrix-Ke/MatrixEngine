@@ -1,36 +1,36 @@
 #pragma once
 #include "Core/MemoryManager.h"
 
+#pragma warning(disable:4251)
+
+
 #ifdef Container_EXPORTS
-#define MATRIX_CONTAINER_API  __declspec(dllexport)
-#else 
-#define MATRIX_CONTAINER_API  __declspec(dllimport)
+#define MATRIX_CONTAINER_API __declspec(dllexport)
+#else
+#define MATRIX_CONTAINER_API __declspec(dllimport)
 #endif // Container_EXPORTS
 
 
-
-//container 是所有容器的基类， 申请的空间会大于实际需求空间，以避免频繁释放申请。 
-//只有有实际需求空间的时候才会调用对应的元素的构造函数。 所以申请空间未必调用构造，释放未必调用析构函数。 
+// container 是所有容器的基类， 申请的空间会大于实际需求空间，以避免频繁释放申请。
+//只有有实际需求空间的时候才会调用对应的元素的构造函数。 所以申请空间未必调用构造，释放未必调用析构函数。
 namespace Matrix
 {
-	using namespace Core;
 
 	namespace Container
 	{
-		template<class KEY, class VALUE>
-		class MapElement : public MemoryObject
+		template <class KEY, class VALUE>
+		class MapElement : public Core::MemoryObject
 		{
 		public:
-			KEY		Key;
-			VALUE	Value;
-			void operator= (const MapElement<KEY, VALUE>& Element)
+			KEY Key;
+			VALUE Value;
+			void operator=(const MapElement<KEY, VALUE>& Element)
 			{
 				Key = Element.Key;
 				Value = Element.Value;
 			}
 			MapElement()
 			{
-
 			}
 			MapElement(const MapElement<KEY, VALUE>& Element)
 			{
@@ -44,9 +44,7 @@ namespace Matrix
 			}
 			~MapElement()
 			{
-
 			}
-
 		};
 		template <class KEY, class VALUE, class N>
 		void Merge(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1, N Compare)
@@ -74,7 +72,6 @@ namespace Matrix
 				uiTempIndex++;
 			}
 
-
 			while (uiIndex0 < uiEnd0)
 			{
 
@@ -88,10 +85,9 @@ namespace Matrix
 				uiTempIndex++;
 				uiIndex1++;
 			}
-
 		}
 		template <class KEY, class VALUE, class N>
-		void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int  uiBufferLength, N Compare)
+		void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int uiBufferLength, N Compare)
 		{
 			unsigned int uiDetLength = 1;
 			unsigned int uiNumSwap = 0;
@@ -104,7 +100,6 @@ namespace Matrix
 				{
 					Merge(pBuffer, TempBuffer, i, uiLastDetLength, uiLastDetLength, Compare);
 				}
-
 
 				if (i < uiBufferLength)
 				{
@@ -123,7 +118,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MTXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
 			}
 		}
 		template <class KEY, class VALUE>
@@ -152,7 +147,6 @@ namespace Matrix
 				uiTempIndex++;
 			}
 
-
 			while (uiIndex0 < uiEnd0)
 			{
 
@@ -166,10 +160,9 @@ namespace Matrix
 				uiTempIndex++;
 				uiIndex1++;
 			}
-
 		}
 		template <class KEY, class VALUE>
-		void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int  uiBufferLength)
+		void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int uiBufferLength)
 		{
 			unsigned int uiDetLength = 1;
 			unsigned int uiNumSwap = 0;
@@ -182,7 +175,6 @@ namespace Matrix
 				{
 					Merge(pBuffer, TempBuffer, i, uiLastDetLength, uiLastDetLength);
 				}
-
 
 				if (i < uiBufferLength)
 				{
@@ -201,7 +193,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MTXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
 			}
 		}
 
@@ -231,7 +223,6 @@ namespace Matrix
 				uiTempIndex++;
 			}
 
-
 			while (uiIndex0 < uiEnd0)
 			{
 
@@ -245,10 +236,9 @@ namespace Matrix
 				uiTempIndex++;
 				uiIndex1++;
 			}
-
 		}
 		template <class T>
-		void MergeSort(T* pBuffer, T* TempBuffer, unsigned int  uiBufferLength)
+		void MergeSort(T* pBuffer, T* TempBuffer, unsigned int uiBufferLength)
 		{
 			unsigned int uiDetLength = 1;
 			unsigned int uiNumSwap = 0;
@@ -261,7 +251,6 @@ namespace Matrix
 				{
 					Merge(pBuffer, TempBuffer, i, uiLastDetLength, uiLastDetLength);
 				}
-
 
 				if (i < uiBufferLength)
 				{
@@ -280,7 +269,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MTXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
 			}
 		}
 
@@ -310,7 +299,6 @@ namespace Matrix
 				uiTempIndex++;
 			}
 
-
 			while (uiIndex0 < uiEnd0)
 			{
 
@@ -324,10 +312,9 @@ namespace Matrix
 				uiTempIndex++;
 				uiIndex1++;
 			}
-
 		}
 		template <class T, class N>
-		void MergeSort(T* pBuffer, T* TempBuffer, unsigned int  uiBufferLength, N Compare)
+		void MergeSort(T* pBuffer, T* TempBuffer, unsigned int uiBufferLength, N Compare)
 		{
 			unsigned int uiDetLength = 1;
 			unsigned int uiNumSwap = 0;
@@ -341,7 +328,6 @@ namespace Matrix
 					Merge(pBuffer, TempBuffer, i, uiLastDetLength, uiLastDetLength, Compare);
 				}
 
-
 				if (i < uiBufferLength)
 				{
 					unsigned int uiLeftLength = uiBufferLength - i;
@@ -354,16 +340,16 @@ namespace Matrix
 						Merge(pBuffer, TempBuffer, i, uiLeftLength, 0, Compare);
 					}
 				}
-				Swap(pBuffer, TempBuffer);
+				Math::Swap(pBuffer, TempBuffer);
 				uiNumSwap++;
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MTXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
 			}
 		}
-		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class MContainer : public MemoryObject
+		template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MContainer : public Core::MemoryObject
 		{
 		protected:
 			//单纯用于申请空间
@@ -374,7 +360,7 @@ namespace Matrix
 					return NULL;
 				}
 				T* pPtr = (T*)m_MemManagerObject.Allocate(uiNum * sizeof(T), 0, true);
-				MX_ENGINE_ASSERT(pPtr);
+				MATRIX_ENGINE_ASSERT(pPtr);
 				if (!pPtr)
 				{
 					return NULL;
@@ -391,7 +377,7 @@ namespace Matrix
 				}
 				if (uiNum > 0)
 				{
-					if (ValueBase<T>::NeedsDestructor)
+					if (Core::ValueBase<T>::NeedsDestructor)
 					{
 						for (unsigned int i = 0; i < uiNum; i++)
 						{
@@ -402,8 +388,8 @@ namespace Matrix
 
 				m_MemManagerObject.Deallocate((char*)pPtr, 0, true);
 				pPtr = NULL;
-
 			}
+
 		public:
 			MemoryManagerClass m_MemManagerObject;
 		};

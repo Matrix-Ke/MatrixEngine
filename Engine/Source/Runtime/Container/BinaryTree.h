@@ -5,23 +5,23 @@ namespace Matrix
 	namespace Container
 	{
 		template <class T>
-		class MTXBinaryTreeNode
+		class MBinaryTreeNode
 		{
 		public:
-			MTXBinaryTreeNode()
+			MBinaryTreeNode()
 			{
 				m_pParent = NULL;
 				m_pLeft = NULL;
 				m_pRight = NULL;
 			};
 
-			~MTXBinaryTreeNode()
+			~MBinaryTreeNode()
 			{
 				m_pParent = NULL;
 				m_pLeft = NULL;
 				m_pRight = NULL;
 			}
-			template<class N>
+			template <class N>
 			void PreProcess(N& Process)
 			{
 				Process(this);
@@ -30,7 +30,7 @@ namespace Matrix
 				if (m_pRight != NULL)
 					m_pRight->PreProcess(Process);
 			}
-			template<class N>
+			template <class N>
 			void PostProcess(N& Process)
 			{
 				if (m_pLeft != NULL)
@@ -39,7 +39,7 @@ namespace Matrix
 					m_pRight->PostProcess(Process);
 				Process(this);
 			}
-			template<class N>
+			template <class N>
 			void MiddleProcess(N& Process)
 			{
 				if (m_pLeft != NULL)
@@ -74,7 +74,7 @@ namespace Matrix
 				return false;
 			}
 
-			unsigned int GetDepth()const //Root Depth = 1
+			unsigned int GetDepth() const // Root Depth = 1
 			{
 				unsigned int uiLeft = NULL;
 				unsigned int uiRight = NULL;
@@ -89,38 +89,37 @@ namespace Matrix
 
 			T Element;
 
-			MTXBinaryTreeNode<T>* m_pParent;
-			MTXBinaryTreeNode<T>* m_pLeft;
-			MTXBinaryTreeNode<T>* m_pRight;
+			MBinaryTreeNode<T>* m_pParent;
+			MBinaryTreeNode<T>* m_pLeft;
+			MBinaryTreeNode<T>* m_pRight;
 		};
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXDeleteProcess : public MContainer<MTXBinaryTreeNode<T>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MXDeleteProcess : public MContainer<MBinaryTreeNode<T>, MMemManagerClass>
 		{
 		public:
-			MTXDeleteProcess()
+			MXDeleteProcess()
 			{
-
 			}
-			~MTXDeleteProcess() {}
-			void  operator()(MTXBinaryTreeNode<T>* TreeNode)
+			~MXDeleteProcess() {}
+			void operator()(MBinaryTreeNode<T>* TreeNode)
 			{
 				Delete(TreeNode, 1);
 			}
 		};
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXBinaryTree : public MContainer<MTXBinaryTreeNode<T>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MXBinaryTree : public MContainer<MBinaryTreeNode<T>, MMemManagerClass>
 		{
 		public:
-			MTXBinaryTree()
+			MXBinaryTree()
 			{
 				m_uiNodeNum = 0;
 				m_pRoot = NULL;
 			}
-			~MTXBinaryTree()
+			~MXBinaryTree()
 			{
 				Clear();
 			}
-			template<class N>
+			template <class N>
 			void PreProcess(N& Process)
 			{
 				if (m_pRoot)
@@ -128,7 +127,7 @@ namespace Matrix
 					m_pRoot->PreProcess(Process);
 				}
 			}
-			template<class N>
+			template <class N>
 			void PostProcess(N& Process)
 			{
 				if (m_pRoot)
@@ -136,7 +135,7 @@ namespace Matrix
 					m_pRoot->PostProcess(Process);
 				}
 			}
-			template<class N>
+			template <class N>
 			void MiddleProcess(N& Process)
 			{
 				if (m_pRoot)
@@ -146,12 +145,13 @@ namespace Matrix
 			}
 			void AddElement(const T& Element)
 			{
-				MTXBinaryTreeNode<T>* pCurrentNode = m_pRoot;
+				MBinaryTreeNode<T>* pCurrentNode = m_pRoot;
 
 				if (m_pRoot == NULL)
 				{
-					MTXBinaryTreeNode<T>* pElem = New(1);
-					MX_NEW(pElem) MTXBinaryTreeNode<T>();
+					MBinaryTreeNode<T>* pElem = New(1);
+					MX_NEW(pElem)
+						MBinaryTreeNode<T>();
 					pElem->Element = Element;
 					m_pRoot = pElem;
 					m_uiNodeNum++;
@@ -164,8 +164,9 @@ namespace Matrix
 						{
 							if (pCurrentNode->m_pLeft == NULL)
 							{
-								MTXBinaryTreeNode<T>* pElem = New(1);
-								MX_NEW(pElem) MTXBinaryTreeNode<T>();
+								MBinaryTreeNode<T>* pElem = New(1);
+								MX_NEW(pElem)
+									MBinaryTreeNode<T>();
 								pElem->Element = Element;
 								pCurrentNode->m_pLeft = pElem;
 								pElem->m_pParent = pCurrentNode;
@@ -176,14 +177,14 @@ namespace Matrix
 							{
 								pCurrentNode = pCurrentNode->m_pLeft;
 							}
-
 						}
 						else if (Element > pCurrentNode->Element)
 						{
 							if (pCurrentNode->m_pRight == NULL)
 							{
-								MTXBinaryTreeNode<T>* pElem = New(1);
-								MX_NEW(pElem) MTXBinaryTreeNode<T>();
+								MBinaryTreeNode<T>* pElem = New(1);
+								MX_NEW(pElem)
+									MBinaryTreeNode<T>();
 								pElem->Element = Element;
 
 								pCurrentNode->m_pRight = pElem;
@@ -204,11 +205,11 @@ namespace Matrix
 				}
 			}
 
-			inline unsigned int GetNodeNum()const
+			inline unsigned int GetNodeNum() const
 			{
 				return m_uiNodeNum;
 			}
-			inline unsigned int GetDepth()const
+			inline unsigned int GetDepth() const
 			{
 				if (!m_pRoot)
 				{
@@ -219,13 +220,13 @@ namespace Matrix
 					return m_pRoot->GetDepth();
 				}
 			}
-			bool Has(const T& Element)const
+			bool Has(const T& Element) const
 			{
 				return (Find(Element) != NULL);
 			}
 			bool Erase(const T& Element)
 			{
-				MTXBinaryTreeNode<T>* pNode = (MTXBinaryTreeNode<T> *) Find(Element);
+				MBinaryTreeNode<T>* pNode = (MBinaryTreeNode<T> *)Find(Element);
 				if (!pNode)
 					return false;
 				if (!pNode->m_pLeft || !pNode->m_pRight)
@@ -235,9 +236,9 @@ namespace Matrix
 				m_uiNodeNum--;
 				return true;
 			}
-			const MTXBinaryTreeNode<T>* Find(const T& Element) const
+			const MBinaryTreeNode<T>* Find(const T& Element) const
 			{
-				MTXBinaryTreeNode<T>* pCurNode = m_pRoot;
+				MBinaryTreeNode<T>* pCurNode = m_pRoot;
 				while (pCurNode != NULL)
 				{
 					if (Element == pCurNode->Element)
@@ -251,7 +252,7 @@ namespace Matrix
 			}
 			const T* FindElement(const T& Element) const
 			{
-				MTXBinaryTreeNode<T>* pCurNode = m_pRoot;
+				MBinaryTreeNode<T>* pCurNode = m_pRoot;
 				while (pCurNode != NULL)
 				{
 					if (Element == pCurNode->Element)
@@ -263,19 +264,20 @@ namespace Matrix
 				}
 				return NULL;
 			}
+
 		protected:
 			void Clear()
 			{
-				MTXDeleteProcess<T, MTXMemManagerClass> t;
+				MXDeleteProcess<T, MMemManagerClass> t;
 				PostProcess(t);
 				m_pRoot = NULL;
 				m_uiNodeNum = 0;
 			}
 
-			//Remove only has a child
-			void RemoveNotFull(MTXBinaryTreeNode<T>* pNode)
+			// Remove only has a child
+			void RemoveNotFull(MBinaryTreeNode<T>* pNode)
 			{
-				MTXBinaryTreeNode<T>* pChildNode = NULL;
+				MBinaryTreeNode<T>* pChildNode = NULL;
 				if (pNode->m_pLeft != NULL)
 				{
 					pChildNode = pNode->m_pLeft;
@@ -307,11 +309,10 @@ namespace Matrix
 				}
 
 				Delete(pNode, 1);
-
 			}
-			MTXBinaryTreeNode<T>* FindLargestNode(MTXBinaryTreeNode<T>* pStartNode)
+			MBinaryTreeNode<T>* FindLargestNode(MBinaryTreeNode<T>* pStartNode)
 			{
-				MTXBinaryTreeNode<T>* pNode = pStartNode;
+				MBinaryTreeNode<T>* pNode = pStartNode;
 
 				while (pNode->m_pRight != 0)
 				{
@@ -319,10 +320,10 @@ namespace Matrix
 				}
 				return pNode;
 			}
-			//Remove only has two children
-			void RemoveFull(MTXBinaryTreeNode<T>* pNode)
+			// Remove only has two children
+			void RemoveFull(MBinaryTreeNode<T>* pNode)
 			{
-				MTXBinaryTreeNode<T>* pLargestNode = FindLargestNode(pNode->m_pLeft);
+				MBinaryTreeNode<T>* pLargestNode = FindLargestNode(pNode->m_pLeft);
 
 				// There are two cases:
 				if (pNode->m_pLeft == pLargestNode)
@@ -359,11 +360,9 @@ namespace Matrix
 				pLargestNode->m_pParent = pNode->m_pParent;
 				Delete(pNode, 1);
 			}
-			MTXBinaryTreeNode<T>* m_pRoot;
+			MBinaryTreeNode<T>* m_pRoot;
 			unsigned int m_uiNodeNum;
 		};
 
 	}
 }
-
-

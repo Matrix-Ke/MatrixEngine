@@ -7,16 +7,30 @@
 //实现一套自己的内存管理机制，最好要重载全局operator MATRIX_NEW函数，好处是能使整个项目统一，查找内存分配情况和处理 bug 都相对容易
 //去除C4595 编译警告，Visual Studio 2015开始会对inline operator new操作进行警告 （避免无意中引入全局new操作，出了问题极其难以定位）
 //相关链接： https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warnings-by-compiler-version?view=msvc-170
-#pragma warning(disable:4595)
-#define MX_NEW  new
+#pragma warning(disable : 4595)
+#define MX_NEW new
 #define MX_DELETE delete
 #define USE_MATRIX_NEW
 //使用宏定义处理这些容易忘记的指针删除操作
-#define ENGINE_DELETE(p) if(p){delete p; p = 0;}
-#define MX_ENGINE_DELETEA(p) if(p){delete []p; p = 0;}
-#define ENGINE_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) MX_ENGINE_DELETEA(p[i]); MX_ENGINE_DELETEA(p);}
-
-
+#define ENGINE_DELETE(p) \
+    if (p)               \
+    {                    \
+        delete p;        \
+        p = 0;           \
+    }
+#define ENGINE_DELETEA(p) \
+    if (p)                   \
+    {                        \
+        delete[] p;          \
+        p = 0;               \
+    }
+#define ENGINE_DELETEAB(p, num)       \
+    if (p)                            \
+    {                                 \
+        for (int i = 0; i < num; i++) \
+            ENGINE_DELETEA(p[i]);  \
+        ENGINE_DELETEA(p);         \
+    }
 
 namespace Matrix
 {
@@ -34,7 +48,7 @@ namespace Matrix
 			//内存管理
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
-			static MTXCriticalSection msMemLock;
+			static MCriticalSection msMemLock;
 			static void printInfo();
 		};
 
@@ -49,7 +63,7 @@ namespace Matrix
 
 		//===========================堆内存管理====================================
 #if !_DEBUG && !_WIN64
-	//采用虚幻3的内存管理代码删改而成
+		//采用虚幻3的内存管理代码删改而成
 		class MATRIX_CORE_API UEWin32MemoryAlloc : public BaseMemoryManager
 		{
 		public:
@@ -80,9 +94,9 @@ namespace Matrix
 			//链表管理者
 			struct FPoolTable
 			{
-				unsigned int BlockSize;	  //每次可以分配的内存大小,poolinfo中单独内存块的大小
+				unsigned int BlockSize;   //每次可以分配的内存大小,poolinfo中单独内存块的大小
 				FPoolInfo* ExhaustedPool; //分配完的 PoolInfo 链表头指针
-				FPoolInfo* FirstPool;	  //没有分配完的 PoolInfo 链表头指针
+				FPoolInfo* FirstPool;     //没有分配完的 PoolInfo 链表头指针
 			};
 
 			struct FPoolInfo
@@ -90,9 +104,9 @@ namespace Matrix
 				// FPoolInfo* Pre; //指向自己前一个节点
 				//于 PreLink 为什么是指针的指针，其实这种方式从一个链表中删除，无须知道当前链表的头指针
 				FPoolInfo** PrevLink;
-				FPoolInfo* Next;	//指向自己的后一个节点
-				FPoolTable* Owner;	//属于哪个链表管理者
-				void* MemoryAddr;	//指向 32 位 Windows 系统分配空间的首地址
+				FPoolInfo* Next;    //指向自己的后一个节点
+				FPoolTable* Owner;  //属于哪个链表管理者
+				void* MemoryAddr;   //指向 32 位 Windows 系统分配空间的首地址
 				unsigned int Taken; //每分配一次就加 1，释放一次就减 1，如果释放后为 0，那么就把 Mem 指向的内存空间还给 32 位 Windows 系统
 				FFreeBlock* pAvailableBlock;
 				// Fpoolinfo link 到参数中，所以需要使用引用传参，head是指向指针的指针。
@@ -124,7 +138,7 @@ namespace Matrix
 			struct FFreeBlock
 			{
 				FFreeBlock* Next; //在同一个 PoolInfo 中，下一个可用的单元
-				DWORD Blocks;	  //还剩下多少可用单元
+				DWORD Blocks;     //还剩下多少可用单元
 				FPoolInfo* GetPool()
 				{
 					//在Poolinfo中的任意一个地址取出高17位就可以定位这个Poolinfo
@@ -141,7 +155,7 @@ namespace Matrix
 		};
 
 #elif _DEBUG
-	//采用浮动大小的block块，BeginMask 和 EndMask隔离 
+		//采用浮动大小的block块，BeginMask 和 EndMask隔离
 		class MATRIX_CORE_API DebugMemoryAlloc : public BaseMemoryManager
 		{
 		public:
@@ -179,22 +193,22 @@ namespace Matrix
 				}
 
 				void* pStackAddr[CALLSTACK_NUM]; //申请内存时候的调用堆栈信息
-				unsigned int mStackInfoNum;		 //堆栈层数
-				USIZE_TYPE mSize;				 //申请空间的大小
-				bool mbArray;					 //是否是数组
-				bool mbAlignment;				 //是否字节对齐
-				Block* pPrev;					 //前一个节点
-				Block* pNext;					 //后一个节点
+				unsigned int mStackInfoNum;      //堆栈层数
+				USIZE_TYPE mSize;                //申请空间的大小
+				bool mbArray;                    //是否是数组
+				bool mbAlignment;                //是否字节对齐
+				Block* pPrev;                    //前一个节点
+				Block* pNext;                    //后一个节点
 			};
 
 			Block* pHead;
 			Block* pTail;
-			unsigned int mNumNewCalls;			  //调用 MATRIX_NEW 的次数
-			unsigned int mNumDeleteCalls;		  //调用 delete 的次数
-			unsigned int mNumBlocks;			  //当前有多少内存块
-			unsigned int mNumBytes;				  //当前有多少字节
-			unsigned int mMaxNumBytes;			  //最多申请多少字节
-			unsigned int mMaxNumBlocks;			  //最多申请多少内存块
+			unsigned int mNumNewCalls;            //调用 MATRIX_NEW 的次数
+			unsigned int mNumDeleteCalls;         //调用 delete 的次数
+			unsigned int mNumBlocks;              //当前有多少内存块
+			unsigned int mNumBytes;               //当前有多少字节
+			unsigned int mMaxNumBytes;            //最多申请多少字节
+			unsigned int mMaxNumBlocks;           //最多申请多少内存块
 			unsigned int mSizeRecord[RECORD_NUM]; //统计内存在2的n次方的分布情况。
 			void InsertBlock(Block* pBlock);
 			//仅仅负责移除，不做内存释放处理
@@ -249,10 +263,10 @@ namespace Matrix
 				BYTE Data[1];
 			};
 
-			BYTE* Top;					 //当前 Chunk块内栈头
-			BYTE* End;					 //当前 Chunk块内栈尾
+			BYTE* Top;                   //当前 Chunk块内栈头
+			BYTE* End;                   //当前 Chunk块内栈尾
 			USIZE_TYPE DefaultChunkSize; //默认每次分配最大 Size
-			FTaggedMemory* TopChunk;	 //当前已分配 Chunk 头指针
+			FTaggedMemory* TopChunk;     //当前已分配 Chunk 头指针
 			FTaggedMemory* UnusedChunks; //当前空闲 Chunk 头指针(但是已经分配好了）
 
 			/** The number of marks on this stack. */
@@ -274,7 +288,6 @@ namespace Matrix
 			static BaseMemoryManager& GetCMemoryManager();
 			static BaseMemoryManager& GetMemoryManager();
 			static StackMemoryManager& GetStackMemoryManager();
-
 		};
 
 		template <typename T>
@@ -293,7 +306,7 @@ namespace Matrix
 					// track
 					StackMem.NumMarks++;
 					mPtr = (T*)StackMem.Allocate(uiNum * sizeof(T), uiAlignment, 0);
-					MX_ENGINE_ASSERT(mPtr);
+					MATRIX_ENGINE_ASSERT(mPtr);
 
 					//判断是否有构造函数，
 					if (ValueBase<T>::NeedsConstructor)
@@ -301,7 +314,8 @@ namespace Matrix
 						for (unsigned int i = 0; i < uiNum; i++)
 						{
 							//在当前内存地址中执行构造
-							MX_NEW(mPtr + i) T();
+							MX_NEW(mPtr + i)
+								T();
 						}
 					}
 				}
@@ -404,7 +418,6 @@ namespace Matrix
 			}
 		};
 
-
 	}
 }
 
@@ -412,27 +425,22 @@ namespace Matrix
 #ifdef USE_MATRIX_NEW
 inline void* operator new(size_t uSize)
 {
-	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW has been called!"));
+	// Matrix::MXOutputDebugString(_T("operator MATRIX_NEW has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uSize, 0, false);
 }
 inline void* operator new[](size_t uSize)
 {
-	// Matrix::MTXOutputDebugString(_T("operator MATRIX_NEW[] has been called!"));
+	// Matrix::MXOutputDebugString(_T("operator MATRIX_NEW[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Allocate(uSize, 0, true);
 }
 inline void operator delete(void* pvAddr)
 {
-	// Matrix::MTXOutputDebugString(_T("operator delete has been called!"));
+	// Matrix::MXOutputDebugString(_T("operator delete has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, false);
 }
 inline void operator delete[](void* pvAddr)
 {
-	// Matrix::MTXOutputDebugString(_T("operator delete[] has been called!"));
+	// Matrix::MXOutputDebugString(_T("operator delete[] has been called!"));
 	return Matrix::Core::MemoryObject::GetMemoryManager().Deallocate((char*)pvAddr, 0, true);
 }
-#endif 
-
-
-
-
-
+#endif
