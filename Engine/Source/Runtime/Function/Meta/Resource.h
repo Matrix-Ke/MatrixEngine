@@ -65,7 +65,7 @@ namespace Matrix
          static VSProxyResourceSet<VSUsedName, VSPointer<VSResourceProxy<ClassName>>> s_ASYN##ClassName##Set; \
          return s_ASYN##ClassName##Set;                                                                       \
      }                                                                                                        \
-     static VSCriticalSection ms_LoadResourceCriticalSection;                                                 \
+     static Core::MSynchronize ms_LoadResourceCriticalSection;                                                 \
      static bool RegisterGCResourceSet();                                                                     \
      static bool ms_bRegisterGCResource;                                                                      \
      friend class InCacheType;                                                                                \
@@ -88,7 +88,7 @@ namespace Matrix
 #define IMPLEMENT_RESOURCE(ClassName)                                                                             \
      VSPointer<ClassName> ClassName::ms_Default = NULL;                                                            \
      VSPointer<VSResourceProxy<ClassName>> ClassName::ms_DefaultResource = NULL;                                   \
-     VSCriticalSection ClassName::ms_LoadResourceCriticalSection;                                                  \
+     Core::MSynchronize ClassName::ms_LoadResourceCriticalSection;                                                  \
      static bool gs_bResourceRegistered_##ClassName = ClassName::RegisterGCResourceSet();                          \
      bool ClassName::ms_bRegisterGCResource = false;                                                               \
      bool ClassName::RegisterGCResourceSet()                                                                       \

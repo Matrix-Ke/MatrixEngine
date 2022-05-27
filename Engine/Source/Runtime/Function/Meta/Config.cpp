@@ -1,6 +1,8 @@
 #include "Config.h"
-#include "Match.h"
 #include "Rtti.h"
+#include "Container/Match.h"
+#include "./../EngineInit.h"
+
 using namespace Matrix;
 Container::MString VSConfig::ms_OutputShaderCodePath;
 Container::MString VSConfig::ms_OutputLogPath;
@@ -35,7 +37,7 @@ VSConfig::~VSConfig()
 }
 void VSConfig::InitEnginePath()
 {
-	VSMatch Match;
+	Container::MMatch Match;
 	if (!Match.Open(_T("Resource\\EnginePath.txt")))
 	{
 		MATRIX_ENGINE_ASSERT(0);
@@ -49,7 +51,7 @@ void VSConfig::InitEnginePath()
 		return;
 	}
 
-	if (Match.PatternMatch("['OutputShaderCodePath'][s>0]"))
+	if (Match.PatternMatch(_T("['OutputShaderCodePath'][s>0]")))
 	{
 		ms_OutputShaderCodePath = Match.pstrings[0];
 	}
@@ -60,7 +62,7 @@ void VSConfig::InitEnginePath()
 		return;
 	}
 
-	if (Match.PatternMatch("['OutputLogPath'][s>0]"))
+	if (Match.PatternMatch(_T("['OutputLogPath'][s>0]")))
 	{
 		ms_OutputLogPath = Match.pstrings[0];
 	}
@@ -72,7 +74,7 @@ void VSConfig::InitEnginePath()
 		return;
 	}
 
-	if (Match.PatternMatch("['TerrainPath'][s>0]"))
+	if (Match.PatternMatch(_T("['TerrainPath'][s>0]")))
 	{
 		ms_TerrainPath = Match.pstrings[0];
 	}
@@ -83,14 +85,14 @@ void VSConfig::InitEnginePath()
 		return;
 	}
 
-	if (Match.PatternMatch("['ResourcePath'][s>0]"))
+	if (Match.PatternMatch(_T("['ResourcePath'][s>0]")))
 	{
 		ms_ResourcePath = Match.pstrings[0];
 	}
 }
 void VSConfig::InitParamConfig()
 {
-	VSMatch Match;
+	Container::MMatch Match;
 	if (!Match.Open(_T("Resource\\Config.txt")))
 		return;
 	if (!Match.Getline())
@@ -98,7 +100,7 @@ void VSConfig::InitParamConfig()
 		MATRIX_ENGINE_ASSERT(0);
 		return;
 	}
-	if (Match.PatternMatch("['EnableAsynLoad'][s>0]"))
+	if (Match.PatternMatch(_T("['EnableAsynLoad'][s>0]")))
 	{
 		Container::MString TrueString = _T("true");
 		ms_EnableAsynLoad = (Match.pstrings[0] == TrueString);
@@ -109,7 +111,7 @@ void VSConfig::InitParamConfig()
 		MATRIX_ENGINE_ASSERT(0);
 		return;
 	}
-	if (Match.PatternMatch("['EnableAdvanceInstance'][s>0]"))
+	if (Match.PatternMatch(_T("['EnableAdvanceInstance'][s>0]")))
 	{
 		Container::MString TrueString = _T("true");
 		ms_EnableAdvanceInstance = (Match.pstrings[0] == TrueString);
@@ -120,7 +122,7 @@ void VSConfig::InitParamConfig()
 		MATRIX_ENGINE_ASSERT(0);
 		return;
 	}
-	if (Match.PatternMatch("['LODScreenScale'][f]"))
+	if (Match.PatternMatch(_T("['LODScreenScale'][f]")))
 	{
 		ms_LODScreenScale = Match.pfloats[0];
 	}
@@ -133,27 +135,27 @@ void VSConfig::InitConfig()
 }
 void VSConfig::InitClassReplace()
 {
-	VSMatch Match;
+	Container::MMatch Match;
 	if (!Match.Open(_T("Resource\\ClassReplace.txt")))
 		return;
 	if (!Match.Getline())
 	{
 		return;
 	} // end if
-	while (Match.PatternMatch("[s>1]"))
+	while (Match.PatternMatch(_T("[s>1]")))
 	{
 		unsigned int ClassIndex = ms_ClassReplaceMap.AddElement(Match.pstrings[0], ClassReplaceType());
 		if (!Match.Getline())
 		{
 			MATRIX_ENGINE_ASSERT(0);
 		}
-		if (Match.PatternMatch("['{']"))
+		if (Match.PatternMatch(_T("['{']")))
 		{
 			if (!Match.Getline())
 			{
 				MATRIX_ENGINE_ASSERT(0);
 			}
-			while (Match.PatternMatch("[s>1]"))
+			while (Match.PatternMatch(_T("[s>1]")))
 			{
 				ms_ClassReplaceMap[ClassIndex].Value.ReplaceClass.AddElement(Match.pstrings[0]);
 				if (!Match.Getline())
@@ -161,26 +163,26 @@ void VSConfig::InitClassReplace()
 					MATRIX_ENGINE_ASSERT(0);
 				}
 			}
-			if (Match.PatternMatch("['[']"))
+			if (Match.PatternMatch(_T("['[']")))
 			{
 				if (!Match.Getline())
 				{
 					MATRIX_ENGINE_ASSERT(0);
 				} // end if
-				while (Match.PatternMatch("[s>1]"))
+				while (Match.PatternMatch(_T("[s>1]")))
 				{
 					unsigned int PropertyIndex = ms_ClassReplaceMap[ClassIndex].Value.ProperyReplaceMap.AddElement(Match.pstrings[0], PropertyReplaceType());
 					if (!Match.Getline())
 					{
 						MATRIX_ENGINE_ASSERT(0);
 					}
-					if (Match.PatternMatch("['{']"))
+					if (Match.PatternMatch(_T("['{']")))
 					{
 						if (!Match.Getline())
 						{
 							return;
 						}
-						while (Match.PatternMatch("[s>1]"))
+						while (Match.PatternMatch(_T("[s>1]")))
 						{
 							ms_ClassReplaceMap[ClassIndex].Value.ProperyReplaceMap[PropertyIndex].Value.ReplaceProperty.AddElement(Match.pstrings[0]);
 							if (!Match.Getline())
@@ -188,7 +190,7 @@ void VSConfig::InitClassReplace()
 								return;
 							}
 						}
-						if (!Match.PatternMatch("['}']"))
+						if (!Match.PatternMatch(_T("['}']")))
 						{
 							MATRIX_ENGINE_ASSERT(0);
 							return;
@@ -200,7 +202,7 @@ void VSConfig::InitClassReplace()
 						}
 					}
 				}
-				if (!Match.PatternMatch("[']']"))
+				if (!Match.PatternMatch(_T("[']']")))
 				{
 					MATRIX_ENGINE_ASSERT(0);
 				}
@@ -209,7 +211,7 @@ void VSConfig::InitClassReplace()
 					MATRIX_ENGINE_ASSERT(0);
 				}
 			}
-			if (!Match.PatternMatch("['}']"))
+			if (!Match.PatternMatch(_T("['}']")))
 			{
 				MATRIX_ENGINE_ASSERT(0);
 			}

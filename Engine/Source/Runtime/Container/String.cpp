@@ -181,7 +181,7 @@ bool MString::GetString(const MString &String, unsigned int uiFind, bool bIsFron
     }
     ENGINE_DELETE(m_pBuffer);
     m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-    MXMemcpy(m_pBuffer, &String.m_pBuffer[uiIndex], uiLength, uiLength + 1);
+    Core::MXMemcpy(m_pBuffer, &String.m_pBuffer[uiIndex], uiLength, uiLength + 1);
     m_pBuffer[uiLength] = _T('\0');
     return true;
 }
@@ -305,12 +305,12 @@ void MString::Remove(unsigned int i, unsigned int j)
     pBuffer[DeltaLength] = _T('\0');
     if (i > 0)
     {
-        MXMemcpy(pBuffer, m_pBuffer, i);
+        Core::MXMemcpy(pBuffer, m_pBuffer, i);
     }
     unsigned int LeftNum = DeltaLength - i;
     if (LeftNum > 0)
     {
-        MXMemcpy(pBuffer + i, m_pBuffer + i + uiLength, LeftNum);
+        Core::MXMemcpy(pBuffer + i, m_pBuffer + i + uiLength, LeftNum);
     }
     ENGINE_DELETE(m_pBuffer);
     m_pBuffer = pBuffer;
@@ -394,7 +394,7 @@ void MString::StringLtrim(const MString &String)
     else
     {
         unsigned int uiLength = String.GetLength();
-        MXMemcpy((void *)TempBuffer, (void *)(pString + index), ((uiLength - index) + 1) * sizeof(TCHAR));
+        Core::MXMemcpy((void *)TempBuffer, (void *)(pString + index), ((uiLength - index) + 1) * sizeof(TCHAR));
         *this = TempBuffer;
     }
 }
@@ -411,7 +411,7 @@ void MString::StringRtrim(const MString &String)
     while (MXIsSpace(pString[index]))
         index--;
 
-    MXMemcpy((void *)TempBuffer, (void *)(pString), (index + 1) * sizeof(TCHAR));
+    Core::MXMemcpy((void *)TempBuffer, (void *)(pString), (index + 1) * sizeof(TCHAR));
     index++;
     TempBuffer[index] = _T('\0');
     *this = TempBuffer;

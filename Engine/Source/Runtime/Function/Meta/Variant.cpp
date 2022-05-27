@@ -71,11 +71,11 @@
 // {
 //     *this = v;
 // }
-// VSVariant::VSVariant(const VSVector3 &v)
+// VSVariant::VSVariant(const Math::Vector3 &v)
 // {
 //     *this = v;
 // }
-// VSVariant::VSVariant(const VSVector3W &v)
+// VSVariant::VSVariant(const Math::Vector4 &v)
 // {
 //     *this = v;
 // }
@@ -163,7 +163,7 @@
 //     }
 //     return GetVector2() == v;
 // }
-// bool VSVariant::operator==(const VSVector3 &v) const
+// bool VSVariant::operator==(const Math::Vector3 &v) const
 // {
 //     if (m_uiType != V_VECTOR3)
 //     {
@@ -171,7 +171,7 @@
 //     }
 //     return GetVector3() == v;
 // }
-// bool VSVariant::operator==(const VSVector3W &v) const
+// bool VSVariant::operator==(const Math::Vector4 &v) const
 // {
 //     if (m_uiType != V_VECTOR3W)
 //     {
@@ -257,18 +257,18 @@
 //     *((VSVector2 *)m_fVec) = v;
 //     return *this;
 // }
-// VSVariant &VSVariant::operator=(const VSVector3 &v)
+// VSVariant &VSVariant::operator=(const Math::Vector3 &v)
 // {
 //     Clear();
 //     m_uiType = V_VECTOR3;
-//     *((VSVector3 *)m_fVec) = v;
+//     *((Math::Vector3 *)m_fVec) = v;
 //     return *this;
 // }
-// VSVariant &VSVariant::operator=(const VSVector3W &v)
+// VSVariant &VSVariant::operator=(const Math::Vector4 &v)
 // {
 //     Clear();
 //     m_uiType = V_VECTOR3W;
-//     *((VSVector3W *)m_fVec) = v;
+//     *((Math::Vector4 *)m_fVec) = v;
 //     return *this;
 // }
 // VSVariant &VSVariant::operator=(const VSMatrix3X3 &m)
@@ -336,15 +336,15 @@
 //     MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR2);
 //     return *((VSVector2 *)m_fVec);
 // }
-// const VSVector3 &VSVariant::GetVector3() const
+// const Math::Vector3 &VSVariant::GetVector3() const
 // {
 //     MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR3);
-//     return *((VSVector3 *)m_fVec);
+//     return *((Math::Vector3 *)m_fVec);
 // }
-// const VSVector3W &VSVariant::GetVector3W() const
+// const Math::Vector4 &VSVariant::GetVector3W() const
 // {
 //     MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR3W);
-//     return *((VSVector3W *)m_fVec);
+//     return *((Math::Vector4 *)m_fVec);
 // }
 // const VSMatrix3X3 &VSVariant::GetMatrix3X3() const
 // {

@@ -2,7 +2,7 @@
 
 using namespace Matrix::Core;
 
-MXCriticalSection BaseMemoryManager::msMemLock = MXCriticalSection();
+MCriticalSection BaseMemoryManager::msMemLock = MCriticalSection();
 
 Matrix::Core::BaseMemoryManager::BaseMemoryManager()
 {
@@ -24,7 +24,7 @@ Matrix::Core::CMemoryManager::~CMemoryManager()
 }
 void *Matrix::Core::CMemoryManager::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     if (uiAlignment == 0)
     {
         return malloc(uSize);
@@ -38,7 +38,7 @@ void *Matrix::Core::CMemoryManager::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlig
 }
 void Matrix::Core::CMemoryManager::Deallocate(char *pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     if (uiAlignment == 0)
     {
         free(pcAddr);
@@ -131,7 +131,7 @@ Matrix::Core::UEWin32MemoryAlloc::~UEWin32MemoryAlloc()
 void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
     //内存锁，防止两个线程同时申请内存
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     FFreeBlock *Free;
     //大于pool_MAX大内存采用操作系统的内存分配
     if (uSize < POOL_MAX)
@@ -227,7 +227,7 @@ void *Matrix::Core::UEWin32MemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE ui
 
 void Matrix::Core::UEWin32MemoryAlloc::Deallocate(char *pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     MATRIX_ENGINE_ASSERT(pcAddr);
     if (!pcAddr)
     {
@@ -458,7 +458,7 @@ void Matrix::Core::DebugMemoryAlloc::FreeDbgHelpLib()
 
 void *Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     MATRIX_ENGINE_ASSERT(uSize);
     mNumNewCalls++;
 
@@ -540,7 +540,7 @@ void *Matrix::Core::DebugMemoryAlloc::Allocate(USIZE_TYPE uSize, USIZE_TYPE uiAl
 
 void DebugMemoryAlloc::Deallocate(char *pcAddr, USIZE_TYPE uiAlignment, bool bIsArray)
 {
-    MXCriticalSection::Locker Temp(msMemLock);
+    MCriticalSection::Locker Temp(msMemLock);
     //调用 delete 的次数统计
     mNumDeleteCalls++;
     MATRIX_ENGINE_ASSERT(pcAddr);

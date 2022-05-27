@@ -41,7 +41,7 @@
 
 //         VSREAL MaxProjectXY = Max(StreamInformation.ProjectInfo.x, StreamInformation.ProjectInfo.y);
 //         VSREAL MaxProjectXYSqr = MaxProjectXY * MaxProjectXY * RadiusSqr;
-//         StreamInformation.m_fStreamInfo = Clamp((MaxProjectXYSqr / Max(1.0f, DistSqr)) * StreamInformation.ProjectInfo.w, 1.0f, 0.0f);
+//         StreamInformation.m_fStreamInfo = Math::Clamp((MaxProjectXYSqr / Max(1.0f, DistSqr)) * StreamInformation.ProjectInfo.w, 1.0f, 0.0f);
 //     }
 //     else
 //     {
@@ -68,8 +68,8 @@
 //         for (unsigned int j = 0; j < pViewFamily->GetSceneNum(); j++)
 //         {
 //             VSScene *pScene = pViewFamily->GetScene(j);
-//             VSVector3 CameraPos;
-//             VSVector3W ProjectInfo;
+//             Math::Vector3 CameraPos;
+//             Math::Vector4 ProjectInfo;
 //             if (pViewFamily->GetStreamCameraInfo(CameraPos, ProjectInfo))
 //             {
 //                 pScene->GetStreamResource(CameraPos, ProjectInfo);

@@ -1,14 +1,4 @@
 #pragma once
-//#include "Rtti.h"
-//#include "System.h"
-//#include "Container/Array.h"
-//#include "Map.h"
-//#include "VSProperty.marc"
-//#include "Name.h"
-//#include "Type.h"
-//#include "Stream.h"
-//#include "EditorProperty.h"
-//#include "EnumTrans.h"
 #include "Rtti.h"
 #include "PropertyMarco.h"
 #include "ObjName.h"
@@ -114,7 +104,8 @@ namespace Matrix
 		virtual VSProperty* GetInstance() = 0;
 		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap) = 0;
 		virtual void CopyData(void* pSrcObj, void* pDestObj) = 0;
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name) = 0;
+		//todo editor property
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name) = 0;
 		virtual bool Clone(VSProperty* p)
 		{
 			if ((p->GetRtti() == GetRtti() && GetRtti()) || (p->GetFunction() == GetFunction() && GetFunction()))
@@ -216,15 +207,16 @@ namespace Matrix
 		{
 			Value(pDestObj) = Value(pSrcObj);
 		}
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
-		{
-			VSEEnumProperty* pEp = MX_NEW VSEEnumProperty((unsigned int*)(((const char*)pSrcObj) + m_uiElementOffset), Name, (VSObject*)pSrcObj);
-			pParent->AddElement(pEp);
-			Container::MArray<Container::MString> AS;
-			Container::MString EnumName = m_EnumName.GetString();
-			GET_ENUMARRAY(EnumName, AS);
-			pEp->AddEnumString(AS);
-		}
+		//todo editor property
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
+		//{
+		//	VSEEnumProperty* pEp = MX_NEW VSEEnumProperty((unsigned int*)(((const char*)pSrcObj) + m_uiElementOffset), Name, (VSObject*)pSrcObj);
+		//	pParent->AddElement(pEp);
+		//	Container::MArray<Container::MString> AS;
+		//	Container::MString EnumName = m_EnumName.GetString();
+		//	GET_ENUMARRAY(EnumName, AS);
+		//	pEp->AddEnumString(AS);
+		//}
 		virtual VSProperty* GetInstance()
 		{
 			return MX_NEW VSEnumProperty();
@@ -275,10 +267,11 @@ namespace Matrix
 		{
 			return PT_DATA;
 		}
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
-		{
-			return;
-		}
+		//todo editor property
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
+		//{
+		//	return;
+		//}
 		virtual void CopyData(void* pSrcObj, void* pDestObj)
 		{
 			MATRIX_ENGINE_ASSERT(0);
@@ -499,10 +492,10 @@ namespace Matrix
 		{
 			Value(pDestObj) = Value(pSrcObj);
 		}
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
-		{
-			CreateEditorElement(Value(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
-		}
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
+		//{
+		//	CreateEditorElement(Value(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//}
 		virtual VSProperty* GetInstance()
 		{
 			return MX_NEW VSValueProperty<T>();
@@ -572,10 +565,11 @@ namespace Matrix
 		{
 			GetContainer(pDestObj) = GetContainer(pSrcObj);
 		}
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
-		{
-			CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
-		}
+		//todo editor property
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
+		//{
+		//	CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//}
 		virtual VSProperty* GetInstance()
 		{
 			return MX_NEW VSArrayProperty<ArrayType, T>();
@@ -647,10 +641,11 @@ namespace Matrix
 		{
 			GetContainer(pDestObj) = GetContainer(pSrcObj);
 		}
-		virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
-		{
-			CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
-		}
+		//todo editor property
+		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
+		//{
+		//	CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//}
 		virtual VSProperty* GetInstance()
 		{
 			return MX_NEW VSMapProperty<MapType, KEY, VALUE>();

@@ -18,7 +18,8 @@ target_compile_definitions(${SharedLibName} PUBLIC "UNICODE; _UNICODE")
 target_include_directories(${SharedLibName} PRIVATE "${ENGINE_SOURCE_RUNTIME_DIR}")
 
 # public 和 private 尽量多注意
-# target_link_libraries(${SharedLibName} PRIVATE "Core;Container;Math")
+target_link_libraries(${SharedLibName} PRIVATE "Core;Container;Math")
+
 if(MSVC)
     target_link_options(${SharedLibName} PRIVATE
         $<$<CONFIG:Debug>:/INCREMENTAL> # default is incremental

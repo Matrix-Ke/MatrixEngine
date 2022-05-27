@@ -1,8 +1,8 @@
 #include "Object.h"
-#include "Function/EngineInit.h"
-//#include "Stream.h"
+#include "./../EngineInit.h"
+#include "Stream.h"
 #include "Property.h"
-#include "Profiler.h"
+//#include "Profiler.h"
 
 
 using namespace Matrix;
@@ -15,7 +15,8 @@ IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
 BEGIN_ADD_PROPERTY_ROOT(VSObject)
 REGISTER_PROPERTY(m_uiFlag, Flag, VSProperty::F_CLONE);
 END_ADD_PROPERTY
-DECLEAR_NOCLEAR_COUNT_PROFILENODE(ObjectNum, )
+//todo   profiler macro
+//DECLEAR_NOCLEAR_COUNT_PROFILENODE(ObjectNum, )
 
 
 
@@ -33,14 +34,16 @@ void VSFastObjectManager::AddObject(VSObject* p)
 	MATRIX_ENGINE_ASSERT(p);
 	ObjectHashTree.AddElement(p);
 	m_uiObjectNum++;
-	ADD_COUNT_PROFILE(ObjectNum, 1)
+	//todo   profiler macro
+	//ADD_COUNT_PROFILE(ObjectNum, 1)
 }
 void VSFastObjectManager::DeleteObject(VSObject* p)
 {
 	MATRIX_ENGINE_ASSERT(p);
 	ObjectHashTree.Erase(p);
 	m_uiObjectNum--;
-	ADD_COUNT_PROFILE(ObjectNum, -1)
+	//todo   profiler macro
+	//ADD_COUNT_PROFILE(ObjectNum, -1)
 }
 bool VSFastObjectManager::IsClear()
 {
@@ -58,7 +61,7 @@ public:
 	{
 	}
 	~VSPrepareForGC() {}
-	void operator()(VSBinaryTreeNode<T>* TreeNode)
+	void operator()(Container::MBinaryTreeNode<T>* TreeNode)
 	{
 		TreeNode->Element->ClearFlag(VSObject::OF_REACH);
 		TreeNode->Element->SetFlag(VSObject::OF_UNREACH);
@@ -89,45 +92,6 @@ void VSObject::CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest)
 }
 VSObject* VSObject::_CloneCreateObject(VSObject* pObject, Container::MMap<VSObject*, VSObject*>& CloneMap)
 {
-	//VSObject* pNewObject = NULL;
-	//if (pObject)
-	//{
-	//	unsigned int uiIndex = CloneMap.Find(pObject);
-
-	//	if (uiIndex == CloneMap.GetNum())
-	//	{
-	//		VSRtti& SrcRtti = pObject->GetType();
-	//		if (pObject->IsHasFlag(OF_GCObject))
-	//		{
-	//			pNewObject = VSObject::GetInstance(SrcRtti.GetName());
-	//		}
-	//		else
-	//		{
-	//			pNewObject = VSObject::GetNoGCInstance(SrcRtti.GetName());
-	//		}
-	//		CloneMap.AddElement(pObject, pNewObject);
-	//		VSRtti& DestRtti = pNewObject->GetType();
-
-	//		for (unsigned int i = 0; i < SrcRtti.GetPropertyNum(); i++)
-	//		{
-	//			VSProperty* pProperty = SrcRtti.GetProperty(i);
-	//			if (pProperty->GetFlag() & VSProperty::F_CLONE)
-	//			{
-	//				pProperty->CloneData(pObject, pNewObject, CloneMap);
-	//			}
-	//			else if (pProperty->GetFlag() & VSProperty::F_COPY)
-	//			{
-	//				pProperty->CopyData(pObject, pNewObject);
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		pNewObject = CloneMap[uiIndex].Value;
-	//	}
-	//}
-	//return pNewObject;
-
 	VSObject* pNewObject = NULL;
 	if (pObject)
 	{

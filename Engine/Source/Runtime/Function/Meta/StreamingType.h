@@ -1,8 +1,8 @@
 #pragma once
-//#include "Function/FunctionCore.h"
-//#include "Vector3.h"
-//#include "Vector3W.h"
-#include "Function/FunctionCore.h"
+#include "./../FunctionCore.h"
+#include "Core/MemoryManager.h"
+#include "Math/Vector3.h"
+#include "Math/Vector4.h"
 
 namespace Matrix
 {
@@ -20,9 +20,9 @@ namespace Matrix
 		{
 			m_fStreamInfo = 0.0f;
 		};
-		VSVector3 CameraPos;
+		Math::Vector3 CameraPos;
 		VSREAL m_fStreamInfo;
-		VSVector3W ProjectInfo;
+		Math::Vector4 ProjectInfo;
 	};
 	class MATRIX_FUNCTION_API VSStreamingType
 	{
@@ -48,9 +48,9 @@ namespace Matrix
 			{
 
 				unsigned int uiWantSteamLevel = unsigned int(StreamInformation.m_fStreamInfo * m_uiMaxLevel);
-				uiWantSteamLevel = Clamp(uiWantSteamLevel, m_uiMaxLevel, (unsigned int)5);
+				uiWantSteamLevel = Math::Clamp(uiWantSteamLevel, m_uiMaxLevel, (unsigned int)5);
 
-				unsigned int uiLastWantSteamLevel = VSlockedCompareExchange((long*)&m_uiWantStreamLevel, uiWantSteamLevel, 0);
+				unsigned int uiLastWantSteamLevel = Core::MXlockedCompareExchange((long*)&m_uiWantStreamLevel, uiWantSteamLevel, 0);
 				MaxMipTable[uiWantSteamLevel] = true;
 				return !uiLastWantSteamLevel;
 			}
@@ -80,7 +80,7 @@ namespace Matrix
 		{
 			m_pToStreamObject = NULL;
 			m_uiWantStreamLevel = 0;
-			VSMemset(MaxMipTable, 0, sizeof(MaxMipTable));
+			Core::MXMemset(MaxMipTable, 0, sizeof(MaxMipTable));
 			ToReadyStream();
 		}
 		void GetWantStreamLevel()

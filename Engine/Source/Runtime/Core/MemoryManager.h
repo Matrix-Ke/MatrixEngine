@@ -48,7 +48,7 @@ namespace Matrix
 			//ÄÚ´æ¹ÜÀí
 			virtual void Deallocate(char* pcAddr, USIZE_TYPE uiAlignment, bool bIsArray) = 0;
 
-			static MXCriticalSection msMemLock;
+			static MCriticalSection msMemLock;
 			static void printInfo();
 		};
 

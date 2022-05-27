@@ -807,7 +807,7 @@ namespace Matrix
 	template <class T>
 	bool VSStream::LinkObjectPtr(VSPointer<T>& Pointer)
 	{
-		unsigned int uiGUID = SizeTypeToGUID32((USIZE_TYPE)Pointer.GetObject());
+		unsigned int uiGUID = Core::SizeTypeToGUID32((USIZE_TYPE)Pointer.GetObject());
 
 		Pointer.SetObject(NULL);
 
@@ -838,7 +838,7 @@ namespace Matrix
 	template <class T>
 	bool VSStream::LinkObjectPtr(T*& pObject)
 	{
-		unsigned int uiGUID = SizeTypeToGUID32((USIZE_TYPE)pObject);
+		unsigned int uiGUID = Core::SizeTypeToGUID32((USIZE_TYPE)pObject);
 		pObject = (T*)GetLoadMapValue(uiGUID);
 		return 1;
 	}

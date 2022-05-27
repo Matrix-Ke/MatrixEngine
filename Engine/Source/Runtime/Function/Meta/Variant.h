@@ -32,8 +32,8 @@
 //         VSVariant(int i);
 //         VSVariant(VSREAL f);
 //         VSVariant(const VSVector2 &v);
-//         VSVariant(const VSVector3 &v);
-//         VSVariant(const VSVector3W &v);
+//         VSVariant(const Math::Vector3 &v);
+//         VSVariant(const Math::Vector4 &v);
 //         VSVariant(const VSMatrix3X3 &m);
 //         VSVariant(const VSMatrix3X3W &m);
 //         VSVariant(VSObject *p);
@@ -45,8 +45,8 @@
 //         VSVariant &operator=(int i);
 //         VSVariant &operator=(VSREAL f);
 //         VSVariant &operator=(const VSVector2 &v);
-//         VSVariant &operator=(const VSVector3 &v);
-//         VSVariant &operator=(const VSVector3W &v);
+//         VSVariant &operator=(const Math::Vector3 &v);
+//         VSVariant &operator=(const Math::Vector4 &v);
 //         VSVariant &operator=(const VSMatrix3X3 &m);
 //         VSVariant &operator=(const VSMatrix3X3W &m);
 //         VSVariant &operator=(VSObject *p);
@@ -57,8 +57,8 @@
 //         bool operator==(int i) const;
 //         bool operator==(VSREAL f) const;
 //         bool operator==(const VSVector2 &v) const;
-//         bool operator==(const VSVector3 &v) const;
-//         bool operator==(const VSVector3W &v) const;
+//         bool operator==(const Math::Vector3 &v) const;
+//         bool operator==(const Math::Vector4 &v) const;
 //         bool operator==(const VSMatrix3X3 &m) const;
 //         bool operator==(const VSMatrix3X3W &m) const;
 //         bool operator==(const VSObject *p) const;
@@ -70,8 +70,8 @@
 //         int GetInt() const;
 //         VSREAL GetReal() const;
 //         const VSVector2 &GetVector2() const;
-//         const VSVector3 &GetVector3() const;
-//         const VSVector3W &GetVector3W() const;
+//         const Math::Vector3 &GetVector3() const;
+//         const Math::Vector4 &GetVector3W() const;
 //         const VSMatrix3X3 &GetMatrix3X3() const;
 //         const VSMatrix3X3W &GetMatrix3X3W() const;
 //         const TCHAR *GetString() const;

@@ -78,7 +78,7 @@ namespace Matrix
 				ENGINE_DELETE(m_pBuffer);
 				m_uiSize = BitArray.m_uiSize;
 				m_pBuffer = MX_NEW unsigned int[m_uiSize];
-				MXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
+				Core::MXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
 			}
 			MXBitArray(unsigned int uiSize = 0)
 			{
@@ -138,7 +138,7 @@ namespace Matrix
 				m_uiSize = BitArray.m_uiSize;
 				ENGINE_DELETE(m_pBuffer);
 				m_pBuffer = MX_NEW unsigned int[m_uiSize];
-				MXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
+				Core::MXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
 			}
 			void Set(unsigned int uiIndex, bool bValue)
 			{

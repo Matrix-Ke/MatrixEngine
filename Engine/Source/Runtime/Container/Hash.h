@@ -20,25 +20,25 @@ namespace Matrix
 			template <typename T>
 			void AddElement(const T& Element)
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				m_Hash[HashID].AddElement(Element);
 			}
 			template <typename T>
 			bool Erase(const T& Element)
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].Erase(Element);
 			}
 			template <typename T>
 			bool Has(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].Has(Element);
 			}
 			template <typename T>
 			const T* FindElement(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].FindElement(Element);
 			}
 			HashType* GetHashTarget(unsigned int HashID)
@@ -70,7 +70,7 @@ namespace Matrix
 			}
 			const MBinaryTreeNode<T>* Find(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return &m_Hash[HashID].Find(Element);
 			}
 			template <class N>
@@ -107,7 +107,7 @@ namespace Matrix
 			}
 			const ListElement<T>* Find(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return &m_Hash[HashID].Find(Element);
 			}
 			inline void SetHashNum(unsigned int uiHashNum)

@@ -1,11 +1,15 @@
 #pragma once
 #include "Core/MemoryManager.h"
 
+#pragma warning(disable:4251)
+
+
 #ifdef Container_EXPORTS
 #define MATRIX_CONTAINER_API __declspec(dllexport)
 #else
 #define MATRIX_CONTAINER_API __declspec(dllimport)
 #endif // Container_EXPORTS
+
 
 // container 是所有容器的基类， 申请的空间会大于实际需求空间，以避免频繁释放申请。
 //只有有实际需求空间的时候才会调用对应的元素的构造函数。 所以申请空间未必调用构造，释放未必调用析构函数。
@@ -114,7 +118,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
 			}
 		}
 		template <class KEY, class VALUE>
@@ -189,7 +193,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
 			}
 		}
 
@@ -265,7 +269,7 @@ namespace Matrix
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
 			}
 		}
 
@@ -336,12 +340,12 @@ namespace Matrix
 						Merge(pBuffer, TempBuffer, i, uiLeftLength, 0, Compare);
 					}
 				}
-				Swap(pBuffer, TempBuffer);
+				Math::Swap(pBuffer, TempBuffer);
 				uiNumSwap++;
 			}
 			if ((uiNumSwap % 2) != 0)
 			{
-				MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+				Core::MXMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
 			}
 		}
 		template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
@@ -373,7 +377,7 @@ namespace Matrix
 				}
 				if (uiNum > 0)
 				{
-					if (ValueBase<T>::NeedsDestructor)
+					if (Core::ValueBase<T>::NeedsDestructor)
 					{
 						for (unsigned int i = 0; i < uiNum; i++)
 						{

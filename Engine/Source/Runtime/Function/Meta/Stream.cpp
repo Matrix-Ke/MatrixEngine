@@ -108,7 +108,7 @@ bool VSStream::ReadString(Container::MString& String)
 	ENGINE_DELETEA(pCh);
 
 	return 1;
-	}
+}
 /********************************************************************************/
 bool VSStream::WriteString(const Container::MString& String)
 {
@@ -430,19 +430,21 @@ bool VSStream::WriteResource(VSResourceProxyBasePtr& Resource)
 
 bool VSStream::ReadResource(VSResourceProxyBasePtr& Resource)
 {
-	bool IsNone = true;
-	Read(&IsNone, sizeof(bool));
-	if (IsNone == false)
-	{
-		Container::MString Name;
-		ReadString(Name);
-		Resource = VSResourceManager::LoadResource(Name.GetBuffer(), HasAnyFlag(ASYN_LOAD_FLAG));
-		if (!Resource)
-		{
-			MATRIX_ENGINE_ASSERT(0);
-			return false;
-		}
-	}
+
+	//todo ReadResource
+	//bool IsNone = true;
+	//Read(&IsNone, sizeof(bool));
+	//if (IsNone == false)
+	//{
+	//	Container::MString Name;
+	//	ReadString(Name);
+	//	Resource = VSResourceManager::LoadResource(Name.GetBuffer(), HasAnyFlag(ASYN_LOAD_FLAG));
+	//	if (!Resource)
+	//	{
+	//		MATRIX_ENGINE_ASSERT(0);
+	//		return false;
+	//	}
+	//}
 
 	return true;
 }

@@ -1,8 +1,11 @@
 #include "ObjName.h"
 #include "PropertyMarco.h"
 #include "ResourceManager.h"
-//#include "GraphicInclude.h"
 #include "Stream.h"
+
+#include "./../EngineInit.h"
+
+
 using namespace Matrix;
 VSName::~VSName()
 {
@@ -35,24 +38,24 @@ VSUsedName::VSUsedName()
 VSUsedName::VSUsedName(const TCHAR* pChar)
 {
 	m_pName = NULL;
-
-	m_pName = VSResourceManager::CreateName(pChar);
+	//todo   VSResourceManager
+	//m_pName = VSResourceManager::CreateName(pChar);
 }
 VSUsedName::VSUsedName(const Container::MString& String)
 {
 	m_pName = NULL;
-	m_pName = VSResourceManager::CreateName(String);
+	//m_pName = VSResourceManager::CreateName(String);
 }
 void VSUsedName::operator=(const Container::MString& String)
 {
 	m_pName = NULL;
-	m_pName = VSResourceManager::CreateName(String);
+	//m_pName = VSResourceManager::CreateName(String);
 }
 void VSUsedName::operator=(const TCHAR* pChar)
 {
 	m_pName = NULL;
 
-	m_pName = VSResourceManager::CreateName(pChar);
+	//m_pName = VSResourceManager::CreateName(pChar);
 }
 void VSUsedName::operator=(const VSUsedName& Name)
 {
@@ -110,7 +113,8 @@ VSUsedName VSUsedName::ms_cProjectShadowMatrix;
 VSUsedName VSUsedName::ms_cViewProjectMatrix;
 IMPLEMENT_PRIORITY(VSUsedName)
 IMPLEMENT_INITIAL_ONLY_BEGIN(VSUsedName)
-ADD_PRIORITY(VSResourceManager)
+//todo VSResourceManager
+//ADD_PRIORITY(VSResourceManager)
 ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
 ADD_TERMINAL_FUNCTION(TerminalDefaultState);
 IMPLEMENT_INITIAL_ONLY_END
@@ -196,7 +200,8 @@ void VSUsedName::Archive(VSStream& Stream)
 		}
 		else
 		{
-			m_pName = VSResourceManager::CreateName(String);
+			//todo VSResourceManager
+			//m_pName = VSResourceManager::CreateName(String);
 		}
 	}
 	else if (Stream.GetStreamFlag() == VSStream::AT_SAVE)

@@ -43,7 +43,7 @@ namespace Matrix
 				if (BufferSize)
 				{
 					LambdaBuffer.SetBufferNum(BufferSize);
-					MXMemcpy(LambdaBuffer.GetBuffer(), p, BufferSize);
+					Core::MXMemcpy(LambdaBuffer.GetBuffer(), p, BufferSize);
 					m_p = (void*)LambdaBuffer.GetBuffer();
 				}
 				else

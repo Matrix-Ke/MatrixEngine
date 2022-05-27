@@ -218,7 +218,7 @@ namespace Matrix
 	//	};
 	//};
 	//template <>
-	//struct TIsNoNeedLoop<VSVector3W>
+	//struct TIsNoNeedLoop<Math::Vector4>
 	//{
 	//	enum
 	//	{
@@ -226,7 +226,7 @@ namespace Matrix
 	//	};
 	//};
 	//template <>
-	//struct TIsNoNeedLoop<VSVector3>
+	//struct TIsNoNeedLoop<Math::Vector3>
 	//{
 	//	enum
 	//	{
