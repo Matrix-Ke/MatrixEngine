@@ -4,39 +4,41 @@
 #include "Array.h"
 #include "Math.h"
 #include "List.h"
+//#include "Core/MemoryManager.h"
+
 namespace Matrix
 {
 	namespace Container
 	{
-		template <class HashType, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXHash : public MContainer<HashType, MTXMemManagerClass>
+		template <class HashType, class MMemManagerClass = Core::DefaultContainerMemoryAllocator >
+		class MHash : public MContainer<HashType, MMemManagerClass>
 		{
 		public:
-			MTXHash()
+			MHash()
 			{
 			}
 			template <typename T>
 			void AddElement(const T& Element)
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				m_Hash[HashID].AddElement(Element);
 			}
 			template <typename T>
 			bool Erase(const T& Element)
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].Erase(Element);
 			}
 			template <typename T>
-			bool Has(const T& Element)const
+			bool Has(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].Has(Element);
 			}
 			template <typename T>
-			const T* FindElement(const T& Element)const
+			const T* FindElement(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return m_Hash[HashID].FindElement(Element);
 			}
 			HashType* GetHashTarget(unsigned int HashID)
@@ -49,29 +51,29 @@ namespace Matrix
 				{
 					return NULL;
 				}
-
 			}
 			inline void SetHashNum(unsigned int uiHashNum)
 			{
-				MX_ENGINE_ASSERT(uiHashNum);
+				MATRIX_ENGINE_ASSERT(uiHashNum);
 				m_Hash.SetBufferNum(uiHashNum);
 			}
+
 		protected:
-			MArray<HashType, MTXMemManagerClass> m_Hash;
+			MArray<HashType, MMemManagerClass> m_Hash;
 		};
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXHashTree : public MTXHash<MTXBinaryTree<T, MTXMemManagerClass>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MHashTree : public MHash<MXBinaryTree<T, MMemManagerClass>, MMemManagerClass>
 		{
 		public:
-			MTXHashTree() :MTXHash<MTXBinaryTree<T, MTXMemManagerClass>, MTXMemManagerClass>()
+			MHashTree() : MHash<MXBinaryTree<T, MMemManagerClass>, MMemManagerClass>()
 			{
 			}
-			const MTXBinaryTreeNode<T>* Find(const T& Element)const
+			const MBinaryTreeNode<T>* Find(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return &m_Hash[HashID].Find(Element);
 			}
-			template<class N>
+			template <class N>
 			void PreProcess(N& Process)
 			{
 				for (unsigned int i = 0; i < m_Hash.GetNum(); i++)
@@ -79,7 +81,7 @@ namespace Matrix
 					m_Hash[i].PreProcess(Process);
 				}
 			}
-			template<class N>
+			template <class N>
 			void PostProcess(N& Process)
 			{
 				for (unsigned int i = 0; i < m_Hash.GetNum(); i++)
@@ -87,7 +89,7 @@ namespace Matrix
 					m_Hash[i].PostProcess(Process);
 				}
 			}
-			template<class N>
+			template <class N>
 			void MiddleProcess(N& Process)
 			{
 				for (unsigned int i = 0; i < m_Hash.GetNum(); i++)
@@ -96,38 +98,37 @@ namespace Matrix
 				}
 			}
 		};
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXHashList : public MTXHash<MTXList<T, MTXMemManagerClass>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MHashList : public MHash<MXList<T, MMemManagerClass>, MMemManagerClass>
 		{
 		public:
-			MTXHashList() :MTXHash<MTXList<T, MTXMemManagerClass>, MTXMemManagerClass>()
+			MHashList() : MHash<MXList<T, MMemManagerClass>, MMemManagerClass>()
 			{
-
 			}
-			const ListElement<T>* Find(const T& Element)const
+			const ListElement<T>* Find(const T& Element) const
 			{
-				unsigned int HashID = GetTypeHash(Element) % m_Hash.GetNum();
+				unsigned int HashID = Math::GetTypeHash(Element) % m_Hash.GetNum();
 				return &m_Hash[HashID].Find(Element);
 			}
 			inline void SetHashNum(unsigned int uiHashNum)
 			{
-				MX_ENGINE_ASSERT(uiHashNum);
+				MATRIX_ENGINE_ASSERT(uiHashNum);
 				m_Hash.SetBufferNum(uiHashNum);
 				for (unsigned int i = 0; i < m_Hash.GetNum(); i++)
 				{
 					m_Hash[i].SetUnique(false);
 				}
 			}
-			class MTXHashListIterator
+			class MHashListIterator
 			{
 			public:
-				MTXHashListIterator()
+				MHashListIterator()
 				{
 					m_pOwner = NULL;
 					m_iCurHashID = -1;
 					m_pNode = NULL;
 				}
-				MTXHashListIterator(MTXHashList* InOwner)
+				MHashListIterator(MHashList* InOwner)
 				{
 					m_pOwner = InOwner;
 					if (InOwner)
@@ -139,47 +140,46 @@ namespace Matrix
 					{
 						Invald();
 					}
-
 				}
-				MTXHashListIterator(const MTXHashListIterator& Iterator)
+				MHashListIterator(const MHashListIterator& Iterator)
 				{
 					m_pOwner = Iterator.m_pOwner;
 					m_pNode = Iterator.m_pNode;
 					m_iCurHashID = Iterator.m_iCurHashID;
 				}
-				~MTXHashListIterator()
+				~MHashListIterator()
 				{
 					Invald();
 				}
-				void operator= (const MTXHashListIterator& Iterator)
+				void operator=(const MHashListIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 					m_pOwner = Iterator.m_pOwner;
 					m_iCurHashID = Iterator.m_iCurHashID;
 				}
-				bool operator!= (const MTXHashListIterator& Iterator)
+				bool operator!=(const MHashListIterator& Iterator)
 				{
 					return (m_pNode != Iterator.m_pNode || m_pOwner != Iterator.m_pOwner || m_iCurHashID != Iterator.m_iCurHashID);
 				}
-				bool operator== (const MTXHashListIterator& Iterator)
+				bool operator==(const MHashListIterator& Iterator)
 				{
 					return (m_pNode == Iterator.m_pNode && m_pOwner == Iterator.m_pOwner && m_iCurHashID == Iterator.m_iCurHashID);
 				}
 
-				void operator= (ListElement<T>* pNode)
+				void operator=(ListElement<T>* pNode)
 				{
 					m_pNode = pNode;
 				}
-				bool operator!= (ListElement<T>* pNode)
+				bool operator!=(ListElement<T>* pNode)
 				{
 					return (m_pNode != pNode);
 				}
-				bool operator== (ListElement<T>* pNode)
+				bool operator==(ListElement<T>* pNode)
 				{
 					return (m_pNode == pNode);
 				}
 
-				MTXHashListIterator operator++()
+				MHashListIterator operator++()
 				{
 					if (m_pNode)
 					{
@@ -197,9 +197,9 @@ namespace Matrix
 					}
 					return (*this);
 				}
-				MTXHashListIterator operator++(int)
+				MHashListIterator operator++(int)
 				{
-					MTXHashListIterator Temp = *this;
+					MHashListIterator Temp = *this;
 					if (m_pNode)
 					{
 						m_pNode = m_pNode->m_pNext;
@@ -216,9 +216,9 @@ namespace Matrix
 					}
 					return Temp;
 				}
-				MTXHashListIterator operator--()
+				MHashListIterator operator--()
 				{
-					MTXHashListIterator Temp = *this;
+					MHashListIterator Temp = *this;
 					if (m_pNode)
 					{
 						m_pNode = m_pNode->m_pFront;
@@ -235,7 +235,7 @@ namespace Matrix
 					}
 					return Temp;
 				}
-				MTXHashListIterator operator--(int)
+				MHashListIterator operator--(int)
 				{
 					if (m_pNode)
 					{
@@ -265,10 +265,11 @@ namespace Matrix
 					}
 					else
 					{
-						MX_ENGINE_ASSERT(0);
+						MATRIX_ENGINE_ASSERT(0);
 						return m_pNode->Element;
 					}
 				}
+
 			protected:
 				void Invald()
 				{
@@ -276,17 +277,17 @@ namespace Matrix
 					m_iCurHashID = -1;
 					m_pNode = NULL;
 				}
-				MTXHashList* m_pOwner;
+				MHashList* m_pOwner;
 				int m_iCurHashID;
 				ListElement<T>* m_pNode;
 			};
-			MTXHashListIterator Begin()
+			MHashListIterator Begin()
 			{
-				return MTXHashListIterator(this);
+				return MHashListIterator(this);
 			}
-			MTXHashListIterator End()
+			MHashListIterator End()
 			{
-				return MTXHashListIterator();
+				return MHashListIterator();
 			}
 		};
 	}

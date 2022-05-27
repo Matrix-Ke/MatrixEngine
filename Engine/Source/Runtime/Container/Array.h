@@ -4,7 +4,7 @@ namespace Matrix
 {
 	namespace Container
 	{
-		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
+		template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
 		class  MArray : public MContainer<T, MemoryManagerClass>
 		{
 		public:
@@ -19,29 +19,28 @@ namespace Matrix
 			void SetBufferNum(unsigned int uiBufferNum);
 			//添加 uiBufferNum 个元素，没有初始化
 			void AddBufferNum(unsigned int uiBufferNum);
-			void operator = (const MArray<T, MemoryManagerClass>& Array);
+			void operator=(const MArray<T, MemoryManagerClass>& Array);
 
+			inline unsigned int GetNum() const;
 
-			inline unsigned int GetNum()   const;
+			inline unsigned int GetBufferNum() const;
 
-			inline unsigned int GetBufferNum()   const;
-
-			inline T* GetBuffer()   const;
+			inline T* GetBuffer() const;
 			inline void SetGrowBy(unsigned int uiGrowBy);
-			unsigned  AddElement(const T& Element);
-			template <class N, class MTXMemManagerClassN>
-			void AddElement(const MArray<N, MTXMemManagerClassN>& Array, unsigned int uiBegin, unsigned int uiEnd);
-			T& operator[] (unsigned int i)const;
+			unsigned AddElement(const T& Element);
+			template <class N, class MXMemManagerClassN>
+			void AddElement(const MArray<N, MXMemManagerClassN>& Array, unsigned int uiBegin, unsigned int uiEnd);
+			T& operator[](unsigned int i) const;
 
 			void Clear();
 
-			inline unsigned int GetSize()   const;
+			inline unsigned int GetSize() const;
 
 			void Erase(unsigned int i);
 
 			void Erase(unsigned int uiBegin, unsigned int uiEnd);
 
-			//当Compare == 0 升序 
+			//当Compare == 0 升序
 			template <class N>
 			void Sort(unsigned int uiBegin, unsigned int uiEnd, N& Compare);
 			template <class N>
@@ -58,7 +57,7 @@ namespace Matrix
 			class MArrayIterator
 			{
 			public:
-				MArrayIterator(T* pNode = NULL) :m_pNode(pNode)
+				MArrayIterator(T* pNode = NULL) : m_pNode(pNode)
 				{
 				}
 				MArrayIterator(const MArrayIterator& Iterator)
@@ -66,15 +65,15 @@ namespace Matrix
 					m_pNode = Iterator.m_pNode;
 				}
 				~MArrayIterator() = default;
-				inline void operator= (const MArrayIterator& Iterator)
+				inline void operator=(const MArrayIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				inline bool operator!= (const MArrayIterator& Iterator)
+				inline bool operator!=(const MArrayIterator& Iterator)
 				{
 					return (m_pNode != Iterator.m_pNode);
 				}
-				inline bool operator== (const MArrayIterator& Iterator)
+				inline bool operator==(const MArrayIterator& Iterator)
 				{
 					return (m_pNode == Iterator.m_pNode);
 				}
@@ -101,48 +100,47 @@ namespace Matrix
 					--* this;
 					return (_Tmp);
 				}
-				inline T& operator*()   const
+				inline T& operator*() const
 				{
 					return *m_pNode;
 				}
-				inline T* operator->()   const
+				inline T* operator->() const
 				{
 					return m_pNode;
 				}
+
 			protected:
 				T* m_pNode;
-
 			};
-			inline MArrayIterator Begin()    const
+			inline MArrayIterator Begin() const
 			{
 				return MArrayIterator(m_pBuffer);
 			}
-			inline MArrayIterator End()    const
+			inline MArrayIterator End() const
 			{
 				return MArrayIterator(m_pBuffer + GetNum());
 			}
-			inline MArrayIterator begin()    const
+			inline MArrayIterator begin() const
 			{
 				return Begin();
 			}
-			inline MArrayIterator end()    const
+			inline MArrayIterator end() const
 			{
 				return End();
 			}
-		protected:
-			T* m_pBuffer; //空间地址指针
-			unsigned int m_uiGrowBy; //增长幅度
-			unsigned int m_uiCurUse; //当前元素个数
-			unsigned int m_uiBufferNum; //当前总空间个数
-			unsigned int m_uiAllocNum; //记录分配次数
 
+		protected:
+			T* m_pBuffer;               //空间地址指针
+			unsigned int m_uiGrowBy;    //增长幅度
+			unsigned int m_uiCurUse;    //当前元素个数
+			unsigned int m_uiBufferNum; //当前总空间个数
+			unsigned int m_uiAllocNum;  //记录分配次数
 
 		private:
-
 		};
 		//有序数组
-		template <class T, class MemoryManagerClass = DefaultContainerMemoryAllocator>
-		class  MArrayOrder : public MArray<T, MemoryManagerClass>
+		template <class T, class MemoryManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MArrayOrder : public MArray<T, MemoryManagerClass>
 		{
 		public:
 			MArrayOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
@@ -154,13 +152,12 @@ namespace Matrix
 			unsigned int FindElement(const T& Element);
 
 			void ReSort(unsigned int i);
-		protected:
 
+		protected:
 			unsigned int Process(unsigned int uiIndex0, unsigned int uiIndex1, const T& Element);
 
 			unsigned int FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const T& Element);
 		};
-
 
 #include "Array.inl"
 	}

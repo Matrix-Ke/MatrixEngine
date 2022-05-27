@@ -1,20 +1,20 @@
 #include "Log.h"
 
-Matrix::Core::MTXLog::MTXLog()
+Matrix::Core::MXLog::MXLog()
 {
 }
 
-Matrix::Core::MTXLog::~MTXLog()
+Matrix::Core::MXLog::~MXLog()
 {
 }
 
-bool Matrix::Core::MTXLog::Open(const TCHAR* pFileName)
+bool Matrix::Core::MXLog::Open(const TCHAR *pFileName)
 {
-	return File::Open(pFileName, EOpenMode::OM_WT);
+    return File::Open(pFileName, EOpenMode::OM_WT);
 }
 
-bool Matrix::Core::MTXLog::WriteInfo(const TCHAR* pString)
+bool Matrix::Core::MXLog::WriteInfo(const TCHAR *pString)
 {
-	//时时刻刻记得字符数组不要越界
-	return File::Write(pString, MTXStrLen(pString) + 1, 1);
+    //时时刻刻记得字符数组不要越界
+    return File::Write(pString, MXStrLen(pString) + 1, 1);
 }

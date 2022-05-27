@@ -9,6 +9,7 @@
 #else
 #define MATRIX_MATH_API __declspec(dllimport)
 #endif
+
 namespace Matrix
 {
 	namespace Math
@@ -136,11 +137,11 @@ namespace Matrix
 			return LLABS(t);
 		}
 
-		inline int VSstoi(const TCHAR* p)
+		inline int MXstoi(const TCHAR* p)
 		{
 			return _tstoi(p);
 		}
-		inline VSREAL VSstof(const TCHAR* p)
+		inline VSREAL MXstof(const TCHAR* p)
 		{
 			return (VSREAL)_tstof(p);
 		}

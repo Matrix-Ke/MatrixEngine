@@ -4,29 +4,29 @@ namespace Matrix
 {
 	namespace Container
 	{
-		template<class T>
-		class MTXBit
+		template <class T>
+		class MBit
 		{
 		public:
 			enum
 			{
 				BYTE_SIZE = sizeof(T) * 8
 			};
-			MTXBit(const MTXBit<T>& Bit)
+			MBit(const MBit<T>& Bit)
 			{
 				m_Member = Bit.m_Member;
 			}
-			MTXBit()
+			MBit()
 			{
 				m_Member = 0;
 			}
-			bool operator[] (unsigned int uiIndex)
+			bool operator[](unsigned int uiIndex)
 			{
 				int bit = uiIndex % BYTE_SIZE;
 				return (((m_Member & (1 << bit)) >> bit) == 1);
 			}
 
-			void operator= (const MTXBit<T>& Bit)
+			void operator=(const MBit<T>& Bit)
 			{
 				m_Member = Bit.m_Member;
 			}
@@ -34,7 +34,6 @@ namespace Matrix
 			{
 
 				int bit = uiIndex % BYTE_SIZE;
-
 
 				if (bValue == true)
 
@@ -44,13 +43,11 @@ namespace Matrix
 					m_Member = (m_Member & (~(1 << bit)));
 			}
 
-
 			void ClearAll()
 			{
 
 				m_Member = 0;
 			}
-
 
 			void SetAll()
 			{
@@ -65,35 +62,35 @@ namespace Matrix
 			{
 				return BYTE_SIZE;
 			}
+
 		protected:
 			T m_Member;
 		};
-		class MTXBitArray
+		class MXBitArray
 		{
 		public:
 			enum
 			{
 				BYTE_SIZE = sizeof(unsigned int) * 8
 			};
-			MTXBitArray(const MTXBitArray& BitArray)
+			MXBitArray(const MXBitArray& BitArray)
 			{
 				ENGINE_DELETE(m_pBuffer);
 				m_uiSize = BitArray.m_uiSize;
 				m_pBuffer = MX_NEW unsigned int[m_uiSize];
-				MTXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
+				Core::MXMemcpy(m_pBuffer, BitArray.m_pBuffer, sizeof(unsigned int) * m_uiSize);
 			}
-			MTXBitArray(unsigned int uiSize = 0)
+			MXBitArray(unsigned int uiSize = 0)
 			{
 				m_pBuffer = 0;
 				m_uiSize = 0;
 				Resize(uiSize);
 			}
 
-			~MTXBitArray()
+			~MXBitArray()
 			{
 				ENGINE_DELETE(m_pBuffer);
 			}
-
 
 			void Resize(unsigned int uiSize)
 			{
@@ -110,9 +107,9 @@ namespace Matrix
 
 				pNewVector = MX_NEW unsigned int[uiSize];
 
-				MX_ENGINE_ASSERT(pNewVector);
+				MATRIX_ENGINE_ASSERT(pNewVector);
 
-				MTXMemset(pNewVector, 0, uiSize * sizeof(unsigned int));
+				MXMemset(pNewVector, 0, uiSize * sizeof(unsigned int));
 				unsigned int uiMin;
 				if (uiSize < m_uiSize)
 					uiMin = uiSize;
@@ -127,30 +124,27 @@ namespace Matrix
 				ENGINE_DELETE(m_pBuffer);
 
 				m_pBuffer = pNewVector;
-
 			}
 
-
-			bool operator[] (unsigned int uiIndex)
+			bool operator[](unsigned int uiIndex)
 			{
 				int cell = uiIndex / BYTE_SIZE;
 				int bit = uiIndex % BYTE_SIZE;
 				return (((m_pBuffer[cell] & (1 << bit)) >> bit) == 1);
 			}
 
-			void operator= (const MTXBitArray& BitArray)
+			void operator=(const MXBitArray& BitArray)
 			{
 				m_uiSize = BitArray.m_uiSize;
 				ENGINE_DELETE(m_pBuffer);
 				m_pBuffer = MX_NEW unsigned int[m_uiSize];
-				MTXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
+				Core::MXMemcpy(m_pBuffer, BitArray.m_pBuffer, m_uiSize * sizeof(unsigned int));
 			}
 			void Set(unsigned int uiIndex, bool bValue)
 			{
 				int cell = uiIndex / BYTE_SIZE;
 
 				int bit = uiIndex % BYTE_SIZE;
-
 
 				if (bValue == true)
 
@@ -160,14 +154,12 @@ namespace Matrix
 					m_pBuffer[cell] = (m_pBuffer[cell] & (~(1 << bit)));
 			}
 
-
 			void ClearAll()
 			{
 
 				for (unsigned int uiIndex = 0; uiIndex < m_uiSize; uiIndex++)
 					m_pBuffer[uiIndex] = 0;
 			}
-
 
 			void SetAll()
 			{
@@ -176,20 +168,15 @@ namespace Matrix
 					m_pBuffer[uiIndex] = 0xFFFFFFFF;
 			}
 
-
 			unsigned int Size()
 			{
 				return m_uiSize * BYTE_SIZE;
 			}
 
-
-
 			unsigned int GetCell(int uiIndex)
 			{
 				return m_pBuffer[uiIndex];
 			}
-
-
 
 			unsigned int* m_pBuffer;
 
@@ -197,5 +184,3 @@ namespace Matrix
 		};
 	}
 }
-
-

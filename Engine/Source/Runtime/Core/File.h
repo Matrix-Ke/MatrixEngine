@@ -12,9 +12,9 @@ namespace Matrix
 			//选出几种代表的openmode
 			enum  EOpenMode
 			{
-				OM_RB,
+				OM_RB, //Open a text file for reading. (The file must exist.)
 				OM_RT,
-				OM_WB, //Open a text file for reading. (The file must exist.)
+				OM_WB,
 				OM_WT, //Open a text file for writing. If the file already exists, its contents are destroyed.
 				OM_AB,
 				OM_AT,

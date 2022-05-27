@@ -5,13 +5,12 @@ namespace Matrix
 {
 	namespace Container
 	{
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXSafeQueue : public MTXMemObject
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MSafeQueue : public MXMemObject
 		{
 		public:
-
-			MTXSafeQueue(bool bUnique = false);
-			~MTXSafeQueue();
+			MSafeQueue(bool bUnique = false);
+			~MSafeQueue();
 			void Enqueue(const T& Element);
 			void Dequeue(T& Element);
 			void GetTop(T& Element);
@@ -24,38 +23,37 @@ namespace Matrix
 			bool TryGetTop(T& Element);
 			bool TryErase(const T& Element);
 			bool TryIsEmpty();
+
 		protected:
-			MTXQueue<T, MTXMemManagerClass> m_Queue;
-			MTXCriticalSection m_CriticalSec;
+			MQueue<T, MMemManagerClass> m_Queue;
+			MXCriticalSection m_CriticalSec;
 
 		private:
-
 		};
-		template <class T, class MTXMemManagerClass>
-		MTXSafeQueue<T, MTXMemManagerClass>::~MTXSafeQueue()
-		{
-
-		}
-
-		template <class T, class MTXMemManagerClass>
-		MTXSafeQueue<T, MTXMemManagerClass>::MTXSafeQueue(bool bUnique)
+		template <class T, class MMemManagerClass>
+		MSafeQueue<T, MMemManagerClass>::~MSafeQueue()
 		{
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXSafeQueue<T, MTXMemManagerClass>::Clear()
+
+		template <class T, class MMemManagerClass>
+		MSafeQueue<T, MMemManagerClass>::MSafeQueue(bool bUnique)
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+		}
+		template <class T, class MMemManagerClass>
+		void MSafeQueue<T, MMemManagerClass>::Clear()
+		{
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			m_Queue.Clear();
 		}
 
-		template <class T, class MTXMemManagerClass>
-		void MTXSafeQueue<T, MTXMemManagerClass>::Enqueue(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MSafeQueue<T, MMemManagerClass>::Enqueue(const T& Element)
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			m_Queue.Enqueue(Element);
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::TryEnqueue(const T& Element)
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::TryEnqueue(const T& Element)
 		{
 			bool bLocked = m_CriticalSec.TryLock();
 			if (bLocked)
@@ -65,14 +63,14 @@ namespace Matrix
 			}
 			return bLocked;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXSafeQueue<T, MTXMemManagerClass>::GetTop(T& Element)
+		template <class T, class MMemManagerClass>
+		void MSafeQueue<T, MMemManagerClass>::GetTop(T& Element)
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			m_Queue.GetTop(Element);
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::TryGetTop(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::TryGetTop(T& Element)
 		{
 			bool bLocked = m_CriticalSec.TryLock();
 			if (bLocked)
@@ -82,14 +80,14 @@ namespace Matrix
 			}
 			return bLocked;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXSafeQueue<T, MTXMemManagerClass>::Dequeue(T& Element)
+		template <class T, class MMemManagerClass>
+		void MSafeQueue<T, MMemManagerClass>::Dequeue(T& Element)
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			m_Queue.Dequeue(Element);
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::TryDequeue(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::TryDequeue(T& Element)
 		{
 			bool bLocked = m_CriticalSec.TryLock();
 			if (bLocked)
@@ -99,14 +97,14 @@ namespace Matrix
 			}
 			return bLocked;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXSafeQueue<T, MTXMemManagerClass>::Erase(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MSafeQueue<T, MMemManagerClass>::Erase(const T& Element)
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			m_Queue.Erase(Element);
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::TryErase(const T& Element)
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::TryErase(const T& Element)
 		{
 			bool bLocked = m_CriticalSec.TryLock();
 			if (bLocked)
@@ -116,20 +114,19 @@ namespace Matrix
 			}
 			return bLocked;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::IsEmpty()
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::IsEmpty()
 		{
-			MTXCriticalSection::Locker Temp(m_CriticalSec);
+			MXCriticalSection::Locker Temp(m_CriticalSec);
 			bool bEmpty = false;
 			if (m_Queue.GetNum() == 0)
 			{
 				bEmpty = true;
 			}
 			return bEmpty;
-
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXSafeQueue<T, MTXMemManagerClass>::TryIsEmpty()
+		template <class T, class MMemManagerClass>
+		bool MSafeQueue<T, MMemManagerClass>::TryIsEmpty()
 		{
 			bool bLocked = m_CriticalSec.TryLock();
 			bool bEmpty = false;
@@ -142,7 +139,6 @@ namespace Matrix
 				m_CriticalSec.Unlock();
 			}
 			return bEmpty;
-
 		}
 	}
 }

@@ -1,9 +1,9 @@
 //#pragma once
 //#include "Core.h"
 //
-//namespace Matrix
+// namespace Matrix
 //{
-//	class  MATRIX_CORE_API  MTXImage
+//	class  MATRIX_CORE_API  MXImage
 //	{
 //	public:
 //		enum ImageFormat
@@ -14,8 +14,8 @@
 //		};
 //
 //
-//		MTXImage();
-//		virtual ~MTXImage() = 0;
+//		MXImage();
+//		virtual ~MXImage() = 0;
 //		virtual bool Load(const TCHAR* pFileName) = 0;
 //		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uSize) = 0;
 //		virtual const unsigned char* GetPixel(unsigned int x, unsigned int y)const = 0;
@@ -56,7 +56,7 @@
 //		unsigned char* m_pPalette;
 //	};
 //
-//	class MATRIX_CORE_API VSBMPImage : public MTXImage
+//	class MATRIX_CORE_API VSBMPImage : public MXImage
 //	{
 //	public:
 //		VSBMPImage();

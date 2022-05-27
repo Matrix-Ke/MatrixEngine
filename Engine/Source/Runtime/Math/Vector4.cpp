@@ -55,25 +55,25 @@ Vector4::Vector4(const Vector3 &V)
 void Vector4::CreateFromARGB(DWORD ARGB)
 {
     unsigned char a, r, g, b;
-    VSDWCOLORGetARGB(ARGB, a, r, g, b);
+    DWCOLORGetARGB(ARGB, a, r, g, b);
     *this = Vector4(r, g, b, a);
 }
 void Vector4::CreateFromBGRA(DWORD BGRA)
 {
     unsigned char a, r, g, b;
-    VSDWCOLORGetBGRA(BGRA, a, r, g, b);
+    DWCOLORGetBGRA(BGRA, a, r, g, b);
     *this = Vector4(r, g, b, a);
 }
 void Vector4::CreateFromRGBA(DWORD RGBA)
 {
     unsigned char a, r, g, b;
-    VSDWCOLORGetRGBA(RGBA, a, r, g, b);
+    DWCOLORGetRGBA(RGBA, a, r, g, b);
     *this = Vector4(r, g, b, a);
 }
 void Vector4::CreateFromABGR(DWORD ABGR)
 {
     unsigned char a, r, g, b;
-    VSDWCOLORGetABGR(ABGR, a, r, g, b);
+    DWCOLORGetABGR(ABGR, a, r, g, b);
     *this = Vector4(r, g, b, a);
 }
 /*----------------------------------------------------------------*/

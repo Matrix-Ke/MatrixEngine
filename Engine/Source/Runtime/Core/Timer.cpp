@@ -2,78 +2,73 @@
 #include <mmsystem.h>
 using namespace Matrix::Core;
 
-
-MTXTimer* MTXTimer::msPtrTimer = nullptr;
-Matrix::Core::MTXTimer::MTXTimer()
+MXTimer *MXTimer::msPtrTimer = nullptr;
+Matrix::Core::MXTimer::MXTimer()
 {
-	InitGameTime();
-	msPtrTimer = this;
+    InitGameTime();
+    msPtrTimer = this;
 }
 
-Matrix::Core::MTXTimer::~MTXTimer()
+Matrix::Core::MXTimer::~MXTimer()
 {
-
 }
 
-void Matrix::Core::MTXTimer::InitGameTime()
+void Matrix::Core::MXTimer::InitGameTime()
 {
-	mFrameCount = 0;
-	mFPS = 0;
-	mTime = 0;
-	mLastFPStime = 0;
-	mTimeSlice = 0;
-	mLastTime = 0;
-	mDeltaTime = 0;
+    mFrameCount = 0;
+    mFPS = 0;
+    mTime = 0;
+    mLastFPStime = 0;
+    mTimeSlice = 0;
+    mLastTime = 0;
+    mDeltaTime = 0;
 
-	if (QueryPerformanceFrequency((LARGE_INTEGER*)&mOneSecondTicks))
-	{
-		mUselargeTime = true;
-		QueryPerformanceCounter((LARGE_INTEGER*)&mTimeTickStartCounts);
-	}
-	else
-	{
-		mUselargeTime = false;
-		mTimeStart = timeGetTime();
-	}
+    if (QueryPerformanceFrequency((LARGE_INTEGER *)&mOneSecondTicks))
+    {
+        mUselargeTime = true;
+        QueryPerformanceCounter((LARGE_INTEGER *)&mTimeTickStartCounts);
+    }
+    else
+    {
+        mUselargeTime = false;
+        mTimeStart = timeGetTime();
+    }
 }
 
-double Matrix::Core::MTXTimer::GetGamePlayTime()
+double Matrix::Core::MXTimer::GetGamePlayTime()
 {
-	//返回当前时间，单位毫秒
-	__int64  timecurrentCounts;
-	if (mUselargeTime)
-	{
-		QueryPerformanceCounter((LARGE_INTEGER*)&timecurrentCounts);
-		return ((timecurrentCounts - mTimeTickStartCounts) * (1.0 / mOneSecondTicks) * 1000.0);
-	}
-	else
-	{
-		return double((timeGetTime() - mTimeStart));  //timeGetTime函数返回的时间单位为毫秒
-	}
+    //返回当前时间，单位毫秒
+    __int64 timecurrentCounts;
+    if (mUselargeTime)
+    {
+        QueryPerformanceCounter((LARGE_INTEGER *)&timecurrentCounts);
+        return ((timecurrentCounts - mTimeTickStartCounts) * (1.0 / mOneSecondTicks) * 1000.0);
+    }
+    else
+    {
+        return double((timeGetTime() - mTimeStart)); // timeGetTime函数返回的时间单位为毫秒
+    }
 }
 
-void Matrix::Core::MTXTimer::UpdateFPS()
+void Matrix::Core::MXTimer::UpdateFPS()
 {
-	mTime = GetGamePlayTime() * 0.001;
-	mDeltaTime = mTime - mLastTime;
-	mLastTime = mTime;
-	if (mTime - mLastFPStime > 1.0f)
-	{
-		mLastFPStime = mTime;
-		//todo list...
-		mFPS = mFrameCount;
-		mFrameCount = 0;
-	}
-	else
-	{
-		mFrameCount++;
-	}
-
+    mTime = GetGamePlayTime() * 0.001;
+    mDeltaTime = mTime - mLastTime;
+    mLastTime = mTime;
+    if (mTime - mLastFPStime > 1.0f)
+    {
+        mLastFPStime = mTime;
+        // todo list...
+        mFPS = mFrameCount;
+        mFrameCount = 0;
+    }
+    else
+    {
+        mFrameCount++;
+    }
 }
 
-int Matrix::Core::MTXTimer::GetRandSeed()
+int Matrix::Core::MXTimer::GetRandSeed()
 {
-	return ((LARGE_INTEGER*)mTimeTickStartCounts)->LowPart;
+    return ((LARGE_INTEGER *)mTimeTickStartCounts)->LowPart;
 }
-
-

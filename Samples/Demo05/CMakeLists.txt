@@ -7,7 +7,6 @@ getCurrentDirName(DemoName)
 
 FILE(GLOB SourceFiles ./*.cpp)
 FILE(GLOB ResourceFile ./*.json)
-message(STATUS ResourceFile = ${ResourceFile})
 source_group("Source Files" FILES ${SourceFiles})
 source_group("Resource File" FILES ${ResourceFile})
 add_executable(${DemoName} ${SourceFiles} ${ResourceFile})

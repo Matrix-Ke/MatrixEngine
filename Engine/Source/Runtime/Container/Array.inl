@@ -1,8 +1,6 @@
 #include "Array.h"
 using namespace Matrix::Container;
 
-
-
 template <class T, class MemoryManagerClass>
 MArray<T, MemoryManagerClass>::~MArray()
 {
@@ -15,7 +13,7 @@ MArray<T, MemoryManagerClass>::~MArray()
 template <class T, class MemoryManagerClass>
 MArray<T, MemoryManagerClass>::MArray(unsigned int uiGrowBy)
 {
-	MX_ENGINE_ASSERT(uiGrowBy);
+	MATRIX_ENGINE_ASSERT(uiGrowBy);
 	m_uiGrowBy = uiGrowBy;
 	m_pBuffer = NULL;
 	m_uiCurUse = 0;
@@ -60,15 +58,14 @@ void MArray<T, MemoryManagerClass>::SetBufferNum(unsigned int uiBufferNum)
 		m_uiBufferNum = uiBufferNum;
 
 		m_pBuffer = New(uiBufferNum);
-		MX_ENGINE_ASSERT(m_pBuffer);
+		MATRIX_ENGINE_ASSERT(m_pBuffer);
 		m_uiCurUse = uiBufferNum;
 		for (unsigned int i = 0; i < m_uiBufferNum; i++)
 		{
-			MX_NEW(m_pBuffer + i) T();
-
+			MX_NEW(m_pBuffer + i)
+				T();
 		}
 	}
-
 }
 template <class T, class MemoryManagerClass>
 void MArray<T, MemoryManagerClass>::AddBufferNum(unsigned int uiBufferNum)
@@ -82,32 +79,31 @@ void MArray<T, MemoryManagerClass>::AddBufferNum(unsigned int uiBufferNum)
 	T* pBuffer = NULL;
 
 	pBuffer = New(m_uiBufferNum + uiBufferNum);
-	MX_ENGINE_ASSERT(pBuffer);
+	MATRIX_ENGINE_ASSERT(pBuffer);
 	if (m_pBuffer && m_uiCurUse)
 	{
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MX_NEW(pBuffer + i) T(m_pBuffer[i]);
-
+			MX_NEW(pBuffer + i)
+				T(m_pBuffer[i]);
 		}
-
 	}
 	Delete(m_pBuffer, m_uiCurUse);
 	m_uiBufferNum = m_uiBufferNum + uiBufferNum;
 	m_pBuffer = pBuffer;
 }
 template <class T, class MemoryManagerClass>
-inline unsigned int MArray<T, MemoryManagerClass>::GetNum()   const
+inline unsigned int MArray<T, MemoryManagerClass>::GetNum() const
 {
 	return m_uiCurUse;
 }
 template <class T, class MemoryManagerClass>
-inline unsigned int MArray<T, MemoryManagerClass>::GetBufferNum()   const
+inline unsigned int MArray<T, MemoryManagerClass>::GetBufferNum() const
 {
 	return m_uiBufferNum;
 }
 template <class T, class MemoryManagerClass>
-inline T* MArray<T, MemoryManagerClass>::GetBuffer()   const
+inline T* MArray<T, MemoryManagerClass>::GetBuffer() const
 {
 	return m_pBuffer;
 }
@@ -117,7 +113,7 @@ inline void MArray<T, MemoryManagerClass>::SetGrowBy(unsigned int uiGrowBy)
 	m_uiGrowBy = uiGrowBy;
 }
 template <class T, class MemoryManagerClass>
-inline unsigned int MArray<T, MemoryManagerClass>::GetSize()   const
+inline unsigned int MArray<T, MemoryManagerClass>::GetSize() const
 {
 	return sizeof(unsigned int) * 4 + sizeof(T*) + sizeof(T) * m_uiBufferNum;
 }
@@ -128,17 +124,17 @@ unsigned int MArray<T, MemoryManagerClass>::AddElement(const T& Element)
 	{
 		AddBufferNum(m_uiGrowBy);
 	}
-	MX_NEW(m_pBuffer + m_uiCurUse) T(Element);
+	MX_NEW(m_pBuffer + m_uiCurUse)
+		T(Element);
 	m_uiCurUse++;
 	return m_uiCurUse - 1;
 }
 template <class T, class MemoryManagerClass>
-template <class N, class MTXMemManagerClassN>
-void MArray<T, MemoryManagerClass>::AddElement(const MArray<N, MTXMemManagerClassN>& Array, unsigned int uiBegin, unsigned int uiEnd)
+template <class N, class MXMemManagerClassN>
+void MArray<T, MemoryManagerClass>::AddElement(const MArray<N, MXMemManagerClassN>& Array, unsigned int uiBegin, unsigned int uiEnd)
 {
-	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
-	MX_ENGINE_ASSERT(uiEnd < Array.GetNum());
-
+	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	MATRIX_ENGINE_ASSERT(uiEnd < Array.GetNum());
 
 	int iAddNum = uiEnd - uiBegin + 1;
 	int iHaveNum = m_uiBufferNum - m_uiCurUse;
@@ -177,16 +173,16 @@ void MArray<T, MemoryManagerClass>::AddElement(const MArray<N, MTXMemManagerClas
 		N* pBuffer = Array.GetBuffer();
 		for (unsigned int i = m_uiCurUse; i < (unsigned int)iAddNum + m_uiCurUse; i++)
 		{
-			MX_NEW(m_pBuffer + i) T(pBuffer[uiBegin]);
+			MX_NEW(m_pBuffer + i)
+				T(pBuffer[uiBegin]);
 			uiBegin++;
 		}
 		m_uiCurUse += iAddNum;
-		//MTXMemcpy(&m_pBuffer[m_uiCurUse],&Array.m_pBuffer[uiBegin], sizeof(T) * iAddNum);
+		// Core::MXMemcpy(&m_pBuffer[m_uiCurUse],&Array.m_pBuffer[uiBegin], sizeof(T) * iAddNum);
 	}
-
 }
 template <class T, class MemoryManagerClass>
-void MArray<T, MemoryManagerClass>::operator= (const MArray<T, MemoryManagerClass>& Array)
+void MArray<T, MemoryManagerClass>::operator=(const MArray<T, MemoryManagerClass>& Array)
 {
 	if (m_uiBufferNum >= Array.GetNum())
 	{
@@ -195,7 +191,8 @@ void MArray<T, MemoryManagerClass>::operator= (const MArray<T, MemoryManagerClas
 		T* pBuffer = Array.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MX_NEW(m_pBuffer + i) T(pBuffer[i]);
+			MX_NEW(m_pBuffer + i)
+				T(pBuffer[i]);
 		}
 	}
 	else
@@ -211,10 +208,9 @@ void MArray<T, MemoryManagerClass>::operator= (const MArray<T, MemoryManagerClas
 		T* pBuffer = Array.GetBuffer();
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
-			MX_NEW(m_pBuffer + i) T(pBuffer[i]);
+			MX_NEW(m_pBuffer + i)
+				T(pBuffer[i]);
 		}
-
-
 	}
 
 	return;
@@ -226,7 +222,7 @@ void MArray<T, MemoryManagerClass>::Clear()
 	{
 		return;
 	}
-	if (ValueBase<T>::NeedsDestructor)
+	if (Core::ValueBase<T>::NeedsDestructor)
 	{
 		for (unsigned int i = 0; i < m_uiCurUse; i++)
 		{
@@ -235,7 +231,6 @@ void MArray<T, MemoryManagerClass>::Clear()
 	}
 
 	m_uiCurUse = 0;
-
 }
 template <class T, class MemoryManagerClass>
 void MArray<T, MemoryManagerClass>::Destroy()
@@ -245,19 +240,17 @@ void MArray<T, MemoryManagerClass>::Destroy()
 	Delete(m_pBuffer, m_uiCurUse);
 }
 template <class T, class MemoryManagerClass>
-T& MArray<T, MemoryManagerClass>::operator[] (unsigned int i)const
+T& MArray<T, MemoryManagerClass>::operator[](unsigned int i) const
 {
 
-	MX_ENGINE_ASSERT(i < m_uiBufferNum);
+	MATRIX_ENGINE_ASSERT(i < m_uiBufferNum);
 	return m_pBuffer[i];
-
-
 }
 template <class T, class MemoryManagerClass>
 void MArray<T, MemoryManagerClass>::Erase(unsigned int i)
 {
 
-	MX_ENGINE_ASSERT(i < m_uiCurUse)
+	MATRIX_ENGINE_ASSERT(i < m_uiCurUse)
 	{
 		Erase(i, i);
 	}
@@ -265,14 +258,14 @@ void MArray<T, MemoryManagerClass>::Erase(unsigned int i)
 template <class T, class MemoryManagerClass>
 void MArray<T, MemoryManagerClass>::Erase(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	MATRIX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
 
-	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
 
 	unsigned int k;
 	unsigned int uiMoveNum = m_uiCurUse - 1 - uiEnd;
 	unsigned int uiMoveIndex;
-	if (ValueBase<T>::NeedsDestructor)
+	if (Core::ValueBase<T>::NeedsDestructor)
 	{
 		for (unsigned int uiDelete = uiBegin; uiDelete <= uiEnd; uiDelete++)
 		{
@@ -284,14 +277,13 @@ void MArray<T, MemoryManagerClass>::Erase(unsigned int uiBegin, unsigned int uiE
 		uiMoveIndex = uiEnd + k + 1;
 		if (uiMoveIndex < m_uiCurUse)
 		{
-			MX_NEW(m_pBuffer + uiBegin + k) T(m_pBuffer[uiMoveIndex]);
-			if (ValueBase<T>::NeedsDestructor)
+			MX_NEW(m_pBuffer + uiBegin + k)
+				T(m_pBuffer[uiMoveIndex]);
+			if (Core::ValueBase<T>::NeedsDestructor)
 			{
 				m_pBuffer[uiMoveIndex].~T();
 			}
 		}
-
-
 	}
 	m_uiCurUse -= ((uiEnd - uiBegin) + 1);
 }
@@ -307,14 +299,15 @@ void MArray<T, MemoryManagerClass>::SortAll()
 template <class T, class MemoryManagerClass>
 void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	MATRIX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
 
-	MX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
 	//¹é²¢ÅÅÐò ¸´ÔÓ¶È nlogn
 	T* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MX_NEW(pBuffer + i) T();
+		MX_NEW(pBuffer + i)
+			T();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -329,7 +322,6 @@ void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEn
 	// 			}
 	// 		}
 	// 	}
-
 }
 template <class T, class MemoryManagerClass>
 template <class N>
@@ -357,7 +349,8 @@ void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEn
 	T* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)
 	{
-		MX_NEW(pBuffer + i) T();
+		MX_NEW(pBuffer + i)
+			T();
 	}
 	MergeSort(m_pBuffer + uiBegin, pBuffer, uiEnd - uiBegin + 1, Compare);
 	Delete(pBuffer, uiEnd - uiBegin + 1);
@@ -372,7 +365,6 @@ void MArray<T, MemoryManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEn
 	// 			}
 	// 		}
 	// 	}
-
 }
 template <class T, class MemoryManagerClass>
 unsigned int MArray<T, MemoryManagerClass>::FindElement(const T& Element)
@@ -388,13 +380,12 @@ unsigned int MArray<T, MemoryManagerClass>::FindElement(const T& Element)
 }
 template <class T, class MemoryManagerClass>
 MArrayOrder<T, MemoryManagerClass>::MArrayOrder(unsigned int uiGrowBy)
-	:MArray(uiGrowBy)
+	: MArray(uiGrowBy)
 {
 }
 template <class T, class MemoryManagerClass>
 MArrayOrder<T, MemoryManagerClass>::~MArrayOrder()
 {
-
 }
 template <class T, class MemoryManagerClass>
 unsigned int MArrayOrder<T, MemoryManagerClass>::AddElement(const T& Element)
@@ -437,16 +428,16 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::AddElement(const T& Element)
 
 	if (m_uiCurUse == uiIndex)
 	{
-		MX_NEW(m_pBuffer + uiIndex) T(Element);
-
+		MX_NEW(m_pBuffer + uiIndex)
+			T(Element);
 	}
 	else
 	{
-		MX_NEW(m_pBuffer + m_uiCurUse) T(m_pBuffer[m_uiCurUse - 1]);
+		MX_NEW(m_pBuffer + m_uiCurUse)
+			T(m_pBuffer[m_uiCurUse - 1]);
 		for (int i = (int)m_uiCurUse - 2; i >= (int)uiIndex; i--)
 		{
 			m_pBuffer[i + 1] = m_pBuffer[i];
-
 		}
 		m_pBuffer[uiIndex] = Element;
 	}
@@ -477,7 +468,7 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::FindElement(const T& Element)
 template <class T, class MemoryManagerClass>
 void MArrayOrder<T, MemoryManagerClass>::ReSort(unsigned int i)
 {
-	MX_ENGINE_ASSERT(i < m_uiCurUse);
+	MATRIX_ENGINE_ASSERT(i < m_uiCurUse);
 	if (m_pBuffer[i] < m_pBuffer[i - 1] && i)
 	{
 		T Temp = m_pBuffer[i];
@@ -543,7 +534,6 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::FindElement(unsigned int uiInde
 		{
 			return FindElement(uiIndex, uiIndex1, Element);
 		}
-
 	}
 }
 template <class T, class MemoryManagerClass>
@@ -563,7 +553,6 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::Process(unsigned int uiIndex0, 
 		{
 			return uiIndex1;
 		}
-
 	}
 	else
 	{
@@ -580,6 +569,5 @@ unsigned int MArrayOrder<T, MemoryManagerClass>::Process(unsigned int uiIndex0, 
 		{
 			return Process(uiIndex, uiIndex1, Element);
 		}
-
 	}
 }

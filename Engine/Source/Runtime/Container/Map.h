@@ -4,8 +4,8 @@ namespace Matrix
 {
 	namespace Container
 	{
-		template<class KEY, class VALUE, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXMap : public MContainer<MapElement<KEY, VALUE>, MTXMemManagerClass>
+		template <class KEY, class VALUE, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MMap : public MContainer<MapElement<KEY, VALUE>, MMemManagerClass>
 		{
 		public:
 			enum
@@ -13,33 +13,32 @@ namespace Matrix
 				DEFAULT_GROWBY = 10
 			};
 
-			MTXMap(unsigned int uiGrowBy = DEFAULT_GROWBY);
-			~MTXMap();
+			MMap(unsigned int uiGrowBy = DEFAULT_GROWBY);
+			~MMap();
 
 			void SetBufferNum(unsigned int uiBufferNum);
 
-			void operator= (const MTXMap<KEY, VALUE, MTXMemManagerClass>& Map);
+			void operator=(const MMap<KEY, VALUE, MMemManagerClass>& Map);
 
+			inline unsigned int GetNum() const;
 
-			inline unsigned int GetNum()const;
+			inline unsigned int GetBufferNum() const;
 
-			inline unsigned int GetBufferNum()const;
-
-			inline MapElement<KEY, VALUE>* GetBuffer()const;
+			inline MapElement<KEY, VALUE>* GetBuffer() const;
 			inline void SetGrowBy(unsigned int uiGrowBy);
 
-			template<class KEY1, class VALUE1>
+			template <class KEY1, class VALUE1>
 			unsigned int AddElement(const MapElement<KEY1, VALUE1>& Element);
 			unsigned int AddElement(const KEY& Key, const VALUE& Value);
 
-			template<class KEY1, class VALUE1, class MTXMemManagerClass1>
-			void AddElement(const MTXMap<KEY1, VALUE1, MTXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd);
+			template <class KEY1, class VALUE1, class MXMemManagerClass1>
+			void AddElement(const MMap<KEY1, VALUE1, MXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd);
 
-			MapElement<KEY, VALUE>& operator[] (unsigned int i)const;
+			MapElement<KEY, VALUE>& operator[](unsigned int i) const;
 
 			void Clear();
 
-			inline unsigned int GetSize()const;
+			inline unsigned int GetSize() const;
 
 			void Erase(unsigned int i);
 
@@ -51,87 +50,87 @@ namespace Matrix
 			void SortAll(N& Compare);
 			void Sort(unsigned int uiBegin, unsigned int uiEnd);
 			void SortAll();
-			unsigned int Find(const KEY& Key)const;
+			unsigned int Find(const KEY& Key) const;
 
-			unsigned int FindValueIndex(const VALUE& Value)const;
+			unsigned int FindValueIndex(const VALUE& Value) const;
 
 			void Destroy();
 
-
-			class MTXMapIterator
+			class MXMapIterator
 			{
 			public:
-				MTXMapIterator(MapElement<KEY, VALUE>* pNode = NULL) :m_pNode(pNode)
+				MXMapIterator(MapElement<KEY, VALUE>* pNode = NULL) : m_pNode(pNode)
 				{
 				}
-				MTXMapIterator(const MTXMapIterator& Iterator)
-				{
-					m_pNode = Iterator.m_pNode;
-				}
-				~MTXMapIterator() = default;
-				inline void operator= (const MTXMapIterator& Iterator)
+				MXMapIterator(const MXMapIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				inline bool operator!= (const MTXMapIterator& Iterator)
+				~MXMapIterator() = default;
+				inline void operator=(const MXMapIterator& Iterator)
+				{
+					m_pNode = Iterator.m_pNode;
+				}
+				inline bool operator!=(const MXMapIterator& Iterator)
 				{
 					return (m_pNode != Iterator.m_pNode);
 				}
-				inline bool operator== (const MTXMapIterator& Iterator)
+				inline bool operator==(const MXMapIterator& Iterator)
 				{
 					return (m_pNode == Iterator.m_pNode);
 				}
 
-				inline MTXMapIterator operator++()
+				inline MXMapIterator operator++()
 				{
 					m_pNode++;
 					return (*this);
 				}
-				inline MTXMapIterator operator++(int)
+				inline MXMapIterator operator++(int)
 				{
-					MTXMapIterator _Tmp = *this;
+					MXMapIterator _Tmp = *this;
 					++* this;
 					return (_Tmp);
 				}
-				inline MTXMapIterator operator--()
+				inline MXMapIterator operator--()
 				{
 					m_pNode--;
 					return (*this);
 				}
-				inline MTXMapIterator operator--(int)
+				inline MXMapIterator operator--(int)
 				{
-					MTXMapIterator _Tmp = *this;
+					MXMapIterator _Tmp = *this;
 					--* this;
 					return (_Tmp);
 				}
-				inline MapElement<KEY, VALUE>& operator*()const
+				inline MapElement<KEY, VALUE>& operator*() const
 				{
 					return *m_pNode;
 				}
-				inline MapElement<KEY, VALUE>* operator->()const
+				inline MapElement<KEY, VALUE>* operator->() const
 				{
 					return m_pNode;
 				}
+
 			protected:
 				MapElement<KEY, VALUE>* m_pNode;
-
 			};
-			inline MTXMapIterator Begin() const
+			inline MXMapIterator Begin() const
 			{
-				return MTXMapIterator(m_pBuffer);
+				return MXMapIterator(m_pBuffer);
 			}
-			inline MTXMapIterator End() const
+			inline MXMapIterator End() const
 			{
-				return MTXMapIterator(m_pBuffer + GetNum());
+				return MXMapIterator(m_pBuffer + GetNum());
 			}
-			inline MTXMapIterator begin() const
+			inline MXMapIterator begin() const
 			{
 				return Begin();
 			}
-			inline MTXMapIterator end() const
+			inline MXMapIterator end() const
 			{
 				return End();
 			}
+
 		protected:
 			void AddBufferNum(unsigned int uiBufferNum);
 			MapElement<KEY, VALUE>* m_pBuffer;
@@ -141,28 +140,28 @@ namespace Matrix
 			unsigned int m_uiAllocNum;
 		};
 
-		template<class KEY, class VALUE, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXMapOrder : public MTXMap<KEY, VALUE, MTXMemManagerClass>
+		template <class KEY, class VALUE, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MMapOrder : public MMap<KEY, VALUE, MMemManagerClass>
 		{
 		public:
-			MTXMapOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
-			~MTXMapOrder();
+			MMapOrder(unsigned int uiGrowBy = DEFAULT_GROWBY);
+			~MMapOrder();
 
-			template<class KEY1, class VALUE1>
+			template <class KEY1, class VALUE1>
 			unsigned int AddElement(const MapElement<KEY1, VALUE1>& Element);
 
 			unsigned int AddElement(const KEY& Key, const VALUE& Value);
 
-			template<class KEY1, class VALUE1, class MTXMemManagerClass1>
-			void AddElement(const MTXMap<KEY1, VALUE1, MTXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd);
+			template <class KEY1, class VALUE1, class MXMemManagerClass1>
+			void AddElement(const MMap<KEY1, VALUE1, MXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd);
 
-			unsigned int Find(const KEY& Key)const;
+			unsigned int Find(const KEY& Key) const;
 
 		protected:
-			template<class KEY1, class VALUE1>
+			template <class KEY1, class VALUE1>
 			unsigned int Process(unsigned int uiIndex0, unsigned int uiIndex1, const MapElement<KEY1, VALUE1>& Element);
 
-			unsigned int FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const KEY& Key)const;
+			unsigned int FindElement(unsigned int uiIndex0, unsigned int uiIndex1, const KEY& Key) const;
 		};
 
 #include "Map.inl"

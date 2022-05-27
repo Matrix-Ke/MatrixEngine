@@ -23,17 +23,16 @@ namespace Matrix
 			ListElement* m_pFront;
 		};
 
-		template <class T, class MTXMemManagerClass = DefaultContainerMemoryAllocator>
-		class MTXList : public MContainer<ListElement<T>, MTXMemManagerClass>
+		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
+		class MXList : public MContainer<ListElement<T>, MMemManagerClass>
 		{
 		public:
+			MXList(bool bUnique = true);
+			~MXList();
 
-			MTXList(bool bUnique = true);
-			~MTXList();
+			void operator=(const MXList& Queue);
 
-			void operator= (const MTXList& Queue);
-
-			inline unsigned int GetNum()const;
+			inline unsigned int GetNum() const;
 
 			void AddElement(const T& Element);
 
@@ -45,54 +44,54 @@ namespace Matrix
 
 			bool Erase(const T& Element);
 
-			bool Has(const T& Element)const;
-			const ListElement<T>* Find(const T& Element)const;
-			const T* FindElement(const T& Element)const;
-			class MTXListIterator
+			bool Has(const T& Element) const;
+			const ListElement<T>* Find(const T& Element) const;
+			const T* FindElement(const T& Element) const;
+			class MXListIterator
 			{
 			public:
-				MTXListIterator(ListElement<T>* pNode = NULL) :m_pNode(pNode)
+				MXListIterator(ListElement<T>* pNode = NULL) : m_pNode(pNode)
 				{
 				}
-				MTXListIterator(const MTXListIterator& Iterator)
+				MXListIterator(const MXListIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				~MTXListIterator()
+				~MXListIterator()
 				{
 					m_pNode = NULL;
 				}
-				inline void operator= (const MTXListIterator& Iterator)
+				inline void operator=(const MXListIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				inline bool operator!= (const MTXListIterator& Iterator)
+				inline bool operator!=(const MXListIterator& Iterator)
 				{
 					return (m_pNode != Iterator.m_pNode);
 				}
-				inline bool operator== (const MTXListIterator& Iterator)
+				inline bool operator==(const MXListIterator& Iterator)
 				{
 					return (m_pNode == Iterator.m_pNode);
 				}
 
-				inline MTXListIterator operator++()
+				inline MXListIterator operator++()
 				{
 					m_pNode = m_pNode->m_pNext;
 					return (*this);
 				}
-				inline MTXListIterator operator++(int)
+				inline MXListIterator operator++(int)
 				{
 					_Tmp = *this;
 					++* this;
 					return (_Tmp);
 				}
-				inline MTXListIterator operator--()
+				inline MXListIterator operator--()
 				{
 
 					m_pNode = m_pNode->m_pFront;
 					return (*this);
 				}
-				inline MTXListIterator operator--(int)
+				inline MXListIterator operator--(int)
 				{
 					_Tmp = *this;
 					--* this;
@@ -102,7 +101,7 @@ namespace Matrix
 				{
 					return m_pNode->Element;
 				}
-				inline T* operator->()const
+				inline T* operator->() const
 				{
 					return &m_pNode->Element;
 				}
@@ -114,58 +113,58 @@ namespace Matrix
 				{
 					return m_pNode;
 				}
+
 			protected:
 				ListElement<T>* m_pNode;
-
 			};
-			inline MTXListIterator Begin() const
+			inline MXListIterator Begin() const
 			{
-				return MTXListIterator(m_pHead);
+				return MXListIterator(m_pHead);
 			}
-			inline MTXListIterator End() const
+			inline MXListIterator End() const
 			{
-				return MTXListIterator();
+				return MXListIterator();
 			}
-			inline MTXListIterator begin() const
+			inline MXListIterator begin() const
 			{
 				return Begin();
 			}
-			inline MTXListIterator end() const
+			inline MXListIterator end() const
 			{
 				return End();
 			}
-			inline MTXListIterator Tail() const
+			inline MXListIterator Tail() const
 			{
-				return MTXListIterator(m_pTail);
+				return MXListIterator(m_pTail);
 			}
 			inline void SetUnique(bool bUnique)
 			{
 				Clear();
 				m_bUnique = bUnique;
 			}
-		protected:
 
+		protected:
 			ListElement<T>* m_pHead;
 			ListElement<T>* m_pTail;
 			unsigned int m_uiNum;
-			bool	m_bUnique;
+			bool m_bUnique;
 		};
-		template <class T, class MTXMemManagerClass>
-		MTXList<T, MTXMemManagerClass>::~MTXList()
+		template <class T, class MMemManagerClass>
+		MXList<T, MMemManagerClass>::~MXList()
 		{
 			Clear();
 		}
 
-		template <class T, class MTXMemManagerClass>
-		MTXList<T, MTXMemManagerClass>::MTXList(bool bUnique)
+		template <class T, class MMemManagerClass>
+		MXList<T, MMemManagerClass>::MXList(bool bUnique)
 		{
 			m_pHead = NULL;
 			m_pTail = NULL;
 			m_bUnique = bUnique;
 			m_uiNum = 0;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXList<T, MTXMemManagerClass>::Clear()
+		template <class T, class MMemManagerClass>
+		void MXList<T, MMemManagerClass>::Clear()
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -178,13 +177,13 @@ namespace Matrix
 			m_pTail = NULL;
 			m_uiNum = 0;
 		}
-		template <class T, class MTXMemManagerClass>
-		unsigned int MTXList<T, MTXMemManagerClass>::GetNum()const
+		template <class T, class MMemManagerClass>
+		unsigned int MXList<T, MMemManagerClass>::GetNum() const
 		{
 			return m_uiNum;
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXList<T, MTXMemManagerClass>::operator= (const MTXList& Queue)
+		template <class T, class MMemManagerClass>
+		void MXList<T, MMemManagerClass>::operator=(const MXList& Queue)
 		{
 			m_bUnique = Queue.m_bUnique;
 			ListElement<T>* pTemp = Queue.m_pHead;
@@ -192,11 +191,10 @@ namespace Matrix
 			{
 				AddElement(pTemp->Element);
 				pTemp = pTemp->m_pNext;
-
 			}
 		}
-		template <class T, class MTXMemManagerClass>
-		void MTXList<T, MTXMemManagerClass>::AddElement(const T& Element)
+		template <class T, class MMemManagerClass>
+		void MXList<T, MMemManagerClass>::AddElement(const T& Element)
 		{
 			if (m_bUnique)
 			{
@@ -206,7 +204,8 @@ namespace Matrix
 				}
 			}
 			ListElement<T>* pElem = New(1);
-			MX_NEW(pElem) ListElement<T>();
+			MX_NEW(pElem)
+				ListElement<T>();
 			pElem->Element = Element;
 			pElem->m_pFront = m_pTail;
 			pElem->m_pNext = NULL;
@@ -226,8 +225,8 @@ namespace Matrix
 			}
 			m_uiNum++;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXList<T, MTXMemManagerClass>::GetTail(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MXList<T, MMemManagerClass>::GetTail(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -236,8 +235,8 @@ namespace Matrix
 			Element = m_pTail->Element;
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXList<T, MTXMemManagerClass>::GetAndEraseTail(T& Element)
+		template <class T, class MMemManagerClass>
+		bool MXList<T, MMemManagerClass>::GetAndEraseTail(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -261,8 +260,8 @@ namespace Matrix
 			m_uiNum--;
 			return true;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXList<T, MTXMemManagerClass>::Erase(const T& Element)
+		template <class T, class MMemManagerClass>
+		bool MXList<T, MMemManagerClass>::Erase(const T& Element)
 		{
 			ListElement<T>* pTemp = m_pHead;
 			bool bFind = false;
@@ -281,7 +280,8 @@ namespace Matrix
 					}
 					else if (!pTemp->m_pNext)
 					{
-						pTemp->m_pFront->m_pNext = NULL;;
+						pTemp->m_pFront->m_pNext = NULL;
+						;
 					}
 					else
 					{
@@ -299,20 +299,18 @@ namespace Matrix
 					{
 						break;
 					}
-
 				}
 				pTemp = pTemp->m_pNext;
-
 			}
 			return bFind;
 		}
-		template <class T, class MTXMemManagerClass>
-		bool MTXList<T, MTXMemManagerClass>::Has(const T& Element)const
+		template <class T, class MMemManagerClass>
+		bool MXList<T, MMemManagerClass>::Has(const T& Element) const
 		{
 			return (Find(Element) != NULL);
 		}
-		template <class T, class MTXMemManagerClass>
-		const ListElement<T>* MTXList<T, MTXMemManagerClass>::Find(const T& Element)const
+		template <class T, class MMemManagerClass>
+		const ListElement<T>* MXList<T, MMemManagerClass>::Find(const T& Element) const
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -325,8 +323,8 @@ namespace Matrix
 			}
 			return NULL;
 		}
-		template <class T, class MTXMemManagerClass>
-		const T* MTXList<T, MTXMemManagerClass>::FindElement(const T& Element)const
+		template <class T, class MMemManagerClass>
+		const T* MXList<T, MMemManagerClass>::FindElement(const T& Element) const
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)
