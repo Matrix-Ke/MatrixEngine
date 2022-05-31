@@ -12,7 +12,6 @@ namespace Matrix
 {
 	namespace Math
 	{
-		class VSStream;
 		class MATRIX_MATH_API VSTransform
 		{
 

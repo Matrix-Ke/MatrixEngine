@@ -15,8 +15,8 @@ namespace Matrix
 {
 	// namespace Function
 	//{
-	class VSObject;
-	typedef VSObject* (*CreateObjectFun)();
+	class MObject;
+	typedef MObject* (*CreateObjectFun)();
 	class VSProperty;
 	class VSFunction;
 
@@ -44,8 +44,8 @@ namespace Matrix
 		void AddProperty(VSProperty* pProperty);
 		void AddProperty(VSRtti& Rtti);
 
-		friend class VSObject;
-		typedef VSObject* (*CreateObjectFun)();
+		friend class MObject;
+		typedef MObject* (*CreateObjectFun)();
 		void ClearProperty();
 
 		VSFunction* GetFunction(unsigned int uiIndex) const;

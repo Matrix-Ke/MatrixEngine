@@ -17,71 +17,73 @@ namespace  Matrix
 	//namespace Function
 	//{
 	//using namespace Matrix::Container;
-	class VSObject;
-	typedef VSObject* (*FactoryFunction)();
+	class MObject;
+	typedef MObject* (*FactoryFunction)();
 	class VSRenderer;
 	class VSResourceIdentifier;
-	class VSStream;
+	class MStream;
 	class VSResourceProxyBase;
 
 	//VSFastObjectManager 最多管理 MAX_OBJECT_NUM 个对象，这里设置为 99 999，不够的
 	//	话也可以修改。它的本质思想很简单，就是把所有未被占用的 ID 记录到 m_FreeTable 里面，在
-	//	申请的时候（调用 VSObject 构造函数）从 m_FreeTable 链表末端取出一个，在 m_ObjectArray
-	//	数组中记录对应的 VSObject 对象，在释放的时候（调用 VSObject 析构函数）归还给 m_FreeTable
-	//	链表，从 m_ObjectArray 数组中删除对应的 VSObject 对象
+	//	申请的时候（调用 MObject 构造函数）从 m_FreeTable 链表末端取出一个，在 m_ObjectArray
+	//	数组中记录对应的 MObject 对象，在释放的时候（调用 MObject 析构函数）归还给 m_FreeTable
+	//	链表，从 m_ObjectArray 数组中删除对应的 MObject 对象
 	class VSFastObjectManager
 	{
 	public:
 		VSFastObjectManager();
 		~VSFastObjectManager();
 
-		void AddObject(VSObject* p);
-		void DeleteObject(VSObject* p);
+		void AddObject(MObject* p);
+		void DeleteObject(MObject* p);
 		bool IsClear();
 		void PrepareForGC();
 		unsigned int GetObjectNum();
 	protected:
-		Container::MHashTree<VSObject*> ObjectHashTree;
+		Container::MHashTree<MObject*> ObjectHashTree;
 		unsigned int m_uiObjectNum;
 	};
 
 
-	class MATRIX_FUNCTION_API VSObject :public VSReference, public Core::MemoryObject
+	class MATRIX_FUNCTION_API MObject :public VSReference, public Core::MemoryObject
 	{
 	public:
 
-		friend class VSStream;
+		friend class MStream;
 		friend class VSAsynStream;
-		virtual ~VSObject() = 0;
-		VSObject(const VSObject& object);
-		VSObject& operator =(const VSObject& object);
-		VSObject();
+		virtual ~MObject() = 0;
+		MObject(const MObject& object);
+		MObject& operator =(const MObject& object);
+		MObject();
 
 		//RTTI
 		DECLARE_RTTI;
 	public:
-		bool IsSameType(const VSObject* pObject)const;
-		bool IsDerived(const VSObject* pObject)const;
+		bool IsSameType(const MObject* pObject)const;
+		bool IsDerived(const MObject* pObject)const;
 		bool IsSameType(const VSRtti& Type)const;
 		bool IsDerived(const VSRtti& Type)const;
 
 		DECLARE_INITIAL_NO_CLASS_FACTORY;
+		//static bool InitialDefaultState();
+		//static bool TerminateDefaltState();
 
 		//Stream
 	public:
-		static VSObject* GetInstance(const Container::MString& sRttiName);
-		static VSObject* GetInstance(const VSRtti& Rtti);
+		static MObject* GetInstance(const Container::MString& sRttiName);
+		static MObject* GetInstance(const VSRtti& Rtti);
 		template<typename T>
 		static T* GetInstance()
 		{
 			return (T*)GetInstance(T::ms_Type);
 		}
-		virtual bool BeforeSave(VSStream* pStream);
-		virtual bool PostSave(VSStream* pStream);
-		virtual bool PostLoad(VSStream* pStream);
+		virtual bool BeforeSave(MStream* pStream);
+		virtual bool PostSave(MStream* pStream);
+		virtual bool PostLoad(MStream* pStream);
 	protected:
 		static Container::MMapOrder<VSUsedName, FactoryFunction> ms_ClassFactory;
-		static VSObject* GetNoGCInstance(const Container::MString& sRttiName);
+		static MObject* GetNoGCInstance(const Container::MString& sRttiName);
 
 	public:
 		friend class VSFastObjectManager;
@@ -98,15 +100,15 @@ namespace  Matrix
 	public:
 		//todo list 日志系统
 		//bool DebugLevel(VSLog& log)const;
-		//先检查当前克隆的 VSObject 对象是否创建，若没有创建，则先创建，然后遍历 VSObject 的所有属性并克隆。
-		//递归操作，直到所有属性处理完毕。如果对象已创建，则让当前指针指向它即可。所有克隆的 VSObject 会调用 PostClone 来进行最后的处理。
-		static VSObject* _CloneCreateObject(VSObject* pObject, Container::MMap<VSObject*, VSObject*>& CloneMap);
-		static void _CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest, Container::MMap<VSObject*, VSObject*>& CloneMap);
+		//先检查当前克隆的 MObject 对象是否创建，若没有创建，则先创建，然后遍历 MObject 的所有属性并克隆。
+		//递归操作，直到所有属性处理完毕。如果对象已创建，则让当前指针指向它即可。所有克隆的 MObject 会调用 PostClone 来进行最后的处理。
+		static MObject* _CloneCreateObject(MObject* pObject, Container::MMap<MObject*, MObject*>& CloneMap);
+		static void _CloneObject(MObject* pObjectSrc, MObject* pObjectDest, Container::MMap<MObject*, MObject*>& CloneMap);
 
-		static VSObject* CloneCreateObject(VSObject* pObject);
-		static void CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest);
+		static MObject* CloneCreateObject(MObject* pObject);
+		static void CloneObject(MObject* pObjectSrc, MObject* pObjectDest);
 
-		virtual bool PostClone(VSObject* pObjectSrc);
+		virtual bool PostClone(MObject* pObjectSrc);
 		virtual void ValueChange(Container::MString& Name);
 		bool Process(VSUsedName& FunName, void* para, void* ret = NULL, int ParaNum = -1);
 
@@ -269,29 +271,29 @@ namespace  Matrix
 		}
 
 	};
-	DECLARE_Ptr(VSObject);
-	VSTYPE_MARCO(VSObject);
+	DECLARE_Ptr(MObject);
+	VSTYPE_MARCO(MObject);
 
 
 	//根据rtti信息进行动态类型转化，其实也可以采用虚函数的形式。 虚函数表记录了动态类型信息
 	template <class T>
-	T* StaticCast(VSObject* pkObj)
+	T* StaticCast(MObject* pkObj)
 	{
 		return (T*)pkObj;
 	}
 	template <class T>
-	const T* StaticCast(const VSObject* pkObj)
+	const T* StaticCast(const MObject* pkObj)
 	{
 		return (const T*)pkObj;
 	}
 	template<class T>
-	T* DynamicCast(VSObject* pObj)
+	T* DynamicCast(MObject* pObj)
 	{
 		return pObj && pObj->IsDerived(T::ms_Type) ? (T*)pObj : 0;
 	}
 
 	template<class T>
-	const T* DynamicCast(const VSObject* pObj)
+	const T* DynamicCast(const MObject* pObj)
 	{
 		return pObj && pObj->IsDerived(T::ms_Type) ? (const T*)pObj : 0;
 	}

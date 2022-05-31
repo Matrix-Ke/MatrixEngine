@@ -9,7 +9,7 @@ public:\
 /********************************************************************************/
 
 #define IMPLEMENT_RTTI(classname,baseclassname)\
-	VSRtti classname::ms_Type(_T(#classname),&baseclassname::ms_Type,classname::FactoryFunc); \
+	VSRtti classname::ms_Type(_T(#classname),&baseclassname::ms_Type,classname::NewObject); \
 	VSPriority classname::ms_Priority;
 
 /********************************************************************************/
@@ -18,7 +18,7 @@ public:\
 	VSPriority classname::ms_Priority;
 /********************************************************************************/
 #define IMPLEMENT_RTTI_NoParent(classname)\
-	VSRtti classname::ms_Type(_T(#classname),NULL,classname::FactoryFunc); \
+	VSRtti classname::ms_Type(_T(#classname),NULL,classname::NewObject); \
 	VSPriority classname::ms_Priority;
 
 /********************************************************************************/

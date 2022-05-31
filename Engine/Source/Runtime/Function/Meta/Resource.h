@@ -8,7 +8,7 @@
 
 namespace Matrix
 {
-	class VSStream;
+	class MStream;
 	class MATRIX_FUNCTION_API VSResourceInterface
 	{
 	public:
@@ -137,11 +137,11 @@ namespace Matrix
 		{
 			return 1;
 		}
-		virtual VSObject* CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource* pCacheResouce) const
+		virtual MObject* CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource* pCacheResouce) const
 		{
 			return NULL;
 		}
-		virtual void StreamEnd(VSObject* pStreamResource)
+		virtual void StreamEnd(MObject* pStreamResource)
 		{
 		}
 
@@ -188,7 +188,7 @@ namespace Matrix
 			}
 			m_LoadedEventObject.Destroy();
 		}
-		void AddLoadEventObject(VSObject* pObject, void* Data = NULL)
+		void AddLoadEventObject(MObject* pObject, void* Data = NULL)
 		{
 			if (!pObject)
 			{
@@ -203,7 +203,7 @@ namespace Matrix
 				pObject->LoadedEvent(this, Data);
 			}
 		}
-		void* DeleteLoadEventObject(VSObject* pObject)
+		void* DeleteLoadEventObject(MObject* pObject)
 		{
 			void* pData = NULL;
 			if (!m_bIsLoaded)
@@ -219,7 +219,7 @@ namespace Matrix
 		}
 
 	protected:
-		Container::MMap<VSObject*, void*> m_LoadedEventObject;
+		Container::MMap<MObject*, void*> m_LoadedEventObject;
 		bool m_bIsLoaded;
 		VSUsedName m_ResourceName;
 		void Loaded()
@@ -234,7 +234,7 @@ namespace Matrix
 		}
 	};
 	DECLARE_Ptr(VSResourceProxyBase);
-	class MATRIX_FUNCTION_API VSCacheResource : public VSObject, public VSResourceInterface
+	class MATRIX_FUNCTION_API VSCacheResource : public MObject, public VSResourceInterface
 	{
 	public:
 		// RTTI
@@ -242,7 +242,7 @@ namespace Matrix
 		DECLARE_INITIAL_NO_CLASS_FACTORY;
 		VSCacheResource();
 		virtual ~VSCacheResource() = 0;
-		virtual bool SetCacheResource(VSObject* pOwner) { return true; }
+		virtual bool SetCacheResource(MObject* pOwner) { return true; }
 		virtual bool SetStreamResouce(VSResourceProxyBase* pOwner) { return true; }
 
 	public:
@@ -269,7 +269,7 @@ namespace Matrix
 		virtual unsigned int GetResourceType();
 		virtual void OnLoadEvent();
 		virtual unsigned int GetCurStreamLevel() const;
-		virtual const VSObject* CreateToStreamObject(const VSCacheResource* pCacheResouce);
+		virtual const MObject* CreateToStreamObject(const VSCacheResource* pCacheResouce);
 		virtual void SetStreamJob();
 		virtual void StreamEnd();
 		void SetNewResource(VSPointer<T> pResource);
@@ -327,7 +327,7 @@ namespace Matrix
 		VSResourceProxyBase::StreamEnd();
 	}
 	template <class T>
-	const VSObject* VSResourceProxy<T>::CreateToStreamObject(const VSCacheResource* pCacheResouce)
+	const MObject* VSResourceProxy<T>::CreateToStreamObject(const VSCacheResource* pCacheResouce)
 	{
 		m_pToStreamObject = m_pResource->CreateToStreamObject(m_uiWantStreamLevel, pCacheResouce);
 		ToEndStream();

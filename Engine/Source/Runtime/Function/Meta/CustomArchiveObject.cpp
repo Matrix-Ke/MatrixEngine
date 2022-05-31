@@ -6,7 +6,7 @@ VSCustomArchiveObject::VSCustomArchiveObject()
 VSCustomArchiveObject::~VSCustomArchiveObject()
 {
 }
-VSEditorElement* VSCustomArchiveObject::CreateEElement(Container::MString& Name, VSObject* pObject)
+VSEditorElement* VSCustomArchiveObject::CreateEElement(Container::MString& Name, MObject* pObject)
 {
 	return NULL;
 }

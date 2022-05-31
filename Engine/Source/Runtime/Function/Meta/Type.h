@@ -133,7 +133,7 @@ namespace Matrix
 	DECLARE_CACHE_RESOURCE_TYPE(VSShaderMapCache)
 
 
-	//这个静态类型表示的是资源，需要单独保存成文件。一旦有 VSObject 需要索引这个资源，则存放时保存的是资源路径
+	//这个静态类型表示的是资源，需要单独保存成文件。一旦有 MObject 需要索引这个资源，则存放时保存的是资源路径
 	template <typename T>
 	struct TIsVSResourceProxyType
 	{

@@ -37,6 +37,12 @@
  						dummyPtr->varName,_T(#reflectName), _T(#enumName),*pRtti, (unsigned int)((char*)&(dummyPtr->varName) - (char*)dummyPtr),flag ); \
  		pRtti->AddProperty(activeProperty); \
  	}
+ /********************************************************************************/
+#define BEGIN_ADD_ENUM \
+ 	if(!pRttiTemp) \
+ 	{
+ /********************************************************************************/
+#define END_ADD_ENUM  }
 #define CHANGE_PROPERTY_FLAG(reflectName,flag) \
  	{\
  		VSProperty* p = pRtti->GetProperty(_T(#reflectName));\
@@ -52,22 +58,6 @@
  		{ \
  			p->SetFlag( p->GetFlag() | flag); \
  		}\
- 	}\
- /********************************************************************************/
- // #define BEGIN_ADD_PROPERTY(classname) \
- // 	bool classname::InitialProperty() \
- // 	{ \
- // 		classname* dummyPtr = NULL; \
- // 		VSProperty * activeProperty = NULL; \
- // 		VSRtti* pBase = ms_Type.GetBase(); \
- // 		while(pBase) \
- // 		{ \
- // 			ms_Type.AddProperty(*pBase); \
- // 			pBase = pBase->GetBase(); \
- // 		}
- /********************************************************************************/
-#define END_ADD_PROPERTY \
- 		return true; \
  	}
  /********************************************************************************/
 #define NO_PROPERTY(classname) \
@@ -97,12 +87,6 @@
  			pRtti = &ms_Type; \
  		} \
  		baseclassname::InitialProperty(pRtti);
- /********************************************************************************/
-#define BEGIN_ADD_ENUM \
- 	if(!pRttiTemp) \
- 	{
- /********************************************************************************/
-#define END_ADD_ENUM  }
 /********************************************************************************/
 #define BEGIN_ADD_PROPERTY_ROOT(classname) \
  	bool classname::TerminalProperty() \
@@ -118,6 +102,14 @@
  		{ \
  			pRtti = &ms_Type; \
  		}
+ /********************************************************************************/
+#define END_ADD_PROPERTY \
+ 		return true; \
+ 	}
+
+
+
+
 
 #define ADD_FUNCTION(FunctionName) \
  	VSFunction * pFun = MX_NEW VSFunction(rtti, _T(#FunctionName), Flag); \
@@ -140,7 +132,6 @@
  	pFun->GetProperty(Num)->GetValueAddress(para)
 #define  RETURN_FUN(classname,FunctionName,...) \
  	((classname *)p)->FunctionName(##__VA_ARGS__);
-
 #define BEGIN_REGISTER_FUNCTION_NOPARAMETER(classname,FunctionName,uiFlag,Retype) \
  { \
  	class Template_##FunctionName \
@@ -149,7 +140,7 @@
  		~Template_##FunctionName() \
  		{ \
  		} \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			if (ret && !pFun->IsReturnVoid()) \
  			{ \
@@ -170,7 +161,6 @@
  	};\
  	Template_##FunctionName _Template_##FunctionName(*pRtti, uiFlag); \
  }
-
 #define BEGIN_REGISTER_VOID_FUNCTION_NOPARAMETER(classname,FunctionName,uiFlag) \
  { \
  	class Template_##FunctionName \
@@ -179,7 +169,7 @@
  		~Template_##FunctionName() \
  		{ \
  		} \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			RETURN_FUN(classname, FunctionName,); \
  		} \
@@ -191,7 +181,6 @@
  	};\
  	Template_##FunctionName _Template_##FunctionName(*pRtti, uiFlag); \
  }
-
 #define BEGIN_REGISTER_FUNCTION_ONEPARAMETER(classname,FunctionName,uiFlag,Retype,ValType1,ValName1) \
  { \
  	class Template_##FunctionName \
@@ -204,7 +193,7 @@
  		{ \
  			ValType1 In##ValName1; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			if (ret && !pFun->IsReturnVoid()) \
@@ -241,7 +230,7 @@
  		{ \
  			ValType1 In##ValName1; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			RETURN_FUN(classname, FunctionName, In##ValName1); \
@@ -271,7 +260,7 @@
  			ValType1 In##ValName1; \
  			ValType2 In##ValName2; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType2 *)Get_FUN_PROPERTY_VALUE(1)); \
@@ -311,7 +300,7 @@
  			ValType1 In##ValName1; \
  			ValType2 In##ValName2; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType2 *)Get_FUN_PROPERTY_VALUE(1)); \
@@ -344,7 +333,7 @@
  			ValType2 In##ValName2; \
  			ValType3 In##ValName3; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(1)); \
@@ -387,7 +376,7 @@
  			ValType2 In##ValName2; \
  			ValType3 In##ValName3; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(1)); \
@@ -423,7 +412,7 @@
  			ValType3 In##ValName3; \
  			ValType4 In##ValName4; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(1)); \
@@ -469,7 +458,7 @@
  			ValType3 In##ValName3; \
  			ValType4 In##ValName4; \
  		}; \
- 		static void FunctionTemplate_Temp(VSObject * p, VSFunction * pFun, void * para, void *ret) \
+ 		static void FunctionTemplate_Temp(MObject * p, VSFunction * pFun, void * para, void *ret) \
  		{ \
  			ValType1 In##ValName1 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(0)); \
  			ValType2 In##ValName2 = *((ValType1 *)Get_FUN_PROPERTY_VALUE(1)); \

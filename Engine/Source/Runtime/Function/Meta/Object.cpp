@@ -8,11 +8,11 @@
 using namespace Matrix;
 
 
-IMPLEMENT_RTTI_NoParent_NoCreateFun(VSObject)
-Container::MMapOrder<VSUsedName, FactoryFunction> VSObject::ms_ClassFactory;
-IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSObject)
+IMPLEMENT_RTTI_NoParent_NoCreateFun(MObject)
+Container::MMapOrder<VSUsedName, FactoryFunction> MObject::ms_ClassFactory;
+IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(MObject)
 IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-BEGIN_ADD_PROPERTY_ROOT(VSObject)
+BEGIN_ADD_PROPERTY_ROOT(MObject)
 REGISTER_PROPERTY(m_uiFlag, Flag, VSProperty::F_CLONE);
 END_ADD_PROPERTY
 //todo   profiler macro
@@ -29,7 +29,7 @@ VSFastObjectManager::VSFastObjectManager()
 VSFastObjectManager::~VSFastObjectManager()
 {
 }
-void VSFastObjectManager::AddObject(VSObject* p)
+void VSFastObjectManager::AddObject(MObject* p)
 {
 	MATRIX_ENGINE_ASSERT(p);
 	ObjectHashTree.AddElement(p);
@@ -37,7 +37,7 @@ void VSFastObjectManager::AddObject(VSObject* p)
 	//todo   profiler macro
 	//ADD_COUNT_PROFILE(ObjectNum, 1)
 }
-void VSFastObjectManager::DeleteObject(VSObject* p)
+void VSFastObjectManager::DeleteObject(MObject* p)
 {
 	MATRIX_ENGINE_ASSERT(p);
 	ObjectHashTree.Erase(p);
@@ -63,45 +63,45 @@ public:
 	~VSPrepareForGC() {}
 	void operator()(Container::MBinaryTreeNode<T>* TreeNode)
 	{
-		TreeNode->Element->ClearFlag(VSObject::OF_REACH);
-		TreeNode->Element->SetFlag(VSObject::OF_UNREACH);
+		TreeNode->Element->ClearFlag(MObject::OF_REACH);
+		TreeNode->Element->SetFlag(MObject::OF_UNREACH);
 	}
 };
 void VSFastObjectManager::PrepareForGC()
 {
-	ObjectHashTree.MiddleProcess(VSPrepareForGC<VSObject*>());
+	ObjectHashTree.MiddleProcess(VSPrepareForGC<MObject*>());
 }
-VSObject* VSObject::CloneCreateObject(VSObject* pObject)
+MObject* MObject::CloneCreateObject(MObject* pObject)
 {
-	Container::MMap<VSObject*, VSObject*> CloneMap;
-	VSObject* pNewObject = _CloneCreateObject(pObject, CloneMap); //克隆完毕
+	Container::MMap<MObject*, MObject*> CloneMap;
+	MObject* pNewObject = _CloneCreateObject(pObject, CloneMap); //克隆完毕
 	for (unsigned int i = 0; i < CloneMap.GetNum(); i++)
 	{
 		CloneMap[i].Value->PostClone(CloneMap[i].Key);
 	}
 	return pNewObject;
 }
-void VSObject::CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest)
+void MObject::CloneObject(MObject* pObjectSrc, MObject* pObjectDest)
 {
-	Container::MMap<VSObject*, VSObject*> CloneMap;
+	Container::MMap<MObject*, MObject*> CloneMap;
 	_CloneObject(pObjectSrc, pObjectDest, CloneMap);
 	for (unsigned int i = 0; i < CloneMap.GetNum(); i++)
 	{
 		CloneMap[i].Value->PostClone(CloneMap[i].Key);
 	}
 }
-VSObject* VSObject::_CloneCreateObject(VSObject* pObject, Container::MMap<VSObject*, VSObject*>& CloneMap)
+MObject* MObject::_CloneCreateObject(MObject* pObject, Container::MMap<MObject*, MObject*>& CloneMap)
 {
-	VSObject* pNewObject = NULL;
+	MObject* pNewObject = NULL;
 	if (pObject)
 	{
 		unsigned int uiIndex = CloneMap.Find(pObject);
-		//在克隆 VSObject 对象表中没有创建这个对象
+		//在克隆 MObject 对象表中没有创建这个对象
 		if (uiIndex == CloneMap.GetNum())
 		{
 			VSRtti& SrcRtti = pObject->GetType();
-			pNewObject = VSObject::GetInstance(SrcRtti.GetName());
-			//添加新创建的 VSObject 对象映射关系
+			pNewObject = MObject::GetInstance(SrcRtti.GetName());
+			//添加新创建的 MObject 对象映射关系
 			CloneMap.AddElement(pObject, pNewObject);
 			VSRtti& DestRtti = pNewObject->GetType();
 			//遍历所有属性
@@ -127,7 +127,7 @@ VSObject* VSObject::_CloneCreateObject(VSObject* pObject, Container::MMap<VSObje
 	return pNewObject;
 
 }
-void VSObject::_CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest, Container::MMap<VSObject*, VSObject*>& CloneMap)
+void MObject::_CloneObject(MObject* pObjectSrc, MObject* pObjectDest, Container::MMap<MObject*, MObject*>& CloneMap)
 {
 	if (!pObjectSrc)
 	{
@@ -158,59 +158,59 @@ void VSObject::_CloneObject(VSObject* pObjectSrc, VSObject* pObjectDest, Contain
 	}
 }
 /********************************************************************************/
-VSObject* VSObject::GetNoGCInstance(const Container::MString& sRttiName)
+MObject* MObject::GetNoGCInstance(const Container::MString& sRttiName)
 {
 	unsigned int i = ms_ClassFactory.Find(sRttiName);
 	if (i == ms_ClassFactory.GetNum())
 		return NULL;
 
-	VSObject* pObject = ms_ClassFactory[i].Value();
+	MObject* pObject = ms_ClassFactory[i].Value();
 	return pObject;
 }
-VSObject* VSObject::GetInstance(const Container::MString& sRttiName)
+MObject* MObject::GetInstance(const Container::MString& sRttiName)
 {
 	unsigned int i = ms_ClassFactory.Find(sRttiName);
 	if (i == ms_ClassFactory.GetNum())
 		return NULL;
 
-	VSObject* pObject = ms_ClassFactory[i].Value();
+	MObject* pObject = ms_ClassFactory[i].Value();
 
 	//todo list VSResourceManager
 	//VSResourceManager::AddGCObject(pObject);
 	return pObject;
 }
-VSObject* VSObject::GetInstance(const VSRtti& Rtti)
+MObject* MObject::GetInstance(const VSRtti& Rtti)
 {
-	VSObject* pObject = (Rtti.m_CreateFun)();
+	MObject* pObject = (Rtti.m_CreateFun)();
 	//todo list VSResourceManager
 	//VSResourceManager::AddGCObject(pObject);
 	return pObject;
 }
 /********************************************************************************/
-VSObject::VSObject()
+MObject::MObject()
 {
 	m_uiFlag = 0;
 	GetObjectManager().AddObject(this);
 
 } // end construct
-VSObject::VSObject(const VSObject& object)
+MObject::MObject(const MObject& object)
 {
 	m_uiFlag = object.m_uiFlag;
 	GetObjectManager().AddObject(this);
 }
-VSObject& VSObject::operator=(const VSObject& object)
+MObject& MObject::operator=(const MObject& object)
 {
 	m_uiFlag = object.m_uiFlag;
 	return *this;
 }
 /********************************************************************************/
 
-VSObject::~VSObject()
+MObject::~MObject()
 {
 	GetObjectManager().DeleteObject(this);
 } // end destruct
 
-bool VSObject::IsSameType(const VSObject* pObject) const
+bool MObject::IsSameType(const MObject* pObject) const
 {
 
 	return pObject && GetType().IsSameType(pObject->GetType());
@@ -219,14 +219,14 @@ bool VSObject::IsSameType(const VSObject* pObject) const
 
 /********************************************************************************/
 
-bool VSObject::IsDerived(const VSObject* pObject) const
+bool MObject::IsDerived(const MObject* pObject) const
 {
 	return pObject && GetType().IsDerived(pObject->GetType());
 } // IsDerived
 
 /********************************************************************************/
 
-bool VSObject::IsSameType(const VSRtti& Type) const
+bool MObject::IsSameType(const VSRtti& Type) const
 {
 
 	return GetType().IsSameType(Type);
@@ -234,39 +234,49 @@ bool VSObject::IsSameType(const VSRtti& Type) const
 
 /********************************************************************************/
 
-bool VSObject::IsDerived(const VSRtti& Type) const
+bool MObject::IsDerived(const VSRtti& Type) const
 {
 	return GetType().IsDerived(Type);
 
 } // IsDerived
 
-void VSObject::LoadedEvent(VSResourceProxyBase* pResourceProxy, void* Data)
+
+//bool MObject::InitialDefaultState()
+//{
+//	return true;
+//}
+//
+//bool MObject::TerminateDefaltState()
+//{
+//	return true;
+//}
+void MObject::LoadedEvent(VSResourceProxyBase* pResourceProxy, void* Data)
 {
 }
 //todo list  GetStreamResource
-//void VSObject::GetStreamResource(Container::MArray<VSResourceProxyBase*>& pResourceProxy, StreamInformation_TYPE& StreamInformation) const
+//void MObject::GetStreamResource(Container::MArray<VSResourceProxyBase*>& pResourceProxy, StreamInformation_TYPE& StreamInformation) const
 //{
 //}
-bool VSObject::BeforeSave(VSStream* pStream)
+bool MObject::BeforeSave(MStream* pStream)
 {
 	return 1;
 }
-bool VSObject::PostSave(VSStream* pStream)
+bool MObject::PostSave(MStream* pStream)
 {
 	return 1;
 }
-bool VSObject::PostLoad(VSStream* pStream)
+bool MObject::PostLoad(MStream* pStream)
 {
 	return 1;
 }
-bool VSObject::PostClone(VSObject* pObjectSrc)
+bool MObject::PostClone(MObject* pObjectSrc)
 {
 	return 1;
 }
-void VSObject::ValueChange(Container::MString& Name)
+void MObject::ValueChange(Container::MString& Name)
 {
 }
-bool VSObject::Process(VSUsedName& FunName, void* para, void* ret, int ParaNum)
+bool MObject::Process(VSUsedName& FunName, void* para, void* ret, int ParaNum)
 {
 	VSRtti& t = GetType();
 	for (unsigned int i = 0; i < t.GetFunctionNum(); i++)

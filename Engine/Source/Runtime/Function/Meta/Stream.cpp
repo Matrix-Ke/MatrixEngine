@@ -6,19 +6,19 @@
 #include "Config.h"
 
 using namespace Matrix;
-unsigned int VSStream::ms_uiCurVersion = 0;
+unsigned int MStream::ms_uiCurVersion = 0;
 /********************************************************************************/
-unsigned int VSStream::GetStrDistUse(const Container::MString& Str)
+unsigned int MStream::GetStrDistUse(const Container::MString& Str)
 {
 	return sizeof(int) + (unsigned int)Str.GetLength() * sizeof(TCHAR);
 }
 /********************************************************************************/
-unsigned int VSStream::GetStrDistUse(const TCHAR* pCh)
+unsigned int MStream::GetStrDistUse(const TCHAR* pCh)
 {
 	return sizeof(int) + (unsigned int)Core::MXStrLen(pCh) * sizeof(TCHAR);
 }
 /********************************************************************************/
-VSStream::VSStream(DWORD dwFlag)
+MStream::MStream(DWORD dwFlag)
 {
 	m_pObjectArray.Clear();
 	m_pmLoadMap.Clear();
@@ -30,14 +30,14 @@ VSStream::VSStream(DWORD dwFlag)
 	m_bLoadUseGC = false;
 }
 /********************************************************************************/
-VSStream::~VSStream()
+MStream::~MStream()
 {
 
 	m_pObjectArray.Clear();
 	m_pcCurBufPtr = NULL;
 }
 /********************************************************************************/
-bool VSStream::Read(void* pvBuffer, unsigned int uiSize)
+bool MStream::Read(void* pvBuffer, unsigned int uiSize)
 {
 
 	if (!pvBuffer || !m_pcBuffer)
@@ -52,7 +52,7 @@ bool VSStream::Read(void* pvBuffer, unsigned int uiSize)
 	return 1;
 }
 /********************************************************************************/
-bool VSStream::Write(const void* pvBuffer, unsigned int uiSize)
+bool MStream::Write(const void* pvBuffer, unsigned int uiSize)
 {
 	if (!pvBuffer || !m_pcBuffer)
 		return 0;
@@ -66,7 +66,7 @@ bool VSStream::Write(const void* pvBuffer, unsigned int uiSize)
 	return 1;
 }
 /********************************************************************************/
-bool VSStream::ReadString(Container::MString& String)
+bool MStream::ReadString(Container::MString& String)
 {
 	unsigned int uiBufferSize = 0;
 	unsigned int uiStrLen = 0;
@@ -110,7 +110,7 @@ bool VSStream::ReadString(Container::MString& String)
 	return 1;
 }
 /********************************************************************************/
-bool VSStream::WriteString(const Container::MString& String)
+bool MStream::WriteString(const Container::MString& String)
 {
 	unsigned int uiBufferLen = String.GetLength() * sizeof(TCHAR);
 	if (!Write(&uiBufferLen, sizeof(unsigned int)))
@@ -119,18 +119,18 @@ bool VSStream::WriteString(const Container::MString& String)
 		return 0;
 	return 1;
 }
-bool VSStream::RegisterReachableObject(VSObject* pObject)
+bool MStream::RegisterReachableObject(MObject* pObject)
 {
-	if (pObject->IsHasFlag(VSObject::OF_REACH))
+	if (pObject->IsHasFlag(MObject::OF_REACH))
 	{
 		return false;
 	}
-	pObject->SetFlag(VSObject::OF_REACH);
-	pObject->ClearFlag(VSObject::OF_UNREACH);
+	pObject->SetFlag(MObject::OF_REACH);
+	pObject->ClearFlag(MObject::OF_UNREACH);
 
 	return 1;
 }
-bool VSStream::RegisterPostLoadObject(VSObject* pObject)
+bool MStream::RegisterPostLoadObject(MObject* pObject)
 {
 	for (unsigned int i = 0; i < (unsigned int)m_pPostLoadObject.GetNum(); i++)
 	{
@@ -139,12 +139,12 @@ bool VSStream::RegisterPostLoadObject(VSObject* pObject)
 			return 0;
 		}
 	}
-	m_pPostLoadObject.AddElement((VSObject*)pObject);
+	m_pPostLoadObject.AddElement((MObject*)pObject);
 	return true;
 }
 
 /********************************************************************************/
-bool VSStream::RegisterObject(VSObject* pObject)
+bool MStream::RegisterObject(MObject* pObject)
 {
 	MATRIX_ENGINE_ASSERT(pObject);
 	if (!pObject)
@@ -157,12 +157,12 @@ bool VSStream::RegisterObject(VSObject* pObject)
 			return 0;
 		}
 	}
-	m_pObjectArray.AddElement((VSObject*)pObject);
+	m_pObjectArray.AddElement((MObject*)pObject);
 
 	return 1;
 }
 /********************************************************************************/
-VSObject* VSStream::GetVSTypeMapValue(VSObject* pKey) const
+MObject* MStream::GetVSTypeMapValue(MObject* pKey) const
 {
 	unsigned int i = m_pmVSTypeLoadMap.Find(pKey);
 	if (i == m_pmVSTypeLoadMap.GetNum())
@@ -171,7 +171,7 @@ VSObject* VSStream::GetVSTypeMapValue(VSObject* pKey) const
 	return m_pmVSTypeLoadMap[i].Value;
 }
 /********************************************************************************/
-const VSObject* VSStream::GetLoadMapValue(unsigned int uiKey) const
+const MObject* MStream::GetLoadMapValue(unsigned int uiKey) const
 {
 	unsigned int i = m_pmLoadMap.Find(uiKey);
 	if (i == m_pmLoadMap.GetNum())
@@ -179,7 +179,7 @@ const VSObject* VSStream::GetLoadMapValue(unsigned int uiKey) const
 
 	return m_pmLoadMap[i].Value;
 }
-unsigned int VSStream::GetSaveMapValue(VSObject* Key) const
+unsigned int MStream::GetSaveMapValue(MObject* Key) const
 {
 	unsigned int i = m_pmSaveMap.Find(Key);
 	if (i == m_pmSaveMap.GetNum())
@@ -188,9 +188,9 @@ unsigned int VSStream::GetSaveMapValue(VSObject* Key) const
 	return m_pmSaveMap[i].Value;
 }
 /********************************************************************************/
-const VSObject* VSStream::GetObjectByRtti(const VSRtti& Rtti)
+const MObject* MStream::GetObjectByRtti(const VSRtti& Rtti)
 {
-	VSObject* pObject = NULL;
+	MObject* pObject = NULL;
 	for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
 	{
 		if ((m_pObjectArray[i]->GetType()).IsSameType(Rtti))
@@ -213,25 +213,25 @@ const VSObject* VSStream::GetObjectByRtti(const VSRtti& Rtti)
 	}
 	for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
 	{
-		VSObject* p = m_pObjectArray[i];
+		MObject* p = m_pObjectArray[i];
 		MATRIX_ENGINE_ASSERT(p != NULL);
 		if (p)
 		{
-			p->ClearFlag(VSObject::OF_REACH);
-			p->SetFlag(VSObject::OF_UNREACH);
+			p->ClearFlag(MObject::OF_REACH);
+			p->SetFlag(MObject::OF_UNREACH);
 		}
 	}
 	if (pObject)
 	{
-		VSStream GCCollectStream;
-		GCCollectStream.SetStreamFlag(VSStream::AT_LOAD_OBJECT_COLLECT_GC);
+		MStream GCCollectStream;
+		GCCollectStream.SetStreamFlag(MStream::AT_LOAD_OBJECT_COLLECT_GC);
 		GCCollectStream.ArchiveAll(pObject);
 
-		Container::MArray<VSObject*> CanGCObject;
+		Container::MArray<MObject*> CanGCObject;
 		for (unsigned int i = 0; i < m_pObjectArray.GetNum();)
 		{
-			VSObject* p = m_pObjectArray[i];
-			if (p->IsHasFlag(VSObject::OF_UNREACH))
+			MObject* p = m_pObjectArray[i];
+			if (p->IsHasFlag(MObject::OF_UNREACH))
 			{
 				CanGCObject.AddElement(p);
 				m_pObjectArray.Erase(i);
@@ -255,7 +255,7 @@ const VSObject* VSStream::GetObjectByRtti(const VSRtti& Rtti)
 	}
 	return pObject;
 }
-void VSStream::GetObjectFailed()
+void MStream::GetObjectFailed()
 {
 	if (m_pObjectArray.GetNum())
 	{
@@ -264,7 +264,7 @@ void VSStream::GetObjectFailed()
 		m_pObjectArray.Clear();
 	}
 }
-bool VSStream::GetAllResourceObject(Container::MArray<VSObject*>& ObjectArray)
+bool MStream::GetAllResourceObject(Container::MArray<MObject*>& ObjectArray)
 {
 	ObjectArray.Clear();
 	for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
@@ -279,27 +279,27 @@ bool VSStream::GetAllResourceObject(Container::MArray<VSObject*>& ObjectArray)
 	{
 		for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
 		{
-			VSObject* p = m_pObjectArray[i];
+			MObject* p = m_pObjectArray[i];
 			MATRIX_ENGINE_ASSERT(p != NULL);
 			if (p)
 			{
-				p->ClearFlag(VSObject::OF_REACH);
-				p->SetFlag(VSObject::OF_UNREACH);
+				p->ClearFlag(MObject::OF_REACH);
+				p->SetFlag(MObject::OF_UNREACH);
 			}
 		}
 
-		VSStream GCCollectStream;
-		GCCollectStream.SetStreamFlag(VSStream::AT_LOAD_OBJECT_COLLECT_GC);
+		MStream GCCollectStream;
+		GCCollectStream.SetStreamFlag(MStream::AT_LOAD_OBJECT_COLLECT_GC);
 		for (unsigned int i = 0; i < ObjectArray.GetNum(); i++)
 		{
 			GCCollectStream.ArchiveAll(ObjectArray[i]);
 		}
 
-		Container::MArray<VSObject*> CanGCObject;
+		Container::MArray<MObject*> CanGCObject;
 		for (unsigned int i = 0; i < m_pObjectArray.GetNum();)
 		{
-			VSObject* p = m_pObjectArray[i];
-			if (p->IsHasFlag(VSObject::OF_UNREACH))
+			MObject* p = m_pObjectArray[i];
+			if (p->IsHasFlag(MObject::OF_UNREACH))
 			{
 				CanGCObject.AddElement(p);
 				m_pObjectArray.Erase(i);
@@ -325,7 +325,7 @@ bool VSStream::GetAllResourceObject(Container::MArray<VSObject*>& ObjectArray)
 	}
 }
 /********************************************************************************/
-bool VSStream::GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<VSObject*>& ObjectArray, bool IsDerivedFrom)
+bool MStream::GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<MObject*>& ObjectArray, bool IsDerivedFrom)
 {
 	ObjectArray.Clear();
 	for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
@@ -340,27 +340,27 @@ bool VSStream::GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<VSObje
 	{
 		for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
 		{
-			VSObject* p = m_pObjectArray[i];
+			MObject* p = m_pObjectArray[i];
 			MATRIX_ENGINE_ASSERT(p != NULL);
 			if (p)
 			{
-				p->ClearFlag(VSObject::OF_REACH);
-				p->SetFlag(VSObject::OF_UNREACH);
+				p->ClearFlag(MObject::OF_REACH);
+				p->SetFlag(MObject::OF_UNREACH);
 			}
 		}
 
-		VSStream GCCollectStream;
-		GCCollectStream.SetStreamFlag(VSStream::AT_LOAD_OBJECT_COLLECT_GC);
+		MStream GCCollectStream;
+		GCCollectStream.SetStreamFlag(MStream::AT_LOAD_OBJECT_COLLECT_GC);
 		for (unsigned int i = 0; i < ObjectArray.GetNum(); i++)
 		{
 			GCCollectStream.ArchiveAll(ObjectArray[i]);
 		}
 
-		Container::MArray<VSObject*> CanGCObject;
+		Container::MArray<MObject*> CanGCObject;
 		for (unsigned int i = 0; i < m_pObjectArray.GetNum();)
 		{
-			VSObject* p = m_pObjectArray[i];
-			if (p->IsHasFlag(VSObject::OF_UNREACH))
+			MObject* p = m_pObjectArray[i];
+			if (p->IsHasFlag(MObject::OF_UNREACH))
 			{
 				CanGCObject.AddElement(p);
 				m_pObjectArray.Erase(i);
@@ -392,7 +392,7 @@ bool VSStream::GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<VSObje
 									new version
 
 *******************************************************************************/
-unsigned int VSStream::SizeOfResource(VSResourceProxyBasePtr& Resource)
+unsigned int MStream::SizeOfResource(VSResourceProxyBasePtr& Resource)
 {
 	unsigned int uiSize = 0;
 	bool IsNone = true;
@@ -410,7 +410,7 @@ unsigned int VSStream::SizeOfResource(VSResourceProxyBasePtr& Resource)
 
 	return uiSize;
 }
-bool VSStream::WriteResource(VSResourceProxyBasePtr& Resource)
+bool MStream::WriteResource(VSResourceProxyBasePtr& Resource)
 {
 	bool IsNone = true;
 	if (Resource && !VSResourceControl::IsDefaultResource(Resource))
@@ -428,7 +428,7 @@ bool VSStream::WriteResource(VSResourceProxyBasePtr& Resource)
 	return true;
 }
 
-bool VSStream::ReadResource(VSResourceProxyBasePtr& Resource)
+bool MStream::ReadResource(VSResourceProxyBasePtr& Resource)
 {
 
 	//todo ReadResource
@@ -448,7 +448,7 @@ bool VSStream::ReadResource(VSResourceProxyBasePtr& Resource)
 
 	return true;
 }
-bool VSStream::ArchiveAll(VSObject* pObject)
+bool MStream::ArchiveAll(MObject* pObject)
 {
 	if (!pObject)
 	{
@@ -529,7 +529,7 @@ bool VSStream::ArchiveAll(VSObject* pObject)
 	}
 	return true;
 }
-bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
+bool MStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 {
 
 	if (!pBuffer || !uiSize)
@@ -559,7 +559,7 @@ bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 	// Object Table
 	for (unsigned int i = 0; i < iObjectNum; i++)
 	{
-		VSObject* pObject = 0;
+		MObject* pObject = 0;
 		//读取指针
 		if (!Read(&ObjectTable[i].m_uiGUID, sizeof(unsigned int)))
 		{
@@ -587,14 +587,14 @@ bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 	// create object 并将object数量注册到 m_pObjectArray 中。
 	for (unsigned int i = 0; i < iObjectNum; i++)
 	{
-		VSObject* pObject = NULL;
+		MObject* pObject = NULL;
 		if (m_bLoadUseGC)
 		{
-			pObject = VSObject::GetInstance(ObjectTable[i].m_RttiName);
+			pObject = MObject::GetInstance(ObjectTable[i].m_RttiName);
 		}
 		else
 		{
-			pObject = VSObject::GetNoGCInstance(ObjectTable[i].m_RttiName);
+			pObject = MObject::GetNoGCInstance(ObjectTable[i].m_RttiName);
 		}
 		//创建空对象
 
@@ -605,7 +605,7 @@ bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 
 		//创建加载映射表
 		m_pmLoadMap.AddElement(ObjectTable[i].m_uiGUID, pObject);
-		//将每个 VSObject 对象注册到 m_pObjectArray 里面，
+		//将每个 MObject 对象注册到 m_pObjectArray 里面，
 		RegisterObject(pObject);
 	}
 
@@ -653,7 +653,7 @@ bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 		}
 	}
 
-	//处理连接 处理指针指向和 VSObject 对象中内容的复制。
+	//处理连接 处理指针指向和 MObject 对象中内容的复制。
 	m_uiStreamFlag = AT_LINK;
 	//必须从后往前遍历，因为register的过程是递归的深度注册，所以从后往前link保证子节点先完成，然后父亲节点完成。
 	for (int i = m_pObjectArray.GetNum() - 1; i >= 0; i--)
@@ -671,7 +671,7 @@ bool VSStream::LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize)
 	m_pcBuffer = NULL;
 	return 1;
 }
-bool VSStream::Load(const TCHAR* const pcFileName)
+bool MStream::Load(const TCHAR* const pcFileName)
 {
 	Core::File* pFile = MX_NEW Core::File();
 	if (!pFile)
@@ -710,7 +710,7 @@ bool VSStream::Load(const TCHAR* const pcFileName)
 
 	return 1;
 }
-bool VSStream::Save(const TCHAR* const pcFileName)
+bool MStream::Save(const TCHAR* const pcFileName)
 {
 	unsigned int iObjectNum = m_pObjectArray.GetNum();
 	m_uiBufferSize = 0;
@@ -801,7 +801,7 @@ bool VSStream::Save(const TCHAR* const pcFileName)
 		ObjectTable[i].m_uiObjectPropertySize = m_uiBufferSize - ObjectTable[i].m_uiObjectPropertyTableSize - ObjectTable[i].m_uiOffset;
 	}
 
-	//预留执行breforeSave ，继承自 VSObject 的类都可以重载这个函数
+	//预留执行breforeSave ，继承自 MObject 的类都可以重载这个函数
 	for (unsigned int i = 0; i < m_pObjectArray.GetNum(); i++)
 	{
 		m_pObjectArray[i]->BeforeSave(this);
