@@ -1,8 +1,7 @@
 #include "Stream.h"
 #include "Property.h"
 #include "Object.h"
-//#include "GraphicInclude.h"
-#include "ResourceManager.h"
+#include "Function/ResourceManager.h"
 #include "Config.h"
 
 using namespace Matrix;

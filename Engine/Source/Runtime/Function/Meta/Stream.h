@@ -2,7 +2,6 @@
 #include "Rtti.h"
 #include "Pointer.h"
 #include "Type.h"
-#include "Resource.h"
 #include "CustomArchiveObject.h"
 #include "Object.h"
 
@@ -10,6 +9,8 @@
 #include "Container/Array.h"
 #include "Container/Map.h"
 #include "Container/String.h"
+#include "Function/Resource.h"
+
 
 
 namespace Matrix

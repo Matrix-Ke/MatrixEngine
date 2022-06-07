@@ -1,6 +1,6 @@
 #include "Resource.h"
-#include "Property.h"
-#include "./../EngineInit.h"
+#include "Meta/Property.h"
+
 
 
 using namespace Matrix;

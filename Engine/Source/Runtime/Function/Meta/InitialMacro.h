@@ -9,9 +9,6 @@
      static bool TerminalProperty(); \
      static bool ms_bRegisterMainFactory;   
 
-
-
-
 /********************************************************************************/
 //create classFactory
 //

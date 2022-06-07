@@ -1,6 +1,5 @@
 #pragma once
 #include "Container.h"
-#include "Math.h"
 
 namespace Matrix
 {

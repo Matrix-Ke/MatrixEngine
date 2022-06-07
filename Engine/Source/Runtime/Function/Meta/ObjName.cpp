@@ -1,9 +1,9 @@
 #include "ObjName.h"
 #include "PropertyMarco.h"
-#include "ResourceManager.h"
+#include "Function/ResourceManager.h"
 #include "Stream.h"
 
-#include "./../EngineInit.h"
+#include "Function/EngineInit.h"
 
 
 using namespace Matrix;

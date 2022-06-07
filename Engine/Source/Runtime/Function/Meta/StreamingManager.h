@@ -4,8 +4,8 @@
 ////#include "TexAllState.h"
 ////#include "MeshComponent.h"
 //
-//#include "Math.h"
-//namespace Matrix
+//#include "EngineMath.h"
+// namespace Matrix
 //{
 //	struct MATRIX_FUNCTION_API StreamElementType
 //	{

@@ -944,8 +944,10 @@ namespace Matrix
 			}
 		}
 
-	protected:
+	public:
 		FunctionTemplatePtr ObjectFun;  //函数指针 ObjectFun，是关键数据
+
+	protected:
 		VSRtti* m_pOwner; //记录函数属于哪个类
 		VSUsedName m_Name; //记录函数名称
 		unsigned int m_uiFlag; //记录函数的用途
