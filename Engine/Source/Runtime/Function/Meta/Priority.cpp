@@ -1,5 +1,9 @@
 #include "Priority.h"
+
+
 using namespace Matrix;
+
+
 bool VSPriority::AddPriorityThan(VSPriority* pPriority)
 {
 	if (!pPriority)

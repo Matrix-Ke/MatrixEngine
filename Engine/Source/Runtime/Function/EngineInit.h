@@ -2,7 +2,6 @@
 #include "FunctionCore.h"
 #include "Meta/Priority.h"
 
-//#include "Core/Core.h"
 #include "Container/Array.h"
 
 
@@ -14,7 +13,6 @@ namespace Matrix
 	class MATRIX_FUNCTION_API EngineInit
 	{
 	public:
-
 		static void AddInitialPropertyFunction(FunctionProperty Func);
 		static void AddTerminalPropertyFunction(Function Func);
 		static void AddInitialFunction(Function Func);
@@ -23,6 +21,7 @@ namespace Matrix
 		static void AddTerminalFunction(Function Func);
 		static void AddTerminalFunction(Function Func, VSPriority* pPriority);
 		static bool Terminate();
+
 	private:
 		EngineInit();
 		~EngineInit();

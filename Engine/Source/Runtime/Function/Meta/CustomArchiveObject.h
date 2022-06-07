@@ -6,8 +6,8 @@
 
 namespace Matrix
 {
-	class VSObject;
-	class VSStream;
+	class MObject;
+	class MStream;
 	class VSEditorElement;
 	//不支持指针序列化，不支持postload 和 postclone
 	//类成员如果是VSType 是支持的
@@ -16,9 +16,9 @@ namespace Matrix
 	public:
 		VSCustomArchiveObject();
 		virtual ~VSCustomArchiveObject();
-		virtual void Archive(VSStream& Stream) = 0;
-		virtual void CopyFrom(VSCustomArchiveObject*, Container::MMap<VSObject*, VSObject*>& CloneMap) = 0;
-		virtual VSEditorElement* CreateEElement(Container::MString& Name, VSObject* pOwner);
+		virtual void Archive(MStream& Stream) = 0;
+		virtual void CopyFrom(VSCustomArchiveObject*, Container::MMap<MObject*, MObject*>& CloneMap) = 0;
+		virtual VSEditorElement* CreateEElement(Container::MString& Name, MObject* pOwner);
 	};
 	CUSTOMTYPE_MARCO(VSCustomArchiveObject)
 }

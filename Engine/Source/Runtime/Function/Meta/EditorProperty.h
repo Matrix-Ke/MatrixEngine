@@ -296,7 +296,7 @@
 //	class MATRIX_FUNCTION_API VSEditorProperty : public VSEditorElement
 //	{
 //	public:
-//		VSEditorProperty(Container::MString& Name, VSObject* pOwner)
+//		VSEditorProperty(Container::MString& Name, MObject* pOwner)
 //		{
 //			m_pName = (VSELable*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_LABLE, Name);
 //			m_pName->SetOwner(this);
@@ -313,13 +313,13 @@
 //
 //	protected:
 //		VSELable* m_pName;
-//		VSObject* m_pOwner;
+//		MObject* m_pOwner;
 //	};
 //
 //	class MATRIX_FUNCTION_API VSEBoolProperty : public VSEditorProperty
 //	{
 //	public:
-//		VSEBoolProperty(bool* b, Container::MString& Name, VSObject* pOwner)
+//		VSEBoolProperty(bool* b, Container::MString& Name, MObject* pOwner)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			m_pCheckBox = (VSECheckBox*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_CHECK, Name);
@@ -355,7 +355,7 @@
 //	class MATRIX_FUNCTION_API VSEResourceProperty : public VSEditorProperty
 //	{
 //	public:
-//		VSEResourceProperty(VSResourceProxyBasePtr& pResource, Container::MString& Name, VSObject* pOwner)
+//		VSEResourceProperty(VSResourceProxyBasePtr& pResource, Container::MString& Name, MObject* pOwner)
 //			: VSEditorProperty(Name, pOwner), m_pResource(pResource)
 //		{
 //			m_pView = (VSEViewWindow*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_VIEW, Name);
@@ -390,7 +390,7 @@
 //	class MATRIX_FUNCTION_API VSEColorProperty : public VSEditorProperty
 //	{
 //	public:
-//		VSEColorProperty(Math::ColorRGBA* pColor, Container::MString& Name, VSObject* pOwner)
+//		VSEColorProperty(Math::ColorRGBA* pColor, Container::MString& Name, MObject* pOwner)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			m_pColorTable = (VSEColorTable*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_COLOR, Name);
@@ -426,7 +426,7 @@
 //	class MATRIX_FUNCTION_API VSEEnumProperty : public VSEditorProperty
 //	{
 //	public:
-//		VSEEnumProperty(unsigned int* pData, Container::MString& Name, VSObject* pOwner)
+//		VSEEnumProperty(unsigned int* pData, Container::MString& Name, MObject* pOwner)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			m_pData = pData;
@@ -467,7 +467,7 @@
 //	class MATRIX_FUNCTION_API VSEValueProperty : public VSEditorProperty
 //	{
 //	public:
-//		VSEValueProperty(T* pData, Container::MString& Name, VSObject* pOwner, bool bRange, T& Max, T& Min, T& Step)
+//		VSEValueProperty(T* pData, Container::MString& Name, MObject* pOwner, bool bRange, T& Max, T& Min, T& Step)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			MATRIX_ENGINE_ASSERT(pData != NULL);
@@ -612,7 +612,7 @@
 //	class MATRIX_FUNCTION_API VSEIntProperty : public VSEValueProperty<int>
 //	{
 //	public:
-//		VSEIntProperty(int* pData, Container::MString& Name, VSObject* pOwner, bool bRange, int Max, int Min, int Step)
+//		VSEIntProperty(int* pData, Container::MString& Name, MObject* pOwner, bool bRange, int Max, int Min, int Step)
 //			: VSEValueProperty(pData, Name, pOwner, bRange, Max, Min, Step)
 //		{
 //			SetValue();
@@ -632,7 +632,7 @@
 //	class MATRIX_FUNCTION_API VSEUnsignedIntProperty : public VSEValueProperty<unsigned int>
 //	{
 //	public:
-//		VSEUnsignedIntProperty(unsigned int* pData, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned int Max, unsigned int Min, unsigned int Step)
+//		VSEUnsignedIntProperty(unsigned int* pData, Container::MString& Name, MObject* pOwner, bool bRange, unsigned int Max, unsigned int Min, unsigned int Step)
 //			: VSEValueProperty(pData, Name, pOwner, bRange, Max, Min, Step)
 //		{
 //			SetValue();
@@ -652,7 +652,7 @@
 //	class MATRIX_FUNCTION_API VSEUnsignedCharProperty : public VSEValueProperty<unsigned char>
 //	{
 //	public:
-//		VSEUnsignedCharProperty(unsigned char* pData, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned char Max, unsigned char Min, unsigned char Step)
+//		VSEUnsignedCharProperty(unsigned char* pData, Container::MString& Name, MObject* pOwner, bool bRange, unsigned char Max, unsigned char Min, unsigned char Step)
 //			: VSEValueProperty(pData, Name, pOwner, bRange, Max, Min, Step)
 //		{
 //			SetValue();
@@ -672,7 +672,7 @@
 //	class MATRIX_FUNCTION_API VSECharProperty : public VSEValueProperty<TCHAR>
 //	{
 //	public:
-//		VSECharProperty(TCHAR* pData, Container::MString& Name, VSObject* pOwner, bool bRange, TCHAR Max, TCHAR Min, TCHAR Step)
+//		VSECharProperty(TCHAR* pData, Container::MString& Name, MObject* pOwner, bool bRange, TCHAR Max, TCHAR Min, TCHAR Step)
 //			: VSEValueProperty(pData, Name, pOwner, bRange, Max, Min, Step)
 //		{
 //			SetValue();
@@ -696,7 +696,7 @@
 //	class MATRIX_FUNCTION_API VSERealProperty : public VSEValueProperty<VSREAL>
 //	{
 //	public:
-//		VSERealProperty(VSREAL* pData, Container::MString& Name, VSObject* pOwner, bool bRange, VSREAL Max, VSREAL Min, VSREAL Step)
+//		VSERealProperty(VSREAL* pData, Container::MString& Name, MObject* pOwner, bool bRange, VSREAL Max, VSREAL Min, VSREAL Step)
 //			: VSEValueProperty(pData, Name, pOwner, bRange, Max, Min, Step)
 //		{
 //			SetValue();
@@ -717,7 +717,7 @@
 //	class MATRIX_FUNCTION_API VSEVector3Property : public VSEditorProperty
 //	{
 //	public:
-//		VSEVector3Property(Math::Vector3* pVector3, Container::MString& Name, VSObject* pOwner, bool bRange, Math::Vector3 Max, Math::Vector3 Min, Math::Vector3 Step)
+//		VSEVector3Property(Math::Vector3* pVector3, Container::MString& Name, MObject* pOwner, bool bRange, Math::Vector3 Max, Math::Vector3 Min, Math::Vector3 Step)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			MATRIX_ENGINE_ASSERT(pVector3 != NULL);
@@ -925,7 +925,7 @@
 //	class MATRIX_FUNCTION_API VSETransformProperty : public VSEditorProperty // no range so no slider
 //	{
 //	public:
-//		VSETransformProperty(VSTransform* pTransform, Container::MString& Name, VSObject* pOwner)
+//		VSETransformProperty(VSTransform* pTransform, Container::MString& Name, MObject* pOwner)
 //			: VSEditorProperty(Name, pOwner)
 //		{
 //			m_pTransform = pTransform;
@@ -1205,80 +1205,80 @@
 //		}
 //	};
 //	template <typename T>
-//	VSEditorElement* CreateEElement(T& Value, Container::MString& Name, VSObject* pOwner, bool bRange, T& Max, T& Min, T& fStep)
+//	VSEditorElement* CreateEElement(T& Value, Container::MString& Name, MObject* pOwner, bool bRange, T& Max, T& Min, T& fStep)
 //	{
 //		MATRIX_ENGINE_ASSERT(0);
 //		return NULL;
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<Math::Vector3>(Math::Vector3& Value, Container::MString& Name, VSObject* pOwner, bool bRange, Math::Vector3& Max, Math::Vector3& Min, Math::Vector3& fStep)
+//	inline VSEditorElement* CreateEElement<Math::Vector3>(Math::Vector3& Value, Container::MString& Name, MObject* pOwner, bool bRange, Math::Vector3& Max, Math::Vector3& Min, Math::Vector3& fStep)
 //	{
 //		return MX_NEW VSEVector3Property(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<bool>(bool& Value, Container::MString& Name, VSObject* pOwner, bool bRange, bool& Max, bool& Min, bool& fStep)
+//	inline VSEditorElement* CreateEElement<bool>(bool& Value, Container::MString& Name, MObject* pOwner, bool bRange, bool& Max, bool& Min, bool& fStep)
 //	{
 //		return MX_NEW VSEBoolProperty(&Value, Name, pOwner);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<VSTransform>(VSTransform& Value, Container::MString& Name, VSObject* pOwner, bool bRange, VSTransform& Max, VSTransform& Min, VSTransform& fStep)
+//	inline VSEditorElement* CreateEElement<VSTransform>(VSTransform& Value, Container::MString& Name, MObject* pOwner, bool bRange, VSTransform& Max, VSTransform& Min, VSTransform& fStep)
 //	{
 //		return MX_NEW VSETransformProperty(&Value, Name, pOwner);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<Math::ColorRGBA>(Math::ColorRGBA& Value, Container::MString& Name, VSObject* pOwner, bool bRange, Math::ColorRGBA& Max, Math::ColorRGBA& Min, Math::ColorRGBA& fStep)
+//	inline VSEditorElement* CreateEElement<Math::ColorRGBA>(Math::ColorRGBA& Value, Container::MString& Name, MObject* pOwner, bool bRange, Math::ColorRGBA& Max, Math::ColorRGBA& Min, Math::ColorRGBA& fStep)
 //	{
 //		return MX_NEW VSEColorProperty(&Value, Name, pOwner);
 //	}
 //#ifdef TYPE_ADD_TO_UI
 //	template <>
-//	inline VSEditorElement* CreateEElement<unsigned int>(unsigned int& Value, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned int& Max, unsigned int& Min, unsigned int& fStep)
+//	inline VSEditorElement* CreateEElement<unsigned int>(unsigned int& Value, Container::MString& Name, MObject* pOwner, bool bRange, unsigned int& Max, unsigned int& Min, unsigned int& fStep)
 //	{
 //		return MX_NEW VSValueProperty<unsigned int>(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<int>(int& Value, Container::MString& Name, VSObject* pOwner, bool bRange, int& Max, int& Min, int& fStep)
+//	inline VSEditorElement* CreateEElement<int>(int& Value, Container::MString& Name, MObject* pOwner, bool bRange, int& Max, int& Min, int& fStep)
 //	{
 //		return MX_NEW VSValueProperty<int>(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<unsigned char>(unsigned char& Value, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned char& Max, unsigned char& Min, unsigned char& fStep)
+//	inline VSEditorElement* CreateEElement<unsigned char>(unsigned char& Value, Container::MString& Name, MObject* pOwner, bool bRange, unsigned char& Max, unsigned char& Min, unsigned char& fStep)
 //	{
 //		return MX_NEW VSValueProperty<unsigned char>(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<TCHAR>(TCHAR& Value, Container::MString& Name, VSObject* pOwner, bool bRange, TCHAR& Max, TCHAR& Min, TCHAR& fStep)
+//	inline VSEditorElement* CreateEElement<TCHAR>(TCHAR& Value, Container::MString& Name, MObject* pOwner, bool bRange, TCHAR& Max, TCHAR& Min, TCHAR& fStep)
 //	{
 //		return MX_NEW VSValueProperty<TCHAR>(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<VSREAL>(VSREAL& Value, Container::MString& Name, VSObject* pOwner, bool bRange, VSREAL& Max, VSREAL& Min, VSREAL& fStep)
+//	inline VSEditorElement* CreateEElement<VSREAL>(VSREAL& Value, Container::MString& Name, MObject* pOwner, bool bRange, VSREAL& Max, VSREAL& Min, VSREAL& fStep)
 //	{
 //		return MX_NEW VSValueProperty<VSREAL>(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //#else
 //	template <>
-//	inline VSEditorElement* CreateEElement<unsigned int>(unsigned int& Value, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned int& Max, unsigned int& Min, unsigned int& fStep)
+//	inline VSEditorElement* CreateEElement<unsigned int>(unsigned int& Value, Container::MString& Name, MObject* pOwner, bool bRange, unsigned int& Max, unsigned int& Min, unsigned int& fStep)
 //	{
 //		return MX_NEW VSEUnsignedIntProperty(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<int>(int& Value, Container::MString& Name, VSObject* pOwner, bool bRange, int& Max, int& Min, int& fStep)
+//	inline VSEditorElement* CreateEElement<int>(int& Value, Container::MString& Name, MObject* pOwner, bool bRange, int& Max, int& Min, int& fStep)
 //	{
 //		return MX_NEW VSEIntProperty(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<unsigned char>(unsigned char& Value, Container::MString& Name, VSObject* pOwner, bool bRange, unsigned char& Max, unsigned char& Min, unsigned char& fStep)
+//	inline VSEditorElement* CreateEElement<unsigned char>(unsigned char& Value, Container::MString& Name, MObject* pOwner, bool bRange, unsigned char& Max, unsigned char& Min, unsigned char& fStep)
 //	{
 //		return MX_NEW VSEUnsignedCharProperty(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<TCHAR>(TCHAR& Value, Container::MString& Name, VSObject* pOwner, bool bRange, TCHAR& Max, TCHAR& Min, TCHAR& fStep)
+//	inline VSEditorElement* CreateEElement<TCHAR>(TCHAR& Value, Container::MString& Name, MObject* pOwner, bool bRange, TCHAR& Max, TCHAR& Min, TCHAR& fStep)
 //	{
 //		return MX_NEW VSECharProperty(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
 //	template <>
-//	inline VSEditorElement* CreateEElement<VSREAL>(VSREAL& Value, Container::MString& Name, VSObject* pOwner, bool bRange, VSREAL& Max, VSREAL& Min, VSREAL& fStep)
+//	inline VSEditorElement* CreateEElement<VSREAL>(VSREAL& Value, Container::MString& Name, MObject* pOwner, bool bRange, VSREAL& Max, VSREAL& Min, VSREAL& fStep)
 //	{
 //		return MX_NEW VSERealProperty(&Value, Name, pOwner, bRange, Max, Min, fStep);
 //	}
@@ -1286,10 +1286,10 @@
 //	/*to else
 //	---------------------------------------------------
 //	*/
-//	MATRIX_FUNCTION_API VSEditorElement* CreateObjectEditorElement(VSObject* pObject, Container::MString& Name);
+//	MATRIX_FUNCTION_API VSEditorElement* CreateObjectEditorElement(MObject* pObject, Container::MString& Name);
 //	MATRIX_FUNCTION_API void ReleaseObjectEditorElement(VSECollection* Root);
 //	template <typename T>
-//	void CreateEditorElement(T& Value, VSObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
+//	void CreateEditorElement(T& Value, MObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
 //	{
 //		if (TIsVSResourceProxyPointerType<T>::Value)
 //		{
@@ -1299,19 +1299,19 @@
 //		}
 //		else if (TIsVSPointerType<T>::Value)
 //		{
-//			VSObject*& TempSrc = *(VSObject**)(void*)&Value;
+//			MObject*& TempSrc = *(MObject**)(void*)&Value;
 //			VSEditorElement* pEp = CreateObjectEditorElement(TempSrc, Name);
 //			pParent->AddElement(pEp);
 //		}
 //		else if (TIsVSType<T>::Value)
 //		{
-//			VSObject* TempSrc = (VSObject*)&Value;
+//			MObject* TempSrc = (MObject*)&Value;
 //			VSEditorElement* pEp = CreateObjectEditorElement(TempSrc, Name);
 //			pParent->AddElement(pEp);
 //		}
 //		else if (TIsVSSmartPointerType<T>::Value)
 //		{
-//			VSObjectPtr& TempSrc = *(VSObjectPtr*)(void*)&Value;
+//			MObjectPtr& TempSrc = *(MObjectPtr*)(void*)&Value;
 //			VSEditorElement* pEp = CreateObjectEditorElement(TempSrc, Name);
 //			pParent->AddElement(pEp);
 //		}
@@ -1331,7 +1331,7 @@
 //		}
 //	}
 //	template <typename T, class VSMemManagerClass>
-//	void CreateEditorElement(Container::MArray<T, VSMemManagerClass>& Value, VSObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
+//	void CreateEditorElement(Container::MArray<T, VSMemManagerClass>& Value, MObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
 //	{
 //		VSECollection* pEc = NULL;
 //		if (Value.GetNum() > 0)
@@ -1347,7 +1347,7 @@
 //	}
 //
 //	template <class Key, class T, class VSMemManagerClass>
-//	void CreateEditorElement(Container::MMap<Key, T, VSMemManagerClass>& Value, VSObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
+//	void CreateEditorElement(Container::MMap<Key, T, VSMemManagerClass>& Value, MObject* pOwner, VSECollection* pParent, Container::MString& Name, bool Range = false, T Max = T(), T Min = T(), T fStep = T())
 //	{
 //		VSECollection* pEc = NULL;
 //		if (Value.GetNum() > 0)

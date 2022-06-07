@@ -34,7 +34,6 @@ enum class EPLATFORM
 //#define  VSFLOAT 
 //#ifdef VSFLOAT 
 #define VSREAL 		float
-#define VSREAL 		float
 #endif // MATRIX_ENGINE_BASIX_TYPE
 
 

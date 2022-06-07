@@ -43,7 +43,7 @@ namespace Matrix
 	DECLARE_Ptr(VSName);
 
 
-	class VSStream;
+	class MStream;
 	class MATRIX_FUNCTION_API VSUsedName : public VSCustomArchiveObject
 	{
 		//PRIORITY
@@ -117,8 +117,8 @@ namespace Matrix
 		//ÖØÔØ!=²Ù×÷·û
 		MATRIX_FUNCTION_API friend bool operator !=(const VSUsedName& Name, const TCHAR* pChar);
 
-		virtual void Archive(VSStream& Stream);
-		virtual void CopyFrom(VSCustomArchiveObject*, Container::MMap<VSObject*, VSObject*>& CloneMap);
+		virtual void Archive(MStream& Stream);
+		virtual void CopyFrom(VSCustomArchiveObject*, Container::MMap<MObject*, MObject*>& CloneMap);
 	protected:
 		VSNamePtr m_pName;
 

@@ -36,7 +36,7 @@
 //         VSVariant(const Math::Vector4 &v);
 //         VSVariant(const VSMatrix3X3 &m);
 //         VSVariant(const VSMatrix3X3W &m);
-//         VSVariant(VSObject *p);
+//         VSVariant(MObject *p);
 //         VSVariant(const TCHAR *s);
 //         VSVariant(const VSVariant &Va);
 
@@ -49,7 +49,7 @@
 //         VSVariant &operator=(const Math::Vector4 &v);
 //         VSVariant &operator=(const VSMatrix3X3 &m);
 //         VSVariant &operator=(const VSMatrix3X3W &m);
-//         VSVariant &operator=(VSObject *p);
+//         VSVariant &operator=(MObject *p);
 //         VSVariant &operator=(const TCHAR *s);
 
 //         bool operator==(const VSVariant &rhs) const;
@@ -61,7 +61,7 @@
 //         bool operator==(const Math::Vector4 &v) const;
 //         bool operator==(const VSMatrix3X3 &m) const;
 //         bool operator==(const VSMatrix3X3W &m) const;
-//         bool operator==(const VSObject *p) const;
+//         bool operator==(const MObject *p) const;
 //         bool operator==(const TCHAR *s) const;
 
 //         unsigned int GetType() const;
@@ -75,7 +75,7 @@
 //         const VSMatrix3X3 &GetMatrix3X3() const;
 //         const VSMatrix3X3W &GetMatrix3X3W() const;
 //         const TCHAR *GetString() const;
-//         VSObject *GetObjectPtr() const;
+//         MObject *GetObjectPtr() const;
 
 //         void Clear();
 

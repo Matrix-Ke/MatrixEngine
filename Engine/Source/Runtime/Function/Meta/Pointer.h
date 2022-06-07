@@ -38,7 +38,7 @@ namespace Matrix
 		{
 			return (void*)&m_pObject;
 		}
-		friend class VSStream;
+		friend class MStream;
 
 	private:
 		T* m_pObject;

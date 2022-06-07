@@ -87,7 +87,7 @@
 // {
 //     *this = m;
 // }
-// VSVariant::VSVariant(VSObject *p)
+// VSVariant::VSVariant(MObject *p)
 // {
 //     *this = p;
 // }
@@ -195,7 +195,7 @@
 //     }
 //     return GetMatrix3X3W() == m;
 // }
-// bool VSVariant::operator==(const VSObject *p) const
+// bool VSVariant::operator==(const MObject *p) const
 // {
 //     if (m_uiType != V_OBJECT)
 //     {
@@ -285,7 +285,7 @@
 //     *((VSMatrix3X3W *)m_fVec) = m;
 //     return *this;
 // }
-// VSVariant &VSVariant::operator=(VSObject *p)
+// VSVariant &VSVariant::operator=(MObject *p)
 // {
 //     Clear();
 //     m_uiType = V_OBJECT;
@@ -361,10 +361,10 @@
 //     MATRIX_ENGINE_ASSERT(m_uiType == V_STRING);
 //     return ((VSName *)m_pP)->GetBuffer();
 // }
-// VSObject *VSVariant::GetObjectPtr() const
+// MObject *VSVariant::GetObjectPtr() const
 // {
 //     MATRIX_ENGINE_ASSERT(m_uiType == V_OBJECT);
-//     return (VSObject *)m_pP;
+//     return (MObject *)m_pP;
 // }
 // bool VSVariant::GetValueToString(Container::MString &outVal) const
 // {

@@ -75,7 +75,7 @@
 //}
 //namespace Matrix
 //{
-//	VSEditorElement* CreateObjectEditorElement(VSObject* pObject, Container::MString& Name)
+//	VSEditorElement* CreateObjectEditorElement(MObject* pObject, Container::MString& Name)
 //	{
 //		VSRtti& Rtti = pObject->GetType();
 //		VSECollection* pParent = NULL;
