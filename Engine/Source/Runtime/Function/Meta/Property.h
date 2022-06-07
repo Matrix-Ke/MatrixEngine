@@ -913,11 +913,13 @@ namespace Matrix
 		{
 			return !m_pReturnProperty;
 		}
-		FunctionTemplatePtr ObjectFun;
 		void SetTotalSize(unsigned int uiTotalSize)
 		{
 			m_uiTotalSize = uiTotalSize;
 		}
+		//IsSame 用来判断两个函数是否相同，这里的判断相当粗略，只判断了所属类、名字、参数个数、参数大小，
+		// 并没有具体去判断参数的类型，不过这样已经足够了。在真正判断的时候，如果没有指定参数个数，找到一个匹配的就终止遍历；
+		//如果指定了参数个数，就要检查参数个数是否一样。
 		bool IsSame(VSFunction* p)
 		{
 			if (m_pOwner != p->m_pOwner)
@@ -943,11 +945,12 @@ namespace Matrix
 		}
 
 	protected:
-		VSRtti* m_pOwner;
-		VSUsedName m_Name;
-		unsigned int m_uiFlag;
+		FunctionTemplatePtr ObjectFun;  //函数指针 ObjectFun，是关键数据
+		VSRtti* m_pOwner; //记录函数属于哪个类
+		VSUsedName m_Name; //记录函数名称
+		unsigned int m_uiFlag; //记录函数的用途
 		Container::MArray<VSProperty*> m_PropertyArray; //从左向右记录参数的属性
-		VSProperty* m_pReturnProperty; //记录返回值
+		VSProperty* m_pReturnProperty; //记录返回值，如果无返回值则为空
 		unsigned int m_uiTotalSize;    //记录参数量的总大小
 	};
 

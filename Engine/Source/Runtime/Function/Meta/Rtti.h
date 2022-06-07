@@ -57,14 +57,6 @@ namespace Matrix
 		static const VSRtti* GetRttiByName(const VSUsedName& RttiName);
 
 	private:
-		Container::MString m_cRttiName;
-		VSRtti* m_pBase;
-		Container::MArray<VSProperty*> m_PropertyArray; //存放所有属性 
-		Container::MArray<VSFunction*> m_FunctionArray; //存放function
-		CreateObjectFun m_CreateFun;
-
-		static Container::MMapOrder<VSUsedName, VSRtti*> ms_RttiMap;
-
 		static Container::MArray<VSRtti*>& GetRttiArray()
 		{
 			static Container::MArray<VSRtti*> ms_RttiArray;
@@ -73,6 +65,14 @@ namespace Matrix
 		//每个类实现一个初始化函数和销毁函数，负责初始化和销毁这个类的静态成员变量
 		static bool InitialDefaultState();
 		static bool TerminalDefaultState();
+
+	private:
+		Container::MString m_cRttiName;
+		VSRtti* m_pBase;
+		Container::MArray<VSProperty*> m_PropertyArray; //存放所有属性 
+		Container::MArray<VSFunction*> m_FunctionArray; //存放function
+		CreateObjectFun m_CreateFun;
+		static Container::MMapOrder<VSUsedName, VSRtti*> ms_RttiMap;
 	};
 #include "Rtti.inl"
 	//};

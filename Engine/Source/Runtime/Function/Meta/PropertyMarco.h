@@ -110,7 +110,7 @@
 
 
 
-
+//里关键的步骤是把类里面的静态函数FunctionTemplate_Temp赋给 VSFunction 里面的函数指针 ObjectFun，这样只要找到 VSFunction 就可以找到调用的函数
 #define ADD_FUNCTION(FunctionName) \
  	VSFunction * pFun = MX_NEW VSFunction(rtti, _T(#FunctionName), Flag); \
  	pFun->SetTotalSize(sizeof(Name)); \
@@ -132,6 +132,8 @@
  	pFun->GetProperty(Num)->GetValueAddress(para)
 #define  RETURN_FUN(classname,FunctionName,...) \
  	((classname *)p)->FunctionName(##__VA_ARGS__);
+
+/*FunctionTemplate_Temp 实际的类函数函数调用*/
 #define BEGIN_REGISTER_FUNCTION_NOPARAMETER(classname,FunctionName,uiFlag,Retype) \
  { \
  	class Template_##FunctionName \
