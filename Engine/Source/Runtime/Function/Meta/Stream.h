@@ -2,7 +2,6 @@
 #include "Rtti.h"
 #include "Pointer.h"
 #include "Type.h"
-#include "Resource.h"
 #include "CustomArchiveObject.h"
 #include "Object.h"
 
@@ -10,16 +9,18 @@
 #include "Container/Array.h"
 #include "Container/Map.h"
 #include "Container/String.h"
+#include "Function/Resource.h"
+
 
 
 namespace Matrix
 {
-	DECLARE_Ptr(VSObject);
+	DECLARE_Ptr(MObject);
 
 	// 默认clone指针类型VSType property 都是会重新创建一个实例然后再拷贝数据，为了让不重新创建，添加property的时候，这个property不要加入VSProperty::F_CLONE标志
 	//然后再postclone 函数中自己再重新设置 如果只是默认的值拷贝而非创建实例可以设置F_COPY
 	template <typename T>
-	void Copy(T& Dest, T& Src, Container::MMap<VSObject*, VSObject*>& CloneMap)
+	void Copy(T& Dest, T& Src, Container::MMap<MObject*, MObject*>& CloneMap)
 	{
 		if (TIsVSResourceProxyPointerType<T>::Value)
 		{
@@ -27,21 +28,21 @@ namespace Matrix
 		}
 		else if (TIsVSPointerType<T>::Value)
 		{
-			VSObject*& TempSrc = *(VSObject**)(void*)&Src;
-			VSObject*& TempDest = *(VSObject**)(void*)&Dest;
-			TempDest = VSObject::_CloneCreateObject(TempSrc, CloneMap);
+			MObject*& TempSrc = *(MObject**)(void*)&Src;
+			MObject*& TempDest = *(MObject**)(void*)&Dest;
+			TempDest = MObject::_CloneCreateObject(TempSrc, CloneMap);
 		}
 		else if (TIsVSType<T>::Value)
 		{
-			VSObject* TempSrc = (VSObject*)&Src;
-			VSObject* TempDest = (VSObject*)&Dest;
-			VSObject::_CloneObject(TempSrc, TempDest, CloneMap);
+			MObject* TempSrc = (MObject*)&Src;
+			MObject* TempDest = (MObject*)&Dest;
+			MObject::_CloneObject(TempSrc, TempDest, CloneMap);
 		}
 		else if (TIsVSSmartPointerType<T>::Value)
 		{
-			VSObjectPtr& TempSrc = *(VSObjectPtr*)(void*)&Src;
-			VSObjectPtr& TempDest = *(VSObjectPtr*)(void*)&Dest;
-			TempDest = VSObject::_CloneCreateObject(TempSrc, CloneMap);
+			MObjectPtr& TempSrc = *(MObjectPtr*)(void*)&Src;
+			MObjectPtr& TempDest = *(MObjectPtr*)(void*)&Dest;
+			TempDest = MObject::_CloneCreateObject(TempSrc, CloneMap);
 		}
 		else if (TIsCustomType<T>::Value)
 		{
@@ -55,7 +56,7 @@ namespace Matrix
 		}
 	}
 	template <typename T, class VSMemManagerClass>
-	void Copy(Container::MArray<T, VSMemManagerClass>& Dest, Container::MArray<T, VSMemManagerClass>& Src, Container::MMap<VSObject*, VSObject*>& CloneMap)
+	void Copy(Container::MArray<T, VSMemManagerClass>& Dest, Container::MArray<T, VSMemManagerClass>& Src, Container::MMap<MObject*, MObject*>& CloneMap)
 	{
 		Dest.Clear();
 		Dest.SetBufferNum(Src.GetNum());
@@ -66,7 +67,7 @@ namespace Matrix
 	}
 
 	template <class Key, class Value, class VSMemManagerClass>
-	void Copy(Container::MMap<Key, Value, VSMemManagerClass>& Dest, Container::MMap<Key, Value, VSMemManagerClass>& Src, Container::MMap<VSObject*, VSObject*>& CloneMap)
+	void Copy(Container::MMap<Key, Value, VSMemManagerClass>& Dest, Container::MMap<Key, Value, VSMemManagerClass>& Src, Container::MMap<MObject*, MObject*>& CloneMap)
 	{
 		Dest.Clear();
 		Dest.SetBufferNum(Src.GetNum());
@@ -79,8 +80,8 @@ namespace Matrix
 		}
 	}
 
-	//处理 VSObject 对象的过程就是一个递归遍历的过程，可以访问到所有属性，所以根据不同需求，我们可以收集很多有用的信息
-	class MATRIX_FUNCTION_API VSStream
+	//处理 MObject 对象的过程就是一个递归遍历的过程，可以访问到所有属性，所以根据不同需求，我们可以收集很多有用的信息
+	class MATRIX_FUNCTION_API MStream
 	{
 	public:
 		enum // Archive Type序列化类型
@@ -115,19 +116,19 @@ namespace Matrix
 				}
 				else if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 					ReadObjectGUID(Temp);
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Key = (VSObject*)&Io;
-					VSObject* Value = NULL;
+					MObject* Key = (MObject*)&Io;
+					MObject* Value = NULL;
 					ReadObjectGUID(Value);
 					m_pmVSTypeLoadMap.AddElement(Key, Value);
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
 					ReadObjectGUID(Temp);
 				}
 				else if (TIsVSStringType<T>::Value)
@@ -157,12 +158,12 @@ namespace Matrix
 				}
 				else if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 					WriteObjectGUID(Temp);
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
 					WriteObjectGUID(Temp);
 				}
 				else if (TIsVSStringType<T>::Value)
@@ -180,7 +181,7 @@ namespace Matrix
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Temp = (VSObject*)&Io;
+					MObject* Temp = (MObject*)&Io;
 					WriteObjectGUID(Temp);
 				}
 				else
@@ -192,12 +193,12 @@ namespace Matrix
 			{
 				if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 					ArchiveAll(Temp);
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
 					ArchiveAll(Temp);
 				}
 				else if (TIsCustomType<T>::Value)
@@ -210,7 +211,7 @@ namespace Matrix
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Temp = (VSObject*)&Io;
+					MObject* Temp = (MObject*)&Io;
 					ArchiveAll(Temp);
 				}
 			}
@@ -247,11 +248,11 @@ namespace Matrix
 			{
 				if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 
 					if (Temp)
 					{
-						if (Temp->IsHasFlag(VSObject::OF_PendingKill))
+						if (Temp->IsHasFlag(MObject::OF_PendingKill))
 						{
 							Temp = NULL;
 							return;
@@ -261,10 +262,10 @@ namespace Matrix
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
 					if (Temp)
 					{
-						if (Temp->IsHasFlag(VSObject::OF_PendingKill))
+						if (Temp->IsHasFlag(MObject::OF_PendingKill))
 						{
 							Temp = NULL;
 							return;
@@ -282,7 +283,7 @@ namespace Matrix
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Temp = (VSObject*)&Io;
+					MObject* Temp = (MObject*)&Io;
 					ArchiveAll(Temp);
 				}
 			}
@@ -290,19 +291,19 @@ namespace Matrix
 			{
 				if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 					Temp = NULL;
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
-					VSObject* LocalTemp = Temp;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
+					MObject* LocalTemp = Temp;
 					Temp = NULL;
 					if (LocalTemp)
 					{
-						if (LocalTemp->IsHasFlag(VSObject::OF_REACH))
+						if (LocalTemp->IsHasFlag(MObject::OF_REACH))
 						{
-							LocalTemp->ClearFlag(VSObject::OF_PendingKill);
+							LocalTemp->ClearFlag(MObject::OF_PendingKill);
 						}
 					}
 				}
@@ -316,7 +317,7 @@ namespace Matrix
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Temp = (VSObject*)&Io;
+					MObject* Temp = (MObject*)&Io;
 					ArchiveAll(Temp);
 				}
 			}
@@ -324,22 +325,22 @@ namespace Matrix
 			{
 				if (TIsVSPointerType<T>::Value)
 				{
-					VSObject*& Temp = *(VSObject**)(void*)&Io;
+					MObject*& Temp = *(MObject**)(void*)&Io;
 					LinkObjectPtr(Temp);
 				}
 				else if (TIsVSSmartPointerType<T>::Value)
 				{
-					VSObjectPtr& Temp = *(VSObjectPtr*)(void*)&Io;
+					MObjectPtr& Temp = *(MObjectPtr*)(void*)&Io;
 					LinkObjectPtr(Temp);
 				}
 				else if (TIsVSType<T>::Value)
 				{
-					VSObject* Key = (VSObject*)&Io;
-					VSObject* Value = NULL;
+					MObject* Key = (MObject*)&Io;
+					MObject* Value = NULL;
 					Value = GetVSTypeMapValue(Key);
 					LinkObjectPtr(Value);
 					MATRIX_ENGINE_ASSERT(Value);
-					VSObject::CloneObject(Value, Key);
+					MObject::CloneObject(Value, Key);
 					//unsigned int uiIndex = m_pObjectArray.FindElement(Value);
 					//MATRIX_ENGINE_ASSERT(uiIndex < m_CopyUsed.GetNum());
 					//m_CopyUsed[uiIndex] = true;
@@ -671,10 +672,10 @@ namespace Matrix
 				m_uiSize = 0;
 				m_uiNameID = 0;
 			}
-			Container::MString m_PropertyName; //当前 VSObject 属性名字
-			unsigned int m_uiOffset; //当前 VSObject 属性距离首地址的偏移量
-			unsigned int m_uiSize; //当前 VSObject 属性大小
-			unsigned int m_uiNameID; //当前 VSObject 属性名字的 ID
+			Container::MString m_PropertyName; //当前 MObject 属性名字
+			unsigned int m_uiOffset; //当前 MObject 属性距离首地址的偏移量
+			unsigned int m_uiSize; //当前 MObject 属性大小
+			unsigned int m_uiNameID; //当前 MObject 属性名字的 ID
 		};
 
 		struct ObjectTableType
@@ -687,13 +688,13 @@ namespace Matrix
 				m_uiObjectPropertyTableSize = 0;
 				m_uiObjectPropertyNum = 0;
 			}
-			unsigned int m_uiGUID; // 以 VSObject 的地址作为唯一标识，恢复加载时指针的指向
-			Container::MString m_RttiName; //VSObject Rtti 的名字，加载的时候才知道创建的是什么对象
+			unsigned int m_uiGUID; // 以 MObject 的地址作为唯一标识，恢复加载时指针的指向
+			Container::MString m_RttiName; //MObject Rtti 的名字，加载的时候才知道创建的是什么对象
 			unsigned int m_uiOffset; //ObjectPropertyTable距离首地址偏移
-			unsigned int m_uiObjectPropertySize; //VSObject 所有属性占用的空间大小
-			unsigned int m_uiObjectPropertyNum;  //VSObject 属性的个数
+			unsigned int m_uiObjectPropertySize; //MObject 所有属性占用的空间大小
+			unsigned int m_uiObjectPropertyNum;  //MObject 属性的个数
 			unsigned int m_uiObjectPropertyTableSize; //ObjectPropertyTable 占用空间大小
-			Container::MArray<ObjectPropertyTable> m_ObjectPropertyTable; //VSObject 属性表数组
+			Container::MArray<ObjectPropertyTable> m_ObjectPropertyTable; //MObject 属性表数组
 		};
 		bool m_bLoadUseGC;
 
@@ -707,19 +708,19 @@ namespace Matrix
 
 		virtual bool LoadFromBuffer(unsigned char* pBuffer, unsigned int uiSize);
 
-		//首先是要判断这个 VSObject 对象有没有注册过。如果没有注册，则加入 m_pObjectArray 中；否则，这个递归处理就结束。接下来，遍历所有的属性
-		bool ArchiveAll(VSObject* pObject);
+		//首先是要判断这个 MObject 对象有没有注册过。如果没有注册，则加入 m_pObjectArray 中；否则，这个递归处理就结束。接下来，遍历所有的属性
+		bool ArchiveAll(MObject* pObject);
 
 	public:
 		//如果没有注册进去，就放入m_pObjectArray中
-		bool RegisterObject(VSObject* pObject);
+		bool RegisterObject(MObject* pObject);
 
-		bool RegisterPostLoadObject(VSObject* pObject);
+		bool RegisterPostLoadObject(MObject* pObject);
 
-		bool RegisterReachableObject(VSObject* pObject);
+		bool RegisterReachableObject(MObject* pObject);
 
-		VSStream(DWORD dwFlag = 0);
-		~VSStream();
+		MStream(DWORD dwFlag = 0);
+		~MStream();
 		//此read 和 write 并非实际写入，都是操作内存，并非操作文件 
 		bool Read(void* pvBuffer, unsigned int uiSize);
 		bool Write(const void* pvBuffer, unsigned int uiSize);
@@ -728,12 +729,12 @@ namespace Matrix
 
 		static unsigned int GetStrDistUse(const Container::MString& Str);
 		static unsigned int GetStrDistUse(const TCHAR* pCh);
-		const VSObject* GetLoadMapValue(unsigned int uiKey) const;
-		unsigned int GetSaveMapValue(VSObject* Key) const;
-		VSObject* GetVSTypeMapValue(VSObject* pKey) const;
-		virtual const VSObject* GetObjectByRtti(const VSRtti& Rtti);
-		bool GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<VSObject*>& ObjectArray, bool IsDerivedFrom = false);
-		bool GetAllResourceObject(Container::MArray<VSObject*>& ObjectArray);
+		const MObject* GetLoadMapValue(unsigned int uiKey) const;
+		unsigned int GetSaveMapValue(MObject* Key) const;
+		MObject* GetVSTypeMapValue(MObject* pKey) const;
+		virtual const MObject* GetObjectByRtti(const VSRtti& Rtti);
+		bool GetObjectArrayByRtti(const VSRtti& Rtti, Container::MArray<MObject*>& ObjectArray, bool IsDerivedFrom = false);
+		bool GetAllResourceObject(Container::MArray<MObject*>& ObjectArray);
 		void GetObjectFailed();
 		inline unsigned int GetVersion() const
 		{
@@ -771,12 +772,12 @@ namespace Matrix
 		unsigned char* m_pcCurBufPtr; //初始为m_pcBuffer， 随着write()写入逐渐递增。
 		unsigned char* m_pcBuffer; //m_pcBuffer 是缓存的首地址， 是当前空闲空间的地址，在执行save()时候申请的空间，申请的内存大小为m_uiBufferSize。
 		unsigned int m_uiBufferSize; //
-		Container::MArray<VSObject*> m_pObjectArray;
-		Container::MArray<VSObject*> m_pPostLoadObject;
+		Container::MArray<MObject*> m_pObjectArray;
+		Container::MArray<MObject*> m_pPostLoadObject;
 
-		Container::MMap<unsigned int, VSObject*> m_pmLoadMap;
-		Container::MMap<VSObject*, unsigned int> m_pmSaveMap;     //GUID 与 相关object的映射
-		Container::MMap<VSObject*, VSObject*> m_pmVSTypeLoadMap;
+		Container::MMap<unsigned int, MObject*> m_pmLoadMap;
+		Container::MMap<MObject*, unsigned int> m_pmSaveMap;     //GUID 与 相关object的映射
+		Container::MMap<MObject*, MObject*> m_pmVSTypeLoadMap;
 
 		static unsigned int ms_uiCurVersion;
 		unsigned int m_uiVersion;
@@ -784,7 +785,7 @@ namespace Matrix
 	};
 
 	template <class T>
-	bool VSStream::ReadObjectGUID(VSPointer<T>& Pointer)
+	bool MStream::ReadObjectGUID(VSPointer<T>& Pointer)
 	{
 		unsigned int uiGUID = 0;
 		if (!Read(&uiGUID, sizeof(unsigned int)))
@@ -795,7 +796,7 @@ namespace Matrix
 	}
 	/********************************************************************************/
 	template <class T>
-	bool VSStream::WriteObjectGUID(const VSPointer<T>& Pointer)
+	bool MStream::WriteObjectGUID(const VSPointer<T>& Pointer)
 	{
 		T* pP = Pointer;
 		unsigned int uiGUID = GetSaveMapValue(pP);
@@ -805,7 +806,7 @@ namespace Matrix
 	}
 	/********************************************************************************/
 	template <class T>
-	bool VSStream::LinkObjectPtr(VSPointer<T>& Pointer)
+	bool MStream::LinkObjectPtr(VSPointer<T>& Pointer)
 	{
 		unsigned int uiGUID = Core::SizeTypeToGUID32((USIZE_TYPE)Pointer.GetObject());
 
@@ -816,7 +817,7 @@ namespace Matrix
 	}
 	/********************************************************************************/
 	template <class T>
-	bool VSStream::ReadObjectGUID(T*& pObject)
+	bool MStream::ReadObjectGUID(T*& pObject)
 	{
 		unsigned int uiGUID = 0;
 		if (!Read(&uiGUID, sizeof(unsigned int)))
@@ -827,7 +828,7 @@ namespace Matrix
 	}
 	/********************************************************************************/
 	template <class T>
-	bool VSStream::WriteObjectGUID(T* const& pObject)
+	bool MStream::WriteObjectGUID(T* const& pObject)
 	{
 		unsigned int uiGUID = GetSaveMapValue(pObject);
 		if (!Write(&uiGUID, sizeof(unsigned int)))
@@ -836,7 +837,7 @@ namespace Matrix
 	}
 	/********************************************************************************/
 	template <class T>
-	bool VSStream::LinkObjectPtr(T*& pObject)
+	bool MStream::LinkObjectPtr(T*& pObject)
 	{
 		unsigned int uiGUID = Core::SizeTypeToGUID32((USIZE_TYPE)pObject);
 		pObject = (T*)GetLoadMapValue(uiGUID);

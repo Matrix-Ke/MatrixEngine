@@ -10,7 +10,7 @@ source_group("Source Files" FILES ${SourceFiles})
 add_executable(${DemoName} ${SourceFiles} ${HeaderFiles})
 set_target_properties(${DemoName} PROPERTIES FOLDER ${SampleName}/${DemoName})
 
-# add_dependencies(${DemoName} "Function")
+add_dependencies(${DemoName} "Function")
 target_include_directories(${DemoName} PRIVATE ${ENGINE_SOURCE_RUNTIME_DIR})
 
-# target_link_libraries(${DemoName} "Function")
+target_link_libraries(${DemoName} "Core;Container;Math;Function")

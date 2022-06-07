@@ -1,9 +1,9 @@
 #include "ObjName.h"
 #include "PropertyMarco.h"
-#include "ResourceManager.h"
+#include "Function/ResourceManager.h"
 #include "Stream.h"
 
-#include "./../EngineInit.h"
+#include "Function/EngineInit.h"
 
 
 using namespace Matrix;
@@ -39,7 +39,7 @@ VSUsedName::VSUsedName(const TCHAR* pChar)
 {
 	m_pName = NULL;
 	//todo   VSResourceManager
-	//m_pName = VSResourceManager::CreateName(pChar);
+	m_pName = VSResourceManager::CreateName(pChar);
 }
 VSUsedName::VSUsedName(const Container::MString& String)
 {
@@ -188,9 +188,9 @@ bool VSUsedName::TerminalDefaultState()
 {
 	return 1;
 }
-void VSUsedName::Archive(VSStream& Stream)
+void VSUsedName::Archive(MStream& Stream)
 {
-	if (Stream.GetStreamFlag() == VSStream::AT_LOAD)
+	if (Stream.GetStreamFlag() == MStream::AT_LOAD)
 	{
 		Container::MString String;
 		Stream.ReadString(String);
@@ -204,7 +204,7 @@ void VSUsedName::Archive(VSStream& Stream)
 			//m_pName = VSResourceManager::CreateName(String);
 		}
 	}
-	else if (Stream.GetStreamFlag() == VSStream::AT_SAVE)
+	else if (Stream.GetStreamFlag() == MStream::AT_SAVE)
 	{
 		if (m_pName)
 		{
@@ -215,21 +215,21 @@ void VSUsedName::Archive(VSStream& Stream)
 			Stream.WriteString(Container::MString::ms_StringNULL);
 		}
 	}
-	else if (Stream.GetStreamFlag() == VSStream::AT_SIZE)
+	else if (Stream.GetStreamFlag() == MStream::AT_SIZE)
 	{
 		if (m_pName)
 		{
 
-			Stream.AddBufferSize(VSStream::GetStrDistUse(m_pName->GetString()));
+			Stream.AddBufferSize(MStream::GetStrDistUse(m_pName->GetString()));
 		}
 		else
 		{
 
-			Stream.AddBufferSize(VSStream::GetStrDistUse(Container::MString::ms_StringNULL));
+			Stream.AddBufferSize(MStream::GetStrDistUse(Container::MString::ms_StringNULL));
 		}
 	}
 }
-void VSUsedName::CopyFrom(VSCustomArchiveObject* pObject, Container::MMap<VSObject*, VSObject*>& CloneMap)
+void VSUsedName::CopyFrom(VSCustomArchiveObject* pObject, Container::MMap<MObject*, MObject*>& CloneMap)
 {
 	VSUsedName* pUsedName = (VSUsedName*)pObject;
 	*this = *pUsedName;

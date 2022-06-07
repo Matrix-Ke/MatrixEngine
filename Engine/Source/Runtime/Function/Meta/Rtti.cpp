@@ -143,6 +143,7 @@ void VSRtti::AddFunction(VSFunction* pFunction)
 	{
 		for (unsigned int i = 0; i < m_FunctionArray.GetNum(); i++)
 		{
+			//函数注册是从父类到子类的，所以如果遇到 IsSame 为 true 的情况，就会把当前列表里面的函数删除掉，然后把当前函数放进去，所以虚函数的调用是没有问题的
 			if (m_FunctionArray[i]->IsSame(pFunction))
 			{
 				ENGINE_DELETE(m_FunctionArray[i]);

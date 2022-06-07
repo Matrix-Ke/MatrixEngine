@@ -1,5 +1,7 @@
+//头文件用于调式代码，正式发布的时候需要删除
 #include "Array.h"
 using namespace Matrix::Container;
+
 
 template <class T, class MemoryManagerClass>
 MArray<T, MemoryManagerClass>::~MArray()

@@ -1,96 +1,98 @@
-//#include "ResourceManager.h"
-//#include "Config.h"
-//
-//
-//using namespace Matrix;
-//
-//
-//namespace Matrix
-//{
-//
-//	class VSGCTask : public Core::MemoryObject
-//	{
-//	public:
-//		VSGCTask(Container::MArray<VSObject*>& CanGCObject, unsigned int CanGCNum = 50)
-//		{
-//			m_CanGCNum = CanGCNum;
-//			m_CanGCObject = CanGCObject;
-//			CurClearIndex = 0;
-//			CurDeleteIndex = 0;
-//			GCStream.SetStreamFlag(VSStream::AT_CLEAR_OBJECT_PROPERTY_GC);
-//			m_pNextTask = NULL;
-//		}
-//		void Run()
-//		{
-//			if (CurClearIndex >= m_CanGCObject.GetNum())
-//			{
-//				unsigned int MaxDeleteIndex = CurDeleteIndex + m_CanGCNum;
-//				for (; CurDeleteIndex < MaxDeleteIndex && CurDeleteIndex < m_CanGCObject.GetNum(); CurDeleteIndex++)
-//				{
-//					ENGINE_DELETE(m_CanGCObject[CurDeleteIndex]);
-//				}
-//			}
-//			else
-//			{
-//				unsigned int MaxClearIndex = CurClearIndex + m_CanGCNum;
-//				for (; CurClearIndex < MaxClearIndex && CurClearIndex < m_CanGCObject.GetNum(); CurClearIndex++)
-//				{
-//					GCStream.ArchiveAll(m_CanGCObject[CurClearIndex]);
-//				}
-//			}
-//		}
-//		VSGCTask* m_pNextTask;
-//		bool IsEnd()
-//		{
-//			return CurDeleteIndex >= m_CanGCObject.GetNum();
-//		}
-//
-//	private:
-//		Container::MArray<VSObject*> m_CanGCObject;
-//		unsigned int m_CanGCNum;
-//		unsigned int CurClearIndex;
-//		unsigned int CurDeleteIndex;
-//		VSStream GCStream;
-//	};
-//}
-//
-//namespace Matrix
-//{
-//	bool operator==(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-//	{
-//		return DBI1.pVertexFormat == DBI2.pVertexFormat && DBI1.uiMeshDataType == DBI2.uiMeshDataType;
-//	}
-//	bool operator>(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-//	{
-//		if (DBI1.pVertexFormat > DBI2.pVertexFormat)
-//		{
-//			return true;
-//		}
-//		else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
-//		{
-//			return DBI1.uiMeshDataType > DBI2.uiMeshDataType;
-//		}
-//		else
-//		{
-//			return false;
-//		}
-//	}
-//	bool operator<(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-//	{
-//		if (DBI1.pVertexFormat < DBI2.pVertexFormat)
-//		{
-//			return true;
-//		}
-//		else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
-//		{
-//			return DBI1.uiMeshDataType < DBI2.uiMeshDataType;
-//		}
-//		else
-//		{
-//			return false;
-//		}
-//	}
-//}
+#include "ResourceManager.h"
+#include "Meta/Config.h"
+#include "Meta/Stream.h"
+
+
+using namespace Matrix;
+
+
+namespace Matrix
+{
+
+	class VSGCTask : public Core::MemoryObject
+	{
+	public:
+		VSGCTask(Container::MArray<MObject*>& CanGCObject, unsigned int CanGCNum = 50)
+		{
+			m_CanGCNum = CanGCNum;
+			m_CanGCObject = CanGCObject;
+			CurClearIndex = 0;
+			CurDeleteIndex = 0;
+			GCStream.SetStreamFlag(MStream::AT_CLEAR_OBJECT_PROPERTY_GC);
+			m_pNextTask = NULL;
+		}
+		void Run()
+		{
+			if (CurClearIndex >= m_CanGCObject.GetNum())
+			{
+				unsigned int MaxDeleteIndex = CurDeleteIndex + m_CanGCNum;
+				for (; CurDeleteIndex < MaxDeleteIndex && CurDeleteIndex < m_CanGCObject.GetNum(); CurDeleteIndex++)
+				{
+					ENGINE_DELETE(m_CanGCObject[CurDeleteIndex]);
+				}
+			}
+			else
+			{
+				unsigned int MaxClearIndex = CurClearIndex + m_CanGCNum;
+				for (; CurClearIndex < MaxClearIndex && CurClearIndex < m_CanGCObject.GetNum(); CurClearIndex++)
+				{
+					GCStream.ArchiveAll(m_CanGCObject[CurClearIndex]);
+				}
+			}
+		}
+		VSGCTask* m_pNextTask;
+		bool IsEnd()
+		{
+			return CurDeleteIndex >= m_CanGCObject.GetNum();
+		}
+
+	private:
+		Container::MArray<MObject*> m_CanGCObject;
+		unsigned int m_CanGCNum;
+		unsigned int CurClearIndex;
+		unsigned int CurDeleteIndex;
+		MStream GCStream;
+	};
+}
+
+namespace Matrix
+{
+
+	//bool operator==(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+	//{
+	//	return DBI1.pVertexFormat == DBI2.pVertexFormat && DBI1.uiMeshDataType == DBI2.uiMeshDataType;
+	//}
+	//bool operator>(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+	//{
+	//	if (DBI1.pVertexFormat > DBI2.pVertexFormat)
+	//	{
+	//		return true;
+	//	}
+	//	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
+	//	{
+	//		return DBI1.uiMeshDataType > DBI2.uiMeshDataType;
+	//	}
+	//	else
+	//	{
+	//		return false;
+	//	}
+	//}
+	//bool operator<(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+	//{
+	//	if (DBI1.pVertexFormat < DBI2.pVertexFormat)
+	//	{
+	//		return true;
+	//	}
+	//	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
+	//	{
+	//		return DBI1.uiMeshDataType < DBI2.uiMeshDataType;
+	//	}
+	//	else
+	//	{
+	//		return false;
+	//	}
+	//}
+}
 //Container::MArray<VSDynamicBufferGeometryPtr> VSResourceManager::ms_SaveDelete;
 //unsigned int VSResourceManager::ms_uiGpuSkinBoneNum = 70;
 //unsigned int VSResourceManager::ms_uiGpuMorphTargetNum = 40;
@@ -101,37 +103,39 @@
 //bool VSResourceManager::ms_bRenderThread = false;
 //bool VSResourceManager::ms_bUpdateThread = false;
 //bool VSResourceManager::ms_bIsCacheShader = true;
-//MCriticalSection VSResourceManager::ms_NameCri;
+Core::MCriticalSection VSResourceManager::ms_NameCri;
 //unsigned int VSResourceManager::ms_CurRenderAPIType = 0;
-//unsigned int VSResourceManager::ms_uiSimpleInstanceAnimFloat4Num = 0;
-//Container::MArray<VSObject*> VSResourceManager::ms_pRootObject;
-//Container::MArrayOrder<VSObject*> VSResourceManager::ms_pGCObject;
+unsigned int VSResourceManager::ms_uiSimpleInstanceAnimFloat4Num = 0;
+//Container::MArray<MObject*> VSResourceManager::ms_pRootObject;
+//Container::MArrayOrder<MObject*> VSResourceManager::ms_pGCObject;
 //VSGCTask* VSResourceManager::ms_pCurGCTask = NULL;
 //VSGCTask* VSResourceManager::ms_pEndGCTask = NULL;
-//IMPLEMENT_PRIORITY(VSResourceManager)
-//IMPLEMENT_INITIAL_ONLY_BEGIN(VSResourceManager);
+
+IMPLEMENT_PRIORITY(VSResourceManager)
+IMPLEMENT_INITIAL_ONLY_BEGIN(VSResourceManager);
 //ADD_PRIORITY(VSTexAllState);
 //ADD_PRIORITY(VSMaterial);
 //ADD_PRIORITY(VSGeometry);
-//ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
-//ADD_TERMINAL_FUNCTION(TerminalDefaultState)
-//IMPLEMENT_INITIAL_ONLY_END
-//bool VSResourceManager::TerminalDefaultState()
-//{
-//	return true;
-//}
-//bool VSResourceManager::InitialDefaultState()
-//{
-//	ms_uiSimpleInstanceAnimFloat4Num = (unsigned int)CEIL((MAX_SIMPLE_INSTANCE_ANIM * 2 + 1) / 4.0f);
-//	return 1;
-//}
-//VSResourceManager::VSResourceManager()
-//{
-//}
-//VSResourceManager::~VSResourceManager()
-//{
-//}
-//
+ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
+ADD_TERMINAL_FUNCTION(TerminalDefaultState)
+IMPLEMENT_INITIAL_ONLY_END
+
+bool VSResourceManager::TerminalDefaultState()
+{
+	return true;
+}
+bool VSResourceManager::InitialDefaultState()
+{
+	ms_uiSimpleInstanceAnimFloat4Num = (unsigned int)CEIL((MAX_SIMPLE_INSTANCE_ANIM * 2 + 1) / 4.0f);
+	return 1;
+}
+VSResourceManager::VSResourceManager()
+{
+}
+VSResourceManager::~VSResourceManager()
+{
+}
+
 //VSDVGeometry* VSResourceManager::GetDVGeometry(VSVertexFormat* pVertexFormat, unsigned int MeshDataType, unsigned int VertexNum)
 //{
 //	if (!pVertexFormat || !VertexNum || MeshDataType >= VSMeshData::MDT_MAX)
@@ -164,6 +168,9 @@
 //
 //	return pBuffer;
 //}
+
+
+////load and GC resource
 //void VSResourceManager::LoadDefaultDeviceResource(unsigned int RenderTypeAPI)
 //{
 //	InitCacheShader(RenderTypeAPI);
@@ -187,7 +194,7 @@
 //
 //#define LOAD_SHADER_CACHE_INNER(ShaderMapName)                                                                            \
 //     {                                                                                                                     \
-//         VSStream LoadStream;                                                                                              \
+//         MStream LoadStream;                                                                                              \
 //         Container::MString FileName = VSShaderMapCache::GetCachePath() + Get##ShaderMapName().m_ShaderMapName + Suffix;   \
 //         FileName += VSShaderMapCache::ms_PointFileSuffix;                                                                 \
 //         LoadStream.Load(FileName.GetBuffer());                                                                            \
@@ -227,7 +234,7 @@
 //
 //	LOAD_SHADER_CACHE(Inner);
 //}
-//void VSResourceManager::AddCanGCObject(Container::MArray<VSObject*>& CanGCObject)
+//void VSResourceManager::AddCanGCObject(Container::MArray<MObject*>& CanGCObject)
 //{
 //	if (CanGCObject.GetNum() == 0)
 //	{
@@ -267,19 +274,19 @@
 //	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
 //}
 //DECLEAR_NOCLEAR_COUNT_PROFILENODE(RootGCObjectNum, )
-//void VSResourceManager::AddRootObject(VSObject* p)
+//void VSResourceManager::AddRootObject(MObject* p)
 //{
-//	p->SetFlag(VSObject::OF_RootObject);
+//	p->SetFlag(MObject::OF_RootObject);
 //	ms_pRootObject.AddElement(p);
 //	ADD_COUNT_PROFILE(RootGCObjectNum, 1)
 //}
-//void VSResourceManager::DeleteRootObject(VSObject* p)
+//void VSResourceManager::DeleteRootObject(MObject* p)
 //{
 //	for (unsigned int i = 0; i < ms_pRootObject.GetNum(); i++)
 //	{
 //		if (ms_pRootObject[i] == p)
 //		{
-//			p->ClearFlag(VSObject::OF_RootObject);
+//			p->ClearFlag(MObject::OF_RootObject);
 //			ms_pRootObject.Erase(i);
 //			ADD_COUNT_PROFILE(RootGCObjectNum, -1)
 //				return;
@@ -287,10 +294,10 @@
 //	}
 //}
 //DECLEAR_NOCLEAR_COUNT_PROFILENODE(GCObjectNum, )
-//void VSResourceManager::AddGCObject(VSObject* p)
+//void VSResourceManager::AddGCObject(MObject* p)
 //{
 //	ms_pGCObject.AddElement(p);
-//	p->SetFlag(VSObject::OF_GCObject);
+//	p->SetFlag(MObject::OF_GCObject);
 //	ADD_COUNT_PROFILE(GCObjectNum, 1)
 //}
 //void VSResourceManager::GCObject()
@@ -298,19 +305,19 @@
 //	{
 //		for (unsigned int i = 0; i < ms_pRootObject.GetNum(); i++)
 //		{
-//			ms_pRootObject[i]->ClearFlag(VSObject::OF_REACH);
-//			ms_pRootObject[i]->SetFlag(VSObject::OF_UNREACH);
+//			ms_pRootObject[i]->ClearFlag(MObject::OF_REACH);
+//			ms_pRootObject[i]->SetFlag(MObject::OF_UNREACH);
 //		}
 //		for (unsigned int i = 0; i < ms_pGCObject.GetNum(); i++)
 //		{
-//			ms_pGCObject[i]->ClearFlag(VSObject::OF_REACH);
-//			ms_pGCObject[i]->SetFlag(VSObject::OF_UNREACH);
+//			ms_pGCObject[i]->ClearFlag(MObject::OF_REACH);
+//			ms_pGCObject[i]->SetFlag(MObject::OF_UNREACH);
 //		}
 //	}
 //	// collect not reachable object
 //	{
-//		VSStream GCCollectStream;
-//		GCCollectStream.SetStreamFlag(VSStream::AT_OBJECT_COLLECT_GC);
+//		MStream GCCollectStream;
+//		GCCollectStream.SetStreamFlag(MStream::AT_OBJECT_COLLECT_GC);
 //		for (unsigned int i = 0; i < ms_pRootObject.GetNum(); i++)
 //		{
 //			GCCollectStream.ArchiveAll(ms_pRootObject[i]);
@@ -318,11 +325,11 @@
 //	}
 //
 //	{
-//		Container::MArray<VSObject*> CanGCObject;
+//		Container::MArray<MObject*> CanGCObject;
 //		for (unsigned int i = 0; i < ms_pGCObject.GetNum();)
 //		{
-//			VSObject* p = ms_pGCObject[i];
-//			if (p->IsHasFlag(VSObject::OF_UNREACH))
+//			MObject* p = ms_pGCObject[i];
+//			if (p->IsHasFlag(MObject::OF_UNREACH))
 //			{
 //				CanGCObject.AddElement(p);
 //				ms_pGCObject.Erase(i);
@@ -344,15 +351,17 @@
 //	{
 //		return true;
 //	}
+//
 //#if _DEBUG
 //	Container::MString Suffix = _T("_d");
 //#else
 //	Container::MString Suffix;
 //#endif
+//
 //#define SAVE_SHADER_CACHE_INNER(ShaderMapName)                                                                          \
 //     {                                                                                                                   \
-//         VSStream SaveStream;                                                                                            \
-//         SaveStream.SetStreamFlag(VSStream::AT_REGISTER);                                                                \
+//         MStream SaveStream;                                                                                            \
+//         SaveStream.SetStreamFlag(MStream::AT_REGISTER);                                                                \
 //         VSShaderMapCache *pShaderMapLoadSave = MX_NEW VSShaderMapCache();                                               \
 //         pShaderMapLoadSave->m_ShaderMap = Get##ShaderMapName().GetShaderMap();                                          \
 //         SaveStream.ArchiveAll(pShaderMapLoadSave);                                                                      \
@@ -515,209 +524,6 @@
 //	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
 //	return true;
 //}
-//VSCaptureTexAllState* VSResourceManager::CreateCaptureTexture(const Container::MString& ViewFamilyName, unsigned int uiMipLevel)
-//{
-//	VSCaptureTexAllState* pCaptureTexture = MX_NEW VSCaptureTexAllState();
-//	pCaptureTexture->SetViewCapture(ViewFamilyName);
-//
-//	pCaptureTexture->SetMipLevel(uiMipLevel);
-//
-//	return pCaptureTexture;
-//}
-//unsigned int GetEngineCompressFormat(VSResourceManager::CompressType uiCompressType)
-//{
-//	unsigned int uiVSTextureType = VSRenderer::SFT_A8R8G8B8;
-//	if (uiCompressType == VSResourceManager::CT_NONE)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_A8R8G8B8;
-//	}
-//	else if (uiCompressType == VSResourceManager::CT_BC1)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_BC1;
-//	}
-//	else if (uiCompressType == VSResourceManager::CT_BC2)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_BC2;
-//	}
-//	else if (uiCompressType == VSResourceManager::CT_BC3)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_BC3;
-//	}
-//	else if (uiCompressType == VSResourceManager::CT_BC4)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_BC4;
-//	}
-//	else if (uiCompressType == VSResourceManager::CT_BC5)
-//	{
-//		uiVSTextureType = VSRenderer::SFT_BC5;
-//	}
-//	return uiVSTextureType;
-//}
-//VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState,
-//	CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
-//{
-//	if (bIsNormal)
-//	{
-//		bSRGB = false;
-//	}
-//
-//	if (!pFileName)
-//	{
-//
-//		return NULL;
-//	}
-//
-//	if (uiCompressType > CT_MAX)
-//	{
-//
-//		return NULL;
-//	}
-//
-//	VSFileName FileName = pFileName;
-//	Container::MString Extension;
-//
-//	if (!FileName.GetExtension(Extension))
-//	{
-//
-//		return NULL;
-//	}
-//	VSTexAllState* pTexAllState = NULL;
-//
-//	VSImage* pImage = NULL;
-//	unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
-//	if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
-//	{
-//		pImage = MX_NEW VSBMPImage();
-//	}
-//	else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
-//	{
-//		pImage = MX_NEW VSTGAImage();
-//	}
-//	else
-//	{
-//
-//		return NULL;
-//	}
-//
-//	if (!pImage->Load(FileName.GetBuffer()))
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//
-//	unsigned int uiWidth = pImage->GetWidth();
-//	unsigned int uiHeight = pImage->GetHeight();
-//	if (!uiWidth || !uiHeight)
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//	if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//
-//	pTexAllState = MX_NEW VSTexAllState();
-//	pTexAllState->m_uiWidth = uiWidth;
-//	pTexAllState->m_uiHeight = uiHeight;
-//	pTexAllState->m_bNormal = bIsNormal;
-//	pTexAllState->m_bSRGB = bSRGB;
-//	pTexAllState->m_bMip = bMip;
-//	pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
-//	pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
-//
-//	for (unsigned int cy = 0; cy < uiHeight; cy++)
-//	{
-//		for (unsigned int cx = 0; cx < uiWidth; cx++)
-//		{
-//
-//			unsigned int uiIndex = cy * uiWidth + cx;
-//			unsigned char* pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
-//			const unsigned char* pImageBuffer = pImage->GetPixel(cx, cy);
-//			if (pImage->GetBPP() == 8)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[0];
-//				pBuffer[2] = pImageBuffer[0];
-//				pBuffer[3] = pImageBuffer[0];
-//			}
-//			else if (pImage->GetBPP() == 24)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[1];
-//				pBuffer[2] = pImageBuffer[2];
-//				pBuffer[3] = 255;
-//			}
-//			else if (pImage->GetBPP() == 32)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[1];
-//				pBuffer[2] = pImageBuffer[2];
-//				pBuffer[3] = pImageBuffer[3];
-//			}
-//		} // for
-//	}     // for
-//
-//	if (pImage)
-//	{
-//		ENGINE_DELETE(pImage);
-//	}
-//
-//	VS2DTexture* pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
-//		pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
-//	pTexAllState->m_pTex = pNewTexture;
-//
-//	if (pSamplerState)
-//	{
-//		pTexAllState->SetSamplerState(pSamplerState);
-//	}
-//	return pTexAllState;
-//}
-//VS2DTexture* VSResourceManager::CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight,
-//	unsigned int uiFormatType, bool bIsNormal, bool bSRGB, bool bMip)
-//{
-//	unsigned int uiCompressFormat = VSNVCompression::NV_ARGB;
-//	if (uiFormatType == VSRenderer::SFT_A8R8G8B8)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_ARGB;
-//	}
-//	else if (uiFormatType == VSRenderer::SFT_BC1)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_BC1;
-//	}
-//	else if (uiFormatType == VSRenderer::SFT_BC2)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_BC2;
-//	}
-//	else if (uiFormatType == VSRenderer::SFT_BC3)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_BC3;
-//	}
-//	else if (uiFormatType == VSRenderer::SFT_BC4)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_BC4;
-//	}
-//	else if (uiFormatType == VSRenderer::SFT_BC5)
-//	{
-//		uiCompressFormat = VSNVCompression::NV_BC5;
-//	}
-//	VS2DTexture* pNewTexture = MX_NEW VS2DTexture(uiWidth, uiHeight, uiFormatType, bMip ? 0 : 1, 1, bSRGB);
-//	pNewTexture->CreateRAMData();
-//
-//	VSNVCompression Help;
-//	Help.Setup(SourceData, uiCompressFormat, uiWidth, uiHeight, 1, 1, pNewTexture->GetMipLevel(), bIsNormal);
-//	Help.Process();
-//	MATRIX_ENGINE_ASSERT(pNewTexture->GetMipLevel() == Help.OutputHandler.m_DataBufferArray.GetNum());
-//	for (unsigned int i = 0; i < pNewTexture->GetMipLevel(); i++)
-//	{
-//		Core::MXMemcpy(pNewTexture->GetBuffer(i), Help.OutputHandler.m_DataBufferArray[i].GetBuffer(), Help.OutputHandler.m_DataBufferArray[i].GetNum());
-//	}
-//	return pNewTexture;
-//}
 //VSResourceProxyBase* VSResourceManager::LoadResource(const TCHAR* pFileName, bool IsAsyn)
 //{
 //	VSFileName FileName = pFileName;
@@ -850,7 +656,7 @@
 //		}
 //	}
 //
-//	unsigned int lVertexFormatCode = VSMathInstance::GetMathInstance().CRC32Compute(pFormatArray->GetBuffer(), sizeof(VSVertexFormat::VERTEXFORMAT_TYPE) * pFormatArray->GetNum());
+//	unsigned int lVertexFormatCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pFormatArray->GetBuffer(), sizeof(VSVertexFormat::VERTEXFORMAT_TYPE) * pFormatArray->GetNum());
 //
 //	VSVertexFormat* pVertexFormat = NULL;
 //	pVertexFormat = (VSVertexFormat*)VSResourceManager::GetVertexFormatSet().CheckIsHaveTheResource(lVertexFormatCode);
@@ -874,47 +680,51 @@
 //	pVertexFormat->LoadResource(VSRenderer::ms_pRenderer);
 //	return pVertexFormat;
 //}
-//VSName* VSResourceManager::CreateName(const TCHAR* pChar)
-//{
-//	if (!pChar)
-//	{
-//		return NULL;
-//	}
-//	Core::MSynchronize::Locker Temp(ms_NameCri);
-//	unsigned int uiCRCCode = VSMathInstance::GetMathInstance().CRC32Compute(pChar, (unsigned int)VSStrLen(pChar));
-//	VSName* pName = NULL;
-//	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
-//	if (!pName)
-//	{
-//		pName = MX_NEW VSName(pChar, uiCRCCode);
-//		if (!pName)
-//		{
-//			return NULL;
-//		}
-//
-//		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
-//	}
-//	return pName;
-//}
-//VSName* VSResourceManager::CreateName(const Container::MString& String)
-//{
-//
-//	Core::MSynchronize::Locker Temp(ms_NameCri);
-//	unsigned int uiCRCCode = VSMathInstance::GetMathInstance().CRC32Compute(String.GetBuffer(), String.GetLength());
-//	VSName* pName = NULL;
-//	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
-//	if (!pName)
-//	{
-//		pName = MX_NEW VSName(String, uiCRCCode);
-//		if (!pName)
-//		{
-//			return NULL;
-//		}
-//
-//		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
-//	}
-//	return pName;
-//}
+
+VSName* VSResourceManager::CreateName(const TCHAR* pChar)
+{
+	if (!pChar)
+	{
+		return NULL;
+	}
+	Core::MCriticalSection::Locker Temp(ms_NameCri);
+	unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pChar, (unsigned int)Core::MXStrLen(pChar));
+	VSName* pName = NULL;
+	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
+	if (!pName)
+	{
+		pName = MX_NEW VSName(pChar, uiCRCCode);
+		if (!pName)
+		{
+			return NULL;
+		}
+
+		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
+	}
+	return pName;
+}
+VSName* VSResourceManager::CreateName(const Container::MString& String)
+{
+
+	Core::MCriticalSection::Locker Temp(ms_NameCri);
+	unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(String.GetBuffer(), String.GetLength());
+	VSName* pName = NULL;
+	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
+	if (!pName)
+	{
+		pName = MX_NEW VSName(String, uiCRCCode);
+		if (!pName)
+		{
+			return NULL;
+		}
+
+		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
+	}
+	return pName;
+}
+
+
+//create shader
 //VSVShader* VSResourceManager::CreateVShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
@@ -1188,12 +998,218 @@
 //	VSRenderer::ms_pRenderer->LoadPShaderProgram(pPShader);
 //	return pPShader;
 //}
+
+
+
+////RenderTarget and texture
+//VSCaptureTexAllState* VSResourceManager::CreateCaptureTexture(const Container::MString& ViewFamilyName, unsigned int uiMipLevel)
+//{
+//	VSCaptureTexAllState* pCaptureTexture = MX_NEW VSCaptureTexAllState();
+//	pCaptureTexture->SetViewCapture(ViewFamilyName);
 //
+//	pCaptureTexture->SetMipLevel(uiMipLevel);
+//
+//	return pCaptureTexture;
+//}
+//unsigned int GetEngineCompressFormat(VSResourceManager::CompressType uiCompressType)
+//{
+//	unsigned int uiVSTextureType = VSRenderer::SFT_A8R8G8B8;
+//	if (uiCompressType == VSResourceManager::CT_NONE)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_A8R8G8B8;
+//	}
+//	else if (uiCompressType == VSResourceManager::CT_BC1)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_BC1;
+//	}
+//	else if (uiCompressType == VSResourceManager::CT_BC2)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_BC2;
+//	}
+//	else if (uiCompressType == VSResourceManager::CT_BC3)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_BC3;
+//	}
+//	else if (uiCompressType == VSResourceManager::CT_BC4)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_BC4;
+//	}
+//	else if (uiCompressType == VSResourceManager::CT_BC5)
+//	{
+//		uiVSTextureType = VSRenderer::SFT_BC5;
+//	}
+//	return uiVSTextureType;
+//}
+//VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState,
+//	CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
+//{
+//	if (bIsNormal)
+//	{
+//		bSRGB = false;
+//	}
+//
+//	if (!pFileName)
+//	{
+//
+//		return NULL;
+//	}
+//
+//	if (uiCompressType > CT_MAX)
+//	{
+//
+//		return NULL;
+//	}
+//
+//	VSFileName FileName = pFileName;
+//	Container::MString Extension;
+//
+//	if (!FileName.GetExtension(Extension))
+//	{
+//
+//		return NULL;
+//	}
+//	VSTexAllState* pTexAllState = NULL;
+//
+//	VSImage* pImage = NULL;
+//	unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
+//	if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
+//	{
+//		pImage = MX_NEW VSBMPImage();
+//	}
+//	else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
+//	{
+//		pImage = MX_NEW VSTGAImage();
+//	}
+//	else
+//	{
+//
+//		return NULL;
+//	}
+//
+//	if (!pImage->Load(FileName.GetBuffer()))
+//	{
+//		ENGINE_DELETE(pImage);
+//
+//		return NULL;
+//	}
+//
+//	unsigned int uiWidth = pImage->GetWidth();
+//	unsigned int uiHeight = pImage->GetHeight();
+//	if (!uiWidth || !uiHeight)
+//	{
+//		ENGINE_DELETE(pImage);
+//
+//		return NULL;
+//	}
+//	if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
+//	{
+//		ENGINE_DELETE(pImage);
+//
+//		return NULL;
+//	}
+//
+//	pTexAllState = MX_NEW VSTexAllState();
+//	pTexAllState->m_uiWidth = uiWidth;
+//	pTexAllState->m_uiHeight = uiHeight;
+//	pTexAllState->m_bNormal = bIsNormal;
+//	pTexAllState->m_bSRGB = bSRGB;
+//	pTexAllState->m_bMip = bMip;
+//	pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
+//	pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
+//
+//	for (unsigned int cy = 0; cy < uiHeight; cy++)
+//	{
+//		for (unsigned int cx = 0; cx < uiWidth; cx++)
+//		{
+//
+//			unsigned int uiIndex = cy * uiWidth + cx;
+//			unsigned char* pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
+//			const unsigned char* pImageBuffer = pImage->GetPixel(cx, cy);
+//			if (pImage->GetBPP() == 8)
+//			{
+//				pBuffer[0] = pImageBuffer[0];
+//				pBuffer[1] = pImageBuffer[0];
+//				pBuffer[2] = pImageBuffer[0];
+//				pBuffer[3] = pImageBuffer[0];
+//			}
+//			else if (pImage->GetBPP() == 24)
+//			{
+//				pBuffer[0] = pImageBuffer[0];
+//				pBuffer[1] = pImageBuffer[1];
+//				pBuffer[2] = pImageBuffer[2];
+//				pBuffer[3] = 255;
+//			}
+//			else if (pImage->GetBPP() == 32)
+//			{
+//				pBuffer[0] = pImageBuffer[0];
+//				pBuffer[1] = pImageBuffer[1];
+//				pBuffer[2] = pImageBuffer[2];
+//				pBuffer[3] = pImageBuffer[3];
+//			}
+//		} // for
+//	}     // for
+//
+//	if (pImage)
+//	{
+//		ENGINE_DELETE(pImage);
+//	}
+//
+//	VS2DTexture* pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
+//		pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
+//	pTexAllState->m_pTex = pNewTexture;
+//
+//	if (pSamplerState)
+//	{
+//		pTexAllState->SetSamplerState(pSamplerState);
+//	}
+//	return pTexAllState;
+//}
+//VS2DTexture* VSResourceManager::CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight,
+//	unsigned int uiFormatType, bool bIsNormal, bool bSRGB, bool bMip)
+//{
+//	unsigned int uiCompressFormat = VSNVCompression::NV_ARGB;
+//	if (uiFormatType == VSRenderer::SFT_A8R8G8B8)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_ARGB;
+//	}
+//	else if (uiFormatType == VSRenderer::SFT_BC1)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_BC1;
+//	}
+//	else if (uiFormatType == VSRenderer::SFT_BC2)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_BC2;
+//	}
+//	else if (uiFormatType == VSRenderer::SFT_BC3)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_BC3;
+//	}
+//	else if (uiFormatType == VSRenderer::SFT_BC4)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_BC4;
+//	}
+//	else if (uiFormatType == VSRenderer::SFT_BC5)
+//	{
+//		uiCompressFormat = VSNVCompression::NV_BC5;
+//	}
+//	VS2DTexture* pNewTexture = MX_NEW VS2DTexture(uiWidth, uiHeight, uiFormatType, bMip ? 0 : 1, 1, bSRGB);
+//	pNewTexture->CreateRAMData();
+//
+//	VSNVCompression Help;
+//	Help.Setup(SourceData, uiCompressFormat, uiWidth, uiHeight, 1, 1, pNewTexture->GetMipLevel(), bIsNormal);
+//	Help.Process();
+//	MATRIX_ENGINE_ASSERT(pNewTexture->GetMipLevel() == Help.OutputHandler.m_DataBufferArray.GetNum());
+//	for (unsigned int i = 0; i < pNewTexture->GetMipLevel(); i++)
+//	{
+//		Core::MXMemcpy(pNewTexture->GetBuffer(i), Help.OutputHandler.m_DataBufferArray[i].GetBuffer(), Help.OutputHandler.m_DataBufferArray[i].GetNum());
+//	}
+//	return pNewTexture;
+//}
 //VSBlendState* VSResourceManager::CreateBlendState(const VSBlendDesc& BlendDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = BlendDesc.GetCRC32Data(uiDataSize);
-//	unsigned int uiHashCode = VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
+//	unsigned int uiHashCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
 //
 //	VSBlendState* pBlendState = NULL;
 //	pBlendState = (VSBlendState*)VSResourceManager::GetBlendStateSet().CheckIsHaveTheResource(uiHashCode);
@@ -1211,7 +1227,7 @@
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = DepthStencilDesc.GetCRC32Data(uiDataSize);
-//	unsigned int uiHashCode = VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
+//	unsigned int uiHashCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
 //
 //	VSDepthStencilState* pDepthStencilState = NULL;
 //	pDepthStencilState = (VSDepthStencilState*)VSResourceManager::GetDepthStencilStateSet().CheckIsHaveTheResource(uiHashCode);
@@ -1229,7 +1245,7 @@
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = RasterizerDesc.GetCRC32Data(uiDataSize);
-//	unsigned int uiHashCode = VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
+//	unsigned int uiHashCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
 //
 //	VSRasterizerState* pRasterizerState = NULL;
 //	pRasterizerState = (VSRasterizerState*)VSResourceManager::GetRasterizerStateSet().CheckIsHaveTheResource(uiHashCode);
@@ -1243,12 +1259,11 @@
 //	VSResourceManager::GetRasterizerStateSet().AddResource(uiHashCode, pRasterizerState);
 //	return pRasterizerState;
 //}
-//
 //VSSamplerState* VSResourceManager::CreateSamplerState(const VSSamplerDesc& SamplerDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = SamplerDesc.GetCRC32Data(uiDataSize);
-//	unsigned int uiHashCode = VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
+//	unsigned int uiHashCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pData, uiDataSize);
 //
 //	VSSamplerState* pSamplerState = NULL;
 //	pSamplerState = (VSSamplerState*)VSResourceManager::GetSamplerStateSet().CheckIsHaveTheResource(uiHashCode);
@@ -2824,6 +2839,9 @@
 //	pNewDS->m_bUsed = true;
 //	return pNewDS;
 //}
+
+
+////AdAnimation
 //VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR)
 //{
 //	if (!pSourceAnim || !pTargetAnim || !pBlendAnimR)
@@ -2917,7 +2935,6 @@
 //
 //	return pAddAnim;
 //}
-//
 //VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR, VSREAL fTargetTime)
 //{
 //

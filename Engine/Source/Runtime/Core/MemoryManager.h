@@ -314,8 +314,7 @@ namespace Matrix
 						for (unsigned int i = 0; i < uiNum; i++)
 						{
 							//在当前内存地址中执行构造
-							MX_NEW(mPtr + i)
-								T();
+							MX_NEW(mPtr + i)T();
 						}
 					}
 				}

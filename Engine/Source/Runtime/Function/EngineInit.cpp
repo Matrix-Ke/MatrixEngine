@@ -123,8 +123,8 @@ bool EngineInit::Initialize()
 	ms_pInitialArray->Clear();
 	ENGINE_DELETE(ms_pInitialArray);
 
-	//为了方便快速地管理所有对象，添加一个新的类，并创建实例作为 VSObject 的静态成员
-	ms_uiInitialObject = VSObject::GetObjectManager().GetObjectNum();
+	//为了方便快速地管理所有对象，添加一个新的类，并创建实例作为 MObject 的静态成员
+	ms_uiInitialObject = MObject::GetObjectManager().GetObjectNum();
 
 
 	ms_pInitialPropertyArray->Clear();
@@ -136,7 +136,7 @@ bool EngineInit::Terminate()
 
 	ms_pTerminalArray->Sort(0, ms_pTerminalArray->GetNum(), PriorityCompare());
 
-	ms_uiTerminalObject = VSObject::GetObjectManager().GetObjectNum();
+	ms_uiTerminalObject = MObject::GetObjectManager().GetObjectNum();
 
 	for (int i = ms_pTerminalArray->GetNum() - 1; i >= 0; i--)
 	{
@@ -172,8 +172,8 @@ bool EngineInit::Terminate()
 	//MATRIX_ENGINE_ASSERT(VSResourceManager::IsReleaseAll());
 
 
-	VSFastObjectManager& Temp = VSObject::GetObjectManager();
-	ms_uiTerminalObject = VSObject::GetObjectManager().GetObjectNum();
+	VSFastObjectManager& Temp = MObject::GetObjectManager();
+	ms_uiTerminalObject = MObject::GetObjectManager().GetObjectNum();
 	MATRIX_ENGINE_ASSERT(ms_uiTerminalObject == 0);
 	return 1;
 

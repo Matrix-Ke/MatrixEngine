@@ -2,7 +2,6 @@
 #include "Container.h"
 #include "BinaryTree.h"
 #include "Array.h"
-#include "Math.h"
 #include "List.h"
 //#include "Core/MemoryManager.h"
 
@@ -10,7 +9,7 @@ namespace Matrix
 {
 	namespace Container
 	{
-		template <class HashType, class MMemManagerClass = Core::DefaultContainerMemoryAllocator >
+		template <class HashType, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
 		class MHash : public MContainer<HashType, MMemManagerClass>
 		{
 		public:

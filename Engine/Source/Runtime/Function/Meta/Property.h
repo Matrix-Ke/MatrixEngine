@@ -100,9 +100,9 @@ namespace Matrix
 		{
 			return (void*)(((unsigned char*)pObj) + m_uiElementOffset);
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj) = 0;
+		virtual bool Archive(MStream& Stream, void* pObj) = 0;
 		virtual VSProperty* GetInstance() = 0;
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap) = 0;
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap) = 0;
 		virtual void CopyData(void* pSrcObj, void* pDestObj) = 0;
 		//todo editor property
 		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name) = 0;
@@ -194,12 +194,12 @@ namespace Matrix
 		{
 			return *(unsigned int*)(((const char*)pObj) + m_uiElementOffset);
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj)
+		virtual bool Archive(MStream& Stream, void* pObj)
 		{
 			Stream.Archive(Value(pObj));
 			return true;
 		}
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap)
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap)
 		{
 			Value(pDestObj) = Value(pSrcObj);
 		}
@@ -210,7 +210,7 @@ namespace Matrix
 		//todo editor property
 		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
 		//{
-		//	VSEEnumProperty* pEp = MX_NEW VSEEnumProperty((unsigned int*)(((const char*)pSrcObj) + m_uiElementOffset), Name, (VSObject*)pSrcObj);
+		//	VSEEnumProperty* pEp = MX_NEW VSEEnumProperty((unsigned int*)(((const char*)pSrcObj) + m_uiElementOffset), Name, (MObject*)pSrcObj);
 		//	pParent->AddElement(pEp);
 		//	Container::MArray<Container::MString> AS;
 		//	Container::MString EnumName = m_EnumName.GetString();
@@ -276,7 +276,7 @@ namespace Matrix
 		{
 			MATRIX_ENGINE_ASSERT(0);
 		}
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap)
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap)
 		{
 			T* SrcValueAddres = *(T**)GetValueAddress(pSrcObj);
 
@@ -306,10 +306,10 @@ namespace Matrix
 				Core::MXMemcpy((void*)(*Temp), (void*)SrcValueAddres, uiNum * sizeof(T));
 			}
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj)
+		virtual bool Archive(MStream& Stream, void* pObj)
 		{
 			unsigned int uiStreamFlag = Stream.GetStreamFlag();
-			if (uiStreamFlag == VSStream::AT_SAVE)
+			if (uiStreamFlag == MStream::AT_SAVE)
 			{
 				T* ValueAddres = *(T**)GetValueAddress(pObj);
 
@@ -325,7 +325,7 @@ namespace Matrix
 					Stream.Write(ValueAddres, uiNum * sizeof(T));
 				}
 			}
-			else if (uiStreamFlag == VSStream::AT_LOAD)
+			else if (uiStreamFlag == MStream::AT_LOAD)
 			{
 				//dataProperty是指针数据，
 				T** Temp = (T**)GetValueAddress(pObj);
@@ -353,7 +353,7 @@ namespace Matrix
 					}
 				}
 			}
-			else if (uiStreamFlag == VSStream::AT_SIZE)
+			else if (uiStreamFlag == MStream::AT_SIZE)
 			{
 				if (m_uiDataNum > 0)
 				{
@@ -479,12 +479,12 @@ namespace Matrix
 		{
 			return *(T*)(((const char*)pObj) + m_uiElementOffset);
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj)
+		virtual bool Archive(MStream& Stream, void* pObj)
 		{
 			Stream.Archive(Value(pObj));
 			return true;
 		}
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap)
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap)
 		{
 			Copy(Value(pDestObj), Value(pSrcObj), CloneMap);
 		}
@@ -494,7 +494,7 @@ namespace Matrix
 		}
 		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
 		//{
-		//	CreateEditorElement(Value(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//	CreateEditorElement(Value(pSrcObj), (MObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
 		//}
 		virtual VSProperty* GetInstance()
 		{
@@ -552,12 +552,12 @@ namespace Matrix
 			pDataDest = (GetContainer(pObj)[uiIndex]);
 			return true;
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj)
+		virtual bool Archive(MStream& Stream, void* pObj)
 		{
 			Stream.Archive(GetContainer(pObj));
 			return true;
 		}
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap)
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap)
 		{
 			Copy(GetContainer(pDestObj), GetContainer(pSrcObj), CloneMap);
 		}
@@ -568,7 +568,7 @@ namespace Matrix
 		//todo editor property
 		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
 		//{
-		//	CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//	CreateEditorElement(GetContainer(pSrcObj), (MObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
 		//}
 		virtual VSProperty* GetInstance()
 		{
@@ -628,12 +628,12 @@ namespace Matrix
 			pDataDest = (GetContainer(pObj)[uiIndex]);
 			return true;
 		}
-		virtual bool Archive(VSStream& Stream, void* pObj)
+		virtual bool Archive(MStream& Stream, void* pObj)
 		{
 			Stream.Archive(GetContainer(pObj));
 			return true;
 		}
-		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<VSObject*, VSObject*>& CloneMap)
+		virtual void CloneData(void* pSrcObj, void* pDestObj, Container::MMap<MObject*, MObject*>& CloneMap)
 		{
 			Copy(GetContainer(pDestObj), GetContainer(pSrcObj), CloneMap);
 		}
@@ -644,7 +644,7 @@ namespace Matrix
 		//todo editor property
 		//virtual void AddEditorElement(void* pSrcObj, VSECollection* pParent, Container::MString& Name)
 		//{
-		//	CreateEditorElement(GetContainer(pSrcObj), (VSObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
+		//	CreateEditorElement(GetContainer(pSrcObj), (MObject*)pSrcObj, pParent, Name, m_bRange, m_HightValue, m_LowValue, m_fStep);
 		//}
 		virtual VSProperty* GetInstance()
 		{
@@ -675,10 +675,10 @@ namespace Matrix
 	template <class T>
 	struct AutoPropertyCreator
 	{
-		//在游戏世界中充斥着大量的 VSObject 对象，如果从世界的根节点去遍历所有 VSObject对象的属性，再进一步判断，随着 VSObject 对象增多以及 VSObject 对象之间依赖增多，
+		//在游戏世界中充斥着大量的 MObject 对象，如果从世界的根节点去遍历所有 MObject对象的属性，再进一步判断，随着 MObject 对象增多以及 MObject 对象之间依赖增多，
 		//这个递归过程会消耗大量的时间。为了拒绝查找毫无意义的联系，这里加入了一个标志位VSProperty::F_NO_USE_GC，用来标记这个属性是否需要进一步查找联系。
 		//一般情况下，引擎的开发者和使用者也是分开的，引擎使用者集中在抽象世界，所以大部分需要联系查找的属性在世界空间，
-		//默认情况下注册一个属性是要做联系查找的，而引擎空间中可以不进行联系查找，引擎开发者有责任管理好 VSObject 对象的创建和销毁
+		//默认情况下注册一个属性是要做联系查找的，而引擎空间中可以不进行联系查找，引擎开发者有责任管理好 MObject 对象的创建和销毁
 		VSProperty* CreateProperty(const VSUsedName& Name, VSRtti& Owner, unsigned int Offset, unsigned int uiFlag)
 		{
 			if (!(TIsVSPointerType<T>::Value || TIsVSSmartPointerType<T>::Value || TIsCustomType<T>::Value || TIsVSType<T>::Value))
@@ -818,7 +818,7 @@ namespace Matrix
 			return MX_NEW VSEnumProperty<ValueType>(Owner, Name, EnumName, Offset, uiFlag | VSProperty::F_NO_USE_GC);
 		}
 	};
-	typedef void (*FunctionTemplatePtr)(VSObject* p, VSFunction* pFun, void* para, void* ret);
+	typedef void (*FunctionTemplatePtr)(MObject* p, VSFunction* pFun, void* para, void* ret);
 	//函数反射的基本目的就是收集类函数的所有相关信息，以函数名称和连续数据块作为参数就可以访问对应函数
 	//第一步，收集函数相关的信息，包括函数名、函数所在的类、函数的参数个数以及类型、函数的返回类型。
 	//第二步，既然要以连续数据作为参数，那么就要有能力拆解连续数据，还要能调用函数
@@ -913,11 +913,13 @@ namespace Matrix
 		{
 			return !m_pReturnProperty;
 		}
-		FunctionTemplatePtr ObjectFun;
 		void SetTotalSize(unsigned int uiTotalSize)
 		{
 			m_uiTotalSize = uiTotalSize;
 		}
+		//IsSame 用来判断两个函数是否相同，这里的判断相当粗略，只判断了所属类、名字、参数个数、参数大小，
+		// 并没有具体去判断参数的类型，不过这样已经足够了。在真正判断的时候，如果没有指定参数个数，找到一个匹配的就终止遍历；
+		//如果指定了参数个数，就要检查参数个数是否一样。
 		bool IsSame(VSFunction* p)
 		{
 			if (m_pOwner != p->m_pOwner)
@@ -942,12 +944,15 @@ namespace Matrix
 			}
 		}
 
+	public:
+		FunctionTemplatePtr ObjectFun;  //函数指针 ObjectFun，是关键数据
+
 	protected:
-		VSRtti* m_pOwner;
-		VSUsedName m_Name;
-		unsigned int m_uiFlag;
+		VSRtti* m_pOwner; //记录函数属于哪个类
+		VSUsedName m_Name; //记录函数名称
+		unsigned int m_uiFlag; //记录函数的用途
 		Container::MArray<VSProperty*> m_PropertyArray; //从左向右记录参数的属性
-		VSProperty* m_pReturnProperty; //记录返回值
+		VSProperty* m_pReturnProperty; //记录返回值，如果无返回值则为空
 		unsigned int m_uiTotalSize;    //记录参数量的总大小
 	};
 

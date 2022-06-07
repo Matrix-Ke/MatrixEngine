@@ -1,6 +1,6 @@
 #include "Resource.h"
-#include "Property.h"
-#include "./../EngineInit.h"
+#include "Meta/Property.h"
+
 
 
 using namespace Matrix;
@@ -16,10 +16,10 @@ VSResource::VSResource()
 VSResource::~VSResource()
 {
 }
-IMPLEMENT_RTTI_NoCreateFun(VSCacheResource, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSCacheResource, MObject)
 IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSCacheResource)
 IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-BEGIN_ADD_PROPERTY(VSCacheResource, VSObject)
+BEGIN_ADD_PROPERTY(VSCacheResource, MObject)
 END_ADD_PROPERTY
 VSCacheResource::VSCacheResource()
 {

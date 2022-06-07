@@ -62,7 +62,7 @@ namespace Matrix
 			return m_uiMaxLevel;
 		}
 		virtual unsigned int GetCurStreamLevel() const = 0;
-		virtual const class VSObject* CreateToStreamObject(const class VSCacheResource* pCacheResouce) = 0;
+		virtual const class MObject* CreateToStreamObject(const class VSCacheResource* pCacheResouce) = 0;
 		virtual void SetStreamJob()
 		{
 			GetWantStreamLevel();
@@ -108,7 +108,7 @@ namespace Matrix
 		{
 			m_StreamState = SS_END_STREAM;
 		}
-		class VSObject* m_pToStreamObject = NULL;
+		class MObject* m_pToStreamObject = NULL;
 		unsigned int m_uiWantStreamLevel = 0;
 		unsigned int m_uiMaxLevel = 1;
 		bool MaxMipTable[MAX_MIP_LEVEL] = { false };
