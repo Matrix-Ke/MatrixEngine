@@ -1,6 +1,6 @@
-#include "VSSocketNode.h"
-#include "VSGraphicInclude.h"
-#include "VSStream.h"
+#include "SocketNode.h"
+#include "GraphicInclude.h"
+#include "Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSocketNode, VSSpatial)
 BEGIN_ADD_PROPERTY(VSSocketNode, VSSpatial)
@@ -10,13 +10,12 @@ IMPLEMENT_INITIAL_BEGIN(VSSocketNode)
 IMPLEMENT_INITIAL_END
 VSSocketNode::VSSocketNode()
 {
-	m_bIsStatic = false;
+    m_bIsStatic = false;
 }
 VSSocketNode::~VSSocketNode()
 {
-
 }
 void VSSocketNode::UpdateNodeAll(double dAppTime)
 {
-	UpdateTransform(dAppTime);
+    UpdateTransform(dAppTime);
 }

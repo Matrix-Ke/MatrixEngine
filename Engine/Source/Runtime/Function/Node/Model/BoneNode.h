@@ -1,59 +1,55 @@
 #pragma once
-#include "VSNode.h"
+#include "Node.h"
 namespace Matrix
 {
-	class VSStream;
-	class MATRIX_FUNCTION_API VSBoneNode : public VSNode
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		VSBoneNode();
-		virtual ~VSBoneNode();
-	public:
-		
-	
-		virtual void ComputeNodeVisibleSet(VSCuller & Culler,bool bNoCull,double dAppTime);
+    class VSStream;
+    class MATRIX_FUNCTION_API VSBoneNode : public VSNode
+    {
+        // PRIORITY
 
-		//Use for IK
-		bool m_bIsEffector;
-		VSVector3 m_TargetPosInWorld;
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        VSBoneNode();
+        virtual ~VSBoneNode();
 
-		VSArray<bool> m_bAllowTranslation;
-		VSArray<VSREAL> m_fMinTranslation;
-		VSArray<VSREAL> m_fMaxTranslation;
+    public:
+        virtual void ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime);
 
-		VSArray<bool> m_bAllowRotation;
-		VSArray<VSREAL> m_fMinRotation;
-		VSArray<VSREAL> m_fMaxRotation;
-		
-		VSREAL m_fIKWeight;
+        // Use for IK
+        bool m_bIsEffector;
+        VSVector3 m_TargetPosInWorld;
 
-		VSUsedName m_cName;
+        VSArray<bool> m_bAllowTranslation;
+        VSArray<VSREAL> m_fMinTranslation;
+        VSArray<VSREAL> m_fMaxTranslation;
 
-		void GetIKMoveAxis(VSVector3 Axis[3])const;
-		void ComputeIKLocalRotDelta(const VSMatrix3X3 & WorldRot,VSMatrix3X3 & LocalRotDelta)const;
+        VSArray<bool> m_bAllowRotation;
+        VSArray<VSREAL> m_fMinRotation;
+        VSArray<VSREAL> m_fMaxRotation;
 
-		VSMatrix3X3W m_OffsetMatrix;
+        VSREAL m_fIKWeight;
 
+        VSUsedName m_cName;
 
-		virtual void SetLocalMat(const VSMatrix3X3W VSMat);
-		
-	public:
+        void GetIKMoveAxis(VSVector3 Axis[3]) const;
+        void ComputeIKLocalRotDelta(const VSMatrix3X3 &WorldRot, VSMatrix3X3 &LocalRotDelta) const;
 
-		inline const VSMatrix3X3W & GetBoneOffsetMatrix()const
-		{
-			return m_OffsetMatrix;
-		}
+        VSMatrix3X3W m_OffsetMatrix;
 
+        virtual void SetLocalMat(const VSMatrix3X3W VSMat);
 
-		VSBoneNode * GetBoneNodeFromLevel(const VSUsedName & BoneName);
-		unsigned int GetAllBoneNum()const;
-		void GetAllBoneArray(VSArray<VSBoneNode *> & AllNodeArray);
-	};
-	DECLARE_Ptr(VSBoneNode);
-	VSTYPE_MARCO(VSBoneNode);
+    public:
+        inline const VSMatrix3X3W &GetBoneOffsetMatrix() const
+        {
+            return m_OffsetMatrix;
+        }
+
+        VSBoneNode *GetBoneNodeFromLevel(const VSUsedName &BoneName);
+        unsigned int GetAllBoneNum() const;
+        void GetAllBoneArray(VSArray<VSBoneNode *> &AllNodeArray);
+    };
+    DECLARE_Ptr(VSBoneNode);
+    VSTYPE_MARCO(VSBoneNode);
 }

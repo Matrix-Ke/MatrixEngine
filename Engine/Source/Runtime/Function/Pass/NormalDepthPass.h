@@ -1,36 +1,36 @@
 #pragma once
-#include "VSPass.h"
+#include "Pass.h"
 namespace Matrix
 {
 
-	class MATRIX_FUNCTION_API VSNormalDepthPass : public VSPass
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-	public:
-		virtual ~VSNormalDepthPass();
-		VSNormalDepthPass();
-	public:
+    class MATRIX_FUNCTION_API VSNormalDepthPass : public VSPass
+    {
+        // PRIORITY
 
-		
-	protected:
-		
-		DECLARE_INITIAL
-		static bool InitialDefaultState();
-		static bool TerminalDefaultState();
-	protected:
-		VSRenderState m_RenderState;
-	public:
-		virtual bool Draw(VSRenderer * pRenderer);
+        // RTTI
+        DECLARE_RTTI;
 
-		virtual unsigned int GetPassType()
-		{
-			return PT_NORMALDEPTH;
-		}
+    public:
+        virtual ~VSNormalDepthPass();
+        VSNormalDepthPass();
 
-	};
-	DECLARE_Ptr(VSNormalDepthPass);
-	VSTYPE_MARCO(VSNormalDepthPass);
+    public:
+    protected:
+        DECLARE_INITIAL
+        static bool InitialDefaultState();
+        static bool TerminalDefaultState();
+
+    protected:
+        VSRenderState m_RenderState;
+
+    public:
+        virtual bool Draw(VSRenderer *pRenderer);
+
+        virtual unsigned int GetPassType()
+        {
+            return PT_NORMALDEPTH;
+        }
+    };
+    DECLARE_Ptr(VSNormalDepthPass);
+    VSTYPE_MARCO(VSNormalDepthPass);
 }

@@ -1,33 +1,31 @@
-#include "VSPEEndFunction.h"
-#include "VSGraphicInclude.h"
+#include "PEEndFunction.h"
+#include "GraphicInclude.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSPEEndFunction,VSPostEffectFunction)
-BEGIN_ADD_PROPERTY(VSPEEndFunction,VSPostEffectFunction)
+IMPLEMENT_RTTI(VSPEEndFunction, VSPostEffectFunction)
+BEGIN_ADD_PROPERTY(VSPEEndFunction, VSPostEffectFunction)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSPEEndFunction)
 IMPLEMENT_INITIAL_END
-VSPostEffectSceneRender * VSPEEndFunction::CreateSceneRender()
+VSPostEffectSceneRender *VSPEEndFunction::CreateSceneRender()
 {
-	return NULL;
+    return NULL;
 }
-void VSPEEndFunction::OnDraw(VSCuller & Culler,double dAppTime)
+void VSPEEndFunction::OnDraw(VSCuller &Culler, double dAppTime)
 {
-	return;
+    return;
 }
-VSPEEndFunction::VSPEEndFunction(const VSUsedName & ShowName,VSPostEffectSet * pPostEffectSet)
-:VSPostEffectFunction(ShowName,pPostEffectSet)
+VSPEEndFunction::VSPEEndFunction(const VSUsedName &ShowName, VSPostEffectSet *pPostEffectSet)
+    : VSPostEffectFunction(ShowName, pPostEffectSet)
 {
 
-	VSInputNode * pInputNode = NULL;
-	pInputNode = VS_NEW VSInputNode(VSPutNode::PET_IN,_T("InputColor"),this);
-	VSMAC_ASSERT(pInputNode);
-	m_pInput.AddElement(pInputNode);
+    VSInputNode *pInputNode = NULL;
+    pInputNode = VS_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this);
+    VSMAC_ASSERT(pInputNode);
+    m_pInput.AddElement(pInputNode);
 }
 VSPEEndFunction::~VSPEEndFunction()
 {
-
 }
 VSPEEndFunction::VSPEEndFunction()
 {
-
 }

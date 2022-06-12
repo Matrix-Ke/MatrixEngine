@@ -1,7 +1,7 @@
-#include "VSUserBuffer.h"
-#include "VSResourceManager.h"
-#include "VSGraphicInclude.h"
-#include "VSStream.h"
+#include "UserBuffer.h"
+#include "ResourceManager.h"
+#include "GraphicInclude.h"
+#include "Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSUserBuffer, VSObject)
 BEGIN_ADD_PROPERTY(VSUserBuffer, VSObject)
@@ -14,30 +14,29 @@ IMPLEMENT_INITIAL_BEGIN(VSUserBuffer)
 IMPLEMENT_INITIAL_END
 VSUserBuffer::VSUserBuffer()
 {
-	m_uiDT = VSDataBuffer::DT_MAXNUM;
-	m_uiRegisterNum = 1;
-	m_pBufferResourceArray.Clear();
+    m_uiDT = VSDataBuffer::DT_MAXNUM;
+    m_uiRegisterNum = 1;
+    m_pBufferResourceArray.Clear();
 }
 VSUserBuffer::~VSUserBuffer()
 {
-	m_pBufferResourceArray.Clear();
-
+    m_pBufferResourceArray.Clear();
 }
-VSUserBuffer::VSUserBuffer(const VSUsedName & Name, unsigned int uiDataType, unsigned int uiRegisterIndex, unsigned int uiRegisterNum)
+VSUserBuffer::VSUserBuffer(const VSUsedName &Name, unsigned int uiDataType, unsigned int uiRegisterIndex, unsigned int uiRegisterNum)
 {
-	m_Name = Name;
-	m_uiDT = uiDataType;
-	m_uiRegisterIndex = uiRegisterIndex;
-	m_uiRegisterNum = uiRegisterNum;
-	m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
+    m_Name = Name;
+    m_uiDT = uiDataType;
+    m_uiRegisterIndex = uiRegisterIndex;
+    m_uiRegisterNum = uiRegisterNum;
+    m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
 }
-bool VSUserBuffer::PostLoad(VSStream* pStream)
+bool VSUserBuffer::PostLoad(VSStream *pStream)
 {
-	m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
-	return true;
+    m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
+    return true;
 }
-bool VSUserBuffer::PostClone(VSObject * pObjectSrc)
+bool VSUserBuffer::PostClone(VSObject *pObjectSrc)
 {
-	m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
-	return true;
+    m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
+    return true;
 }

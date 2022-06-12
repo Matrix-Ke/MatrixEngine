@@ -1,54 +1,57 @@
 #pragma once
-#include "VSNodeComponent.h"
+#include "NodeComponent.h"
 namespace Matrix
 {
 
-	DECLARE_Ptr(VSModelMeshNode);
-	class MATRIX_FUNCTION_API VSMeshComponent : public VSNodeComponent
-	{
-		//PRIORITY
+    DECLARE_Ptr(VSModelMeshNode);
+    class MATRIX_FUNCTION_API VSMeshComponent : public VSNodeComponent
+    {
+        // PRIORITY
 
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		VSMeshComponent();
-		virtual ~VSMeshComponent() = 0;
-		virtual bool IsNeedDraw()
-		{
-			return true;
-		}
-	protected:
-		virtual void UpdateWorldBound(double dAppTime);//更新世界边界体 
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        VSMeshComponent();
+        virtual ~VSMeshComponent() = 0;
+        virtual bool IsNeedDraw()
+        {
+            return true;
+        }
 
-		virtual void UpdateNodeAll(double dAppTime);
-		virtual void ComputeNodeVisibleSet(VSCuller & Culler, bool bNoCull, double dAppTime);
-		virtual void SetPostLoadNodeParam();
-	public:
-		virtual void SetIsVisibleUpdate(bool bIsVisibleUpdate);
-		virtual void CreateLocalAABB();
-		void SetIsDrawBoundVolume(bool bIsDrawBoundVolume);
+    protected:
+        virtual void UpdateWorldBound(double dAppTime); //更新世界边界体
 
-		void SetMorphData(const VSUsedName & ShowName, float fPara);
+        virtual void UpdateNodeAll(double dAppTime);
+        virtual void ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime);
+        virtual void SetPostLoadNodeParam();
 
-		void CastShadow(bool bCastShadow);
-		void UpdateView(VSCuller& Culler, double dAppTime);
+    public:
+        virtual void SetIsVisibleUpdate(bool bIsVisibleUpdate);
+        virtual void CreateLocalAABB();
+        void SetIsDrawBoundVolume(bool bIsDrawBoundVolume);
 
-		VSMaterialInstance * GetUseMaterialInstance(unsigned int SubMeshID, unsigned int LOD = 0)const;
+        void SetMorphData(const VSUsedName &ShowName, float fPara);
 
-		VSMaterialInstance * GetMaterialInstance(unsigned int SubMeshID,unsigned int UseID, unsigned int LOD = 0)const;
+        void CastShadow(bool bCastShadow);
+        void UpdateView(VSCuller &Culler, double dAppTime);
 
-		bool SetUseMaterialInstance(unsigned int SubMeshID, unsigned int UseID);
+        VSMaterialInstance *GetUseMaterialInstance(unsigned int SubMeshID, unsigned int LOD = 0) const;
 
-		unsigned int GetSubMeshNum();
+        VSMaterialInstance *GetMaterialInstance(unsigned int SubMeshID, unsigned int UseID, unsigned int LOD = 0) const;
 
-		virtual void GetStreamResource(VSArray<VSResourceProxyBase*>& pResourceProxy, StreamInformation_TYPE& StreamInformation)const;
-	protected:
-		VSModelMeshNodePtr m_pNode;
-		VSArray<unsigned int> m_UseID;
-		bool m_bCastShadow;
-		void ResetUseID();		
-	};
-	DECLARE_Ptr(VSMeshComponent);
-	VSTYPE_MARCO(VSMeshComponent);
+        bool SetUseMaterialInstance(unsigned int SubMeshID, unsigned int UseID);
+
+        unsigned int GetSubMeshNum();
+
+        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+
+    protected:
+        VSModelMeshNodePtr m_pNode;
+        VSArray<unsigned int> m_UseID;
+        bool m_bCastShadow;
+        void ResetUseID();
+    };
+    DECLARE_Ptr(VSMeshComponent);
+    VSTYPE_MARCO(VSMeshComponent);
 }

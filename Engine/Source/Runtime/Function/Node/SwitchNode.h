@@ -1,29 +1,29 @@
 #pragma once
-#include "VSNode.h"
+#include "Node.h"
 namespace Matrix
 {
-	class MATRIX_FUNCTION_API VSSwitchNode : public VSNode
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		VSSwitchNode();
-		virtual ~VSSwitchNode();
+    class MATRIX_FUNCTION_API VSSwitchNode : public VSNode
+    {
+        // PRIORITY
 
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        VSSwitchNode();
+        virtual ~VSSwitchNode();
 
-		virtual VSSpatial * GetActiveNode()const;
-	protected:
-		unsigned int m_uiActiveNode;
+        virtual VSSpatial *GetActiveNode() const;
 
-	protected:
-		virtual void UpdateWorldBound(double dAppTime);//更新世界边界体 
+    protected:
+        unsigned int m_uiActiveNode;
 
-		virtual void ComputeNodeVisibleSet(VSCuller & Culler,bool bNoCull,double dAppTime);
-	};
-	DECLARE_Ptr(VSSwitchNode);
-	VSTYPE_MARCO(VSSwitchNode);
+    protected:
+        virtual void UpdateWorldBound(double dAppTime); //更新世界边界体
+
+        virtual void ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime);
+    };
+    DECLARE_Ptr(VSSwitchNode);
+    VSTYPE_MARCO(VSSwitchNode);
 
 }

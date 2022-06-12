@@ -1,69 +1,71 @@
 #pragma once
-#include "VSObject.h"
+#include "Object.h"
 namespace Matrix
 {
 
-	class MATRIX_FUNCTION_API VSResourceIdentifier
-	{
-	public:
-		virtual ~VSResourceIdentifier () {/**/}
+    class MATRIX_FUNCTION_API VSResourceIdentifier
+    {
+    public:
+        virtual ~VSResourceIdentifier()
+        { /**/
+        }
 
-	protected:
-		VSResourceIdentifier () {/**/}
-	};
-	class VSStream;
-	class MATRIX_FUNCTION_API VSBind : public VSObject
-	{
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL_NO_CLASS_FACTORY;
-	public:	
-		VSBind();
-		virtual ~VSBind() = 0;
+    protected:
+        VSResourceIdentifier()
+        { /**/
+        }
+    };
+    class VSStream;
+    class MATRIX_FUNCTION_API VSBind : public VSObject
+    {
 
-		virtual VSResourceIdentifier* GetIdentifier();
-		unsigned int GetInfoQuantity () const;
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL_NO_CLASS_FACTORY;
 
-		static VSArray<VSBind *> ms_BindArray;
-		
-	protected:
-		friend class VSRenderer;
+    public:
+        VSBind();
+        virtual ~VSBind() = 0;
 
-		void Bind(VSResourceIdentifier* pID);
+        virtual VSResourceIdentifier *GetIdentifier();
+        unsigned int GetInfoQuantity() const;
 
-		struct INFO_TYPE
-		{
-			INFO_TYPE()
-			{
-				ID = NULL;
-			}
-			~INFO_TYPE()
-			{
+        static VSArray<VSBind *> ms_BindArray;
 
-			}
-			VSResourceIdentifier* ID;
-		};
-		VSArray<INFO_TYPE> m_InfoArray;
+    protected:
+        friend class VSRenderer;
 
-		VSRenderer* m_pUser;
+        void Bind(VSResourceIdentifier *pID);
 
-	public:
+        struct INFO_TYPE
+        {
+            INFO_TYPE()
+            {
+                ID = NULL;
+            }
+            ~INFO_TYPE()
+            {
+            }
+            VSResourceIdentifier *ID;
+        };
+        VSArray<INFO_TYPE> m_InfoArray;
 
+        VSRenderer *m_pUser;
 
-		virtual	bool LoadResource(VSRenderer * pRender);
-		virtual bool ReleaseResource();
+    public:
+        virtual bool LoadResource(VSRenderer *pRender);
+        virtual bool ReleaseResource();
 
-		bool IsBindResource()const
-		{
-			return m_InfoArray.GetNum() > 0;
-		}
-	protected:
-		virtual bool OnLoadResource(VSResourceIdentifier *&pID) = 0;		
-		virtual bool OnReleaseResource(VSResourceIdentifier *pID);
-		
-	};
-	DECLARE_Ptr(VSBind);
-	VSTYPE_MARCO(VSBind);
+        bool IsBindResource() const
+        {
+            return m_InfoArray.GetNum() > 0;
+        }
+
+    protected:
+        virtual bool OnLoadResource(VSResourceIdentifier *&pID) = 0;
+        virtual bool OnReleaseResource(VSResourceIdentifier *pID);
+    };
+    DECLARE_Ptr(VSBind);
+    VSTYPE_MARCO(VSBind);
 
 }

@@ -1,6 +1,6 @@
-#include "VSStaticMeshComponent.h"
-#include "VSStaticMeshNode.h"
-#include "VSGraphicInclude.h"
+#include "StaticMeshComponent.h"
+#include "StaticMeshNode.h"
+#include "GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSStaticMeshComponent, VSMeshComponent)
 BEGIN_ADD_PROPERTY(VSStaticMeshComponent, VSMeshComponent)
@@ -10,60 +10,59 @@ IMPLEMENT_INITIAL_BEGIN(VSStaticMeshComponent)
 IMPLEMENT_INITIAL_END
 VSStaticMeshComponent::VSStaticMeshComponent()
 {
-	m_pStaticMeshResource = (VSStaticMeshNodeR *)VSStaticMeshNode::GetDefaultResource();
+    m_pStaticMeshResource = (VSStaticMeshNodeR *)VSStaticMeshNode::GetDefaultResource();
 }
 VSStaticMeshComponent::~VSStaticMeshComponent()
 {
-	if (m_pStaticMeshResource)
-	{
-		m_pStaticMeshResource->DeleteLoadEventObject(this);
-	}
+    if (m_pStaticMeshResource)
+    {
+        m_pStaticMeshResource->DeleteLoadEventObject(this);
+    }
 }
-bool VSStaticMeshComponent::BeforeSave(void * pData)
+bool VSStaticMeshComponent::BeforeSave(void *pData)
 {
-	return true;
+    return true;
 }
-void VSStaticMeshComponent::SetStaticMeshResource(VSStaticMeshNodeR * pStaticMeshResource)
+void VSStaticMeshComponent::SetStaticMeshResource(VSStaticMeshNodeR *pStaticMeshResource)
 {
-	if (m_pStaticMeshResource == pStaticMeshResource)
-	{
-		return;
-	}
-	m_pStaticMeshResource = pStaticMeshResource;
-	m_UseID.Destroy();
-	PostCreate();
+    if (m_pStaticMeshResource == pStaticMeshResource)
+    {
+        return;
+    }
+    m_pStaticMeshResource = pStaticMeshResource;
+    m_UseID.Destroy();
+    PostCreate();
 }
 void VSStaticMeshComponent::PostCreate()
 {
-	if (!m_pStaticMeshResource)
-	{
-		return;
-	}
-	m_pStaticMeshResource->AddLoadEventObject(this);
+    if (!m_pStaticMeshResource)
+    {
+        return;
+    }
+    m_pStaticMeshResource->AddLoadEventObject(this);
 }
-void VSStaticMeshComponent::LoadedEvent(VSResourceProxyBase * pResourceProxy, void * Data)
+void VSStaticMeshComponent::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data)
 {
 
-	if (m_pNode)
-	{
-		m_pNode->SetParent(NULL);
-	}
-	m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pStaticMeshResource->GetResource());
-	m_pNode->SetParent(this);
-	if (m_pStaticMeshResource->IsLoaded())
-	{
-		ResetUseID();
-	}
-	SetPostLoadNodeParam();
-	m_bIsStatic = !m_pNode->IsDynamic();
-
+    if (m_pNode)
+    {
+        m_pNode->SetParent(NULL);
+    }
+    m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pStaticMeshResource->GetResource());
+    m_pNode->SetParent(this);
+    if (m_pStaticMeshResource->IsLoaded())
+    {
+        ResetUseID();
+    }
+    SetPostLoadNodeParam();
+    m_bIsStatic = !m_pNode->IsDynamic();
 }
-bool VSStaticMeshComponent::PostLoad(VSStream* pStream)
+bool VSStaticMeshComponent::PostLoad(VSStream *pStream)
 {
-	if (!VSMeshComponent::PostLoad(pStream))
-	{
-		return false;
-	}
-	PostCreate();
-	return true;
+    if (!VSMeshComponent::PostLoad(pStream))
+    {
+        return false;
+    }
+    PostCreate();
+    return true;
 }

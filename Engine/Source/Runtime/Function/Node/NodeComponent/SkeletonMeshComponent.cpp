@@ -1,6 +1,6 @@
-#include "VSSkeletonMeshComponent.h"
-#include "VSSkeletonMeshNode.h"
-#include "VSGraphicInclude.h"
+#include "SkeletonMeshComponent.h"
+#include "SkeletonMeshNode.h"
+#include "GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkeletonMeshComponent, VSMeshComponent)
 BEGIN_ADD_PROPERTY(VSSkeletonMeshComponent, VSMeshComponent)
@@ -10,105 +10,103 @@ IMPLEMENT_INITIAL_BEGIN(VSSkeletonMeshComponent)
 IMPLEMENT_INITIAL_END
 VSSkeletonMeshComponent::VSSkeletonMeshComponent()
 {
-	m_bIsStatic = false;
-	m_pSkeletonMeshResource = (VSSkeletonMeshNodeR *)VSSkeletonMeshNode::GetDefaultResource();
+    m_bIsStatic = false;
+    m_pSkeletonMeshResource = (VSSkeletonMeshNodeR *)VSSkeletonMeshNode::GetDefaultResource();
 }
 VSSkeletonMeshComponent::~VSSkeletonMeshComponent()
 {
-	if (m_pSkeletonMeshResource)
-	{
-		m_pSkeletonMeshResource->DeleteLoadEventObject(this);
-	}
+    if (m_pSkeletonMeshResource)
+    {
+        m_pSkeletonMeshResource->DeleteLoadEventObject(this);
+    }
 }
-bool VSSkeletonMeshComponent::BeforeSave(void * pData)
+bool VSSkeletonMeshComponent::BeforeSave(void *pData)
 {
-	return true;
+    return true;
 }
-void VSSkeletonMeshComponent::SetSkeletonMeshResource(VSSkeletonMeshNodeR * pSkeletonMeshResource)
+void VSSkeletonMeshComponent::SetSkeletonMeshResource(VSSkeletonMeshNodeR *pSkeletonMeshResource)
 {
-	if (m_pSkeletonMeshResource == pSkeletonMeshResource)
-	{
-		return;
-	}
-	m_pSkeletonMeshResource = pSkeletonMeshResource;
-	m_UseID.Destroy();
-	PostCreate();
+    if (m_pSkeletonMeshResource == pSkeletonMeshResource)
+    {
+        return;
+    }
+    m_pSkeletonMeshResource = pSkeletonMeshResource;
+    m_UseID.Destroy();
+    PostCreate();
 }
 void VSSkeletonMeshComponent::PostCreate()
 {
-	if (!m_pSkeletonMeshResource)
-	{
-		return;
-	}
-	m_pSkeletonMeshResource->AddLoadEventObject(this);
+    if (!m_pSkeletonMeshResource)
+    {
+        return;
+    }
+    m_pSkeletonMeshResource->AddLoadEventObject(this);
 }
-void VSSkeletonMeshComponent::LoadedEvent(VSResourceProxyBase * pResourceProxy, void * Data)
+void VSSkeletonMeshComponent::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data)
 {
 
-	if (m_pNode)
-	{
-		m_pNode->SetParent(NULL);
-	}	
-	m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pSkeletonMeshResource->GetResource());
-	m_pNode->SetParent(this);
-	if (m_pSkeletonMeshResource->IsLoaded())
-	{
-		ResetUseID();
-	}
-	SetPostLoadNodeParam();
-
+    if (m_pNode)
+    {
+        m_pNode->SetParent(NULL);
+    }
+    m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pSkeletonMeshResource->GetResource());
+    m_pNode->SetParent(this);
+    if (m_pSkeletonMeshResource->IsLoaded())
+    {
+        ResetUseID();
+    }
+    SetPostLoadNodeParam();
 }
 void VSSkeletonMeshComponent::SetIsDrawSkeleton(bool bIsDrawSkeleton)
 {
-	VSMeshNode * pMeshNode = m_pNode;
-	if (pMeshNode)
-	{
-		((VSSkeletonMeshNode *)pMeshNode)->SetIsDrawSkeleton(bIsDrawSkeleton);
-	}
-	
+    VSMeshNode *pMeshNode = m_pNode;
+    if (pMeshNode)
+    {
+        ((VSSkeletonMeshNode *)pMeshNode)->SetIsDrawSkeleton(bIsDrawSkeleton);
+    }
 }
-bool VSSkeletonMeshComponent::PlayAnim(const VSString & AnimName, VSREAL fRatio, unsigned int uiRepeatType)
+bool VSSkeletonMeshComponent::PlayAnim(const VSString &AnimName, VSREAL fRatio, unsigned int uiRepeatType)
 {
-	VSMeshNode * pMeshNode = m_pNode;
-	if (pMeshNode)
-	{
-		((VSSkeletonMeshNode *)pMeshNode)->PlayAnim(AnimName,fRatio,uiRepeatType);
-	}
-	return true;
+    VSMeshNode *pMeshNode = m_pNode;
+    if (pMeshNode)
+    {
+        ((VSSkeletonMeshNode *)pMeshNode)->PlayAnim(AnimName, fRatio, uiRepeatType);
+    }
+    return true;
 }
-VSSocketNode * VSSkeletonMeshComponent::GetSocketNode(const VSUsedName & SocketName)
+VSSocketNode *VSSkeletonMeshComponent::GetSocketNode(const VSUsedName &SocketName)
 {
-	VSSkeletonMeshNode * pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
-	if (pSkeletonNode)
-	{
-		return pSkeletonNode->GetSocket(SocketName);
-	}
-	return NULL;
+    VSSkeletonMeshNode *pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
+    if (pSkeletonNode)
+    {
+        return pSkeletonNode->GetSocket(SocketName);
+    }
+    return NULL;
 }
-void VSSkeletonMeshComponent::SetAnimTreeNodePara(const VSUsedName & ShowName, void * pPara)
+void VSSkeletonMeshComponent::SetAnimTreeNodePara(const VSUsedName &ShowName, void *pPara)
 {
 
-	VSSkeletonMeshNode * pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
-	if (pSkeletonNode)
-	{
-		return pSkeletonNode->SetAnimTreeNodePara(ShowName, pPara);
-	}
+    VSSkeletonMeshNode *pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
+    if (pSkeletonNode)
+    {
+        return pSkeletonNode->SetAnimTreeNodePara(ShowName, pPara);
+    }
 }
-bool VSSkeletonMeshComponent::PostLoad(VSStream* pStream)
+bool VSSkeletonMeshComponent::PostLoad(VSStream *pStream)
 {
-	if (!VSMeshComponent::PostLoad(pStream))
-	{
-		return false;
-	}
-	PostCreate();
-	return true;
+    if (!VSMeshComponent::PostLoad(pStream))
+    {
+        return false;
+    }
+    PostCreate();
+    return true;
 }
 const VSAnimAtom &VSSkeletonMeshComponent::GetRootDelta()
 {
-	VSSkeletonMeshNode * pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
-	if (pSkeletonNode)
-	{
-		return pSkeletonNode->GetRootDelta();
-	}
-	return VSAnimAtom::ms_Identity;
+    VSSkeletonMeshNode *pSkeletonNode = (VSSkeletonMeshNode *)m_pNode.GetObject();
+    if (pSkeletonNode)
+    {
+        return pSkeletonNode->GetRootDelta();
+    }
+    return VSAnimAtom::ms_Identity;
 }

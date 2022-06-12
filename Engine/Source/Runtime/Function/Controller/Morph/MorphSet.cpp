@@ -1,106 +1,106 @@
-#include "VSMorphSet.h"
-#include "VSGraphicInclude.h"
-#include "VSStream.h"
+#include "MorphSet.h"
+#include "GraphicInclude.h"
+#include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSMorph,VSObject)
-BEGIN_ADD_PROPERTY(VSMorph,VSObject)
-REGISTER_PROPERTY(m_pVertexBufferArray,pVertexBufferArray,VSProperty::F_SAVE_LOAD_CLONE)
-REGISTER_PROPERTY(m_cName,MorphName,VSProperty::F_SAVE_LOAD_CLONE)
+IMPLEMENT_RTTI(VSMorph, VSObject)
+BEGIN_ADD_PROPERTY(VSMorph, VSObject)
+REGISTER_PROPERTY(m_pVertexBufferArray, pVertexBufferArray, VSProperty::F_SAVE_LOAD_CLONE)
+REGISTER_PROPERTY(m_cName, MorphName, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSMorph)
 IMPLEMENT_INITIAL_END
 VSMorph::VSMorph()
 {
-	m_pVertexBufferArray.Clear();
+    m_pVertexBufferArray.Clear();
 }
-VSMorph:: ~VSMorph()
+VSMorph::~VSMorph()
 {
-	m_pVertexBufferArray.Clear();
+    m_pVertexBufferArray.Clear();
 }
 
-IMPLEMENT_RTTI(VSMorphSet,VSObject)
-BEGIN_ADD_PROPERTY(VSMorphSet,VSObject)
-REGISTER_PROPERTY(m_pMorphArray,MorphArray,VSProperty::F_SAVE_LOAD_CLONE)
+IMPLEMENT_RTTI(VSMorphSet, VSObject)
+BEGIN_ADD_PROPERTY(VSMorphSet, VSObject)
+REGISTER_PROPERTY(m_pMorphArray, MorphArray, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSMorphSet)
 IMPLEMENT_INITIAL_END
 VSMorphSet::VSMorphSet()
 {
-	m_pMorphArray.Clear();
+    m_pMorphArray.Clear();
 }
-VSMorphSet:: ~VSMorphSet()
+VSMorphSet::~VSMorphSet()
 {
-	m_pMorphArray.Clear();
+    m_pMorphArray.Clear();
 }
-bool VSMorphSet::AddMorph(VSMorph * pMorph)
+bool VSMorphSet::AddMorph(VSMorph *pMorph)
 {
-	VSMAC_ASSERT(pMorph);
-	if (m_pMorphArray.GetNum() != 0)
-	{
-		//是否存在
-		for (unsigned int i = 0 ; i < m_pMorphArray.GetNum() ; i++)
-		{
-			if(m_pMorphArray[i] == pMorph || m_pMorphArray[i]->m_cName == pMorph->m_cName)
-				return 1;
-		}
-		//bufferNum 统一
-		if(pMorph->GetBufferNum() != m_pMorphArray[0]->GetBufferNum())
-		{
-			return 0;
-		}
-		//分别对每个morph 的每个buffer进行校验
-		for (unsigned int i = 0 ;i < pMorph->GetBufferNum() ; i++)
-		{
-			if (pMorph->GetVertexNum(i))
-			{
-				for (unsigned int j = 0 ; j < m_pMorphArray.GetNum() ; j++)
-				{
-					if (m_pMorphArray[j]->GetVertexNum(i))
-					{
-						if (pMorph->GetVertexNum(i) == m_pMorphArray[j]->GetVertexNum(i))
-						{
-							break;
-						}
-						else
-						{
-							return 0;
-						}
-					}					
-				}
-			}
-		}
-	}
-	m_pMorphArray.AddElement(pMorph);
-	m_AddMorphEvent();
-	return 1;
+    VSMAC_ASSERT(pMorph);
+    if (m_pMorphArray.GetNum() != 0)
+    {
+        //是否存在
+        for (unsigned int i = 0; i < m_pMorphArray.GetNum(); i++)
+        {
+            if (m_pMorphArray[i] == pMorph || m_pMorphArray[i]->m_cName == pMorph->m_cName)
+                return 1;
+        }
+        // bufferNum 统一
+        if (pMorph->GetBufferNum() != m_pMorphArray[0]->GetBufferNum())
+        {
+            return 0;
+        }
+        //分别对每个morph 的每个buffer进行校验
+        for (unsigned int i = 0; i < pMorph->GetBufferNum(); i++)
+        {
+            if (pMorph->GetVertexNum(i))
+            {
+                for (unsigned int j = 0; j < m_pMorphArray.GetNum(); j++)
+                {
+                    if (m_pMorphArray[j]->GetVertexNum(i))
+                    {
+                        if (pMorph->GetVertexNum(i) == m_pMorphArray[j]->GetVertexNum(i))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    m_pMorphArray.AddElement(pMorph);
+    m_AddMorphEvent();
+    return 1;
 }
-unsigned int VSMorphSet::GetMorphIndex(const VSUsedName & MorphName)const
+unsigned int VSMorphSet::GetMorphIndex(const VSUsedName &MorphName) const
 {
-	for (unsigned int i = 0; i < m_pMorphArray.GetNum(); i++)
-	{
-		if (m_pMorphArray[i])
-		{
-			if (m_pMorphArray[i]->m_cName == MorphName)
-				return i;
-		}
-	}
-	return m_pMorphArray.GetNum();
+    for (unsigned int i = 0; i < m_pMorphArray.GetNum(); i++)
+    {
+        if (m_pMorphArray[i])
+        {
+            if (m_pMorphArray[i]->m_cName == MorphName)
+                return i;
+        }
+    }
+    return m_pMorphArray.GetNum();
 }
-VSMorph * VSMorphSet::GetMorph(const VSUsedName& MorphName)const
+VSMorph *VSMorphSet::GetMorph(const VSUsedName &MorphName) const
 {
-	for(unsigned int i = 0 ; i < m_pMorphArray.GetNum() ; i++)
-	{
-		if(m_pMorphArray[i])
-		{
-			if(m_pMorphArray[i]->m_cName == MorphName)
-				return m_pMorphArray[i];
-		}
-	}
+    for (unsigned int i = 0; i < m_pMorphArray.GetNum(); i++)
+    {
+        if (m_pMorphArray[i])
+        {
+            if (m_pMorphArray[i]->m_cName == MorphName)
+                return m_pMorphArray[i];
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
-VSMorph * VSMorphSet::GetMorph(unsigned int i)const
+VSMorph *VSMorphSet::GetMorph(unsigned int i) const
 {
-	VSMAC_ASSERT(i < m_pMorphArray.GetNum());
-	return m_pMorphArray[i];
+    VSMAC_ASSERT(i < m_pMorphArray.GetNum());
+    return m_pMorphArray[i];
 }

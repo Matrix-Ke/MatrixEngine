@@ -1,38 +1,38 @@
 #pragma once
-#include "VSPass.h"
+#include "Pass.h"
 namespace Matrix
 {
 
-	class MATRIX_FUNCTION_API VSPostEffectPass : public VSPass
-	{
-		//PRIORITY
+    class MATRIX_FUNCTION_API VSPostEffectPass : public VSPass
+    {
+        // PRIORITY
 
-		//RTTI
-		DECLARE_RTTI;
-	public:
-		virtual ~VSPostEffectPass();
-		VSPostEffectPass();
-	public:
+        // RTTI
+        DECLARE_RTTI;
 
+    public:
+        virtual ~VSPostEffectPass();
+        VSPostEffectPass();
 
-	protected:
+    public:
+    protected:
+        DECLARE_INITIAL
+        static bool InitialDefaultState();
+        static bool TerminalDefaultState();
+        void SetCustomConstant(MaterialShaderPara &MSPara, VSVShader *pVShader, VSPShader *pPShader);
 
-		DECLARE_INITIAL
-		static bool InitialDefaultState();
-		static bool TerminalDefaultState();
-		void SetCustomConstant(MaterialShaderPara &MSPara, VSVShader * pVShader, VSPShader * pPShader);
-	public:
-		virtual bool Draw(VSRenderer * pRenderer);
+    public:
+        virtual bool Draw(VSRenderer *pRenderer);
 
-		virtual unsigned int GetPassType()	
-		{
-			return PT_POSTEFFECT;
-		}
-		unsigned int m_uiRTWidth;
-		unsigned int m_uiRTHeight;
-		VSTexAllState * m_PColorBuffer;
-		VSRenderState m_RenderState;
-	};
-	DECLARE_Ptr(VSPostEffectPass);
-	VSTYPE_MARCO(VSPostEffectPass);
+        virtual unsigned int GetPassType()
+        {
+            return PT_POSTEFFECT;
+        }
+        unsigned int m_uiRTWidth;
+        unsigned int m_uiRTHeight;
+        VSTexAllState *m_PColorBuffer;
+        VSRenderState m_RenderState;
+    };
+    DECLARE_Ptr(VSPostEffectPass);
+    VSTYPE_MARCO(VSPostEffectPass);
 }

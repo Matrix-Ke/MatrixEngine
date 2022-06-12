@@ -1,45 +1,44 @@
 #pragma once
-#include "VSTerrainNode.h"
+#include "TerrainNode.h"
 namespace Matrix
 {
-	class VSStream;
-	class MATRIX_FUNCTION_API VSCLodTerrainNode : public VSTerrainNode
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		enum //Terrain Node Type
-		{
-			TNT_ROAM,
-			TNT_QUAD,
-			TNT_MAX
-		};
-		virtual ~VSCLodTerrainNode();
-		VSCLodTerrainNode();
-	protected:
-		
+    class VSStream;
+    class MATRIX_FUNCTION_API VSCLodTerrainNode : public VSTerrainNode
+    {
+        // PRIORITY
 
-		
-		VSREAL	m_fCLODScale;
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        enum // Terrain Node Type
+        {
+            TNT_ROAM,
+            TNT_QUAD,
+            TNT_MAX
+        };
+        virtual ~VSCLodTerrainNode();
+        VSCLodTerrainNode();
 
-		unsigned int m_uiTerrainNodeType;
-		void LinkNeighbor();
-		void ComputeVariance();
+    protected:
+        VSREAL m_fCLODScale;
 
-		virtual bool CreateChild();
-		virtual void UpdateNodeAll(double dAppTime);
-	public:
-		virtual unsigned int AddChild(VSSpatial * pChild);
+        unsigned int m_uiTerrainNodeType;
+        void LinkNeighbor();
+        void ComputeVariance();
 
-		void SetCLODScale(VSREAL fCLODScale);
+        virtual bool CreateChild();
+        virtual void UpdateNodeAll(double dAppTime);
 
-		inline VSREAL GetCLODScale()const { return m_fCLODScale; }
+    public:
+        virtual unsigned int AddChild(VSSpatial *pChild);
 
-		void SetTerrainNodeType(unsigned int uiTerrainNodeType);
-	};
-	DECLARE_Ptr(VSCLodTerrainNode);
-	VSTYPE_MARCO(VSCLodTerrainNode);
+        void SetCLODScale(VSREAL fCLODScale);
+
+        inline VSREAL GetCLODScale() const { return m_fCLODScale; }
+
+        void SetTerrainNodeType(unsigned int uiTerrainNodeType);
+    };
+    DECLARE_Ptr(VSCLodTerrainNode);
+    VSTYPE_MARCO(VSCLodTerrainNode);
 }

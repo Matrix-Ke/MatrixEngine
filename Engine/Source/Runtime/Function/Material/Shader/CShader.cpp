@@ -1,6 +1,6 @@
-#include "VSCShader.h"
-#include "VSGraphicInclude.h"
-#include "VSStream.h"
+#include "CShader.h"
+#include "GraphicInclude.h"
+#include "Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSCShader, VSShader)
 BEGIN_ADD_PROPERTY(VSCShader, VSShader)
@@ -10,28 +10,24 @@ IMPLEMENT_INITIAL_END
 VSPointer<VSCShader> VSCShader::ms_Default;
 VSCShader::VSCShader()
 {
-
 }
 VSCShader::~VSCShader()
 {
-
 }
-VSCShader::VSCShader(const TCHAR * pBuffer, const VSString & MainFunName, bool IsFromFile)
-	:VSShader(pBuffer, MainFunName, IsFromFile)
+VSCShader::VSCShader(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile)
+    : VSShader(pBuffer, MainFunName, IsFromFile)
 {
-
 }
-VSCShader::VSCShader(const VSString &Buffer, const VSString & MainFunName, bool IsFromFile)
-	: VSShader(Buffer, MainFunName, IsFromFile)
+VSCShader::VSCShader(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile)
+    : VSShader(Buffer, MainFunName, IsFromFile)
 {
-
 }
 bool VSCShader::OnLoadResource(VSResourceIdentifier *&pID)
 {
-	VSMAC_ASSERT(m_pUser);
+    VSMAC_ASSERT(m_pUser);
 
-	if (!m_pUser->OnLoadCShaderProgram(this, pID))
-		return 0;
+    if (!m_pUser->OnLoadCShaderProgram(this, pID))
+        return 0;
 
-	return 1;
+    return 1;
 }

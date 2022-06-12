@@ -1,39 +1,39 @@
 #pragma once
-#include "VSPass.h"
+#include "Pass.h"
 namespace Matrix
 {
 
-	class MATRIX_FUNCTION_API VSPreZPass : public VSPass
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		VSPreZPass();
-		virtual ~VSPreZPass();
-		
+    class MATRIX_FUNCTION_API VSPreZPass : public VSPass
+    {
+        // PRIORITY
 
-	protected:
-		static VSPointer<VSPreZPass>	ms_Default;
-		static bool InitialDefaultState();
-		static bool TerminalDefaultState();
-	protected:
-		VSRenderState m_RenderState;
-	public:
-		virtual bool Draw(VSRenderer * pRenderer);
-		
-		static VSPreZPass * GetDefault()
-		{
-			return ms_Default;
-		}
-		virtual unsigned int GetPassType()
-		{
-			return PT_PREZ;
-		}
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        VSPreZPass();
+        virtual ~VSPreZPass();
 
-	};
-	DECLARE_Ptr(VSPreZPass);
-	VSTYPE_MARCO(VSPreZPass);
+    protected:
+        static VSPointer<VSPreZPass> ms_Default;
+        static bool InitialDefaultState();
+        static bool TerminalDefaultState();
+
+    protected:
+        VSRenderState m_RenderState;
+
+    public:
+        virtual bool Draw(VSRenderer *pRenderer);
+
+        static VSPreZPass *GetDefault()
+        {
+            return ms_Default;
+        }
+        virtual unsigned int GetPassType()
+        {
+            return PT_PREZ;
+        }
+    };
+    DECLARE_Ptr(VSPreZPass);
+    VSTYPE_MARCO(VSPreZPass);
 }

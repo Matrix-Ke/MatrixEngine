@@ -1,58 +1,56 @@
 #pragma once
-#include "VSNode.h"
-#include "VSGeometry.h"
+#include "Node.h"
+#include "Geometry.h"
 namespace Matrix
 {
-	DECLARE_Ptr(VSBoneNode);
-	class VSStream;
-	class MATRIX_FUNCTION_API VSSkeleton : public VSNode
-	{
-		//PRIORITY
-		
-		//RTTI
-		DECLARE_RTTI;
-		DECLARE_INITIAL
-	public:
-		VSSkeleton();
-		virtual ~VSSkeleton();
+    DECLARE_Ptr(VSBoneNode);
+    class VSStream;
+    class MATRIX_FUNCTION_API VSSkeleton : public VSNode
+    {
+        // PRIORITY
 
-	protected:
-		VSArray<VSBoneNode *> m_pBoneArray;
+        // RTTI
+        DECLARE_RTTI;
+        DECLARE_INITIAL
+    public:
+        VSSkeleton();
+        virtual ~VSSkeleton();
 
-		void LinkBoneArray();
-		virtual void UpdateNoChild(double dAppTime);
-		virtual void ComputeNodeVisibleSet(VSCuller & Culler,bool bNoCull,double dAppTime);
-		virtual void UpdateWorldBound(double dAppTime);
-		static VSREAL ms_fBoneAxisLength;
-		void Draw(VSCamera * pCamera);
-		VSAABB3	m_LocalBV;
-		VSAABB3 m_OriginLocalBV;
-	public:
-		friend class VSSkeletonMeshNode;
-		virtual void CreateLocalAABB();
-		inline void SetLocalBV(const VSAABB3 & BV)
-		{
-			m_LocalBV = BV;
-		}
-		inline VSAABB3 GetLocalBV()const
-		{
-			return m_LocalBV;
-		}
-		void CreateBoneArray();
-		
-		
+    protected:
+        VSArray<VSBoneNode *> m_pBoneArray;
 
-		unsigned int GetBoneNum()const;
-		VSBoneNode *GetBoneNode(const VSUsedName & Name)const;
-		VSBoneNode * GetBoneNode(unsigned int i)const;
+        void LinkBoneArray();
+        virtual void UpdateNoChild(double dAppTime);
+        virtual void ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime);
+        virtual void UpdateWorldBound(double dAppTime);
+        static VSREAL ms_fBoneAxisLength;
+        void Draw(VSCamera *pCamera);
+        VSAABB3 m_LocalBV;
+        VSAABB3 m_OriginLocalBV;
 
-		int GetBoneIndex(const VSUsedName &Name)const;
-		bool m_bIsDrawSkeleton;
-	
+    public:
+        friend class VSSkeletonMeshNode;
+        virtual void CreateLocalAABB();
+        inline void SetLocalBV(const VSAABB3 &BV)
+        {
+            m_LocalBV = BV;
+        }
+        inline VSAABB3 GetLocalBV() const
+        {
+            return m_LocalBV;
+        }
+        void CreateBoneArray();
 
-		virtual void UpdateView(VSCuller & Culler,double dAppTime);
-		const VSTransform &GetRootTransform();
-	};
-	DECLARE_Ptr(VSSkeleton);
-	VSTYPE_MARCO(VSSkeleton);
+        unsigned int GetBoneNum() const;
+        VSBoneNode *GetBoneNode(const VSUsedName &Name) const;
+        VSBoneNode *GetBoneNode(unsigned int i) const;
+
+        int GetBoneIndex(const VSUsedName &Name) const;
+        bool m_bIsDrawSkeleton;
+
+        virtual void UpdateView(VSCuller &Culler, double dAppTime);
+        const VSTransform &GetRootTransform();
+    };
+    DECLARE_Ptr(VSSkeleton);
+    VSTYPE_MARCO(VSSkeleton);
 }

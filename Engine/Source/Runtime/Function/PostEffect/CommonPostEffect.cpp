@@ -1,5 +1,5 @@
-#include "VSCommonPostEffect.h"
-#include "VSGraphicInclude.h"
+#include "CommonPostEffect.h"
+#include "GraphicInclude.h"
 using namespace Matrix;
 COMMON_POST_EFFECT_FUNCTION_IMPLEMENT(Gray)
 
@@ -14,5 +14,3 @@ COMMON_POST_EFFECT_FUNCTION_IMPLEMENT(DownFilter4)
 COMMON_POST_EFFECT_FUNCTION_IMPLEMENT(TexAdd)
 
 COMMON_POST_EFFECT_FUNCTION_IMPLEMENT_THREE(Bloom, MiddleGray, WhiteCutoff, Luminance)
-
-
