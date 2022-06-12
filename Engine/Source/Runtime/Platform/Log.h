@@ -7,7 +7,7 @@ namespace Matrix
     namespace Core
     {
 
-        class MATRIX_CORE_API MXLog : public File
+        class MATRIX_PLATFORM_API MXLog : public File
         {
         public:
             MXLog();

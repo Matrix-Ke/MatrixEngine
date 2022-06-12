@@ -111,24 +111,24 @@ void VSSpatial::SetIsVisibleUpdate(bool bIsVisibleUpdate)
 		m_bEnable = true;
 	}
 }
-const VSAABB3& VSSpatial::GetWorldAABB() const
+const Primitive::AABB3& VSSpatial::GetWorldAABB() const
 {
 	return m_WorldBV;
 }
-const VSVector3& VSSpatial::GetLocalScale() const
+const Math::Vector3& VSSpatial::GetLocalScale() const
 {
 	return m_Local.GetScale();
 }
-const VSVector3& VSSpatial::GetLocalTranslate() const
+const Math::Vector3& VSSpatial::GetLocalTranslate() const
 {
 	return m_Local.GetTranslate();
 }
-const VSMatrix3X3& VSSpatial::GetLocalRotate() const
+const Math::Matrix3& VSSpatial::GetLocalRotate() const
 {
 	return m_Local.GetRotate();
 }
 
-const VSTransform& VSSpatial::GetLocalTransform()
+const Math::VSTransform& VSSpatial::GetLocalTransform()
 {
 	m_Local.GetCombine();
 	return m_Local;
@@ -171,32 +171,32 @@ void VSSpatial::UpdateTransform(double dAppTime)
 	/*updateNodeController*/
 }
 
-void VSSpatial::GetLocalDir(VSVector3& Dir, VSVector3& Up, VSVector3& Right) const
+void VSSpatial::GetLocalDir(Math::Vector3& Dir, Math::Vector3& Up, Math::Vector3& Right) const
 {
 	m_Local.GetDir(Dir, Up, Right);
 }
-void VSSpatial::GetWorldDir(VSVector3& Dir, VSVector3& Up, VSVector3& Right)
+void VSSpatial::GetWorldDir(Math::Vector3& Dir, Math::Vector3& Up, Math::Vector3& Right)
 {
 	m_World.GetDir(Dir, Up, Right);
 }
-const VSVector3& VSSpatial::GetWorldScale()
+const Math::Vector3& VSSpatial::GetWorldScale()
 {
 	return m_World.GetScale();
 }
-const VSVector3& VSSpatial::GetWorldTranslate()
+const Math::Vector3& VSSpatial::GetWorldTranslate()
 {
 	return m_World.GetTranslate();
 }
-const VSMatrix3X3& VSSpatial::GetWorldRotate()
+const Math::Matrix3& VSSpatial::GetWorldRotate()
 {
 	return m_World.GetRotate();
 }
-const VSTransform& VSSpatial::GetWorldTransform()
+const Math::VSTransform& VSSpatial::GetWorldTransform()
 {
 	m_World.GetCombine();
 	return m_World;
 }
-void VSSpatial::SetLocalTransform(const VSTransform& LocalTransform)
+void VSSpatial::SetLocalTransform(const Math::VSTransform& LocalTransform)
 {
 	m_bIsChanged = true;
 	m_Local = LocalTransform;
@@ -208,36 +208,36 @@ void VSSpatial::SetLocalMat(const VSMatrix3X3W VSMat)
 	m_Local.SetMatrix(VSMat);
 	UpdateAll(0.0f);
 }
-void VSSpatial::SetLocalScale(const VSVector3& fScale)
+void VSSpatial::SetLocalScale(const Math::Vector3& fScale)
 {
 	m_bIsChanged = true;
 	m_Local.SetScale(fScale);
 	UpdateAll(0.0f);
 }
-void VSSpatial::SetLocalTranslate(const VSVector3& Translate)
+void VSSpatial::SetLocalTranslate(const Math::Vector3& Translate)
 {
 	m_bIsChanged = true;
 	m_Local.SetTranslate(Translate);
 	UpdateAll(0.0f);
 }
-void VSSpatial::SetLocalRotate(const VSMatrix3X3& Rotate)
+void VSSpatial::SetLocalRotate(const Math::Matrix3& Rotate)
 {
 	m_bIsChanged = true;
 	m_Local.SetRotate(Rotate);
 	UpdateAll(0.0f);
 }
-void VSSpatial::SetWorldScale(const VSVector3& fScale)
+void VSSpatial::SetWorldScale(const Math::Vector3& fScale)
 {
 	VSSpatial* pParent = GetParent();
 	if (pParent)
 	{
-		VSTransform Inv;
+		Math::VSTransform Inv;
 		pParent->GetWorldTransform().Inverse(Inv);
 
-		VSTransform NewWorld;
+		Math::VSTransform NewWorld;
 		NewWorld = GetWorldTransform();
 		NewWorld.SetScale(fScale);
-		VSTransform NewLocal;
+		Math::VSTransform NewLocal;
 		unsigned int TransformFlag = ((unsigned int)m_bInheritScale) | ((unsigned int)m_bInheritRotate << 1) | ((unsigned int)m_bInheritTranslate << 2);
 		NewLocal.Product(NewWorld, Inv, TransformFlag);
 		SetLocalTransform(NewLocal);
@@ -247,20 +247,20 @@ void VSSpatial::SetWorldScale(const VSVector3& fScale)
 		SetLocalScale(fScale);
 	}
 }
-void VSSpatial::SetWorldTranslate(const VSVector3& Translate)
+void VSSpatial::SetWorldTranslate(const Math::Vector3& Translate)
 {
 	m_bIsChanged = true;
 
 	VSSpatial* pParent = GetParent();
 	if (pParent)
 	{
-		VSTransform Inv;
+		Math::VSTransform Inv;
 		pParent->GetWorldTransform().Inverse(Inv);
 
-		VSTransform NewWorld;
+		Math::VSTransform NewWorld;
 		NewWorld = GetWorldTransform();
 		NewWorld.SetTranslate(Translate);
-		VSTransform NewLocal;
+		Math::VSTransform NewLocal;
 		unsigned int TransformFlag = ((unsigned int)m_bInheritScale) | ((unsigned int)m_bInheritRotate << 1) | ((unsigned int)m_bInheritTranslate << 2);
 		NewLocal.Product(NewWorld, Inv, TransformFlag);
 		SetLocalTransform(NewLocal);
@@ -270,18 +270,18 @@ void VSSpatial::SetWorldTranslate(const VSVector3& Translate)
 		SetLocalTranslate(Translate);
 	}
 }
-void VSSpatial::SetWorldRotate(const VSMatrix3X3& Rotate)
+void VSSpatial::SetWorldRotate(const Math::Matrix3& Rotate)
 {
 	VSSpatial* pParent = GetParent();
 	if (pParent)
 	{
-		VSTransform Inv;
+		Math::VSTransform Inv;
 		pParent->GetWorldTransform().Inverse(Inv);
 
-		VSTransform NewWorld;
+		Math::VSTransform NewWorld;
 		NewWorld = GetWorldTransform();
 		NewWorld.SetRotate(Rotate);
-		VSTransform NewLocal;
+		Math::VSTransform NewLocal;
 		unsigned int TransformFlag = ((unsigned int)m_bInheritScale) | ((unsigned int)m_bInheritRotate << 1) | ((unsigned int)m_bInheritTranslate << 2);
 		NewLocal.Product(NewWorld, Inv, TransformFlag);
 		SetLocalTransform(NewLocal);
@@ -291,18 +291,18 @@ void VSSpatial::SetWorldRotate(const VSMatrix3X3& Rotate)
 		SetLocalRotate(Rotate);
 	}
 }
-void VSSpatial::SetWorldTransform(const VSTransform& LocalTransform)
+void VSSpatial::SetWorldTransform(const Math::VSTransform& LocalTransform)
 {
 	VSSpatial* pParent = GetParent();
 	if (pParent)
 	{
-		VSTransform Inv;
+		Math::VSTransform Inv;
 		pParent->GetWorldTransform().Inverse(Inv);
 
-		VSTransform NewWorld;
+		Math::VSTransform NewWorld;
 		NewWorld = LocalTransform;
 
-		VSTransform NewLocal;
+		Math::VSTransform NewLocal;
 		unsigned int TransformFlag = ((unsigned int)m_bInheritScale) | ((unsigned int)m_bInheritRotate << 1) | ((unsigned int)m_bInheritTranslate << 2);
 		NewLocal.Product(NewWorld, Inv, TransformFlag);
 		SetLocalTransform(NewLocal);
@@ -317,11 +317,11 @@ void VSSpatial::SetWorldMat(const VSMatrix3X3W VSMat)
 	VSSpatial* pParent = GetParent();
 	if (pParent)
 	{
-		VSTransform Inv;
+		Math::VSTransform Inv;
 		pParent->GetWorldTransform().Inverse(Inv);
-		VSTransform NewWorld;
+		Math::VSTransform NewWorld;
 		NewWorld.SetMatrix(VSMat);
-		VSTransform NewLocal;
+		Math::VSTransform NewLocal;
 		unsigned int TransformFlag = ((unsigned int)m_bInheritScale) | ((unsigned int)m_bInheritRotate << 1) | ((unsigned int)m_bInheritTranslate << 2);
 		NewLocal.Product(NewWorld, Inv, TransformFlag);
 		SetLocalTransform(NewLocal);

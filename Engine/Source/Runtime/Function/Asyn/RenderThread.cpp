@@ -119,7 +119,7 @@ void VSRenderThreadSys::ExChange()
     m_RenderThread.Suspend();
     /*#endif*/
     m_RenderBuffer->Clear();
-    Swap(m_UpdateBuffer, m_RenderBuffer);
+    Math::Swap(m_UpdateBuffer, m_RenderBuffer);
     m_bIsRunning = false;
 }
 void VSRenderThreadSys::Begin()

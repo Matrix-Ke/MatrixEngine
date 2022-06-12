@@ -177,7 +177,7 @@ void VSDVGeometry::ClearInfo()
 {
     if (VSResourceManager::ms_bRenderThread)
     {
-        Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
+        Math::Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
     }
     m_pVertexUseBuffer->Clear();
     m_uiCurVUseBufferElementIndex = 0;
@@ -487,8 +487,8 @@ void VSDVDIGeometry::ClearInfo()
 {
     if (VSResourceManager::ms_bRenderThread)
     {
-        Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
-        Swap(m_pIndexUseBuffer, m_pIndexUseBufferRender);
+        Math::Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
+        Math::Swap(m_pIndexUseBuffer, m_pIndexUseBufferRender);
     }
     m_pIndexUseBuffer->Clear();
     m_pVertexUseBuffer->Clear();
@@ -660,7 +660,7 @@ void VSSVDIGeometry::ClearInfo()
     if (VSResourceManager::ms_bRenderThread)
     {
 
-        Swap(m_pIndexUseBuffer, m_pIndexUseBufferRender);
+        Math::Swap(m_pIndexUseBuffer, m_pIndexUseBufferRender);
     }
     m_pIndexUseBuffer->Clear();
 
@@ -814,7 +814,7 @@ void VSDVSIGeometry::ClearInfo()
 {
     if (VSResourceManager::ms_bRenderThread)
     {
-        Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
+        Math::Swap(m_pVertexUseBuffer, m_pVertexUseBufferRender);
     }
     m_pVertexUseBuffer->Clear();
     m_uiCurVUseBufferElementIndex = 0;

@@ -160,11 +160,11 @@ bool VSOcclusionQuerySceneRender::OnDraw(VSCuller &Culler, unsigned int uiRender
     {
         VSGeometryOcclusionQueryData &GOQD = GeometryOcclusionQueryData[i];
 
-        VSTransform T = GOQD.pGeometry->GetWorldTransform();
-        VSAABB3 LocalBV = GOQD.pGeometry->GetLocalBV();
+        Math::VSTransform T = GOQD.pGeometry->GetWorldTransform();
+        Primitive::AABB3 LocalBV = GOQD.pGeometry->GetLocalBV();
         VSREAL fA[3];
         LocalBV.GetfA(fA);
-        VSVector3 Scale = T.GetScale() * VSVector3(fA[0], fA[1], fA[2]);
+        Math::Vector3 Scale = T.GetScale() * Math::Vector3(fA[0], fA[1], fA[2]);
         T.SetScale(Scale);
         VSMatrix3X3W WorldMatrix = T.GetCombine();
         VSMatrix3X3W ViewProjectMatrix = pCamera->GetViewMatrix() * pCamera->GetProjMatrix();
@@ -1446,7 +1446,7 @@ bool VSProjectShadowSceneRender::OnDraw(VSCuller &Culler, unsigned int uiRenderG
         if (m_pLocalLight->GetLightType() == VSLight::LT_POINT || m_pLocalLight->GetLightType() == VSLight::LT_SPOT)
         {
             static VSUsedName LightPosString = _T("LightWorldPos");
-            VSVector3 LightPos = m_pLocalLight->GetWorldTranslate();
+            Math::Vector3 LightPos = m_pLocalLight->GetWorldTranslate();
             pPShader->SetParam(LightPosString, &LightPos);
 
             static VSUsedName LightRangeString = _T("LightRange");

@@ -309,7 +309,7 @@ namespace Matrix
         virtual bool Draw(VSCuller &Culler, double dAppTime);
         VS2DTexture *m_pNormalDepthTexture;
         VSREAL m_fLightRange;
-        VSVector3 m_LightWorldDirection;
+        Math::Vector3 m_LightWorldDirection;
         VSREAL m_Falloff;
         VSREAL m_Theta;
         VSREAL m_Phi;

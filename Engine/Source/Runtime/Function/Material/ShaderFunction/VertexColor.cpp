@@ -13,7 +13,7 @@ VSVertexColor::VSVertexColor(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("VertexColorOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -31,7 +31,7 @@ VSVertexColor::~VSVertexColor()
 }
 void VSVertexColor::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("VertexColorOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

@@ -25,7 +25,7 @@ bool VSStaticMeshNode::InitialDefaultState()
     VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);
     ms_Default->CreateLocalAABB();
-    GeometryNode->SetLocalScale(VSVector3(100.0f, 100.0f, 100.0f));
+    GeometryNode->SetLocalScale(Math::Vector3(100.0f, 100.0f, 100.0f));
     ms_DefaultResource = VSStaticMeshNodeR::Create(ms_Default);
     return true;
 }

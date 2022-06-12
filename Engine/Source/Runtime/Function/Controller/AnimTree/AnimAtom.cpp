@@ -3,7 +3,7 @@
 #include "Transform.h"
 using namespace Matrix;
 VSAnimAtom VSAnimAtom::ms_Identity;
-VSAnimAtom VSAnimAtom::ms_FastBlendZero(VSVector3(0.0f, 0.0f, 0.0f), VSVector3(0.0f, 0.0f, 0.0f), VSQuat(0.0f, 0.0f, 0.0f, 0.0f));
+VSAnimAtom VSAnimAtom::ms_FastBlendZero(Math::Vector3(0.0f, 0.0f, 0.0f), Math::Vector3(0.0f, 0.0f, 0.0f), VSQuat(0.0f, 0.0f, 0.0f, 0.0f));
 void VSAnimAtom::Identity()
 {
     m_fScale.Set(1.0f, 1.0f, 1.0f);
@@ -12,17 +12,17 @@ void VSAnimAtom::Identity()
 }
 void VSAnimAtom::GetMatrix(VSMatrix3X3W &OutMatrix) const
 {
-    VSMatrix3X3 mRotate;
+    Math::Matrix3 mRotate;
     m_Rotator.GetMatrix(mRotate);
 
-    VSMatrix3X3 Mat;
-    Mat = VSMatrix3X3(mRotate._00 * m_fScale.x, mRotate._01 * m_fScale.x, mRotate._02 * m_fScale.x,
+    Math::Matrix3 Mat;
+    Mat = Math::Matrix3(mRotate._00 * m_fScale.x, mRotate._01 * m_fScale.x, mRotate._02 * m_fScale.x,
                       mRotate._10 * m_fScale.y, mRotate._11 * m_fScale.y, mRotate._12 * m_fScale.y,
                       mRotate._20 * m_fScale.z, mRotate._21 * m_fScale.z, mRotate._22 * m_fScale.z);
     OutMatrix.AddTranslate(m_Pos);
     OutMatrix.Add3X3(Mat);
 }
-void VSAnimAtom::FromTransform(const VSTransform &T)
+void VSAnimAtom::FromTransform(const Math::VSTransform &T)
 {
     m_fScale = T.GetScale();
     m_Pos = T.GetTranslate();
@@ -30,30 +30,30 @@ void VSAnimAtom::FromTransform(const VSTransform &T)
 }
 void VSAnimAtom::FromMatrix(const VSMatrix3X3W &m)
 {
-    VSTransform T;
+    Math::VSTransform T;
     T.SetMatrix(m);
     FromTransform(T);
 }
-VSTransform VSAnimAtom::GetTransfrom() const
+Math::VSTransform VSAnimAtom::GetTransfrom() const
 {
-    VSTransform Temp;
-    VSMatrix3X3 Mat;
+    Math::VSTransform Temp;
+    Math::Matrix3 Mat;
     m_Rotator.GetMatrix(Mat);
     Temp.SetRotate(Mat);
     Temp.SetScale(m_fScale);
     Temp.SetTranslate(m_Pos);
     return Temp;
 }
-VSTransform VSAnimAtom::VSEngineFrom3DMax(const VSAnimAtom &AtomIn3DMax)
+Math::VSTransform VSAnimAtom::VSEngineFrom3DMax(const VSAnimAtom &AtomIn3DMax)
 {
-    VSTransform t = AtomIn3DMax.GetTransfrom();
+    Math::VSTransform t = AtomIn3DMax.GetTransfrom();
     VSMatrix3X3W Combine = t.GetCombine();
     VSMatrix3X3W Trans3DMaxToVSEngine(1.0f, 0.0f, 0.0f, 0.0f,
                                       0.0f, 0.0f, 1.0f, 0.0f,
                                       0.0f, 1.0f, 0.0f, 0.0f,
                                       0.0f, 0.0f, 0.0f, 1.0f);
     VSMatrix3X3W VSEngineMat = Trans3DMaxToVSEngine * Combine * Trans3DMaxToVSEngine;
-    VSTransform Result;
+    Math::VSTransform Result;
     Result.SetMatrix(VSEngineMat);
     return Result;
 }

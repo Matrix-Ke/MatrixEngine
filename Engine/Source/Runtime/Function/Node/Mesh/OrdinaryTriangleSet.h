@@ -17,7 +17,7 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL
     public:
-        VSOrdinaryTriangleSet(const VSAABB3 &AABB);
+        VSOrdinaryTriangleSet(const Primitive::AABB3 &AABB);
         VSOrdinaryTriangleSet(const VSOBB3 &OBB);
         VSOrdinaryTriangleSet(const VSSphere3 &Sphere);
         VSOrdinaryTriangleSet(VSSurface3 *pSurface, VSSurface3Subdivision *pSubidvision);

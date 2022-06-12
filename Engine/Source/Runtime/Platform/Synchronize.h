@@ -6,7 +6,7 @@ namespace Matrix
 {
 	namespace Core
 	{
-		class MATRIX_CORE_API MSynchronize
+		class MATRIX_PLATFORM_API MSynchronize
 		{
 		public:
 			MSynchronize() {};
@@ -24,7 +24,7 @@ namespace Matrix
 			static void MXSafeOutputDebugString(const TCHAR* pString, ...);
 		};
 
-		class MATRIX_CORE_API MCriticalSection
+		class MATRIX_PLATFORM_API MCriticalSection
 		{
 		private:
 			// windows api
@@ -75,7 +75,7 @@ namespace Matrix
 			};
 		};
 
-		class MATRIX_CORE_API MXSemaphore : public MSynchronize
+		class MATRIX_PLATFORM_API MXSemaphore : public MSynchronize
 		{
 		public:
 			MXSemaphore(unsigned int uCount, unsigned int maxCount);
@@ -93,7 +93,7 @@ namespace Matrix
 			unsigned int mMaxCount;
 		};
 
-		class MATRIX_CORE_API MXMutex : public MSynchronize
+		class MATRIX_PLATFORM_API MXMutex : public MSynchronize
 		{
 			//互斥量内核对象用来确保一线程独占对一个资源的访问， 互斥量是内核对象，
 			//互斥量一般用来对多个线程访问的同一内存块进行保护。
@@ -112,7 +112,7 @@ namespace Matrix
 			void* mMutex;
 		};
 
-		class MATRIX_CORE_API MXEvent : public MSynchronize
+		class MATRIX_PLATFORM_API MXEvent : public MSynchronize
 		{
 			//事件包含一个使用计数， 一个用来表示自动重置还是手动重置的bool值，以及一个用来表示事件有没有被触发的bool值。
 			//事件的触发表示一个操作已经完成。

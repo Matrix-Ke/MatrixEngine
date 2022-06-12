@@ -31,7 +31,7 @@ VSREAL VSRoamTerrainGeometry::RecursiveComputeVariance(Container::MArray<VSREAL>
     {
         return 0;
     }
-    VSVector3 *pVer = (VSVector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
+    Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
     VSMAC_ASSERT(pVer);
 
     unsigned int uiMiddle = (B + C) >> 1;
@@ -100,14 +100,14 @@ void VSRoamTerrainGeometry::LinkNeighbor()
     m_TriTreeNode[0].pOwner = this;
     m_TriTreeNode[1].pOwner = this;
 }
-void VSRoamTerrainGeometry::RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, Container::MArray<VSREAL> &Variance,
+void VSRoamTerrainGeometry::RecursiveTessellate(VSTriTreeNode *pTri, const Math::Vector3 &CameraPos, Container::MArray<VSREAL> &Variance,
                                                 unsigned int uiIndex, unsigned int A, unsigned int B, unsigned int C)
 {
 
     //有足够的空间保持继续划分，因为空间总数是根据最大限度三角形来确定的。
     if (((uiIndex << 1) + 2) < Variance.GetNum())
     {
-        VSVector3 *pVer = (VSVector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
+        Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
         if (!pVer)
         {
             return;
@@ -116,7 +116,7 @@ void VSRoamTerrainGeometry::RecursiveTessellate(VSTriTreeNode *pTri, const VSVec
         VSCLodTerrainNode *pTerrainNode = (VSCLodTerrainNode *)m_pParent;
 
         unsigned int uiMiddle = (B + C) >> 1;
-        VSVector3 Dist = CameraPos - pVer[uiMiddle];
+        Math::Vector3 Dist = CameraPos - pVer[uiMiddle];
 
         if (!pTri->pLeftChild)
         {
@@ -224,7 +224,7 @@ VSRoamTerrainGeometry::VSTriTreeNode *VSRoamTerrainGeometry::GetBuffer()
         return pTriTree;
     }
 }
-void VSRoamTerrainGeometry::TessellateEx(const VSVector3 &CameraPos, unsigned int uiLevel)
+void VSRoamTerrainGeometry::TessellateEx(const Math::Vector3 &CameraPos, unsigned int uiLevel)
 {
     unsigned int uiTri1A = uiLevel;
     unsigned int uiTri1B = uiLevel * (uiLevel + 1) + uiLevel;
@@ -239,7 +239,7 @@ void VSRoamTerrainGeometry::TessellateEx(const VSVector3 &CameraPos, unsigned in
     RecursiveTessellate(&m_TriTreeNode[1], CameraPos, m_Variance[1],
                         0, uiTri2A, uiTri2B, uiTri2C);
 }
-void VSRoamTerrainGeometry::Tessellate(const VSVector3 &CameraPos)
+void VSRoamTerrainGeometry::Tessellate(const Math::Vector3 &CameraPos)
 {
     VSCLodTerrainNode *pTerrainNode = (VSCLodTerrainNode *)m_pParent;
     unsigned int uiLevel = 1 << pTerrainNode->GetTessellationLevel();
@@ -251,7 +251,7 @@ void VSRoamTerrainGeometry::Tessellate(const VSVector3 &CameraPos)
     {
         struct VSTessellatePara
         {
-            VSVector3 CameraPos;
+            Math::Vector3 CameraPos;
             unsigned int uiLevel;
         };
         VSTessellatePara TessellatePara;

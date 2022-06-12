@@ -347,7 +347,7 @@ void VSShaderStringFactory::OutPutShaderLog(MaterialShaderPara &MSPara, unsigned
     VSString ShaderType[VSEngineFlag::ST_MAX] = {_T("VShader.txt"), _T("PShader.txt"), _T("GShader.txt"), _T("HShader.txt"), _T("DShader.txt")};
     VSLog ShaderText;
     OutShaderTextName = VSConfig::ms_OutputShaderCodePath + VSRenderer::ms_pRenderer->GetRenderTypeShaderPath();
-    VSString ShaderID = IntToString(uiShaderID);
+    VSString ShaderID = Container::IntToString(uiShaderID);
     unsigned int uiPassType = MSPara.uiPassType;
     VSMaterial *pMaterial = MSPara.pMaterialInstance->GetMaterial();
     if (uiPassType == VSPass::PT_MATERIAL)

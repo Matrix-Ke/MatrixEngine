@@ -26,13 +26,13 @@ namespace Matrix
 		};
 
 		template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
-		class MXList : public MContainer<ListElement<T>, MMemManagerClass>
+		class MList : public MContainer<ListElement<T>, MMemManagerClass>
 		{
 		public:
-			MXList(bool bUnique = true);
-			~MXList();
+			MList(bool bUnique = true);
+			~MList();
 
-			void operator=(const MXList& Queue);
+			void operator=(const MList& Queue);
 
 			inline unsigned int GetNum() const;
 
@@ -49,51 +49,51 @@ namespace Matrix
 			bool Has(const T& Element) const;
 			const ListElement<T>* Find(const T& Element) const;
 			const T* FindElement(const T& Element) const;
-			class MXListIterator
+			class ListIterator
 			{
 			public:
-				MXListIterator(ListElement<T>* pNode = NULL) : m_pNode(pNode)
+				ListIterator(ListElement<T>* pNode = NULL) : m_pNode(pNode)
 				{
 				}
-				MXListIterator(const MXListIterator& Iterator)
+				ListIterator(const ListIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				~MXListIterator()
+				~ListIterator()
 				{
 					m_pNode = NULL;
 				}
-				inline void operator=(const MXListIterator& Iterator)
+				inline void operator=(const ListIterator& Iterator)
 				{
 					m_pNode = Iterator.m_pNode;
 				}
-				inline bool operator!=(const MXListIterator& Iterator)
+				inline bool operator!=(const ListIterator& Iterator)
 				{
 					return (m_pNode != Iterator.m_pNode);
 				}
-				inline bool operator==(const MXListIterator& Iterator)
+				inline bool operator==(const ListIterator& Iterator)
 				{
 					return (m_pNode == Iterator.m_pNode);
 				}
 
-				inline MXListIterator operator++()
+				inline ListIterator operator++()
 				{
 					m_pNode = m_pNode->m_pNext;
 					return (*this);
 				}
-				inline MXListIterator operator++(int)
+				inline ListIterator operator++(int)
 				{
 					_Tmp = *this;
 					++* this;
 					return (_Tmp);
 				}
-				inline MXListIterator operator--()
+				inline ListIterator operator--()
 				{
 
 					m_pNode = m_pNode->m_pFront;
 					return (*this);
 				}
-				inline MXListIterator operator--(int)
+				inline ListIterator operator--(int)
 				{
 					_Tmp = *this;
 					--* this;
@@ -119,25 +119,25 @@ namespace Matrix
 			protected:
 				ListElement<T>* m_pNode;
 			};
-			inline MXListIterator Begin() const
+			inline ListIterator Begin() const
 			{
-				return MXListIterator(m_pHead);
+				return ListIterator(m_pHead);
 			}
-			inline MXListIterator End() const
+			inline ListIterator End() const
 			{
-				return MXListIterator();
+				return ListIterator();
 			}
-			inline MXListIterator begin() const
+			inline ListIterator begin() const
 			{
 				return Begin();
 			}
-			inline MXListIterator end() const
+			inline ListIterator end() const
 			{
 				return End();
 			}
-			inline MXListIterator Tail() const
+			inline ListIterator Tail() const
 			{
-				return MXListIterator(m_pTail);
+				return ListIterator(m_pTail);
 			}
 			inline void SetUnique(bool bUnique)
 			{
@@ -152,13 +152,13 @@ namespace Matrix
 			bool m_bUnique;
 		};
 		template <class T, class MMemManagerClass>
-		MXList<T, MMemManagerClass>::~MXList()
+		MList<T, MMemManagerClass>::~MList()
 		{
 			Clear();
 		}
 
 		template <class T, class MMemManagerClass>
-		MXList<T, MMemManagerClass>::MXList(bool bUnique)
+		MList<T, MMemManagerClass>::MList(bool bUnique)
 		{
 			m_pHead = NULL;
 			m_pTail = NULL;
@@ -166,7 +166,7 @@ namespace Matrix
 			m_uiNum = 0;
 		}
 		template <class T, class MMemManagerClass>
-		void MXList<T, MMemManagerClass>::Clear()
+		void MList<T, MMemManagerClass>::Clear()
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -180,12 +180,12 @@ namespace Matrix
 			m_uiNum = 0;
 		}
 		template <class T, class MMemManagerClass>
-		unsigned int MXList<T, MMemManagerClass>::GetNum() const
+		unsigned int MList<T, MMemManagerClass>::GetNum() const
 		{
 			return m_uiNum;
 		}
 		template <class T, class MMemManagerClass>
-		void MXList<T, MMemManagerClass>::operator=(const MXList& Queue)
+		void MList<T, MMemManagerClass>::operator=(const MList& Queue)
 		{
 			m_bUnique = Queue.m_bUnique;
 			ListElement<T>* pTemp = Queue.m_pHead;
@@ -196,7 +196,7 @@ namespace Matrix
 			}
 		}
 		template <class T, class MMemManagerClass>
-		void MXList<T, MMemManagerClass>::AddElement(const T& Element)
+		void MList<T, MMemManagerClass>::AddElement(const T& Element)
 		{
 			if (m_bUnique)
 			{
@@ -228,7 +228,7 @@ namespace Matrix
 			m_uiNum++;
 		}
 		template <class T, class MMemManagerClass>
-		bool MXList<T, MMemManagerClass>::GetTail(T& Element)
+		bool MList<T, MMemManagerClass>::GetTail(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -238,7 +238,7 @@ namespace Matrix
 			return true;
 		}
 		template <class T, class MMemManagerClass>
-		bool MXList<T, MMemManagerClass>::GetAndEraseTail(T& Element)
+		bool MList<T, MMemManagerClass>::GetAndEraseTail(T& Element)
 		{
 			if (!m_pTail)
 			{
@@ -263,7 +263,7 @@ namespace Matrix
 			return true;
 		}
 		template <class T, class MMemManagerClass>
-		bool MXList<T, MMemManagerClass>::Erase(const T& Element)
+		bool MList<T, MMemManagerClass>::Erase(const T& Element)
 		{
 			ListElement<T>* pTemp = m_pHead;
 			bool bFind = false;
@@ -307,12 +307,12 @@ namespace Matrix
 			return bFind;
 		}
 		template <class T, class MMemManagerClass>
-		bool MXList<T, MMemManagerClass>::Has(const T& Element) const
+		bool MList<T, MMemManagerClass>::Has(const T& Element) const
 		{
 			return (Find(Element) != NULL);
 		}
 		template <class T, class MMemManagerClass>
-		const ListElement<T>* MXList<T, MMemManagerClass>::Find(const T& Element) const
+		const ListElement<T>* MList<T, MMemManagerClass>::Find(const T& Element) const
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)
@@ -326,7 +326,7 @@ namespace Matrix
 			return NULL;
 		}
 		template <class T, class MMemManagerClass>
-		const T* MXList<T, MMemManagerClass>::FindElement(const T& Element) const
+		const T* MList<T, MMemManagerClass>::FindElement(const T& Element) const
 		{
 			ListElement<T>* pTemp = m_pHead;
 			while (pTemp)

@@ -225,7 +225,7 @@ void VSAnimSequenceFunc::ComputeAnim(VSAnim *pAnim, Container::MArray<LAST_KEY_T
                 if (fFactor > 1.0f)
                     fFactor = 1.0f;
 
-                VSVector3 Scale = pBoneKey->m_ScaleArray[Key1].m_Vector * (1 - fFactor) +
+                Math::Vector3 Scale = pBoneKey->m_ScaleArray[Key1].m_Vector * (1 - fFactor) +
                                   pBoneKey->m_ScaleArray[Key2].m_Vector * fFactor;
                 BoneOutput[i].m_fScale = Scale;
             }
@@ -315,7 +315,7 @@ void VSAnimSequenceFunc::ComputeAnim(VSAnim *pAnim, Container::MArray<LAST_KEY_T
                 if (fFactor > 1.0f)
                     fFactor = 1.0f;
 
-                VSVector3 Translation = pBoneKey->m_TranslationArray[Key1].m_Vector * (1 - fFactor) + pBoneKey->m_TranslationArray[Key2].m_Vector * fFactor;
+                Math::Vector3 Translation = pBoneKey->m_TranslationArray[Key1].m_Vector * (1 - fFactor) + pBoneKey->m_TranslationArray[Key2].m_Vector * fFactor;
                 BoneOutput[i].m_Pos = Translation;
             }
         }
@@ -442,7 +442,7 @@ void VSAnimSequenceFunc::GetRootStartAtom(VSAnimAtom &OutAtom, VSAnim *pAnim)
         }
         else
         {
-            OutAtom.m_fScale = VSVector3::ms_One;
+            OutAtom.m_fScale = Math::Vector3::ms_One;
         }
         unsigned int RotatorNum = (unsigned int)pBoneKey->m_RotatorArray.GetNum();
         if (RotatorNum)
@@ -461,7 +461,7 @@ void VSAnimSequenceFunc::GetRootStartAtom(VSAnimAtom &OutAtom, VSAnim *pAnim)
         }
         else
         {
-            OutAtom.m_fScale = VSVector3::ms_Zero;
+            OutAtom.m_fScale = Math::Vector3::ms_Zero;
         }
     }
     else

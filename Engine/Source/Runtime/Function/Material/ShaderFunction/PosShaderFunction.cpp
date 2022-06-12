@@ -12,7 +12,7 @@ VSWorldPos::VSWorldPos(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("WorldPosOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -46,7 +46,7 @@ VSWorldPos::~VSWorldPos()
 }
 void VSWorldPos::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("WorldPosOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -108,7 +108,7 @@ VSViewPos::VSViewPos(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ViewPosOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -142,7 +142,7 @@ VSViewPos::~VSViewPos()
 }
 void VSViewPos::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ViewPosOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -203,7 +203,7 @@ VSProjectPos::VSProjectPos(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ProjectPosOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -237,7 +237,7 @@ VSProjectPos::~VSProjectPos()
 }
 void VSProjectPos::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ProjectPosOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

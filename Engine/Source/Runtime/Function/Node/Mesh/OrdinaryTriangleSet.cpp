@@ -9,9 +9,9 @@ IMPLEMENT_INITIAL_END
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet()
 {
 }
-VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSAABB3 &AABB)
+VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const Primitive::AABB3 &AABB)
 {
-    VSVector3 VertexData[8];
+    Math::Vector3 VertexData[8];
     AABB.GetPoint(VertexData);
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 8, VSDataBuffer::DT_FLOAT32_3);
@@ -75,7 +75,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSAABB3 &AABB)
 }
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSOBB3 &OBB)
 {
-    VSVector3 VertexData[8];
+    Math::Vector3 VertexData[8];
     OBB.GetPoint(VertexData);
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 8, VSDataBuffer::DT_FLOAT32_3);
@@ -142,10 +142,10 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSPlane3 &Plane)
     VSMatrix3X3W Mat;
     Mat.CreateFromLookDir(Plane.GetPoint(), Plane.GetN());
 
-    VSVector3 A0(Mat.M[0][0], Mat.M[0][1], Mat.M[0][2]);
-    VSVector3 A1(Mat.M[1][0], Mat.M[1][1], Mat.M[1][2]);
+    Math::Vector3 A0(Mat.M[0][0], Mat.M[0][1], Mat.M[0][2]);
+    Math::Vector3 A1(Mat.M[1][0], Mat.M[1][1], Mat.M[1][2]);
 
-    VSVector3 VertexData[4];
+    Math::Vector3 VertexData[4];
     VertexData[0] = Plane.GetPoint() + A0 * DRAW_MATH_ELEMENT_LENGTH + A1 * DRAW_MATH_ELEMENT_LENGTH;
     VertexData[1] = Plane.GetPoint() - A0 * DRAW_MATH_ELEMENT_LENGTH + A1 * DRAW_MATH_ELEMENT_LENGTH;
     VertexData[2] = Plane.GetPoint() - A0 * DRAW_MATH_ELEMENT_LENGTH - A1 * DRAW_MATH_ELEMENT_LENGTH;
@@ -177,7 +177,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSPlane3 &Plane)
 }
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSTriangle3 &Triangle)
 {
-    VSVector3 VertexData[3];
+    Math::Vector3 VertexData[3];
     Triangle.GetPoint(VertexData);
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 3, VSDataBuffer::DT_FLOAT32_3);
@@ -200,7 +200,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSTriangle3 &Triangle)
 }
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSRectangle3 &Rectangle)
 {
-    VSVector3 VertexData[4];
+    Math::Vector3 VertexData[4];
     Rectangle.GetPoint(VertexData);
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 4, VSDataBuffer::DT_FLOAT32_3);
@@ -263,7 +263,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSSphere3 &Sphere)
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
     pVertex->CreateEmptyBuffer(LongitudeNum * LatitudeNum, VSDataBuffer::DT_FLOAT32_3);
 
-    VSVector3 *pVertexData = (VSVector3 *)pVertex->GetData();
+    Math::Vector3 *pVertexData = (Math::Vector3 *)pVertex->GetData();
     VSREAL i = 0;
     for (unsigned int k = 0; k < LongitudeNum; k++)
     {

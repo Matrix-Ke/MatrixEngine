@@ -155,7 +155,7 @@ unsigned char *VSInstanceGeometry::GetCurDataBufferAddr(unsigned int i)
 {
     return m_pInstanceDataBuffer + i * m_uiInstanceSize;
 }
-unsigned int VSInstanceGeometry::AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData)
+unsigned int VSInstanceGeometry::AddInstance(const Primitive::AABB3 WorldBound, const Math::VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData)
 {
     if (m_uiInstanceNum > m_uiMaxInstanceNum - 1)
     {
@@ -173,7 +173,7 @@ unsigned int VSInstanceGeometry::AddInstance(const VSAABB3 WorldBound, const VST
     }
     VSVector3W *pData = (VSVector3W *)GetCurDataBufferAddr(m_uiInstanceNum);
     VSVector3W ColumnVector[4];
-    VSTransform TTemp = T;
+    Math::VSTransform TTemp = T;
     TTemp.GetCombine().GetColumnVector(ColumnVector);
     *pData = ColumnVector[0];
     pData++;

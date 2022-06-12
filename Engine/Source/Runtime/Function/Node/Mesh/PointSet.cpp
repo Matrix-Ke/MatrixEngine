@@ -66,7 +66,7 @@ unsigned int VSPointSet::GetGirdNum(unsigned int uiInputNum) const
 {
     return uiInputNum;
 }
-VSPointSet::VSPointSet(const VSVector3 &Point, VSREAL fSize)
+VSPointSet::VSPointSet(const Math::Vector3 &Point, VSREAL fSize)
 {
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
 

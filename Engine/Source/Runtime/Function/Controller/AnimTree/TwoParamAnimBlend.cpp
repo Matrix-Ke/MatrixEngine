@@ -80,9 +80,9 @@ void VSTwoParamAnimBlend::CreateSlot(unsigned int uiWidth, unsigned int uiHeight
         for (unsigned int j = 0; j < uiHeight; j++)
         {
             VSString InputName = _T("Child");
-            VSString ID = IntToString(i);
+            VSString ID = Container::IntToString(i);
             InputName += ID;
-            ID = IntToString(j);
+            ID = Container::IntToString(j);
             InputName += ID;
             VSInputNode *pInputNode = NULL;
             pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);

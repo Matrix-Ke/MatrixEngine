@@ -5,12 +5,12 @@ namespace Matrix
 {
     struct INSTANCE_DATA_TYPE
     {
-        INSTANCE_DATA_TYPE(const VSTransform &t, unsigned int uiMaterialParaNum = 0)
+        INSTANCE_DATA_TYPE(const Math::VSTransform &t, unsigned int uiMaterialParaNum = 0)
         {
             T = t;
             MaterialData.SetBufferNum(uiMaterialParaNum);
         }
-        VSTransform T;
+        Math::VSTransform T;
         Container::MArray<Container::MArray<VSREAL>> MaterialData;
     };
     class MATRIX_FUNCTION_API VSInstanceGeometry : public VSGeometry
@@ -54,7 +54,7 @@ namespace Matrix
         void CreateInstanceBuffer(VSMeshData *pSourceMeshData, VSMaterialR *pMaterial);
         void ClearInstanceData();
         unsigned int GetInstanceNum();
-        unsigned int AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData = NULL);
+        unsigned int AddInstance(const Primitive::AABB3 WorldBound, const Math::VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData = NULL);
         static bool InitialDefaultState();
         static bool TerminalDefaultState();
         inline bool IsUsed() const

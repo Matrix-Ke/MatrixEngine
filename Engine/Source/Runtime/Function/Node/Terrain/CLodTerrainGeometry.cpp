@@ -44,7 +44,7 @@ bool VSCLodTerrainGeometry::CreateMeshData(unsigned int uiIndexXInTerrain, unsig
         return 0;
     }
 
-    VSVector3 *pVer = (VSVector3 *)pVertexData->GetData();
+    Math::Vector3 *pVer = (Math::Vector3 *)pVertexData->GetData();
     unsigned int uiBiasX = uiIndexXInTerrain * (1 << uiTessellationLevel);
     unsigned int uiBiasZ = uiIndexZInTerrain * (1 << uiTessellationLevel);
     for (unsigned int i = 0; i < uiVertexLenght; i++)
@@ -125,8 +125,8 @@ void VSCLodTerrainGeometry::UpdateView(VSCuller &Culler, double dAppTime)
         {
             return;
         }
-        VSTransform Tran = pTerrainNode->GetWorldTransform();
-        VSVector3 Loc = pCamera->GetWorldTranslate() * Tran.GetCombineInverse();
+        Math::VSTransform Tran = pTerrainNode->GetWorldTransform();
+        Math::Vector3 Loc = pCamera->GetWorldTranslate() * Tran.GetCombineInverse();
 
         Tessellate(Loc);
     }

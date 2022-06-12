@@ -180,7 +180,7 @@ unsigned int VSCuller::IsVisible(const VSSphere3 &S, bool bClearState)
         return VSF_PARTIAL;
     }
 }
-unsigned int VSCuller::IsVisible(const VSVector3 &Point, bool bClearState)
+unsigned int VSCuller::IsVisible(const Math::Vector3 &Point, bool bClearState)
 {
     VSMAC_ASSERT(m_uiPlaneNum);
     int iP = m_uiPlaneNum - 1;
@@ -230,7 +230,7 @@ unsigned int VSCuller::IsVisible(const VSVector3 &Point, bool bClearState)
         return VSF_PARTIAL;
     }
 }
-unsigned int VSCuller::IsVisible(const VSAABB3 &BV, bool bClearState)
+unsigned int VSCuller::IsVisible(const Primitive::AABB3 &BV, bool bClearState)
 {
     VSMAC_ASSERT(m_uiPlaneNum);
     int iP = m_uiPlaneNum - 1;
@@ -564,8 +564,8 @@ bool VSCuller::AlphaPriority::operator()(VSRenderContext &p1, VSRenderContext &p
 {
     VSMAC_ASSERT(m_pCamera);
 
-    VSVector3 vLength1 = m_pCamera->GetWorldTranslate() - p1.m_pGeometry->GetWorldTranslate();
-    VSVector3 vLength2 = m_pCamera->GetWorldTranslate() - p2.m_pGeometry->GetWorldTranslate();
+    Math::Vector3 vLength1 = m_pCamera->GetWorldTranslate() - p1.m_pGeometry->GetWorldTranslate();
+    Math::Vector3 vLength2 = m_pCamera->GetWorldTranslate() - p2.m_pGeometry->GetWorldTranslate();
 
     if (vLength1.GetSqrLength() > vLength2.GetSqrLength())
     {
@@ -596,7 +596,7 @@ bool VSCuller::CullGeometry(VSGeometry *pGeometry)
     }
     return false;
 }
-void VSCuller::GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<VSAABB3> &AABBArray)
+void VSCuller::GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<Primitive::AABB3> &AABBArray)
 {
 
     for (unsigned int i = 0; i < m_VisibleSet[uiRenderGroup][uiVisibleSetType].GetNum(); i++)
@@ -632,12 +632,12 @@ bool VSShadowCuller::CullConditionNode(const VSMeshNode *pMeshNode)
 bool VSShadowCuller::TestObjectWithCameraIntersectOnLightDirPlane(const VSSpatial *pSpatial)
 {
 
-    VSAABB3 ObjectAABB = pSpatial->GetWorldAABB();
-    VSAABB3 ReceiveAABB = m_pCamera->GetFrustumAABB();
-    VSVector3 ObjectToReceive = ReceiveAABB.GetCenter() - ObjectAABB.GetCenter();
+    Primitive::AABB3 ObjectAABB = pSpatial->GetWorldAABB();
+    Primitive::AABB3 ReceiveAABB = m_pCamera->GetFrustumAABB();
+    Math::Vector3 ObjectToReceive = ReceiveAABB.GetCenter() - ObjectAABB.GetCenter();
 
     VSDirectionLight *pDirLight = (VSDirectionLight *)m_pLocalLight;
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Dir, Up, Right;
     pDirLight->GetWorldDir(Dir, Up, Right);
     VSREAL ProjectOnDir = ObjectToReceive.Dot(Dir);
     if (ProjectOnDir < 0.0f)
@@ -645,7 +645,7 @@ bool VSShadowCuller::TestObjectWithCameraIntersectOnLightDirPlane(const VSSpatia
         return false;
     }
 
-    VSVector3 ProjectToReceiveCenterPlane = ObjectToReceive - (Dir * ProjectOnDir);
+    Math::Vector3 ProjectToReceiveCenterPlane = ObjectToReceive - (Dir * ProjectOnDir);
 
     VSREAL ReceiveRadius = (ReceiveAABB.GetMaxPoint() - ReceiveAABB.GetCenter()).GetLength();
     VSREAL ObjectRadius = (ObjectAABB.GetMaxPoint() - ObjectAABB.GetCenter()).GetLength();
@@ -727,7 +727,7 @@ bool VSVolumeShadowMapCuller::ForceNoCull(const VSSpatial *pSpatial)
     if (m_pLocalLight->GetLightType() == VSLight::LT_POINT)
     {
         VSPointLight *pPointLight = (VSPointLight *)m_pLocalLight;
-        VSAABB3 AABB(pPointLight->GetWorldTranslate(), pPointLight->GetRange(), pPointLight->GetRange(), pPointLight->GetRange());
+        Primitive::AABB3 AABB(pPointLight->GetWorldTranslate(), pPointLight->GetRange(), pPointLight->GetRange(), pPointLight->GetRange());
         if (AABB.RelationWith(pSpatial->GetWorldAABB()) == VSINTERSECT)
         {
             return true;
@@ -735,7 +735,7 @@ bool VSVolumeShadowMapCuller::ForceNoCull(const VSSpatial *pSpatial)
     }
     else if (m_pLocalLight->GetLightType() == VSLight::LT_DIRECTION)
     {
-        VSAABB3 ObjectAABB = pSpatial->GetWorldAABB();
+        Primitive::AABB3 ObjectAABB = pSpatial->GetWorldAABB();
         int iSide = ObjectAABB.RelationWith(m_Plane[VSCamera::CP_FAR]);
         if (iSide == VSFRONT)
         {
@@ -777,7 +777,7 @@ bool VSDirShadowMapCuller::ForceNoCull(const VSSpatial *pSpatial)
     VSDirectionLight *pDirLight = (VSDirectionLight *)m_pLocalLight;
     if (pDirLight->GetShadowType() == VSDirectionLight::ST_OSM)
     {
-        VSAABB3 ObjectAABB = pSpatial->GetWorldAABB();
+        Primitive::AABB3 ObjectAABB = pSpatial->GetWorldAABB();
         int iSide = ObjectAABB.RelationWith(m_Plane[VSCamera::CP_FAR]);
         if (iSide == VSFRONT)
         {

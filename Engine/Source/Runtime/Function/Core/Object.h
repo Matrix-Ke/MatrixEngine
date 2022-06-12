@@ -1,8 +1,8 @@
 #pragma once
 #include "Function/EngineInit.h"
-#include "Rtti.h"
-#include "Rttimacro.h"
-#include "ObjName.h"
+#include "Core/Meta/Rtti.h"
+#include "Core/Meta/Rttimacro.h"
+#include "Core/Meta/ObjName.h"
 #include "Reference.h"
 
 #include "Platform/MemoryManager.h"

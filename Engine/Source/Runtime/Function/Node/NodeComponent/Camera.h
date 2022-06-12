@@ -55,19 +55,19 @@ namespace Matrix
             CP_MAX = 6
         };
         inline const VSMatrix3X3W &GetViewMatrix() const;
-        void CreateFromEuler(const VSVector3 &Pos, VSREAL RotX, VSREAL RotY, VSREAL RotZ);
-        void CreateFromLookDir(const VSVector3 &Pos,
-                               const VSVector3 &vcDir,
-                               const VSVector3 &vcUp = VSVector3(0, 1, 0));
-        void CreateFromLookAt(const VSVector3 &vcPos,
-                              const VSVector3 &vcLookAt,
-                              const VSVector3 &vcUp = VSVector3(0, 1, 0));
-        void CreateFromLookDirWorld(const VSVector3 &Pos,
-                                    const VSVector3 &vcDir,
-                                    const VSVector3 &vcUp = VSVector3(0, 1, 0));
-        void CreateFromLookAtWorld(const VSVector3 &vcPos,
-                                   const VSVector3 &vcLookAt,
-                                   const VSVector3 &vcUp = VSVector3(0, 1, 0));
+        void CreateFromEuler(const Math::Vector3 &Pos, VSREAL RotX, VSREAL RotY, VSREAL RotZ);
+        void CreateFromLookDir(const Math::Vector3 &Pos,
+                               const Math::Vector3 &vcDir,
+                               const Math::Vector3 &vcUp = Math::Vector3(0, 1, 0));
+        void CreateFromLookAt(const Math::Vector3 &vcPos,
+                              const Math::Vector3 &vcLookAt,
+                              const Math::Vector3 &vcUp = Math::Vector3(0, 1, 0));
+        void CreateFromLookDirWorld(const Math::Vector3 &Pos,
+                                    const Math::Vector3 &vcDir,
+                                    const Math::Vector3 &vcUp = Math::Vector3(0, 1, 0));
+        void CreateFromLookAtWorld(const Math::Vector3 &vcPos,
+                                   const Math::Vector3 &vcLookAt,
+                                   const Math::Vector3 &vcUp = Math::Vector3(0, 1, 0));
         bool SetPerspectiveFov(VSREAL fFov,   // X方向张角
                                VSREAL Aspect, //宽高比
                                VSREAL fZN,    //近剪裁面
@@ -85,8 +85,8 @@ namespace Matrix
         {
             return m_ViewPort.GetNum();
         }
-        void GetFrustumPoint(VSVector3 Point[8]);
-        VSAABB3 GetFrustumAABB();
+        void GetFrustumPoint(Math::Vector3 Point[8]);
+        Primitive::AABB3 GetFrustumAABB();
         void GetPlane(VSPlane3 Plane[VSCamera::CP_MAX]) const;
         inline VSREAL GetZFar() const
         {
@@ -124,7 +124,7 @@ namespace Matrix
         void ClearCustomCullPlane();
         Container::MArray<VSPlane3> m_CustomCullPlane;
         virtual void UpdateCameraState(double dAppTime);
-        VSREAL GetProjectScreenSize(const VSAABB3 &WorldAABB);
+        VSREAL GetProjectScreenSize(const Primitive::AABB3 &WorldAABB);
 
     public:
         VSREAL m_RotX; //在局部坐标系下的EULER角(旋转角)

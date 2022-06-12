@@ -13,7 +13,7 @@ VSTexCoord::VSTexCoord(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("TexCoordOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_2, OutputName, this);
@@ -31,7 +31,7 @@ VSTexCoord::~VSTexCoord()
 }
 void VSTexCoord::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("TexCoordOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

@@ -39,7 +39,7 @@ VSPartialAnimBlend::VSPartialAnimBlend(const VSUsedName &ShowName, VSAnimTree *p
 void VSPartialAnimBlend::AddInputNode()
 {
     VSString InputName = _T("Child");
-    VSString ID = IntToString(m_pInput.GetNum());
+    VSString ID = Container::IntToString(m_pInput.GetNum());
     InputName += ID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);

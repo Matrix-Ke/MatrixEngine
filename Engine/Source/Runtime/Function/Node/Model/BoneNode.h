@@ -19,7 +19,7 @@ namespace Matrix
 
         // Use for IK
         bool m_bIsEffector;
-        VSVector3 m_TargetPosInWorld;
+        Math::Vector3 m_TargetPosInWorld;
 
         Container::MArray<bool> m_bAllowTranslation;
         Container::MArray<VSREAL> m_fMinTranslation;
@@ -33,8 +33,8 @@ namespace Matrix
 
         VSUsedName m_cName;
 
-        void GetIKMoveAxis(VSVector3 Axis[3]) const;
-        void ComputeIKLocalRotDelta(const VSMatrix3X3 &WorldRot, VSMatrix3X3 &LocalRotDelta) const;
+        void GetIKMoveAxis(Math::Vector3 Axis[3]) const;
+        void ComputeIKLocalRotDelta(const Math::Matrix3 &WorldRot, Math::Matrix3 &LocalRotDelta) const;
 
         VSMatrix3X3W m_OffsetMatrix;
 

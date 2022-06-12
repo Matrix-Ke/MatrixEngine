@@ -9,14 +9,14 @@ namespace Matrix
     public:
         VSDebugDraw();
         ~VSDebugDraw();
-        void AddDebugLine(const VSVector3 &P1, const VSVector3 &P2, const DWORD &Color, bool bDepth);
-        void AddDebugTriangle(const VSVector3 &P1, const VSVector3 &P2, const VSVector3 &P3,
+        void AddDebugLine(const Math::Vector3 &P1, const Math::Vector3 &P2, const DWORD &Color, bool bDepth);
+        void AddDebugTriangle(const Math::Vector3 &P1, const Math::Vector3 &P2, const Math::Vector3 &P3,
                               const DWORD &Color, bool bDepth);
-        void AddDebugLineAABB(const VSAABB3 &AABB, const DWORD &Color, bool bDepth);
+        void AddDebugLineAABB(const Primitive::AABB3 &AABB, const DWORD &Color, bool bDepth);
         void AddDebugLineSphere(const VSSphere3 &Sphere, const DWORD &Color, bool bDepth);
         void AddDebugLineOBB(const VSOBB3 &OBB, const DWORD &Color, bool bDepth);
 
-        void AddDebugTriangleAABB(const VSAABB3 &AABB, const DWORD &Color, bool bDepth);
+        void AddDebugTriangleAABB(const Primitive::AABB3 &AABB, const DWORD &Color, bool bDepth);
         void AddDebugTriangleSphere(const VSSphere3 &Sphere, const DWORD &Color, bool bDepth);
         void AddDebugTriangleOBB(const VSOBB3 &OBB, const DWORD &Color, bool bDepth);
         bool m_bEnable;
@@ -24,7 +24,7 @@ namespace Matrix
     protected:
         struct DebugVertexType
         {
-            VSVector3 Pos;
+            Math::Vector3 Pos;
             DWORD Color;
         };
         Container::MArray<DebugVertexType> DepthDebugLineArray;

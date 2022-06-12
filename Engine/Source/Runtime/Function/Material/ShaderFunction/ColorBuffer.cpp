@@ -12,7 +12,7 @@ VSColorBuffer::VSColorBuffer(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("ColorBufferInput") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_2, InputName, this);
@@ -20,7 +20,7 @@ VSColorBuffer::VSColorBuffer(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ColorBufferOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -60,12 +60,12 @@ VSColorBuffer::~VSColorBuffer()
 }
 void VSColorBuffer::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("ColorBufferInput") + InputID;
     m_pInput[0]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ColorBufferOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

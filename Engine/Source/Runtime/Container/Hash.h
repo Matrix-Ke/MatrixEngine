@@ -98,10 +98,10 @@ namespace Matrix
             }
         };
         template <class T, class MMemManagerClass = Core::DefaultContainerMemoryAllocator>
-        class MHashList : public MHash<MXList<T, MMemManagerClass>, MMemManagerClass>
+        class MHashList : public MHash<MList<T, MMemManagerClass>, MMemManagerClass>
         {
         public:
-            MHashList() : MHash<MXList<T, MMemManagerClass>, MMemManagerClass>()
+            MHashList() : MHash<MList<T, MMemManagerClass>, MMemManagerClass>()
             {
             }
             const ListElement<T> *Find(const T &Element) const

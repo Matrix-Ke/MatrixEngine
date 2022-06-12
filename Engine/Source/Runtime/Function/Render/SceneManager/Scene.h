@@ -55,7 +55,7 @@ namespace Matrix
         {
             return m_bIsBuild;
         }
-        void GetStreamResource(const VSVector3 &CameraPos, const VSVector3W &ProjectInfo);
+        void GetStreamResource(const Math::Vector3 &CameraPos, const VSVector3W &ProjectInfo);
 
     protected:
         Container::MArray<VSLight *> m_pAllLight;

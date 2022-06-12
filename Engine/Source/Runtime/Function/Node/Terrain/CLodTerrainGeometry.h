@@ -42,10 +42,10 @@ namespace Matrix
         virtual bool AddNeighbor(VSCLodTerrainGeometry *pTerrainGemetry, unsigned int uiNeighbor);
         virtual void LinkNeighbor() = 0;
         //每个节点自己不允许变换，以免相邻的邻居和当前节点LOD出现问题
-        virtual void SetLocalScale(const VSVector3 &Scale){};
-        virtual void SetLocalTranslate(const VSVector3 &Translate){};
-        virtual void SetLocalRotate(const VSMatrix3X3 &Rotate){};
-        virtual void SetLocalTransform(const VSTransform &LocalTransform){};
+        virtual void SetLocalScale(const Math::Vector3 &Scale){};
+        virtual void SetLocalTranslate(const Math::Vector3 &Translate){};
+        virtual void SetLocalRotate(const Math::Matrix3 &Rotate){};
+        virtual void SetLocalTransform(const Math::VSTransform &LocalTransform){};
         virtual void SetLocalMat(const VSMatrix3X3W VSMat){};
 
         virtual void ComputeVariance(unsigned int uiCurLevel = 0) = 0;
@@ -57,7 +57,7 @@ namespace Matrix
         VSCLodTerrainGeometry *m_pNeighbor[NT_MAX];
         unsigned int m_uiIndexXInTerrain;
         unsigned int m_uiIndexZInTerrain;
-        virtual void Tessellate(const VSVector3 &CameraPos) = 0;
+        virtual void Tessellate(const Math::Vector3 &CameraPos) = 0;
     };
     DECLARE_Ptr(VSCLodTerrainGeometry);
     VSTYPE_MARCO(VSCLodTerrainGeometry);

@@ -148,9 +148,9 @@ void VSDirectionLight::DrawVolumeShadow(VSCuller &CurCuller, double dAppTime)
 
     m_pShadowTexture[0]->SetTexture((VSTexture *)m_pVolumeShadowRenderTarget->GetCreateBy());
 }
-VSAABB3 VSDirectionLight::GetMaxAABB(Container::MArray<VSAABB3> &AABBArray)
+Primitive::AABB3 VSDirectionLight::GetMaxAABB(Container::MArray<Primitive::AABB3> &AABBArray)
 {
-    VSAABB3 Temp;
+    Primitive::AABB3 Temp;
     for (unsigned int i = 0; i < AABBArray.GetNum(); i++)
     {
 
@@ -188,11 +188,11 @@ void VSDirectionLight::DrawOSM(VSCuller &CurCuller, double dAppTime)
     pCamera->SetPerspectiveFov(pCamera->GetFov(), pCamera->GetAspect(), pCamera->GetZNear(), fTempOSMDistance);
     m_ShadowCuller.GetSceneContent(*pCamera, m_pScene, this, dAppTime);
 
-    VSAABB3 CasterAABB = pCamera->GetFrustumAABB();
+    Primitive::AABB3 CasterAABB = pCamera->GetFrustumAABB();
 
-    VSVector3 Center = CasterAABB.GetCenter();
+    Math::Vector3 Center = CasterAABB.GetCenter();
 
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Dir, Up, Right;
     GetWorldDir(Dir, Up, Right);
     VSRay3 Ray(Center, Dir * (-1.0f));
 
@@ -204,14 +204,14 @@ void VSDirectionLight::DrawOSM(VSCuller &CurCuller, double dAppTime)
         return;
     }
 
-    VSVector3 LigthPT = Center - Dir * tN * 2.0f;
+    Math::Vector3 LigthPT = Center - Dir * tN * 2.0f;
 
     VSCamera LightCamera;
     LightCamera.CreateFromLookAt(LigthPT, Center);
 
     VSMatrix3X3W LightView = LightCamera.GetViewMatrix();
 
-    VSAABB3 NewCasterAABB;
+    Primitive::AABB3 NewCasterAABB;
     NewCasterAABB.Transform(CasterAABB, LightView);
 
     VSREAL NewNear = NewCasterAABB.GetMinPoint().z;
@@ -262,7 +262,7 @@ void VSDirectionLight::DrawCSM(VSCuller &CurCuller, double dAppTime)
     VSREAL fNear = pCamera->GetZNear();
     VSREAL fFar = pCamera->GetZFar();
 
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Dir, Up, Right;
     GetWorldDir(Dir, Up, Right);
     VSREAL Range[CSM_LEVLE + 1] = {fNear, 2000.0f, 7000.0f, fFar};
     for (unsigned int i = 0; i < CSM_LEVLE; i++)
@@ -270,30 +270,30 @@ void VSDirectionLight::DrawCSM(VSCuller &CurCuller, double dAppTime)
         pCamera->SetPerspectiveFov(pCamera->GetFov(), pCamera->GetAspect(), Range[i], Range[i + 1]);
         m_ShadowCuller.GetSceneContent(*pCamera, m_pScene, this, dAppTime);
 
-        Container::MArray<VSAABB3> CasterAABBArray;
+        Container::MArray<Primitive::AABB3> CasterAABBArray;
         GetCullerAABBArray(m_ShadowCuller, CasterAABBArray);
         if (CasterAABBArray.GetNum() == 0)
         {
             DRAW_CSM_DEPTH;
             continue;
         }
-        VSAABB3 CasterAABB = GetMaxAABB(CasterAABBArray);
-        VSAABB3 ReceiverAABB = m_ShadowCuller.GetCamera()->GetFrustumAABB();
+        Primitive::AABB3 CasterAABB = GetMaxAABB(CasterAABBArray);
+        Primitive::AABB3 ReceiverAABB = m_ShadowCuller.GetCamera()->GetFrustumAABB();
 
         VSMatrix3X3W LightRot;
-        LightRot.CreateFromLookDir(VSVector3::ms_Zero, Dir);
+        LightRot.CreateFromLookDir(Math::Vector3::ms_Zero, Dir);
 
-        VSAABB3 NewCasterAABB, NewReceiverAABB;
+        Primitive::AABB3 NewCasterAABB, NewReceiverAABB;
         NewCasterAABB.Transform(CasterAABB, LightRot);
         NewReceiverAABB.Transform(ReceiverAABB, LightRot);
 
-        VSAABB3 MinAABB = NewReceiverAABB.GetMin(NewCasterAABB);
-        VSVector3 MinP(MinAABB.GetMinPoint().x, MinAABB.GetMinPoint().y, NewCasterAABB.GetMinPoint().z);
-        VSVector3 MaxP(MinAABB.GetMaxPoint().x, MinAABB.GetMaxPoint().y, NewCasterAABB.GetMaxPoint().z);
+        Primitive::AABB3 MinAABB = NewReceiverAABB.GetMin(NewCasterAABB);
+        Math::Vector3 MinP(MinAABB.GetMinPoint().x, MinAABB.GetMinPoint().y, NewCasterAABB.GetMinPoint().z);
+        Math::Vector3 MaxP(MinAABB.GetMaxPoint().x, MinAABB.GetMaxPoint().y, NewCasterAABB.GetMaxPoint().z);
         MinAABB.Set(MaxP, MinP);
-        VSVector3 Center = MinAABB.GetCenter();
+        Math::Vector3 Center = MinAABB.GetCenter();
 
-        VSRay3 Ray(Center, VSVector3::ms_Front * (-1.0f));
+        VSRay3 Ray(Center, Math::Vector3::ms_Front * (-1.0f));
 
         unsigned int Q;
         VSREAL tN, tF;
@@ -303,9 +303,9 @@ void VSDirectionLight::DrawCSM(VSCuller &CurCuller, double dAppTime)
             continue;
         }
 
-        VSVector3 LigthPT = Center - VSVector3::ms_Front * tN * 10.0f;
+        Math::Vector3 LigthPT = Center - Math::Vector3::ms_Front * tN * 10.0f;
 
-        VSVector3 NewLightPT = LigthPT * LightRot.GetInverse();
+        Math::Vector3 NewLightPT = LigthPT * LightRot.GetInverse();
 
         VSCamera LightCamera;
         LightCamera.CreateFromLookDir(NewLightPT, Dir);
@@ -327,10 +327,10 @@ void VSDirectionLight::DrawCSM(VSCuller &CurCuller, double dAppTime)
 void VSDirectionLight::GetLightRange()
 {
 
-    VSVector3 Point3 = GetWorldTranslate();
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Point3 = GetWorldTranslate();
+    Math::Vector3 Dir, Up, Right;
     GetWorldDir(Dir, Up, Right);
-    VSVector3 Middle = Point3 + Dir * (m_fLightFunFar + m_fLightFunNear) * 0.5;
+    Math::Vector3 Middle = Point3 + Dir * (m_fLightFunFar + m_fLightFunNear) * 0.5;
     VSOBB3 OBB(Dir, Up, Right, (m_fLightFunFar - m_fLightFunNear) * 0.5f, m_fLightFunHeight * 0.5f, m_fLightFunWidth * 0.5f, Middle);
     m_WorldRenderBV = OBB.GetAABB();
     if (HaveLightFun())
@@ -350,7 +350,7 @@ bool VSDirectionLight::IsRelative(VSGeometry *pGeometry)
     }
     if (HaveLightFun())
     {
-        VSAABB3 GeometryAABB = pGeometry->GetWorldAABB();
+        Primitive::AABB3 GeometryAABB = pGeometry->GetWorldAABB();
         if (GeometryAABB.RelationWith(m_WorldRenderBV) == VSNOINTERSECT)
         {
             return false;
@@ -363,7 +363,7 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
     // not for dynamic instance , much instance have huge aabb box , shadow effect will be low.
     if (m_bEnable && m_bIsCastShadow && m_uiShadowType == ST_PROJECT)
     {
-        VSVector3 Dir, Up, Right;
+        Math::Vector3 Dir, Up, Right;
         GetWorldDir(Dir, Up, Right);
         m_ShadowCuller.GetSceneContent(*CurCuller.GetCamera(), m_pScene, this, dAppTime, false);
 
@@ -386,11 +386,11 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
         m_pProjectShadowSceneRender->m_pNormalDepthTexture = pNormalDepthTexture;
         for (unsigned int i = 0; i < Temp.GetNum(); i++)
         {
-            Container::MArray<VSAABB3> CasterAABBArray;
+            Container::MArray<Primitive::AABB3> CasterAABBArray;
             GetCullerAABBArray(Temp[i], CasterAABBArray);
 
-            VSAABB3 CasterAABB = GetMaxAABB(CasterAABBArray);
-            VSVector3 Center = CasterAABB.GetCenter();
+            Primitive::AABB3 CasterAABB = GetMaxAABB(CasterAABBArray);
+            Math::Vector3 Center = CasterAABB.GetCenter();
 
             VSRay3 Ray(Center, Dir * (-1.0f));
 
@@ -401,7 +401,7 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
                 continue;
             }
 
-            VSVector3 LigthPT = Center - Dir * tN * 2.0f;
+            Math::Vector3 LigthPT = Center - Dir * tN * 2.0f;
 
             VSCamera LightCamera;
             LightCamera.CreateFromLookAt(LigthPT, Center);
@@ -409,7 +409,7 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
             LightCamera.UpdateAll(0);
             VSMatrix3X3W LightView = LightCamera.GetViewMatrix();
 
-            VSAABB3 NewCasterAABB;
+            Primitive::AABB3 NewCasterAABB;
             NewCasterAABB.Transform(CasterAABB, LightView);
 
             LightCamera.SetOrthogonal(NewCasterAABB.GetMaxPoint().x - NewCasterAABB.GetMinPoint().x,

@@ -38,7 +38,7 @@ VSDebugDraw::~VSDebugDraw()
     m_pDrawVertexFormat = NULL;
 }
 
-void VSDebugDraw::AddDebugLine(const VSVector3 &P1, const VSVector3 &P2, const DWORD &Color, bool bDepth)
+void VSDebugDraw::AddDebugLine(const Math::Vector3 &P1, const Math::Vector3 &P2, const DWORD &Color, bool bDepth)
 {
     if (!m_bEnable)
     {
@@ -62,7 +62,7 @@ void VSDebugDraw::AddDebugLine(const VSVector3 &P1, const VSVector3 &P2, const D
         NoDepthDebugLineArray.AddElement(V[1]);
     }
 }
-void VSDebugDraw::AddDebugTriangle(const VSVector3 &P1, const VSVector3 &P2, const VSVector3 &P3,
+void VSDebugDraw::AddDebugTriangle(const Math::Vector3 &P1, const Math::Vector3 &P2, const Math::Vector3 &P3,
                                    const DWORD &Color, bool bDepth)
 {
     if (!m_bEnable)
@@ -70,13 +70,13 @@ void VSDebugDraw::AddDebugTriangle(const VSVector3 &P1, const VSVector3 &P2, con
         return;
     }
 }
-void VSDebugDraw::AddDebugLineAABB(const VSAABB3 &AABB, const DWORD &Color, bool bDepth)
+void VSDebugDraw::AddDebugLineAABB(const Primitive::AABB3 &AABB, const DWORD &Color, bool bDepth)
 {
     if (!m_bEnable)
     {
         return;
     }
-    VSVector3 Point[8];
+    Math::Vector3 Point[8];
     AABB.GetPoint(Point);
     AddDebugLine(Point[0], Point[1], Color, bDepth);
     AddDebugLine(Point[1], Point[2], Color, bDepth);
@@ -99,20 +99,20 @@ void VSDebugDraw::AddDebugLineSphere(const VSSphere3 &Sphere, const DWORD &Color
     }
     for (unsigned int i = 0; i < 360; i++)
     {
-        VSVector3 Point1 = Sphere.m_Center + VSVector3(VSMathInstance::GetMathInstance().GetFastSin(i), VSMathInstance::GetMathInstance().GetFastCos(i), 0.0f) * Sphere.m_fRadius;
-        VSVector3 Point2 = Sphere.m_Center + VSVector3(VSMathInstance::GetMathInstance().GetFastSin(i + 1), VSMathInstance::GetMathInstance().GetFastCos(i + 1), 0.0f) * Sphere.m_fRadius;
+        Math::Vector3 Point1 = Sphere.m_Center + Math::Vector3(VSMathInstance::GetMathInstance().GetFastSin(i), VSMathInstance::GetMathInstance().GetFastCos(i), 0.0f) * Sphere.m_fRadius;
+        Math::Vector3 Point2 = Sphere.m_Center + Math::Vector3(VSMathInstance::GetMathInstance().GetFastSin(i + 1), VSMathInstance::GetMathInstance().GetFastCos(i + 1), 0.0f) * Sphere.m_fRadius;
         AddDebugLine(Point1, Point2, Color, bDepth);
     }
     for (unsigned int i = 0; i < 360; i++)
     {
-        VSVector3 Point1 = Sphere.m_Center + VSVector3(VSMathInstance::GetMathInstance().GetFastSin(i), 0.0f, VSMathInstance::GetMathInstance().GetFastCos(i)) * Sphere.m_fRadius;
-        VSVector3 Point2 = Sphere.m_Center + VSVector3(VSMathInstance::GetMathInstance().GetFastSin(i + 1), 0.0f, VSMathInstance::GetMathInstance().GetFastCos(i + 1)) * Sphere.m_fRadius;
+        Math::Vector3 Point1 = Sphere.m_Center + Math::Vector3(VSMathInstance::GetMathInstance().GetFastSin(i), 0.0f, VSMathInstance::GetMathInstance().GetFastCos(i)) * Sphere.m_fRadius;
+        Math::Vector3 Point2 = Sphere.m_Center + Math::Vector3(VSMathInstance::GetMathInstance().GetFastSin(i + 1), 0.0f, VSMathInstance::GetMathInstance().GetFastCos(i + 1)) * Sphere.m_fRadius;
         AddDebugLine(Point1, Point2, Color, bDepth);
     }
     for (unsigned int i = 0; i < 360; i++)
     {
-        VSVector3 Point1 = Sphere.m_Center + VSVector3(0.0f, VSMathInstance::GetMathInstance().GetFastSin(i), VSMathInstance::GetMathInstance().GetFastCos(i)) * Sphere.m_fRadius;
-        VSVector3 Point2 = Sphere.m_Center + VSVector3(0.0f, VSMathInstance::GetMathInstance().GetFastSin(i + 1), VSMathInstance::GetMathInstance().GetFastCos(i + 1)) * Sphere.m_fRadius;
+        Math::Vector3 Point1 = Sphere.m_Center + Math::Vector3(0.0f, VSMathInstance::GetMathInstance().GetFastSin(i), VSMathInstance::GetMathInstance().GetFastCos(i)) * Sphere.m_fRadius;
+        Math::Vector3 Point2 = Sphere.m_Center + Math::Vector3(0.0f, VSMathInstance::GetMathInstance().GetFastSin(i + 1), VSMathInstance::GetMathInstance().GetFastCos(i + 1)) * Sphere.m_fRadius;
         AddDebugLine(Point1, Point2, Color, bDepth);
     }
 }
@@ -122,7 +122,7 @@ void VSDebugDraw::AddDebugLineOBB(const VSOBB3 &OBB, const DWORD &Color, bool bD
     {
         return;
     }
-    VSVector3 Point[8];
+    Math::Vector3 Point[8];
     OBB.GetPoint(Point);
     AddDebugLine(Point[0], Point[1], Color, bDepth);
     AddDebugLine(Point[1], Point[2], Color, bDepth);
@@ -137,13 +137,13 @@ void VSDebugDraw::AddDebugLineOBB(const VSOBB3 &OBB, const DWORD &Color, bool bD
     AddDebugLine(Point[2], Point[6], Color, bDepth);
     AddDebugLine(Point[3], Point[7], Color, bDepth);
 }
-void VSDebugDraw::AddDebugTriangleAABB(const VSAABB3 &AABB, const DWORD &Color, bool bDepth)
+void VSDebugDraw::AddDebugTriangleAABB(const Primitive::AABB3 &AABB, const DWORD &Color, bool bDepth)
 {
     if (!m_bEnable)
     {
         return;
     }
-    VSVector3 Point[8];
+    Math::Vector3 Point[8];
     AABB.GetPoint(Point);
 }
 void VSDebugDraw::AddDebugTriangleSphere(const VSSphere3 &Sphere, const DWORD &Color, bool bDepth)
@@ -159,7 +159,7 @@ void VSDebugDraw::AddDebugTriangleOBB(const VSOBB3 &OBB, const DWORD &Color, boo
     {
         return;
     }
-    VSVector3 Point[8];
+    Math::Vector3 Point[8];
     OBB.GetPoint(Point);
 }
 void VSDebugDraw::DrawDebugInfo(VSCamera *pCamera)

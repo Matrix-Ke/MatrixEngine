@@ -250,7 +250,7 @@ namespace Matrix
 	//	};
 	//};
 	//template <>
-	//struct TIsNoNeedLoop<VSMatrix3X3>
+	//struct TIsNoNeedLoop<Math::Matrix3>
 	//{
 	//	enum
 	//	{

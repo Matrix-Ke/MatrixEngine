@@ -38,7 +38,7 @@ namespace Matrix
 	{
 
 		//引擎的内存管理模块： 1.高效的管理自己的内存  2.避免出现内存泄漏
-		class MATRIX_CORE_API BaseMemoryManager
+		class MATRIX_PLATFORM_API BaseMemoryManager
 		{
 		public:
 			BaseMemoryManager();
@@ -52,7 +52,7 @@ namespace Matrix
 			static void printInfo();
 		};
 
-		class MATRIX_CORE_API CMemoryManager : public BaseMemoryManager
+		class MATRIX_PLATFORM_API CMemoryManager : public BaseMemoryManager
 		{
 		public:
 			CMemoryManager();
@@ -64,7 +64,7 @@ namespace Matrix
 		//===========================堆内存管理====================================
 #if !_DEBUG && !_WIN64
 		//采用虚幻3的内存管理代码删改而成
-		class MATRIX_CORE_API UEWin32MemoryAlloc : public BaseMemoryManager
+		class MATRIX_PLATFORM_API UEWin32MemoryAlloc : public BaseMemoryManager
 		{
 		public:
 			UEWin32MemoryAlloc();
@@ -156,7 +156,7 @@ namespace Matrix
 
 #elif _DEBUG
 		//采用浮动大小的block块，BeginMask 和 EndMask隔离
-		class MATRIX_CORE_API DebugMemoryAlloc : public BaseMemoryManager
+		class MATRIX_PLATFORM_API DebugMemoryAlloc : public BaseMemoryManager
 		{
 		public:
 			DebugMemoryAlloc();
@@ -222,7 +222,7 @@ namespace Matrix
 			void FreeDbgHelpLib();
 		};
 #else
-		class MATRIX_CORE_API Win64MemoryAlloc : public BaseMemoryManager
+		class MATRIX_PLATFORM_API Win64MemoryAlloc : public BaseMemoryManager
 		{
 		public:
 			Win64MemoryAlloc();
@@ -236,7 +236,7 @@ namespace Matrix
 		//==============================栈内存管理===============================
 		//栈内存管理， 参考UE的代码设计， 没有考虑线程安全，每帧都会清理
 
-		class MATRIX_CORE_API StackMemoryManager : public BaseMemoryManager
+		class MATRIX_PLATFORM_API StackMemoryManager : public BaseMemoryManager
 		{
 		public:
 			//默认分配
@@ -279,7 +279,7 @@ namespace Matrix
 
 		//==============================以上为多平台的内存分配的设计实现====================================
 		//=============================================================================================
-		class MATRIX_CORE_API MemoryObject
+		class MATRIX_PLATFORM_API MemoryObject
 		{
 		public:
 			MemoryObject();
@@ -396,7 +396,7 @@ namespace Matrix
 		};
 
 		//内存分配器
-		class MATRIX_CORE_API DefaultContainerMemoryAllocator
+		class MATRIX_PLATFORM_API DefaultContainerMemoryAllocator
 		{
 		public:
 			DefaultContainerMemoryAllocator()

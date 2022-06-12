@@ -25,8 +25,8 @@ Polygon3::Polygon3()
 /*----------------------------------------------------------------*/
 Polygon3::~Polygon3()
 {
-    MX_ENGINE_DELETEA(m_pPoint);
-    MX_ENGINE_DELETEA(m_pIndex);
+    ENGINE_DELETEA(m_pPoint);
+    ENGINE_DELETEA(m_pIndex);
 }
 /*----------------------------------------------------------------*/
 Polygon3::Polygon3(const Matrix::Math::Vector3 *pPoint, unsigned int PointNum)
@@ -41,8 +41,8 @@ bool Polygon3::CopyFrom(const Polygon3 &Polygon)
     m_PointNum = Polygon.m_PointNum;
     m_IndexNum = Polygon.m_IndexNum;
     m_Flag = Polygon.m_Flag;
-    MX_ENGINE_DELETEA(m_pPoint);
-    MX_ENGINE_DELETEA(m_pIndex);
+    ENGINE_DELETEA(m_pPoint);
+    ENGINE_DELETEA(m_pIndex);
     m_pPoint = MX_NEW Matrix::Math::Vector3[m_PointNum];
     MATRIX_ENGINE_ASSERT(m_pPoint);
 
@@ -65,7 +65,7 @@ void Polygon3::SwapFaces()
 
     Plane3::Set(m_N * (-1.0f), m_fD);
 
-    MX_ENGINE_DELETEA(m_pIndex);
+    ENGINE_DELETEA(m_pIndex);
     m_pIndex = pIndis;
 }
 

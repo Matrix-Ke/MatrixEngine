@@ -1,13 +1,10 @@
 #pragma once
 #include "Math/Vector3.h"
 
-/*
-÷±œﬂ¿‡
-*/
 #ifdef Primitive_EXPORTS
 #define MATRIX_PRIMITIVE_API __declspec(dllexport)
 #else   MATRIX_PRIMITIVE_API __declspec(dllimport)
-#endif // Primitive_EXPORT
+#endif // Primitive_EXPORTS
 
 
 namespace Matrix

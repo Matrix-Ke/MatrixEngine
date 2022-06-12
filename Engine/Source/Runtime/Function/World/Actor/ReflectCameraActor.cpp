@@ -29,26 +29,26 @@ void VSReflectCameraActor::Update(double dAppTime)
         {
             pCamera->SetPerspectiveFov(pTargetCamera->GetFov(), pTargetCamera->GetAspect(), pTargetCamera->GetZNear(), pTargetCamera->GetZFar());
 
-            VSVector3 TargetCameraWorldPos = pTargetCamera->GetWorldTranslate();
+            Math::Vector3 TargetCameraWorldPos = pTargetCamera->GetWorldTranslate();
 
-            VSVector3 N = m_Plane.GetN();
+            Math::Vector3 N = m_Plane.GetN();
 
             VSLine3 Line1(TargetCameraWorldPos, N);
 
             VSREAL t1 = 0;
             m_Plane.RelationWith(Line1, false, t1);
 
-            VSVector3 k1 = Line1.GetParameterPoint(t1);
+            Math::Vector3 k1 = Line1.GetParameterPoint(t1);
 
-            VSVector3 CameraWorldPos = k1 + k1 - TargetCameraWorldPos;
+            Math::Vector3 CameraWorldPos = k1 + k1 - TargetCameraWorldPos;
 
-            VSVector3 Dir, Up, Right;
+            Math::Vector3 Dir, Up, Right;
             pTargetCamera->GetWorldDir(Dir, Up, Right);
 
-            VSVector3 CameraLookDir = m_Plane.ReflectDir(Dir);
+            Math::Vector3 CameraLookDir = m_Plane.ReflectDir(Dir);
             CameraLookDir.Normalize();
 
-            VSVector3 CameraUp = m_Plane.ReflectDir(Up);
+            Math::Vector3 CameraUp = m_Plane.ReflectDir(Up);
             CameraUp.Normalize();
 
             pCamera->CreateFromLookDirWorld(CameraWorldPos, CameraLookDir, CameraUp);

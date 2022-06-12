@@ -22,7 +22,7 @@ namespace Matrix
 		virtual ~VSSpatial() = 0;
 
 	protected:
-		VSAABB3 m_WorldBV;
+		Primitive::AABB3 m_WorldBV;
 
 	public:
 		virtual void ComputeVisibleSet(VSCuller& Culler, bool bNoCull, double dAppTime);
@@ -35,7 +35,7 @@ namespace Matrix
 		};
 
 		virtual void UpdateView(VSCuller& Culler, double dAppTime);
-		inline const VSAABB3& GetWorldAABB() const;
+		inline const Primitive::AABB3& GetWorldAABB() const;
 
 		virtual void CreateLocalAABB() {}
 
@@ -65,8 +65,8 @@ namespace Matrix
 		virtual void ComputeNodeVisibleSet(VSCuller& Culler, bool bNoCull, double dAppTime) = 0;
 
 	protected:
-		VSTransform m_World;
-		VSTransform m_Local;
+		Math::VSTransform m_World;
+		Math::VSTransform m_Local;
 		VSSpatial* m_pParent;
 		Container::MArray<VSLight*> m_pAllLight;
 		Container::MArray<VSCamera*> m_pAllCamera;
@@ -81,28 +81,28 @@ namespace Matrix
 	public:
 		inline void SetParent(VSSpatial* pParent);
 		inline VSSpatial* GetParent() const;
-		inline const VSVector3& GetLocalScale() const;
-		inline const VSVector3& GetLocalTranslate() const;
-		inline const VSMatrix3X3& GetLocalRotate() const;
-		inline void GetLocalDir(VSVector3& Dir, VSVector3& Up, VSVector3& Right) const;
-		inline const VSTransform& GetLocalTransform();
+		inline const Math::Vector3& GetLocalScale() const;
+		inline const Math::Vector3& GetLocalTranslate() const;
+		inline const Math::Matrix3& GetLocalRotate() const;
+		inline void GetLocalDir(Math::Vector3& Dir, Math::Vector3& Up, Math::Vector3& Right) const;
+		inline const Math::VSTransform& GetLocalTransform();
 
-		virtual const VSVector3& GetWorldScale();
-		virtual const VSVector3& GetWorldTranslate();
-		virtual const VSMatrix3X3& GetWorldRotate();
-		virtual void GetWorldDir(VSVector3& Dir, VSVector3& Up, VSVector3& Right);
-		virtual const VSTransform& GetWorldTransform();
+		virtual const Math::Vector3& GetWorldScale();
+		virtual const Math::Vector3& GetWorldTranslate();
+		virtual const Math::Matrix3& GetWorldRotate();
+		virtual void GetWorldDir(Math::Vector3& Dir, Math::Vector3& Up, Math::Vector3& Right);
+		virtual const Math::VSTransform& GetWorldTransform();
 
-		virtual void SetWorldScale(const VSVector3& fScale);
-		virtual void SetWorldTranslate(const VSVector3& Translate);
-		virtual void SetWorldRotate(const VSMatrix3X3& Rotate);
-		virtual void SetWorldTransform(const VSTransform& LocalTransform);
+		virtual void SetWorldScale(const Math::Vector3& fScale);
+		virtual void SetWorldTranslate(const Math::Vector3& Translate);
+		virtual void SetWorldRotate(const Math::Matrix3& Rotate);
+		virtual void SetWorldTransform(const Math::VSTransform& LocalTransform);
 		virtual void SetWorldMat(const VSMatrix3X3W VSMat);
 
-		virtual void SetLocalScale(const VSVector3& fScale);
-		virtual void SetLocalTranslate(const VSVector3& Translate);
-		virtual void SetLocalRotate(const VSMatrix3X3& Rotate);
-		virtual void SetLocalTransform(const VSTransform& LocalTransform);
+		virtual void SetLocalScale(const Math::Vector3& fScale);
+		virtual void SetLocalTranslate(const Math::Vector3& Translate);
+		virtual void SetLocalRotate(const Math::Matrix3& Rotate);
+		virtual void SetLocalTransform(const Math::VSTransform& LocalTransform);
 		virtual void SetLocalMat(const VSMatrix3X3W VSMat);
 
 	public:

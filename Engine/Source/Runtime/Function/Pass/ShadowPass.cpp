@@ -152,15 +152,15 @@ void VSVolumeShadowPass::SetCustomConstant(MaterialShaderPara &MSPara, VSGShader
     static VSUsedName cLightInfo = _T("LightInfo");
     VSMatrix3X3W ViewProjectMatrix = MSPara.pCamera->GetViewMatrix() * MSPara.pCamera->GetProjMatrix();
     pGShader->SetParam(cViewProjectMatrix, &ViewProjectMatrix);
-    VSVector3 LightInfo;
+    Math::Vector3 LightInfo;
     if (MSPara.pShadowLight->GetLightType() == VSLight::LT_POINT)
     {
         LightInfo = MSPara.pShadowLight->GetWorldTranslate();
     }
     else
     {
-        const VSMatrix3X3 &Rotator = MSPara.pShadowLight->GetWorldRotate();
-        VSVector3 U, V, N;
+        const Math::Matrix3 &Rotator = MSPara.pShadowLight->GetWorldRotate();
+        Math::Vector3 U, V, N;
         Rotator.GetUVN(U, V, N);
 
         LightInfo = N;

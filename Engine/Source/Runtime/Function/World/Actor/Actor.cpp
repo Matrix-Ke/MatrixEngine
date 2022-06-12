@@ -40,73 +40,73 @@ void VSActor::ProcessInput(unsigned int uiInputType, unsigned int uiEvent, unsig
 {
     return;
 }
-void VSActor::SetWorldPos(const VSVector3 &Pos)
+void VSActor::SetWorldPos(const Math::Vector3 &Pos)
 {
     m_pNode->SetWorldTranslate(Pos);
 }
-void VSActor::SetWorldScale(const VSVector3 &Scale)
+void VSActor::SetWorldScale(const Math::Vector3 &Scale)
 {
     m_pNode->SetWorldScale(Scale);
 }
-void VSActor::SetWorldRotate(const VSMatrix3X3 &Rotate)
+void VSActor::SetWorldRotate(const Math::Matrix3 &Rotate)
 {
     m_pNode->SetWorldRotate(Rotate);
 }
-void VSActor::SetWorldTransform(const VSTransform &WorldTransform)
+void VSActor::SetWorldTransform(const Math::VSTransform &WorldTransform)
 {
     m_pNode->SetWorldTransform(WorldTransform);
 }
-void VSActor::SetLocalTransform(const VSTransform &LocalTransform)
+void VSActor::SetLocalTransform(const Math::VSTransform &LocalTransform)
 {
     m_pNode->SetLocalTransform(LocalTransform);
 }
-void VSActor::SetLocalPos(const VSVector3 &Pos)
+void VSActor::SetLocalPos(const Math::Vector3 &Pos)
 {
 
     m_pNode->SetLocalTranslate(Pos);
 }
-void VSActor::SetLocalScale(const VSVector3 &Scale)
+void VSActor::SetLocalScale(const Math::Vector3 &Scale)
 {
 
     m_pNode->SetLocalScale(Scale);
 }
-void VSActor::SetLocalRotate(const VSMatrix3X3 &Rotate)
+void VSActor::SetLocalRotate(const Math::Matrix3 &Rotate)
 {
 
     m_pNode->SetLocalRotate(Rotate);
 }
-const VSVector3 &VSActor::GetWorldPos()
+const Math::Vector3 &VSActor::GetWorldPos()
 {
 
     return m_pNode->GetWorldTranslate();
 }
-const VSVector3 &VSActor::GetWorldScale()
+const Math::Vector3 &VSActor::GetWorldScale()
 {
 
     return m_pNode->GetWorldScale();
 }
-const VSMatrix3X3 &VSActor::GetWorldRotate()
+const Math::Matrix3 &VSActor::GetWorldRotate()
 {
 
     return m_pNode->GetWorldRotate();
 }
-const VSTransform &VSActor::GetWorldTransform()
+const Math::VSTransform &VSActor::GetWorldTransform()
 {
     return m_pNode->GetWorldTransform();
 }
-const VSVector3 &VSActor::GetLocalPos()
+const Math::Vector3 &VSActor::GetLocalPos()
 {
     return m_pNode->GetLocalTranslate();
 }
-const VSVector3 &VSActor::GetLocalScale()
+const Math::Vector3 &VSActor::GetLocalScale()
 {
     return m_pNode->GetLocalScale();
 }
-const VSTransform &VSActor::GetLocalTransform()
+const Math::VSTransform &VSActor::GetLocalTransform()
 {
     return m_pNode->GetLocalTransform();
 }
-const VSMatrix3X3 &VSActor::GetLocalRotate()
+const Math::Matrix3 &VSActor::GetLocalRotate()
 {
     return m_pNode->GetLocalRotate();
 }

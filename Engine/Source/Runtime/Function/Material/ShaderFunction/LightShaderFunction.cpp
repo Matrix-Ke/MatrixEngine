@@ -14,7 +14,7 @@ VSLightColor::VSLightColor(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightColorOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -30,7 +30,7 @@ VSLightColor::~VSLightColor()
 }
 void VSLightColor::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightColorOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -52,7 +52,7 @@ VSLightSpecular::VSLightSpecular(const VSUsedName &ShowName, VSMaterial *pMateri
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightSpecularOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -68,7 +68,7 @@ VSLightSpecular::~VSLightSpecular()
 }
 void VSLightSpecular::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightSpecularOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -90,7 +90,7 @@ VSLightDir::VSLightDir(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightDirOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -106,7 +106,7 @@ VSLightDir::~VSLightDir()
 }
 void VSLightDir::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("LightDirOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

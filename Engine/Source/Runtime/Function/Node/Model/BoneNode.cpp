@@ -45,7 +45,7 @@ void VSBoneNode::ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dA
 {
     return;
 }
-void VSBoneNode::GetIKMoveAxis(VSVector3 Axis[3]) const
+void VSBoneNode::GetIKMoveAxis(Math::Vector3 Axis[3]) const
 {
     if (m_pParent)
     {
@@ -53,16 +53,16 @@ void VSBoneNode::GetIKMoveAxis(VSVector3 Axis[3]) const
     }
     else
     {
-        Axis[0] = VSVector3(1.0f, 0.0f, 0.0f);
-        Axis[1] = VSVector3(0.0f, 1.0f, 0.0f);
-        Axis[2] = VSVector3(0.0f, 0.0f, 1.0f);
+        Axis[0] = Math::Vector3(1.0f, 0.0f, 0.0f);
+        Axis[1] = Math::Vector3(0.0f, 1.0f, 0.0f);
+        Axis[2] = Math::Vector3(0.0f, 0.0f, 1.0f);
     }
 }
-void VSBoneNode::ComputeIKLocalRotDelta(const VSMatrix3X3 &WorldRot, VSMatrix3X3 &LocalRotDelta) const
+void VSBoneNode::ComputeIKLocalRotDelta(const Math::Matrix3 &WorldRot, Math::Matrix3 &LocalRotDelta) const
 {
     if (m_pParent)
     {
-        VSMatrix3X3 Inver;
+        Math::Matrix3 Inver;
         Inver.InverseOf(m_pParent->GetWorldRotate());
         LocalRotDelta = m_pParent->GetWorldRotate() * WorldRot * Inver;
     }

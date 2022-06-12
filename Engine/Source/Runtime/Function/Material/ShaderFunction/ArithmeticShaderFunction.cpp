@@ -13,7 +13,7 @@ VSMul::VSMul(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("MulInputA") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -21,7 +21,7 @@ VSMul::VSMul(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("MulInputB") + InputID;
     pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -29,7 +29,7 @@ VSMul::VSMul(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("MulOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -66,17 +66,17 @@ bool VSMul::ResetValueType(MaterialShaderPara &MSPara)
 }
 void VSMul::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("MulInputA") + InputID;
     m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("MulInputB") + InputID;
     m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("MulOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -98,7 +98,7 @@ VSDot::VSDot(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("DotInputA") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -106,7 +106,7 @@ VSDot::VSDot(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("DotInputB") + InputID;
     pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -114,7 +114,7 @@ VSDot::VSDot(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("DotOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputName, this);
@@ -131,17 +131,17 @@ VSDot::~VSDot()
 void VSDot::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("DotInputA") + InputID;
     m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("DotInputB") + InputID;
     m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("DotOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -183,7 +183,7 @@ VSLength::VSLength(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Input") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -191,7 +191,7 @@ VSLength::VSLength(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputName, this);
@@ -208,12 +208,12 @@ VSLength::~VSLength()
 void VSLength::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Input") + InputID;
     m_pInput[VSInputNode::INI_VALUE]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -255,7 +255,7 @@ VSSub::VSSub(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("SubInputA") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -263,7 +263,7 @@ VSSub::VSSub(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("SubInputB") + InputID;
     pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -271,7 +271,7 @@ VSSub::VSSub(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("SubOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputName, this);
@@ -288,17 +288,17 @@ VSSub::~VSSub()
 void VSSub::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("SubInputA") + InputID;
     m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("SubInputB") + InputID;
     m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("SubOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -340,7 +340,7 @@ VSAdd::VSAdd(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("AddInputA") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -348,7 +348,7 @@ VSAdd::VSAdd(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("AddInputB") + InputID;
     pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -356,7 +356,7 @@ VSAdd::VSAdd(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("AddOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputName, this);
@@ -373,17 +373,17 @@ VSAdd::~VSAdd()
 void VSAdd::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("AddInputA") + InputID;
     m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("AddInputB") + InputID;
     m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("AddOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -426,7 +426,7 @@ VSMakeValue::VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsi
 
     if (uiInputNum >= 1)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputA") + InputID;
         VSInputNode *pInputNode = NULL;
         pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -437,7 +437,7 @@ VSMakeValue::VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsi
 
     if (uiInputNum >= 2)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputB") + InputID;
         VSInputNode *pInputNode = NULL;
         pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -448,7 +448,7 @@ VSMakeValue::VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsi
 
     if (uiInputNum >= 3)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputC") + InputID;
         VSInputNode *pInputNode = NULL;
         pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -459,7 +459,7 @@ VSMakeValue::VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsi
 
     if (uiInputNum >= 4)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputD") + InputID;
         VSInputNode *pInputNode = NULL;
         pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -468,7 +468,7 @@ VSMakeValue::VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsi
         VSShaderStringFactory::ms_ShaderValueIndex++;
     }
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputName, this);
@@ -486,7 +486,7 @@ void VSMakeValue::ResetInShaderName(MaterialShaderPara &MSPara)
 {
     if (m_pInput.GetNum() >= 1)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputA") + InputID;
         m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
         VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -494,7 +494,7 @@ void VSMakeValue::ResetInShaderName(MaterialShaderPara &MSPara)
 
     if (m_pInput.GetNum() >= 2)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputB") + InputID;
         m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
         VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -502,20 +502,20 @@ void VSMakeValue::ResetInShaderName(MaterialShaderPara &MSPara)
 
     if (m_pInput.GetNum() >= 3)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputC") + InputID;
         m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
         VSShaderStringFactory::ms_ShaderValueIndex++;
     }
     if (m_pInput.GetNum() >= 4)
     {
-        VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+        VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
         VSString InputName = _T("InputD") + InputID;
         m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
         VSShaderStringFactory::ms_ShaderValueIndex++;
     }
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -553,7 +553,7 @@ VSDiv::VSDiv(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("DivInputA") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -561,7 +561,7 @@ VSDiv::VSDiv(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("DivInputB") + InputID;
     pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -569,7 +569,7 @@ VSDiv::VSDiv(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("DivOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -606,17 +606,17 @@ bool VSDiv::ResetValueType(MaterialShaderPara &MSPara)
 }
 void VSDiv::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("DivInputA") + InputID;
     m_pInput[VSInputNode::INI_A]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     InputName = _T("DivInputB") + InputID;
     m_pInput[VSInputNode::INI_B]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("DivOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -637,7 +637,7 @@ VSSaturate::VSSaturate(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Input") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
@@ -645,7 +645,7 @@ VSSaturate::VSSaturate(const VSUsedName &ShowName, VSMaterial *pMaterial)
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -682,12 +682,12 @@ bool VSSaturate::ResetValueType(MaterialShaderPara &MSPara)
 }
 void VSSaturate::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Input") + InputID;
     m_pInput[VSInputNode::INI_VALUE]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Output") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

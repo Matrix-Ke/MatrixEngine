@@ -81,11 +81,11 @@ namespace Matrix
 
         virtual bool PostLoad(MStream *pStream);
         virtual bool PostClone(MObject *pObjectSrc);
-        inline void SetLocalBV(const VSAABB3 &BV)
+        inline void SetLocalBV(const Primitive::AABB3 &BV)
         {
             m_LocalBV = BV;
         }
-        inline VSAABB3 GetLocalBV() const
+        inline Primitive::AABB3 GetLocalBV() const
         {
             return m_LocalBV;
         }
@@ -156,7 +156,7 @@ namespace Matrix
         Container::MArray<VSBoneNode *> m_pBoneNode;
 
         Container::MArray<VSUsedName> m_BoneName;
-        VSAABB3 m_LocalBV;
+        Primitive::AABB3 m_LocalBV;
         void LinkBoneNode();
         Container::MArray<VSVector3W> m_SkinWeightBuffer;
         MorphDataType m_MorphData;

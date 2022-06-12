@@ -25,17 +25,17 @@ namespace Matrix
         virtual void UpdateWorldBound(double dAppTime);
         static VSREAL ms_fBoneAxisLength;
         void Draw(VSCamera *pCamera);
-        VSAABB3 m_LocalBV;
-        VSAABB3 m_OriginLocalBV;
+        Primitive::AABB3 m_LocalBV;
+        Primitive::AABB3 m_OriginLocalBV;
 
     public:
         friend class VSSkeletonMeshNode;
         virtual void CreateLocalAABB();
-        inline void SetLocalBV(const VSAABB3 &BV)
+        inline void SetLocalBV(const Primitive::AABB3 &BV)
         {
             m_LocalBV = BV;
         }
-        inline VSAABB3 GetLocalBV() const
+        inline Primitive::AABB3 GetLocalBV() const
         {
             return m_LocalBV;
         }
@@ -49,7 +49,7 @@ namespace Matrix
         bool m_bIsDrawSkeleton;
 
         virtual void UpdateView(VSCuller &Culler, double dAppTime);
-        const VSTransform &GetRootTransform();
+        const Math::VSTransform &GetRootTransform();
     };
     DECLARE_Ptr(VSSkeleton);
     VSTYPE_MARCO(VSSkeleton);

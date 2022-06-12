@@ -40,8 +40,8 @@ bool VSDLodTerrainGeometry::CreateMesh(unsigned int uiIndexXInTerrain, unsigned 
         return 0;
     }
 
-    VSVector3 *pVer = (VSVector3 *)pVertexData->GetData();
-    VSVector3 *pVerTemp = pVer;
+    Math::Vector3 *pVer = (Math::Vector3 *)pVertexData->GetData();
+    Math::Vector3 *pVerTemp = pVer;
     unsigned int uiBiasX = uiIndexXInTerrain * (1 << uiTessellationLevel);
     unsigned int uiBiasZ = uiIndexZInTerrain * (1 << uiTessellationLevel);
     for (unsigned int i = 0; i < uiVertexLenght; i++)

@@ -213,7 +213,7 @@ void VSScene::ComputeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime)
     }
 }
 
-void VSScene::GetStreamResource(const VSVector3 &CameraPos, const VSVector3W &ProjectInfo)
+void VSScene::GetStreamResource(const Math::Vector3 &CameraPos, const VSVector3W &ProjectInfo)
 {
     StreamElementType &FreeSlot = VSStreamingManager::ms_pStreamingManager->GetFreeSlot();
     ENQUEUE_LAMBDA_UPDATE_COMMAND(GetStreamResource)
@@ -395,12 +395,12 @@ bool VSQuadNode::RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArr
     }
     //算出当前所有节点的最大Bounds
     bool bFound = false;
-    VSAABB3 Total;
+    Primitive::AABB3 Total;
     for (unsigned int i = 0; i < pObjectArray.GetNum(); i++)
     {
         if (pObjectArray[i])
         {
-            const VSAABB3 &WorldAABB = pObjectArray[i]->GetWorldAABB();
+            const Primitive::AABB3 &WorldAABB = pObjectArray[i]->GetWorldAABB();
 
             if (!bFound)
             {
@@ -414,7 +414,7 @@ bool VSQuadNode::RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArr
         }
     }
     //划分四个区域，然后给节点归类
-    VSAABB3 ChildAABB[4];
+    Primitive::AABB3 ChildAABB[4];
     Total.GetQuadAABB(ChildAABB);
     Container::MArray<VSSpatial *> ChildStatic[4];
     for (unsigned int i = 0; i < pObjectArray.GetNum(); i++)

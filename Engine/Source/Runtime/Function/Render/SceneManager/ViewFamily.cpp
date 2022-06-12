@@ -185,7 +185,7 @@ bool VSViewFamily::IsReCreate(unsigned int uiWidth, unsigned int uiHeight)
     }
     return true;
 }
-bool VSViewFamily::GetStreamCameraInfo(VSVector3 &CameraPos, VSVector3W &ProjectInfo)
+bool VSViewFamily::GetStreamCameraInfo(Math::Vector3 &CameraPos, VSVector3W &ProjectInfo)
 {
     if (m_pCamera->m_bEnableStreamResource)
     {
@@ -397,7 +397,7 @@ VSTexture *VSCubCaptureViewFamily::GetTexture() const
 {
     return (VSTexture *)m_pCubRenderTarget[0]->GetCreateBy();
 }
-bool VSCubCaptureViewFamily::GetStreamCameraInfo(VSVector3 &CameraPos, VSVector3W &ProjectInfo)
+bool VSCubCaptureViewFamily::GetStreamCameraInfo(Math::Vector3 &CameraPos, VSVector3W &ProjectInfo)
 {
     if (m_pCamera->m_bEnableStreamResource)
     {
@@ -451,7 +451,7 @@ void VSCubCaptureViewFamily::Update(double dAppTime)
     }
     Temp.Clear();
     Temp.AddElement(m_pScene, 0, m_pScene.GetNum() - 1);
-    VSMatrix3X3 MatTemp[VSCubeTexture::F_MAX] = {VSMatrix3X3::ms_CameraViewRight, VSMatrix3X3::ms_CameraViewLeft, VSMatrix3X3::ms_CameraViewUp, VSMatrix3X3::ms_CameraViewDown, VSMatrix3X3::ms_CameraViewFront, VSMatrix3X3::ms_CameraViewBack};
+    Math::Matrix3 MatTemp[VSCubeTexture::F_MAX] = {Math::Matrix3::ms_CameraViewRight, Math::Matrix3::ms_CameraViewLeft, Math::Matrix3::ms_CameraViewUp, Math::Matrix3::ms_CameraViewDown, Math::Matrix3::ms_CameraViewFront, Math::Matrix3::ms_CameraViewBack};
 
     if (Temp.GetNum() > 0)
     {

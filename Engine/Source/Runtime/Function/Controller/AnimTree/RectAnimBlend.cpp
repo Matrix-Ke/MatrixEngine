@@ -19,7 +19,7 @@ VSRectAnimBlend::VSRectAnimBlend(const VSUsedName &ShowName, VSAnimTree *pAnimTr
     for (unsigned int i = CL_LEFT_TOP; i < CL_MAX; i++)
     {
         VSString InputName = _T("Child");
-        VSString ID = IntToString(m_pInput.GetNum());
+        VSString ID = Container::IntToString(m_pInput.GetNum());
         InputName += ID;
         VSInputNode *pInputNode = NULL;
         pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);

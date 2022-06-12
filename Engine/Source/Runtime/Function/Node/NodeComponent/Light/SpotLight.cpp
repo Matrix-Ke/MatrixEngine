@@ -39,9 +39,9 @@ VSSpotLight::~VSSpotLight()
 }
 void VSSpotLight::GetLightRange()
 {
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Dir, Up, Right;
     GetWorldDir(Dir, Up, Right);
-    VSVector3 Point3 = GetWorldTranslate();
+    Math::Vector3 Point3 = GetWorldTranslate();
     VSREAL R = TAN(m_Phi * 0.5f) * m_Range;
     VSOBB3 Obb(Dir, Up, Right, m_Range * 0.5f, R, R, Point3 + Dir * m_Range * 0.5f);
     m_WorldRenderBV = Obb.GetAABB();
@@ -83,7 +83,7 @@ bool VSSpotLight::IsRelative(VSGeometry *pGeometry)
     {
         return false;
     }
-    VSAABB3 GeometryAABB = pGeometry->GetWorldAABB();
+    Primitive::AABB3 GeometryAABB = pGeometry->GetWorldAABB();
 
     if (GeometryAABB.RelationWith(m_WorldRenderBV) == VSNOINTERSECT)
     {
@@ -138,12 +138,12 @@ void VSSpotLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, VS2DTe
     {
         if (m_uiShadowType == ST_PROJECT)
         {
-            VSVector3 WorldPos = GetWorldTranslate();
+            Math::Vector3 WorldPos = GetWorldTranslate();
 
-            VSVector3 Dir, Up, Right;
+            Math::Vector3 Dir, Up, Right;
             GetWorldDir(Dir, Up, Right);
 
-            VSMatrix3X3 Rot = GetWorldRotate();
+            Math::Matrix3 Rot = GetWorldRotate();
             VSCamera TempCamera;
             TempCamera.CreateFromLookDir(GetWorldTranslate(), Dir);
             TempCamera.SetPerspectiveFov(m_Phi, 1.0f, 1.0f, m_Range);
@@ -184,7 +184,7 @@ void VSSpotLight::DrawNormalShadowMap(VSCuller &CurCuller, double dAppTime)
     {
         return;
     }
-    VSVector3 Dir, Up, Right;
+    Math::Vector3 Dir, Up, Right;
     GetWorldDir(Dir, Up, Right);
 
     m_ShadowCuller.ClearAll();

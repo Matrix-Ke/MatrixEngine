@@ -82,7 +82,7 @@ void VSSkeletonMeshNode::CreateAnimInstanceData()
         VSBoneNode *pBone = m_pSkeleton->GetBoneNode(i);
         if (pBone)
         {
-            VSTransform T = pBone->GetLocalTransform();
+            Math::VSTransform T = pBone->GetLocalTransform();
             SaveBoneMatrix[i] = T.GetCombine();
         }
     }
@@ -115,7 +115,7 @@ void VSSkeletonMeshNode::CreateAnimInstanceData()
                 VSMatrix3X3W TempBone;
                 if (pBone)
                 {
-                    VSTransform BoneWorldT = pBone->GetWorldTransform();
+                    Math::VSTransform BoneWorldT = pBone->GetWorldTransform();
                     if (j == 0)
                     {
                         BoneWorldT.Indetity();
@@ -274,7 +274,7 @@ bool VSSkeletonMeshNode::InitialDefaultState()
     VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);
     ms_Default->CreateLocalAABB();
-    GeometryNode->SetLocalScale(VSVector3(100.0f, 100.0f, 100.0f));
+    GeometryNode->SetLocalScale(Math::Vector3(100.0f, 100.0f, 100.0f));
     ms_DefaultResource = VSSkeletonMeshNodeR::Create(ms_Default);
     return true;
 }
@@ -369,15 +369,15 @@ void VSSkeletonMeshNode::UpdateLocalAABB()
             VSBoneNode *pBone = m_pSkeleton->GetBoneNode(i);
             if (pBone)
             {
-                VSTransform T = pBone->GetLocalTransform();
+                Math::VSTransform T = pBone->GetLocalTransform();
                 SaveBoneMatrix[i] = T.GetCombine();
             }
         }
 
 #define SAMPLE_M_SCEOND 200.0f
-        VSVector3 MaxPos = m_pSkeleton->m_OriginLocalBV.GetMaxPoint();
-        VSVector3 MinPos = m_pSkeleton->m_OriginLocalBV.GetMinPoint();
-        VSTransform SkeletonLocalT = m_pSkeleton->GetLocalTransform();
+        Math::Vector3 MaxPos = m_pSkeleton->m_OriginLocalBV.GetMaxPoint();
+        Math::Vector3 MinPos = m_pSkeleton->m_OriginLocalBV.GetMinPoint();
+        Math::VSTransform SkeletonLocalT = m_pSkeleton->GetLocalTransform();
         for (unsigned int i = 0; i < m_pAnimSet->GetAnimNum(); i++)
         {
             VSAnimR *pAnimR = m_pAnimSet->GetAnim(i);
@@ -402,7 +402,7 @@ void VSSkeletonMeshNode::UpdateLocalAABB()
                     if (pBone)
                     {
                         // change to local space
-                        VSVector3 Pos = pBone->GetWorldTranslate() * SkeletonLocalT.GetCombineInverse();
+                        Math::Vector3 Pos = pBone->GetWorldTranslate() * SkeletonLocalT.GetCombineInverse();
                         for (int t = 0; t < 3; t++)
                         {
                             if (MinPos.m[t] > Pos.m[t])
@@ -428,7 +428,7 @@ void VSSkeletonMeshNode::UpdateLocalAABB()
                 pBone->SetLocalMat(SaveBoneMatrix[i]);
             }
         }
-        VSAABB3 SkeletonBV;
+        Primitive::AABB3 SkeletonBV;
         SkeletonBV.Set(MaxPos, MinPos);
         m_pSkeleton->SetLocalBV(SkeletonBV);
     }
@@ -569,14 +569,14 @@ void VSSkeletonMeshNode::UpdateWorldBound(double dAppTime)
         }
         else
         {
-            VSVector3 MaxPos = m_pSkeleton->m_WorldBV.GetMaxPoint();
-            VSVector3 MinPos = m_pSkeleton->m_WorldBV.GetMinPoint();
+            Math::Vector3 MaxPos = m_pSkeleton->m_WorldBV.GetMaxPoint();
+            Math::Vector3 MinPos = m_pSkeleton->m_WorldBV.GetMinPoint();
 
             VSREAL fA[3];
             m_WorldBV.GetfA(fA);
 
-            MaxPos = MaxPos + VSVector3(fA[0], fA[1], fA[2]);
-            MinPos = MinPos - VSVector3(fA[0], fA[1], fA[2]);
+            MaxPos = MaxPos + Math::Vector3(fA[0], fA[1], fA[2]);
+            MinPos = MinPos - Math::Vector3(fA[0], fA[1], fA[2]);
             m_WorldBV.Set(MaxPos, MinPos);
         }
     }

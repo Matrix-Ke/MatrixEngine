@@ -67,10 +67,10 @@ namespace Matrix
         virtual void ClearInfo();
 
     protected:
-        virtual void Tessellate(const VSVector3 &CameraPos);
+        virtual void Tessellate(const Math::Vector3 &CameraPos);
         VSREAL RecursiveComputeVariance(Container::MArray<VSREAL> &Variance, unsigned int uiIndex,
                                         unsigned int A, unsigned int B, unsigned int C);
-        void RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, Container::MArray<VSREAL> &Variance,
+        void RecursiveTessellate(VSTriTreeNode *pTri, const Math::Vector3 &CameraPos, Container::MArray<VSREAL> &Variance,
                                  unsigned int uiIndex, unsigned int A, unsigned int B, unsigned int C);
         void Split(VSTriTreeNode *pTri);
         VSTriTreeNode *GetBuffer();
@@ -79,7 +79,7 @@ namespace Matrix
                                          unsigned int A, unsigned int B, unsigned int C, VSUSHORT_INDEX *&pIndexData, unsigned int &uiCurRenderTriNum);
         virtual void UpdateOther(double dAppTime);
 
-        void TessellateEx(const VSVector3 &CameraPos, unsigned int uiLevel);
+        void TessellateEx(const Math::Vector3 &CameraPos, unsigned int uiLevel);
         void ClearInfoEx();
         void UpdateOtherEx(unsigned int uiLevel);
 

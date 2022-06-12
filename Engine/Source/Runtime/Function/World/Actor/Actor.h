@@ -1,12 +1,13 @@
 #pragma once
-//#include "Logic.h"
 #include "Core/Object.h"
+#include "World/AI/Logic.h"
 
 #include "Node/Node.h"
 #include "Node/NodeComponent/NodeComponent.h"
 
 #include "Math/Vector3.h"
 #include "Math/Quat.h"
+#include "Math/Transform.h"
 
 
 #define GET_TYPE_NODE(nodeclass)   \
@@ -35,24 +36,24 @@ namespace Matrix
 
 		DECLARE_INITIAL
 	public:
-		virtual void SetWorldPos(const VSVector3& Pos);
-		virtual void SetWorldScale(const VSVector3& Scale);
-		virtual void SetWorldRotate(const VSMatrix3X3& Rotate);
-		virtual void SetWorldTransform(const VSTransform& WorldTransform);
-		virtual void SetLocalPos(const VSVector3& Pos);
-		virtual void SetLocalScale(const VSVector3& Scale);
-		virtual void SetLocalRotate(const VSMatrix3X3& Rotate);
-		virtual void SetLocalTransform(const VSTransform& LocalTransform);
+		virtual void SetWorldPos(const Math::Vector3& Pos);
+		virtual void SetWorldScale(const Math::Vector3& Scale);
+		virtual void SetWorldRotate(const Math::Matrix3& Rotate);
+		virtual void SetWorldTransform(const Math::VSTransform& WorldTransform);
+		virtual void SetLocalPos(const Math::Vector3& Pos);
+		virtual void SetLocalScale(const Math::Vector3& Scale);
+		virtual void SetLocalRotate(const Math::Matrix3& Rotate);
+		virtual void SetLocalTransform(const Math::VSTransform& LocalTransform);
 
-		const VSVector3& GetWorldPos();
-		const VSVector3& GetWorldScale();
-		const VSMatrix3X3& GetWorldRotate();
-		const VSTransform& GetWorldTransform();
+		const Math::Vector3& GetWorldPos();
+		const Math::Vector3& GetWorldScale();
+		const Math::Matrix3& GetWorldRotate();
+		const Math::VSTransform& GetWorldTransform();
 
-		const VSVector3& GetLocalPos();
-		const VSVector3& GetLocalScale();
-		const VSMatrix3X3& GetLocalRotate();
-		const VSTransform& GetLocalTransform();
+		const Math::Vector3& GetLocalPos();
+		const Math::Vector3& GetLocalScale();
+		const Math::Matrix3& GetLocalRotate();
+		const Math::VSTransform& GetLocalTransform();
 
 		virtual void ProcessInput(unsigned int uiInputType, unsigned int uiEvent, unsigned int uiKey, int x, int y, int z);
 
@@ -63,7 +64,7 @@ namespace Matrix
 			return m_pNode;
 		}
 
-		VSVector3 GetVelocity() const
+		Math::Vector3 GetVelocity() const
 		{
 			return m_Velocity;
 		}
@@ -82,7 +83,7 @@ namespace Matrix
 		friend class VSSceneMap;
 
 	protected:
-		VSVector3 m_Velocity;
+		Math::Vector3 m_Velocity;
 		VSREAL m_fMaxVelocity;
 		VSREAL m_fMaxDriverForce;
 

@@ -73,7 +73,7 @@ VSCamera::~VSCamera()
         VSMAC_DELETE(m_ViewFamilyArray[i]);
     }
 }
-void VSCamera::CreateFromEuler(const VSVector3 &Pos, VSREAL RotX, VSREAL RotY, VSREAL RotZ)
+void VSCamera::CreateFromEuler(const Math::Vector3 &Pos, VSREAL RotX, VSREAL RotY, VSREAL RotZ)
 {
     SetLocalTranslate(Pos);
     m_RotX = RotX;
@@ -83,73 +83,73 @@ void VSCamera::CreateFromEuler(const VSVector3 &Pos, VSREAL RotX, VSREAL RotY, V
 
     qFrame.CreateEuler(m_RotY, m_RotX, m_RotZ);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     Mat.Identity();
     qFrame.GetMatrix(Mat);
     SetLocalRotate(Mat);
 }
-void VSCamera::CreateFromLookDir(const VSVector3 &Pos,
-                                 const VSVector3 &vcDir,
-                                 const VSVector3 &vcUp)
+void VSCamera::CreateFromLookDir(const Math::Vector3 &Pos,
+                                 const Math::Vector3 &vcDir,
+                                 const Math::Vector3 &vcUp)
 {
 
     VSMatrix3X3W MatTemp;
     MatTemp.CreateFromLookDir(Pos, vcDir, vcUp);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     MatTemp.Get3X3(Mat);
-    VSMatrix3X3 MatInv;
+    Math::Matrix3 MatInv;
     MatInv.InverseOf(Mat);
 
     MatInv.GetEuler(m_RotZ, m_RotX, m_RotY);
     SetLocalRotate(MatInv);
     SetLocalTranslate(Pos);
 }
-void VSCamera::CreateFromLookAt(const VSVector3 &vcPos,
-                                const VSVector3 &vcLookAt,
-                                const VSVector3 &vcUp)
+void VSCamera::CreateFromLookAt(const Math::Vector3 &vcPos,
+                                const Math::Vector3 &vcLookAt,
+                                const Math::Vector3 &vcUp)
 {
     VSMatrix3X3W MatTemp;
     MatTemp.CreateFromLookAt(vcPos, vcLookAt, vcUp);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     MatTemp.Get3X3(Mat);
 
-    VSMatrix3X3 MatInv;
+    Math::Matrix3 MatInv;
     MatInv.InverseOf(Mat);
 
     MatInv.GetEuler(m_RotZ, m_RotX, m_RotY);
     SetLocalRotate(MatInv);
     SetLocalTranslate(vcPos);
 }
-void VSCamera::CreateFromLookDirWorld(const VSVector3 &Pos,
-                                      const VSVector3 &vcDir,
-                                      const VSVector3 &vcUp)
+void VSCamera::CreateFromLookDirWorld(const Math::Vector3 &Pos,
+                                      const Math::Vector3 &vcDir,
+                                      const Math::Vector3 &vcUp)
 {
 
     VSMatrix3X3W MatTemp;
     MatTemp.CreateFromLookDir(Pos, vcDir, vcUp);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     MatTemp.Get3X3(Mat);
-    VSMatrix3X3 MatInv;
+    Math::Matrix3 MatInv;
     MatInv.InverseOf(Mat);
 
     SetWorldRotate(MatInv);
     SetWorldTranslate(Pos);
     m_Local.GetRotate().GetEuler(m_RotZ, m_RotX, m_RotY);
 }
-void VSCamera::CreateFromLookAtWorld(const VSVector3 &vcPos,
-                                     const VSVector3 &vcLookAt,
-                                     const VSVector3 &vcUp)
+void VSCamera::CreateFromLookAtWorld(const Math::Vector3 &vcPos,
+                                     const Math::Vector3 &vcLookAt,
+                                     const Math::Vector3 &vcUp)
 {
     VSMatrix3X3W MatTemp;
     MatTemp.CreateFromLookAt(vcPos, vcLookAt, vcUp);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     MatTemp.Get3X3(Mat);
 
-    VSMatrix3X3 MatInv;
+    Math::Matrix3 MatInv;
     MatInv.InverseOf(Mat);
     SetWorldRotate(MatInv);
     SetWorldTranslate(vcPos);
@@ -229,7 +229,7 @@ void VSCamera::GetPlane(VSPlane3 Plane[VSCamera::CP_MAX]) const
     VSMatrix3X3W ViewProj;
     ViewProj = m_ViewMat * m_ProjMat;
 
-    VSVector3 N;
+    Math::Vector3 N;
     VSREAL fD;
 
     // right plane
@@ -274,31 +274,31 @@ void VSCamera::GetPlane(VSPlane3 Plane[VSCamera::CP_MAX]) const
     fD = -ViewProj._32;
     Plane[5].Set(N, fD);
 }
-VSAABB3 VSCamera::GetFrustumAABB()
+Primitive::AABB3 VSCamera::GetFrustumAABB()
 {
-    VSVector3 Point[8];
+    Math::Vector3 Point[8];
     GetFrustumPoint(Point);
 
-    VSAABB3 Aabb;
+    Primitive::AABB3 Aabb;
     Aabb.CreateAABB(Point, 8);
 
     return Aabb;
 }
-void VSCamera::GetFrustumPoint(VSVector3 Point[8])
+void VSCamera::GetFrustumPoint(Math::Vector3 Point[8])
 {
     VSMatrix3X3W ViewProj = m_ViewMat * m_ProjMat;
 
     VSMatrix3X3W ViewProjInv = ViewProj.GetInverse();
 
-    Point[0] = VSVector3(1, 1, 0);
-    Point[1] = VSVector3(1, -1, 0);
-    Point[2] = VSVector3(-1, 1, 0);
-    Point[3] = VSVector3(-1, -1, 0);
+    Point[0] = Math::Vector3(1, 1, 0);
+    Point[1] = Math::Vector3(1, -1, 0);
+    Point[2] = Math::Vector3(-1, 1, 0);
+    Point[3] = Math::Vector3(-1, -1, 0);
 
-    Point[4] = VSVector3(1, 1, 1);
-    Point[5] = VSVector3(1, -1, 1);
-    Point[6] = VSVector3(-1, 1, 1);
-    Point[7] = VSVector3(-1, -1, 1);
+    Point[4] = Math::Vector3(1, 1, 1);
+    Point[5] = Math::Vector3(1, -1, 1);
+    Point[6] = Math::Vector3(-1, 1, 1);
+    Point[7] = Math::Vector3(-1, -1, 1);
 
     for (unsigned int i = 0; i < 8; i++)
     {
@@ -310,7 +310,7 @@ void VSCamera::UpdateCameraState(double dAppTime)
     VSNodeComponent::UpdateCameraState(dAppTime);
     m_pAllCamera.AddElement(this);
 }
-VSREAL VSCamera::GetProjectScreenSize(const VSAABB3 &WorldAABB)
+VSREAL VSCamera::GetProjectScreenSize(const Primitive::AABB3 &WorldAABB)
 {
     VSMAC_ASSERT(m_ProjMat.M[2][3] > EPSILON_E3);
 
@@ -327,7 +327,7 @@ void VSCamera::UpdateTransform(double dAppTime)
     VSNodeComponent::UpdateTransform(dAppTime);
     if (m_bIsChanged)
     {
-        VSTransform Trans = GetWorldTransform();
+        Math::VSTransform Trans = GetWorldTransform();
         m_ViewMat = Trans.GetCombineInverse();
     }
 }

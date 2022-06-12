@@ -34,11 +34,11 @@ namespace Matrix
 
         VSSceneMap *GetScene(const VSUsedName &Name);
 
-        VSActor *CreateActor(const TCHAR *ActorPath, const VSVector3 &Pos = VSVector3::ms_Zero, const VSMatrix3X3 &Rotate = VSMatrix3X3::ms_Identity, const VSVector3 &Scale = VSVector3::ms_One, VSSceneMap *pSceneMap = NULL);
+        VSActor *CreateActor(const TCHAR *ActorPath, const Math::Vector3 &Pos = Math::Vector3::ms_Zero, const Math::Matrix3 &Rotate = Math::Matrix3::ms_Identity, const Math::Vector3 &Scale = Math::Vector3::ms_One, VSSceneMap *pSceneMap = NULL);
         void DestroyActor(VSActor *pActor);
 
         template <typename T>
-        VSActor *CreateActor(const VSVector3 &Pos = VSVector3::ms_Zero, const VSMatrix3X3 &Rotate = VSMatrix3X3::ms_Identity, const VSVector3 &Scale = VSVector3::ms_One, VSSceneMap *pSceneMap = NULL);
+        VSActor *CreateActor(const Math::Vector3 &Pos = Math::Vector3::ms_Zero, const Math::Matrix3 &Rotate = Math::Matrix3::ms_Identity, const Math::Vector3 &Scale = Math::Vector3::ms_One, VSSceneMap *pSceneMap = NULL);
 
         bool LoadMap(const TCHAR *MapPath, bool IsAsyn);
         bool UnLoadMap(const TCHAR *MapPath);
@@ -71,7 +71,7 @@ namespace Matrix
     DECLARE_Ptr(VSWorld);
     VSTYPE_MARCO(VSWorld);
     template <typename T>
-    VSActor *VSWorld::CreateActor(const VSVector3 &Pos, const VSMatrix3X3 &Rotate, const VSVector3 &Scale, VSSceneMap *pSceneMap)
+    VSActor *VSWorld::CreateActor(const Math::Vector3 &Pos, const Math::Matrix3 &Rotate, const Math::Vector3 &Scale, VSSceneMap *pSceneMap)
     {
         if (!T::ms_Type.IsDerived(VSActor::ms_Type))
             return NULL;

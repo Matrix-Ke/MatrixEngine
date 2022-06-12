@@ -48,16 +48,16 @@ bool VS1stCameraController::UpdateEx(double dAppTime)
     else if (Temp->m_RotY < -VS2PI)
         Temp->m_RotY += VS2PI;
 
-    VSVector3 LocalPos = Temp->GetLocalTranslate();
-    VSMatrix3X3 Rot = Temp->GetLocalRotate();
-    VSVector3 Velocity(m_MoveXDelta, m_MoveYDelta, m_MoveZDelta);
+    Math::Vector3 LocalPos = Temp->GetLocalTranslate();
+    Math::Matrix3 Rot = Temp->GetLocalRotate();
+    Math::Vector3 Velocity(m_MoveXDelta, m_MoveYDelta, m_MoveZDelta);
     LocalPos += Velocity * Rot * (VSREAL)m_dIntervalTime;
 
     VSQuat qFrame(0, 0, 0, 1);
 
     qFrame.CreateEuler(Temp->m_RotZ, Temp->m_RotX, Temp->m_RotY);
 
-    VSMatrix3X3 Mat;
+    Math::Matrix3 Mat;
     Mat.Identity();
     qFrame.GetMatrix(Mat);
 

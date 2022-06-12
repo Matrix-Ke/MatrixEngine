@@ -519,7 +519,7 @@ void VSShaderKey::GetDefine(VSMap<VSString, VSString> &Define)
     for (unsigned int i = 0; i < m_KeyMap.GetNum(); i++)
     {
         MapElement<VSUsedName, unsigned int> &Element = m_KeyMap[i];
-        Define.AddElement(Element.Key.GetString(), IntToString(Element.Value));
+        Define.AddElement(Element.Key.GetString(), Container::IntToString(Element.Value));
     }
 }
 void VSShaderKey::Clear()

@@ -146,7 +146,7 @@ namespace Matrix
         VSRenderTargetPtr m_pLightFunSpecularRenderTarget;
         VSMatrix3X3W m_WVP;
         virtual void GetLightRange() = 0;
-        void GetCullerAABBArray(VSCuller &Culler, Container::MArray<VSAABB3> &AABBArray);
+        void GetCullerAABBArray(VSCuller &Culler, Container::MArray<Primitive::AABB3> &AABBArray);
         bool m_bShadowMapDrawEnd;
     };
     DECLARE_Ptr(VSLocalLight);
@@ -161,11 +161,11 @@ namespace Matrix
         virtual ~VSIndirectLight() = 0;
         virtual bool IsRelative(VSGeometry *pGeometry);
         virtual bool Cullby(VSCuller &Culler);
-        virtual void SetLocalScale(const VSVector3 &fScale);
-        virtual void SetLocalRotate(const VSMatrix3X3 &Rotate);
-        virtual void SetLocalTransform(const VSTransform &LocalTransform);
+        virtual void SetLocalScale(const Math::Vector3 &fScale);
+        virtual void SetLocalRotate(const Math::Matrix3 &Rotate);
+        virtual void SetLocalTransform(const Math::VSTransform &LocalTransform);
         virtual void SetLocalMat(const VSMatrix3X3W VSMat);
-        inline void SetRange(VSVector3 &Range)
+        inline void SetRange(Math::Vector3 &Range)
         {
             m_Range.x = Range.x > 1.0f ? Range.x : m_Range.x;
             m_Range.y = Range.y > 1.0f ? Range.y : m_Range.y;
@@ -174,9 +174,9 @@ namespace Matrix
         }
 
     protected:
-        VSVector3 m_Range;
+        Math::Vector3 m_Range;
         virtual void GetLightRange();
-        VSAABB3 m_WorldRenderBV;
+        Primitive::AABB3 m_WorldRenderBV;
     };
     DECLARE_Ptr(VSIndirectLight);
     VSTYPE_MARCO(VSIndirectLight);

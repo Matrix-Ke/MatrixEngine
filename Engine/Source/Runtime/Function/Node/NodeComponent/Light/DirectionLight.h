@@ -60,7 +60,7 @@ namespace Matrix
         void DrawOSM(VSCuller &CurCuller, double dAppTime);
         void DrawCSM(VSCuller &CurCuller, double dAppTime);
 
-        VSAABB3 GetMaxAABB(Container::MArray<VSAABB3> &AABBArray);
+        Primitive::AABB3 GetMaxAABB(Container::MArray<Primitive::AABB3> &AABBArray);
 
         void ResetShadow();
 
@@ -70,7 +70,7 @@ namespace Matrix
         VSREAL m_fLightFunNear;
         VSREAL m_fOSMDistance;
         virtual void GetLightRange();
-        VSAABB3 m_WorldRenderBV;
+        Primitive::AABB3 m_WorldRenderBV;
         VSDirShadowMapCuller m_ShadowCuller;
         VSVolumeShadowMapCuller m_VolumeShadowCuller;
 

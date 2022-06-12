@@ -34,17 +34,17 @@ void VSDLodTerrainSwitchNode::UpdateView(VSCuller &Culler, double dAppTime)
         {
             return;
         }
-        VSTransform Tran = pTerrainNode->GetWorldTransform();
-        VSVector3 Loc = pCamera->GetWorldTranslate() * Tran.GetCombineInverse();
+        Math::VSTransform Tran = pTerrainNode->GetWorldTransform();
+        Math::Vector3 Loc = pCamera->GetWorldTranslate() * Tran.GetCombineInverse();
         unsigned int uiLength = 1 << pTerrainNode->GetTessellationLevel();
-        VSVector3 Pos;
+        Math::Vector3 Pos;
         unsigned int uiIndenX = uiLength * m_uiIndexXInTerrain;
         unsigned int uiIndenZ = uiLength * m_uiIndexZInTerrain;
         Pos.x = VSTerrainNode::WIDTH_SCALE * (uiIndenX + (uiLength >> 1)) * 1.0f;
         Pos.z = VSTerrainNode::WIDTH_SCALE * (uiIndenZ + (uiLength >> 1)) * 1.0f;
         Pos.y = pTerrainNode->GetHeight(uiIndenX, uiIndenZ);
 
-        VSVector3 Length = Loc - Pos;
+        Math::Vector3 Length = Loc - Pos;
         VSREAL fSqrLen = Length.GetSqrLength();
         VSREAL fDLodScale = pTerrainNode->GetDLodScale();
         for (unsigned int i = 0; i < m_pChild.GetNum(); i++)

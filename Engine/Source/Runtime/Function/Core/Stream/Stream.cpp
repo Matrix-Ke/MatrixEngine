@@ -1,10 +1,14 @@
 #include "Stream.h"
 #include "Property.h"
-#include "Object.h"
+#include "Core/Object.h"
+#include "Core/Config.h"
+
 #include "Function/ResourceManager.h"
-#include "Config.h"
+
 
 using namespace Matrix;
+
+
 unsigned int MStream::ms_uiCurVersion = 0;
 /********************************************************************************/
 unsigned int MStream::GetStrDistUse(const Container::MString& Str)

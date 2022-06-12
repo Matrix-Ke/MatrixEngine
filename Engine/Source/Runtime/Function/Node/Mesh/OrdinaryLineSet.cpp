@@ -32,7 +32,7 @@ VSOrdinaryLineSet::VSOrdinaryLineSet(VSControlCurve3 *pControlCurve, VSCurve3Sub
 }
 VSOrdinaryLineSet::VSOrdinaryLineSet(const VSLine3 &Line)
 {
-    VSVector3 Verts[2];
+    Math::Vector3 Verts[2];
     Verts[0] = Line.GetOrig() - Line.GetDir() * DRAW_MATH_ELEMENT_LENGTH;
     Verts[1] = Line.GetOrig() + Line.GetDir() * DRAW_MATH_ELEMENT_LENGTH;
 
@@ -47,7 +47,7 @@ VSOrdinaryLineSet::VSOrdinaryLineSet(const VSLine3 &Line)
 }
 VSOrdinaryLineSet::VSOrdinaryLineSet(const VSRay3 &Ray)
 {
-    VSVector3 Verts[2];
+    Math::Vector3 Verts[2];
     Verts[0] = Ray.GetOrig();
     Verts[1] = Verts[0] + Ray.GetDir() * DRAW_MATH_ELEMENT_LENGTH;
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
@@ -61,7 +61,7 @@ VSOrdinaryLineSet::VSOrdinaryLineSet(const VSRay3 &Ray)
 }
 VSOrdinaryLineSet::VSOrdinaryLineSet(const VSSegment3 &Segment)
 {
-    VSVector3 Verts[2];
+    Math::Vector3 Verts[2];
     Verts[0] = Segment.GetOrig();
     Verts[1] = Segment.GetEnd();
     VSDataBuffer *pVertex = VS_NEW VSDataBuffer;

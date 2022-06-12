@@ -79,7 +79,7 @@ VSVariant::VSVariant(const Math::Vector4& v)
 {
 	*this = v;
 }
-VSVariant::VSVariant(const VSMatrix3X3& m)
+VSVariant::VSVariant(const Math::Matrix3& m)
 {
 	*this = m;
 }
@@ -179,7 +179,7 @@ bool VSVariant::operator==(const Math::Vector4& v) const
 	}
 	return GetVector3W() == v;
 }
-bool VSVariant::operator==(const VSMatrix3X3& m) const
+bool VSVariant::operator==(const Math::Matrix3& m) const
 {
 	if (m_uiType != V_MATRIX3X3)
 	{
@@ -271,11 +271,11 @@ VSVariant& VSVariant::operator=(const Math::Vector4& v)
 	*((Math::Vector4*)m_fVec) = v;
 	return *this;
 }
-VSVariant& VSVariant::operator=(const VSMatrix3X3& m)
+VSVariant& VSVariant::operator=(const Math::Matrix3& m)
 {
 	Clear();
 	m_uiType = V_MATRIX3X3;
-	*((VSMatrix3X3*)m_fVec) = m;
+	*((Math::Matrix3*)m_fVec) = m;
 	return *this;
 }
 VSVariant& VSVariant::operator=(const VSMatrix3X3W& m)
@@ -346,10 +346,10 @@ const Math::Vector4& VSVariant::GetVector3W() const
 	MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR3W);
 	return *((Math::Vector4*)m_fVec);
 }
-const VSMatrix3X3& VSVariant::GetMatrix3X3() const
+const Math::Matrix3& VSVariant::GetMatrix3X3() const
 {
 	MATRIX_ENGINE_ASSERT(m_uiType == V_MATRIX3X3);
-	return *((VSMatrix3X3*)m_fVec);
+	return *((Math::Matrix3*)m_fVec);
 }
 const VSMatrix3X3W& VSVariant::GetMatrix3X3W() const
 {

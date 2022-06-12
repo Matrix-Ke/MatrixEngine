@@ -147,7 +147,7 @@ namespace Matrix
         {
             m_Culler.SetUseMaterialIndex(USeUseMaterialLayer);
         }
-        virtual bool GetStreamCameraInfo(VSVector3 &CameraPos, VSVector3W &ProjectInfo);
+        virtual bool GetStreamCameraInfo(Math::Vector3 &CameraPos, VSVector3W &ProjectInfo);
 
     protected:
         VSCamera *m_pCamera;
@@ -277,7 +277,7 @@ namespace Matrix
                 m_CubCuller[i].SetUseMaterialIndex(USeUseMaterialLayer);
             }
         }
-        virtual bool GetStreamCameraInfo(VSVector3 &CameraPos, VSVector3W &ProjectInfo);
+        virtual bool GetStreamCameraInfo(Math::Vector3 &CameraPos, VSVector3W &ProjectInfo);
 
     protected:
         VSCameraPtr CubCameraPtr[VSCubeTexture::F_MAX];

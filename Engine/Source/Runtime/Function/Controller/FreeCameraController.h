@@ -19,7 +19,7 @@ namespace Matrix
         VSREAL m_RotYDelta;
         VSREAL m_RotZDelta;
         VSREAL m_MoveDelta;
-        VSVector3 m_MoveDirection;
+        Math::Vector3 m_MoveDirection;
         virtual bool UpdateEx(double dAppTime);
     };
     DECLARE_Ptr(VSFreeCameraController);

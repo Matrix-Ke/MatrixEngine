@@ -35,7 +35,7 @@ VSPointLight::~VSPointLight()
 void VSPointLight::GetLightRange()
 {
 
-    VSVector3 Point3 = GetWorldTranslate();
+    Math::Vector3 Point3 = GetWorldTranslate();
     m_WorldRenderBV = VSSphere3(Point3, m_Range);
 }
 bool VSPointLight::IsRelative(VSGeometry *pGeometry)
@@ -44,7 +44,7 @@ bool VSPointLight::IsRelative(VSGeometry *pGeometry)
     {
         return false;
     }
-    VSAABB3 GeometryAABB = pGeometry->GetWorldAABB();
+    Primitive::AABB3 GeometryAABB = pGeometry->GetWorldAABB();
     if (GeometryAABB.RelationWith(m_WorldRenderBV) == VSNOINTERSECT)
     {
         return false;
@@ -201,11 +201,11 @@ void VSPointLight::DisableDependenceShadowMap(VSCuller &CurCuller, double dAppTi
 }
 void VSPointLight::DrawNormalCubShadow(VSCuller &CurCuller, double dAppTime)
 {
-    VSMatrix3X3 MatTemp[VSCubeTexture::F_MAX] = {VSMatrix3X3::ms_CameraViewRight, VSMatrix3X3::ms_CameraViewLeft, VSMatrix3X3::ms_CameraViewUp, VSMatrix3X3::ms_CameraViewDown, VSMatrix3X3::ms_CameraViewFront, VSMatrix3X3::ms_CameraViewBack};
+    Math::Matrix3 MatTemp[VSCubeTexture::F_MAX] = {Math::Matrix3::ms_CameraViewRight, Math::Matrix3::ms_CameraViewLeft, Math::Matrix3::ms_CameraViewUp, Math::Matrix3::ms_CameraViewDown, Math::Matrix3::ms_CameraViewFront, Math::Matrix3::ms_CameraViewBack};
 
     VSCamera CubCamera[VSCubeTexture::F_MAX];
 
-    VSVector3 WorldPos = GetWorldTranslate();
+    Math::Vector3 WorldPos = GetWorldTranslate();
 
     if (m_pScene.GetNum() > 0)
     {
@@ -231,9 +231,9 @@ void VSPointLight::DrawNormalCubShadow(VSCuller &CurCuller, double dAppTime)
 }
 void VSPointLight::DrawNormalProjectShadow(VSCuller &CurCuller, double dAppTime)
 {
-    VSMatrix3X3 MatTemp[VSCubeTexture::F_MAX] = {VSMatrix3X3::ms_CameraViewRight, VSMatrix3X3::ms_CameraViewLeft, VSMatrix3X3::ms_CameraViewUp, VSMatrix3X3::ms_CameraViewDown, VSMatrix3X3::ms_CameraViewFront, VSMatrix3X3::ms_CameraViewBack};
+    Math::Matrix3 MatTemp[VSCubeTexture::F_MAX] = {Math::Matrix3::ms_CameraViewRight, Math::Matrix3::ms_CameraViewLeft, Math::Matrix3::ms_CameraViewUp, Math::Matrix3::ms_CameraViewDown, Math::Matrix3::ms_CameraViewFront, Math::Matrix3::ms_CameraViewBack};
 
-    VSVector3 WorldPos = GetWorldTranslate();
+    Math::Vector3 WorldPos = GetWorldTranslate();
 
     if (m_pScene.GetNum() > 0)
     {
@@ -269,11 +269,11 @@ void VSPointLight::DrawNormalProjectShadow(VSCuller &CurCuller, double dAppTime)
 }
 void VSPointLight::DrawFovProjectShadow(VSCuller &CurCuller, double dAppTime)
 {
-    VSMatrix3X3 MatTemp[VSCubeTexture::F_MAX] = {VSMatrix3X3::ms_CameraViewRight, VSMatrix3X3::ms_CameraViewLeft, VSMatrix3X3::ms_CameraViewUp, VSMatrix3X3::ms_CameraViewDown, VSMatrix3X3::ms_CameraViewFront, VSMatrix3X3::ms_CameraViewBack};
+    Math::Matrix3 MatTemp[VSCubeTexture::F_MAX] = {Math::Matrix3::ms_CameraViewRight, Math::Matrix3::ms_CameraViewLeft, Math::Matrix3::ms_CameraViewUp, Math::Matrix3::ms_CameraViewDown, Math::Matrix3::ms_CameraViewFront, Math::Matrix3::ms_CameraViewBack};
 
-    VSMatrix3X3 ViewTran;
+    Math::Matrix3 ViewTran;
     CurCuller.GetCamera()->GetViewMatrix().Get3X3(ViewTran);
-    VSMatrix3X3 New;
+    Math::Matrix3 New;
     New.InverseOf(ViewTran);
     for (unsigned int Index = 0; Index < VSCubeTexture::F_MAX; Index++)
     {
@@ -281,7 +281,7 @@ void VSPointLight::DrawFovProjectShadow(VSCuller &CurCuller, double dAppTime)
     }
     VSCameraPtr CubCameraPtr[VSCubeTexture::F_MAX];
 
-    VSVector3 WorldPos = GetWorldTranslate();
+    Math::Vector3 WorldPos = GetWorldTranslate();
 
     VSPlane3 CameraPlane[VSCamera::CP_MAX];
     CurCuller.GetCamera()->GetPlane(CameraPlane);
@@ -333,11 +333,11 @@ void VSPointLight::DrawFovProjectShadow(VSCuller &CurCuller, double dAppTime)
 void VSPointLight::DrawFovCubShadow(VSCuller &CurCuller, double dAppTime)
 {
 
-    VSMatrix3X3 MatTemp[VSCubeTexture::F_MAX] = {VSMatrix3X3::ms_CameraViewRight, VSMatrix3X3::ms_CameraViewLeft, VSMatrix3X3::ms_CameraViewUp, VSMatrix3X3::ms_CameraViewDown, VSMatrix3X3::ms_CameraViewFront, VSMatrix3X3::ms_CameraViewBack};
+    Math::Matrix3 MatTemp[VSCubeTexture::F_MAX] = {Math::Matrix3::ms_CameraViewRight, Math::Matrix3::ms_CameraViewLeft, Math::Matrix3::ms_CameraViewUp, Math::Matrix3::ms_CameraViewDown, Math::Matrix3::ms_CameraViewFront, Math::Matrix3::ms_CameraViewBack};
 
-    VSMatrix3X3 ViewTran;
+    Math::Matrix3 ViewTran;
     CurCuller.GetCamera()->GetViewMatrix().Get3X3(ViewTran);
-    VSMatrix3X3 New;
+    Math::Matrix3 New;
     New.InverseOf(ViewTran);
     for (unsigned int Index = 0; Index < VSCubeTexture::F_MAX; Index++)
     {
@@ -345,7 +345,7 @@ void VSPointLight::DrawFovCubShadow(VSCuller &CurCuller, double dAppTime)
     }
     VSCamera CubCamera[VSCubeTexture::F_MAX];
 
-    VSVector3 WorldPos = GetWorldTranslate();
+    Math::Vector3 WorldPos = GetWorldTranslate();
 
     VSPlane3 CameraPlane[VSCamera::CP_MAX];
     CurCuller.GetCamera()->GetPlane(CameraPlane);
@@ -426,7 +426,7 @@ void VSPointLight::DrawDependenceShadowMap(VSCuller &CurCuller, double dAppTime)
 }
 void VSPointLight::DrawDualParaboloidShadow(VSCuller &CurCuller, double dAppTime)
 {
-    VSVector3 WorldPos = GetWorldTranslate();
+    Math::Vector3 WorldPos = GetWorldTranslate();
     VSCamera DPCamera[2];
 
     if (m_pScene.GetNum() > 0)
@@ -434,7 +434,7 @@ void VSPointLight::DrawDualParaboloidShadow(VSCuller &CurCuller, double dAppTime
         for (unsigned int Index = 0; Index < 2; Index++)
         {
             VSREAL ZDirection = (Index == 0) ? 1.0f : -1.0f;
-            DPCamera[Index].CreateFromLookDir(WorldPos, VSVector3(0.0f, 0.0f, ZDirection));
+            DPCamera[Index].CreateFromLookDir(WorldPos, Math::Vector3(0.0f, 0.0f, ZDirection));
             DPCamera[Index].SetOrthogonal(2.0f * m_Range, 2.0f * m_Range, 0, m_Range);
             m_ShadowCuller[Index].GetSceneContent(DPCamera[Index], m_pScene, this, dAppTime);
             DPCamera[Index].ClearProject();

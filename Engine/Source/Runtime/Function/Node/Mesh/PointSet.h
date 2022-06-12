@@ -12,7 +12,7 @@ namespace Matrix
         DECLARE_INITIAL
     public:
         VSPointSet();
-        VSPointSet(const VSVector3 &Point, VSREAL fSize);
+        VSPointSet(const Math::Vector3 &Point, VSREAL fSize);
         virtual ~VSPointSet();
         bool CreateIndex();
         virtual unsigned int GetTotalNum() const;

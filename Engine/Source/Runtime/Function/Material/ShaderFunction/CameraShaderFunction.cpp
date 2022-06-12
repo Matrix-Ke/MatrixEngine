@@ -13,7 +13,7 @@ VSViewWorldDir::VSViewWorldDir(const VSUsedName &ShowName, VSMaterial *pMaterial
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ViewWorldDirOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -29,7 +29,7 @@ VSViewWorldDir::~VSViewWorldDir()
 }
 void VSViewWorldDir::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ViewWorldDirOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -51,7 +51,7 @@ VSCameraWorldPos::VSCameraWorldPos(const VSUsedName &ShowName, VSMaterial *pMate
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("CameraWorldPosOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
@@ -67,7 +67,7 @@ VSCameraWorldPos::~VSCameraWorldPos()
 }
 void VSCameraWorldPos::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("CameraWorldPosOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

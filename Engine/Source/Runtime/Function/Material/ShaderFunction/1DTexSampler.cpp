@@ -13,7 +13,7 @@ VS1DTexSampler::VS1DTexSampler(const VSUsedName &ShowName, VSMaterial *pMaterial
     : VSTexSampler(ShowName, pMaterial)
 {
 
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Tex1DSamplerInput") + InputID;
     VSInputNode *pInputNode = NULL;
     pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
@@ -21,7 +21,7 @@ VS1DTexSampler::VS1DTexSampler(const VSUsedName &ShowName, VSMaterial *pMaterial
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Tex1DSamplerOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
@@ -55,12 +55,12 @@ VS1DTexSampler::VS1DTexSampler(const VSUsedName &ShowName, VSMaterial *pMaterial
 }
 void VS1DTexSampler::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString InputName = _T("Tex1DSamplerInput") + InputID;
     m_pInput[0]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("Tex1DSamplerOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;

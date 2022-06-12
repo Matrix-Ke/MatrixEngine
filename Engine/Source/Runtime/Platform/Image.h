@@ -3,7 +3,7 @@
 //
 // namespace Matrix
 //{
-//	class  MATRIX_CORE_API  MXImage
+//	class  MATRIX_PLATFORM_API  MXImage
 //	{
 //	public:
 //		enum ImageFormat
@@ -56,7 +56,7 @@
 //		unsigned char* m_pPalette;
 //	};
 //
-//	class MATRIX_CORE_API VSBMPImage : public MXImage
+//	class MATRIX_PLATFORM_API VSBMPImage : public MXImage
 //	{
 //	public:
 //		VSBMPImage();

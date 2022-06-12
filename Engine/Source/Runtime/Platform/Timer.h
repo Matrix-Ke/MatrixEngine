@@ -5,7 +5,7 @@ namespace Matrix
 {
     namespace Core
     {
-        class MATRIX_CORE_API MXTimer
+        class MATRIX_PLATFORM_API MXTimer
         {
         public:
             MXTimer();

@@ -20,9 +20,9 @@ VSSteer::~VSSteer()
     m_pActor = NULL;
     m_ComponentArray.Clear();
 }
-VSVector3 VSSteer::Compute()
+Math::Vector3 VSSteer::Compute()
 {
-    VSVector3 Force;
+    Math::Vector3 Force;
     for (unsigned int i = 0; i < m_ComponentArray.GetNum(); i++)
     {
         if (!AddForce(Force, m_ComponentArray[i]->Compute() * m_ComponentArray[i]->m_fWeight))
@@ -32,7 +32,7 @@ VSVector3 VSSteer::Compute()
     }
     return Force;
 }
-bool VSSteer::AddForce(VSVector3 &CurForce, VSVector3 &AddForce)
+bool VSSteer::AddForce(Math::Vector3 &CurForce, Math::Vector3 &AddForce)
 {
     VSREAL CurForceLen = CurForce.GetLength();
     VSREAL MaxDriverForce = GetOwner()->GetMaxDriverForce();

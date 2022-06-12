@@ -120,19 +120,19 @@ void VSGeometry::LoadDefault()
 
     // Cub
     {
-        Container::MArray<VSVector3> VertexArray;
+        Container::MArray<Math::Vector3> VertexArray;
 
         Container::MArray<VSUSHORT_INDEX> IndexArray;
 
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 0.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 0.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 0.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 0.0f));
 
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 1.0f));
 
         // front
         IndexArray.AddElement(0);
@@ -206,16 +206,16 @@ void VSGeometry::LoadDefault()
 
     // Cub Cone
     {
-        Container::MArray<VSVector3> VertexArray;
+        Container::MArray<Math::Vector3> VertexArray;
 
         Container::MArray<VSUSHORT_INDEX> IndexArray;
 
-        VertexArray.AddElement(VSVector3(0.0f, 0.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(0.0f, 0.0f, 0.0f));
 
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 1.0f));
 
         // front
         IndexArray.AddElement(1);
@@ -272,11 +272,11 @@ void VSGeometry::LoadDefault()
         unsigned int uiLevel = 1;
         unsigned int CircleLevel = 5;
 
-        Container::MArray<VSVector3> VertexArray;
+        Container::MArray<Math::Vector3> VertexArray;
 
         Container::MArray<VSUSHORT_INDEX> IndexArray;
 
-        VertexArray.AddElement(VSVector3(0.0f, 0.0f, 0.0f));
+        VertexArray.AddElement(Math::Vector3(0.0f, 0.0f, 0.0f));
 
         VSREAL RangeStep = 1.0f / uiLevel;
         for (unsigned int i = 0; i < uiLevel; i++)
@@ -287,10 +287,10 @@ void VSGeometry::LoadDefault()
                 VSREAL Radio = (j * 1.0f) / CircleLevel * VS2PI;
                 VSREAL X = Z * COS(Radio);
                 VSREAL Y = Z * SIN(Radio);
-                VertexArray.AddElement(VSVector3(X, Y, Z));
+                VertexArray.AddElement(Math::Vector3(X, Y, Z));
             }
         }
-        VertexArray.AddElement(VSVector3(0.0f, 0.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(0.0f, 0.0f, 1.0f));
 
         // first level
         for (unsigned int i = 0; i < CircleLevel; i++)
@@ -373,106 +373,106 @@ void VSGeometry::LoadDefault()
 
     // Quad Cub
     {
-        Container::MArray<VSVector3> VertexArray;
+        Container::MArray<Math::Vector3> VertexArray;
         Container::MArray<VSVector2> TexCoordArray;
-        Container::MArray<VSVector3> NormalArray;
+        Container::MArray<Math::Vector3> NormalArray;
         Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         // pos uv
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, 1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, 1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, 1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, 1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, 1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, 1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, 1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, 1.0f));
 
         // pos uv
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, -1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, -1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, -1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, -1.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 0.0f, -1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, -1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, -1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, -1.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 0.0f, -1.0f));
 
         // pos uv
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(-1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(-1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(-1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(-1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(-1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(-1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(-1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(-1.0f, 0.0f, 0.0f));
 
         // pos uv
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, -1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(1.0f, 0.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(1.0f, 0.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(1.0f, 0.0f, 0.0f));
 
         // pos uv
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, 1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, 1.0f, 1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(0.0f, 1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, 1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, 1.0f, 0.0f));
 
         // pos uv
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, 1.0f));
-        VertexArray.AddElement(VSVector3(-1.0f, -1.0f, -1.0f));
-        VertexArray.AddElement(VSVector3(1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, 1.0f));
+        VertexArray.AddElement(Math::Vector3(-1.0f, -1.0f, -1.0f));
+        VertexArray.AddElement(Math::Vector3(1.0f, -1.0f, -1.0f));
 
         TexCoordArray.AddElement(VSVector2(0.0f, 0.0f));
         TexCoordArray.AddElement(VSVector2(0.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 1.0f));
         TexCoordArray.AddElement(VSVector2(1.0f, 0.0f));
 
-        NormalArray.AddElement(VSVector3(0.0f, -1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, -1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, -1.0f, 0.0f));
-        NormalArray.AddElement(VSVector3(0.0f, -1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, -1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, -1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, -1.0f, 0.0f));
+        NormalArray.AddElement(Math::Vector3(0.0f, -1.0f, 0.0f));
 
         // front
         IndexArray.AddElement(0);
@@ -632,7 +632,7 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
                 continue;                                                                                                      \
             }                                                                                                                  \
             VSVector3W *pDataTemp = pData + uiNum * TexSizeX * Layer;                                                          \
-            VSVector3 *pTemp = (VSVector3 *)pMorphVertexBuffer->GetSemanticsDataFunction->GetData();                           \
+            Math::Vector3 *pTemp = (Math::Vector3 *)pMorphVertexBuffer->GetSemanticsDataFunction->GetData();                           \
             for (unsigned int j = 0; j < pMorphVertexBuffer->GetVertexNum(); j++)                                              \
             {                                                                                                                  \
                 pDataTemp->x = pTemp->x;                                                                                       \
@@ -716,16 +716,16 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
     // LinkBoneNode();
     VSMAC_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
     {
-        VSAABB3 NewAABB;
+        Primitive::AABB3 NewAABB;
 
         VSVertexBuffer *pVerBuffer = m_pMeshData->GetVertexBuffer();
         VSMAC_ASSERT(pMorphVertexBuffer->GetPositionData(0));
 
-        VSVector3 *pVer = (VSVector3 *)pMorphVertexBuffer->GetPositionData(0)->GetData();
+        Math::Vector3 *pVer = (Math::Vector3 *)pMorphVertexBuffer->GetPositionData(0)->GetData();
         VSMAC_ASSERT(pVer);
 
         unsigned int uiVertexNum = pVerBuffer->GetPositionData(0)->GetNum();
-        VSTransform World = m_pParent->GetWorldTransform();
+        Math::VSTransform World = m_pParent->GetWorldTransform();
         if (GetAffectSkeleton())
         {
             VSDataBuffer *pBlendIndex = pVerBuffer->GetBlendIndicesData(0);
@@ -735,7 +735,7 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
             {
                 return;
             }
-            Container::MArray<VSVector3> TempBuffer;
+            Container::MArray<Math::Vector3> TempBuffer;
             TempBuffer.SetBufferNum(uiVertexNum);
 
             if (pBlendIndex->GetDT() == VSDataBuffer::DT_UBYTE4)
@@ -755,7 +755,7 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
                         VSBoneNode *pBone = GetAffectBone(BlendIndex[k]);
                         if (pBone)
                         {
-                            VSTransform BoneWorld = pBone->GetWorldTransform();
+                            Math::VSTransform BoneWorld = pBone->GetWorldTransform();
 
                             VSMatrix3X3W TempBone = pBone->GetBoneOffsetMatrix() * BoneWorld.GetCombine() * World.GetCombineInverse();
                             TempBuffer[i] += pVer[i] * TempBone * BoneWeight.m[k];
@@ -776,7 +776,7 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
                         VSBoneNode *pBone = GetAffectBone(BlendIndex);
                         if (pBone)
                         {
-                            VSTransform BoneWorld = pBone->GetWorldTransform();
+                            Math::VSTransform BoneWorld = pBone->GetWorldTransform();
 
                             VSMatrix3X3W TempBone = pBone->GetBoneOffsetMatrix() * BoneWorld.GetCombine() * World.GetCombineInverse();
                             TempBuffer[i] += pVer[i] * TempBone * pBoneWeightData[i].m[k];
@@ -799,16 +799,16 @@ void VSGeometry::CreateLocalAABB()
     LinkBoneNode();
     VSMAC_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
     {
-        VSAABB3 NewAABB;
+        Primitive::AABB3 NewAABB;
 
         VSVertexBuffer *pVerBuffer = m_pMeshData->GetVertexBuffer();
         VSMAC_ASSERT(pVerBuffer->GetPositionData(0))
 
-        VSVector3 *pVer = (VSVector3 *)pVerBuffer->GetPositionData(0)->GetData();
+        Math::Vector3 *pVer = (Math::Vector3 *)pVerBuffer->GetPositionData(0)->GetData();
         VSMAC_ASSERT(pVer);
 
         unsigned int uiVertexNum = pVerBuffer->GetPositionData(0)->GetNum();
-        VSTransform World = m_pParent->GetWorldTransform();
+        Math::VSTransform World = m_pParent->GetWorldTransform();
         if (GetAffectSkeleton())
         {
             VSDataBuffer *pBlendIndex = pVerBuffer->GetBlendIndicesData(0);
@@ -818,7 +818,7 @@ void VSGeometry::CreateLocalAABB()
             {
                 return;
             }
-            Container::MArray<VSVector3> TempBuffer;
+            Container::MArray<Math::Vector3> TempBuffer;
             TempBuffer.SetBufferNum(uiVertexNum);
 
             if (pBlendIndex->GetDT() == VSDataBuffer::DT_UBYTE4)
@@ -838,7 +838,7 @@ void VSGeometry::CreateLocalAABB()
                         VSBoneNode *pBone = GetAffectBone(BlendIndex[k]);
                         if (pBone)
                         {
-                            VSTransform BoneWorld = pBone->GetWorldTransform();
+                            Math::VSTransform BoneWorld = pBone->GetWorldTransform();
 
                             VSMatrix3X3W TempBone = pBone->GetBoneOffsetMatrix() * BoneWorld.GetCombine() * World.GetCombineInverse();
                             TempBuffer[i] += pVer[i] * TempBone * BoneWeight.m[k];
@@ -859,7 +859,7 @@ void VSGeometry::CreateLocalAABB()
                         VSBoneNode *pBone = GetAffectBone(BlendIndex);
                         if (pBone)
                         {
-                            VSTransform BoneWorld = pBone->GetWorldTransform();
+                            Math::VSTransform BoneWorld = pBone->GetWorldTransform();
 
                             VSMatrix3X3W TempBone = pBone->GetBoneOffsetMatrix() * BoneWorld.GetCombine() * World.GetCombineInverse();
                             TempBuffer[i] += pVer[i] * TempBone * pBoneWeightData[i].m[k];
@@ -1253,14 +1253,14 @@ void VSGeometry::UpdateOther(double dAppTime)
     VSVertexBuffer *pVBuffer = GetMeshData()->GetVertexBuffer();
     if (GetAffectBoneNum() && pVBuffer->HaveBlendWeightInfo() && pVBuffer->HaveBlendIndicesInfo(0))
     {
-        VSTransform World = m_pParent->GetWorldTransform();
+        Math::VSTransform World = m_pParent->GetWorldTransform();
 
         for (unsigned int i = 0; i < GetAffectBoneNum(); i++)
         {
             VSBoneNode *pBone = GetAffectBone(i);
             if (pBone)
             {
-                VSTransform BoneWorld = pBone->GetWorldTransform();
+                Math::VSTransform BoneWorld = pBone->GetWorldTransform();
                 VSMatrix3X3W TempBone = pBone->GetBoneOffsetMatrix() * BoneWorld.GetCombine() * World.GetCombineInverse();
                 VSVector3W ColumnVector[4];
                 // TempBone.Identity();

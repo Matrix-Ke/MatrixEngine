@@ -36,7 +36,7 @@ bool VSQuadTerrainGeometry::RecursiveComputeVariance(unsigned int uiLevel)
         VSMAC_ASSERT(0);
         return 0;
     }
-    VSVector3 *pVer = (VSVector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
+    Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
     if (!pVer)
     {
         return 0;
@@ -148,7 +148,7 @@ void VSQuadTerrainGeometry::ClearInfo()
 {
     m_uiCurLevel = 0;
 }
-void VSQuadTerrainGeometry::Tessellate(const VSVector3 &CameraPos)
+void VSQuadTerrainGeometry::Tessellate(const Math::Vector3 &CameraPos)
 {
     VSCLodTerrainNode *pTerrainNode = (VSCLodTerrainNode *)m_pParent;
     unsigned int uiLevel = 1 << pTerrainNode->GetTessellationLevel();
@@ -161,7 +161,7 @@ void VSQuadTerrainGeometry::Tessellate(const VSVector3 &CameraPos)
 
     RecursiveTessellate(CameraPos, 0, A, B, C, D);
 }
-void VSQuadTerrainGeometry::RecursiveTessellate(const VSVector3 &CameraPos, unsigned int uiLevel, unsigned int A, unsigned int B,
+void VSQuadTerrainGeometry::RecursiveTessellate(const Math::Vector3 &CameraPos, unsigned int uiLevel, unsigned int A, unsigned int B,
                                                 unsigned int C, unsigned int D)
 {
     VSCLodTerrainNode *pTerrainNode = (VSCLodTerrainNode *)m_pParent;
@@ -169,7 +169,7 @@ void VSQuadTerrainGeometry::RecursiveTessellate(const VSVector3 &CameraPos, unsi
     {
         return;
     }
-    VSVector3 *pVer = (VSVector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
+    Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
     VSMAC_ASSERT(pVer);
 
     if (m_uiCurLevel < uiLevel)
@@ -178,8 +178,8 @@ void VSQuadTerrainGeometry::RecursiveTessellate(const VSVector3 &CameraPos, unsi
     }
 
     unsigned int uiMiddle = (B + D) >> 1;
-    VSVector3 Dist = CameraPos - pVer[uiMiddle];
-    VSVector3 Edge = pVer[A] - pVer[B];
+    Math::Vector3 Dist = CameraPos - pVer[uiMiddle];
+    Math::Vector3 Edge = pVer[A] - pVer[B];
     VSREAL fRatio = Dist.GetSqrLength() / (Edge.GetSqrLength() * Max(m_Variance[uiMiddle], 1.0f) * pTerrainNode->GetCLODScale());
     if (fRatio < 1.0f)
     {

@@ -192,7 +192,7 @@ bool VSWorld::UnLoadMap(const TCHAR *MapPath)
 
     return true;
 }
-VSActor *VSWorld::CreateActor(const TCHAR *ActorPath, const VSVector3 &Pos, const VSMatrix3X3 &Rotate, const VSVector3 &Scale, VSSceneMap *pSceneMap)
+VSActor *VSWorld::CreateActor(const TCHAR *ActorPath, const Math::Vector3 &Pos, const Math::Matrix3 &Rotate, const Math::Vector3 &Scale, VSSceneMap *pSceneMap)
 {
     if (!ActorPath)
     {

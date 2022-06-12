@@ -72,7 +72,7 @@ bool VSTriangleSet::CreateNormal(unsigned int uiVertexLevel)
     if (!pNormal->CreateEmptyBuffer(Num, VSDataBuffer::DT_FLOAT32_3))
         return 0;
 
-    VSVector3 *pNormalBuffer = (VSVector3 *)pNormal->GetData();
+    Math::Vector3 *pNormalBuffer = (Math::Vector3 *)pNormal->GetData();
 
     //计数
     unsigned int *pVertexTemp = VS_NEW unsigned int[Num];
@@ -96,7 +96,7 @@ bool VSTriangleSet::CreateNormal(unsigned int uiVertexLevel)
     if (pData->GetChannel() != 3)
         return 0;
     //获取顶点指针
-    VSVector3 *pVertexBuffer = (VSVector3 *)pData->GetData();
+    Math::Vector3 *pVertexBuffer = (Math::Vector3 *)pData->GetData();
     if (!pVertexBuffer)
         return 0;
 
@@ -108,10 +108,10 @@ bool VSTriangleSet::CreateNormal(unsigned int uiVertexLevel)
         VSUSHORT_INDEX i1 = pIndexBuffer[poly * 3 + 1];
         VSUSHORT_INDEX i2 = pIndexBuffer[poly * 3 + 2];
 
-        VSVector3 u = pVertexBuffer[i1] - pVertexBuffer[i0];
-        VSVector3 v = pVertexBuffer[i2] - pVertexBuffer[i0];
+        Math::Vector3 u = pVertexBuffer[i1] - pVertexBuffer[i0];
+        Math::Vector3 v = pVertexBuffer[i2] - pVertexBuffer[i0];
 
-        VSVector3 n;
+        Math::Vector3 n;
         n.Cross(u, v);
 
         pVertexTemp[i0]++;
@@ -181,7 +181,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
     if (!pTangent->CreateEmptyBuffer(Num, VSDataBuffer::DT_FLOAT32_3))
         return 0;
 
-    VSVector3 *pTangentBuffer = (VSVector3 *)pTangent->GetData();
+    Math::Vector3 *pTangentBuffer = (Math::Vector3 *)pTangent->GetData();
 
     // BiNoraml
     VSDataBuffer *pBiNormal = NULL;
@@ -191,7 +191,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
     if (!pBiNormal->CreateEmptyBuffer(Num, VSDataBuffer::DT_FLOAT32_3))
         return 0;
 
-    VSVector3 *pBiNormalBuffer = (VSVector3 *)pBiNormal->GetData();
+    Math::Vector3 *pBiNormalBuffer = (Math::Vector3 *)pBiNormal->GetData();
 
     unsigned int TriangleNum = GetTotalNum();
 
@@ -213,7 +213,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
     if (pData->GetChannel() != 3)
         return 0;
     //获取顶点指针
-    VSVector3 *pVertexBuffer = (VSVector3 *)pData->GetData();
+    Math::Vector3 *pVertexBuffer = (Math::Vector3 *)pData->GetData();
     if (!pVertexBuffer)
         return 0;
 
@@ -221,7 +221,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
     pData = m_pVertexBuffer->GetNormalData(0);
     if (!pData)
         return 0;
-    VSVector3 *pNormalBuffer = (VSVector3 *)pData->GetData();
+    Math::Vector3 *pNormalBuffer = (Math::Vector3 *)pData->GetData();
     if (!pNormalBuffer)
         return 0;
 
@@ -240,7 +240,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
         VSUSHORT_INDEX i2 = pIndexBuffer[poly * 3 + 2];
 
         // U = ((v0 - v2)(P0 - P1) - (v0 - v1)(P0 - P2)) / ((v0 - v2)(u0 - u1) - (v0 - v1)(u0 - u2))
-        VSVector3 TangentNoraml;
+        Math::Vector3 TangentNoraml;
         TangentNoraml =
             ((pVertexBuffer[i0] - pVertexBuffer[i1]) * (pTexCoordBuffer[i0].y - pTexCoordBuffer[i2].y) -
              (pVertexBuffer[i0] - pVertexBuffer[i2]) * (pTexCoordBuffer[i0].y - pTexCoordBuffer[i1].y)) /
@@ -252,7 +252,7 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
         pTangentBuffer[i2] += TangentNoraml;
 
         // V = ((u0 - u1)(P0 - P2) - (u0 - u2)(P0 - P1))/((v0 - v2)(u0 - u1) - (v0 - v1)(u0 - u2))
-        VSVector3 BiNoraml;
+        Math::Vector3 BiNoraml;
         BiNoraml =
             ((pVertexBuffer[i0] - pVertexBuffer[i1]) * (pTexCoordBuffer[i0].x - pTexCoordBuffer[i2].x) -
              (pVertexBuffer[i0] - pVertexBuffer[i2]) * (pTexCoordBuffer[i0].x - pTexCoordBuffer[i1].x)) /
@@ -265,13 +265,13 @@ bool VSTriangleSet::CreateTangent(unsigned int uiTexCoordLevel)
     }
     for (unsigned int i = 0; i < m_pVertexBuffer->GetVertexNum(); i++)
     {
-        VSVector3 N1 = pTangentBuffer[i];
-        VSVector3 N2 = pBiNormalBuffer[i];
-        VSVector3 Normal = pNormalBuffer[i];
+        Math::Vector3 N1 = pTangentBuffer[i];
+        Math::Vector3 N2 = pBiNormalBuffer[i];
+        Math::Vector3 Normal = pNormalBuffer[i];
 
-        VSVector3 Tangent = N1 - Normal * ((N1 * Normal) / (Normal * Normal));
+        Math::Vector3 Tangent = N1 - Normal * ((N1 * Normal) / (Normal * Normal));
 
-        VSVector3 Binormal = N2 - Normal * ((N2 * Normal) / (Normal * Normal)) - Tangent * ((N2 * Tangent) / (Tangent * Tangent));
+        Math::Vector3 Binormal = N2 - Normal * ((N2 * Normal) / (Normal * Normal)) - Tangent * ((N2 * Tangent) / (Tangent * Tangent));
 
         Tangent.Normalize();
         Binormal.Normalize();

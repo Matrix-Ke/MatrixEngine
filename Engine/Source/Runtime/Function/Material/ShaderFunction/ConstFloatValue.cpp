@@ -18,7 +18,7 @@ VSConstFloatValue::VSConstFloatValue(const VSUsedName &ShowName, VSMaterial *pMa
 {
     VSMAC_ASSERT(uiValueNum > 0 && uiValueNum < 5);
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ConstFloatValue") + OutputID;
     VSOutputNode *pOutputNode = NULL;
     pOutputNode = VS_NEW VSOutputNode(uiValueNum - 1, OutputName, this);
@@ -76,7 +76,7 @@ VSConstFloatValue::~VSConstFloatValue()
 void VSConstFloatValue::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString OutputID = IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
     VSString OutputName = _T("ConstFloatValue") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
@@ -164,7 +164,7 @@ bool VSConstFloatValue::GetFunctionString(VSString &OutString, MaterialShaderPar
         VSString Value[4];
         for (unsigned int i = 0; i < m_Value.GetNum(); i++)
         {
-            Value[i] = RealToString(m_Value[i]);
+            Value[i] = Container::RealToString(m_Value[i]);
         }
         if (m_pOutput[0]->GetValueType() == VSPutNode::VT_1)
         {

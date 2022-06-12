@@ -7,7 +7,7 @@ namespace Matrix
     namespace Core
     {
         //只允许一个线程控制这个线程类，没有线程安全性，2个线程同时控制这个线程类有些地方会出错
-        class MATRIX_CORE_API MXThread
+        class MATRIX_PLATFORM_API MXThread
         {
         public:
             enum Priority

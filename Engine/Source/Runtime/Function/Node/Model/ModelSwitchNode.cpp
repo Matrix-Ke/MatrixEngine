@@ -59,7 +59,7 @@ void VSModelSwitchNode::UpdateView(VSCuller &Culler, double dAppTime)
             }
         }
         /*VSREAL ZFar = pCamera->GetZFar();
-        VSVector3 DistVector = pCamera->GetWorldTranslate() - GetWorldTranslate();
+        Math::Vector3 DistVector = pCamera->GetWorldTranslate() - GetWorldTranslate();
         VSREAL Dist = DistVector.GetLength();
         VSREAL LastTemp = ZFar * 0.5f;
         VSREAL CurTemp = LastTemp;

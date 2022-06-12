@@ -75,7 +75,7 @@ namespace Matrix
         VSProjectShadowSceneRenderPtr m_pProjectShadowSceneRender;
 
         virtual void GetLightRange();
-        VSAABB3 m_WorldRenderBV;
+        Primitive::AABB3 m_WorldRenderBV;
         VSREAL m_Range;
         VSREAL m_Falloff;
         VSREAL m_Theta;

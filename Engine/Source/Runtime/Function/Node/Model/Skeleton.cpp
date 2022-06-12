@@ -145,7 +145,7 @@ void VSSkeleton::Draw(VSCamera *pCamera)
     VSSkeletonMeshNode *pMesh = (VSSkeletonMeshNode *)m_pParent;
     VSMAC_ASSERT(pMesh);
 
-    VSVector3 Dist = pCamera->GetWorldTranslate() - pMesh->GetWorldTranslate();
+    Math::Vector3 Dist = pCamera->GetWorldTranslate() - pMesh->GetWorldTranslate();
     ms_fBoneAxisLength = Dist.GetLength() * 0.05f;
 
     static Container::MArray<VSDebugDraw *> s_DebugDrawArray;
@@ -169,9 +169,9 @@ void VSSkeleton::Draw(VSCamera *pCamera)
         VSBoneNode *pParent = DynamicCast<VSBoneNode>(m_pBoneArray[i]->GetParent());
         if (pParent)
         {
-            VSVector3 P1 = m_pBoneArray[i]->GetWorldTranslate();
+            Math::Vector3 P1 = m_pBoneArray[i]->GetWorldTranslate();
 
-            VSVector3 P2 = m_pBoneArray[i]->GetParent()->GetWorldTranslate();
+            Math::Vector3 P2 = m_pBoneArray[i]->GetParent()->GetWorldTranslate();
             for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
             {
                 s_DebugDrawArray[j]->AddDebugLine(P1, P2, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f).GetDWARGB(), false);
@@ -180,13 +180,13 @@ void VSSkeleton::Draw(VSCamera *pCamera)
     }
     for (unsigned int i = 0; i < m_pBoneArray.GetNum(); i++)
     {
-        VSVector3 Axis[3];
-        VSMatrix3X3 Rot = m_pBoneArray[i]->GetWorldRotate();
+        Math::Vector3 Axis[3];
+        Math::Matrix3 Rot = m_pBoneArray[i]->GetWorldRotate();
         Rot.GetUVN(Axis);
         Axis[0].Normalize();
         Axis[1].Normalize();
         Axis[2].Normalize();
-        VSVector3 Pos = m_pBoneArray[i]->GetWorldTranslate();
+        Math::Vector3 Pos = m_pBoneArray[i]->GetWorldTranslate();
 
         for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
         {
@@ -204,25 +204,25 @@ void VSSkeleton::Draw(VSCamera *pCamera)
         }
     }
 }
-const VSTransform &VSSkeleton::GetRootTransform()
+const Math::VSTransform &VSSkeleton::GetRootTransform()
 {
     if (m_pChild.GetNum() > 0)
     {
         return m_pChild[0]->GetLocalTransform();
     }
-    return VSTransform::ms_Indetity;
+    return Math::VSTransform::ms_Indetity;
 }
 void VSSkeleton::CreateLocalAABB()
 {
-    VSVector3 MinPos(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
-    VSVector3 MaxPos(VSMIN_REAL, VSMIN_REAL, VSMIN_REAL);
-    VSTransform SkeletonLocalT = GetLocalTransform();
+    Math::Vector3 MinPos(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
+    Math::Vector3 MaxPos(VSMIN_REAL, VSMIN_REAL, VSMIN_REAL);
+    Math::VSTransform SkeletonLocalT = GetLocalTransform();
     for (unsigned int j = 0; j < GetBoneNum(); j++)
     {
         VSBoneNode *pBone = GetBoneNode(j);
         if (pBone)
         {
-            VSVector3 Pos = pBone->GetWorldTranslate() * SkeletonLocalT.GetCombineInverse();
+            Math::Vector3 Pos = pBone->GetWorldTranslate() * SkeletonLocalT.GetCombineInverse();
             for (int t = 0; t < 3; t++)
             {
                 if (MinPos.m[t] > Pos.m[t])

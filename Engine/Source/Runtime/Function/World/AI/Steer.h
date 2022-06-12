@@ -17,7 +17,7 @@ namespace Matrix
             return m_pSteer;
         }
         //º∆À„∫œ¡¶
-        virtual VSVector3 Compute() = 0;
+        virtual Math::Vector3 Compute() = 0;
 
     protected:
         VSSteer *m_pSteer;
@@ -47,12 +47,12 @@ namespace Matrix
 
         template <class T>
         void DeleteSteerComponent();
-        virtual VSVector3 Compute();
+        virtual Math::Vector3 Compute();
 
     protected:
         VSActor *m_pActor;
         Container::MArray<VSSteerComponentPtr> m_ComponentArray;
-        bool AddForce(VSVector3 &CurForce, VSVector3 &AddForce);
+        bool AddForce(Math::Vector3 &CurForce, Math::Vector3 &AddForce);
         class PriorityCompare
         {
         public:

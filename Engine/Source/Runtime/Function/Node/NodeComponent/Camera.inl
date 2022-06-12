@@ -3,18 +3,18 @@ inline const VSMatrix3X3W & VSCamera::GetViewMatrix()const
 	return m_ViewMat;
 
 }
-// inline const VSVector3& VSCamera::GetWorldPos()const
+// inline const Math::Vector3& VSCamera::GetWorldPos()const
 // {
 // 	return m_WorldPos;
 // }
-// inline void VSCamera::GetLocalDirection(VSVector3 &LocalDir,VSVector3 &LocalUp,VSVector3 & LocalRight)const
+// inline void VSCamera::GetLocalDirection(Math::Vector3 &LocalDir,Math::Vector3 &LocalUp,Math::Vector3 & LocalRight)const
 // {
 // 	LocalDir = m_LocalDir;
 // 	LocalUp = m_LocalUp;
 // 	LocalRight = m_LocalRight;
 // 
 // }
-// inline void VSCamera::GetWorldDirection(VSVector3 &WorldDir,VSVector3 &WorldUp,VSVector3 & WorldRight)const
+// inline void VSCamera::GetWorldDirection(Math::Vector3 &WorldDir,Math::Vector3 &WorldUp,Math::Vector3 & WorldRight)const
 // {
 // 	WorldDir = m_WorldDir;
 // 	WorldUp = m_WorldUp;
@@ -40,27 +40,27 @@ inline bool VSCamera::AddViewPort(const VSViewPort &ViewPort)//йс©з
 	m_ViewPort.AddElement(ViewPort);
 	return true;
 }
-// inline const VSVector3 &VSCamera::GetLocalDir()const
+// inline const Math::Vector3 &VSCamera::GetLocalDir()const
 // {
 // 	return m_LocalDir;
 // }
-// inline const VSVector3 &VSCamera::GetLocalUp()const
+// inline const Math::Vector3 &VSCamera::GetLocalUp()const
 // {
 // 	return m_LocalUp;
 // }
-// inline const VSVector3 &VSCamera::GetLocalRight()const
+// inline const Math::Vector3 &VSCamera::GetLocalRight()const
 // {
 // 	return m_LocalRight;
 // }
-// inline const VSVector3 &VSCamera::GetWorldDir()const
+// inline const Math::Vector3 &VSCamera::GetWorldDir()const
 // {
 // 	return m_WorldDir;
 // }
-// inline const VSVector3 &VSCamera::GetWorldUp()const
+// inline const Math::Vector3 &VSCamera::GetWorldUp()const
 // {
 // 	return m_WorldUp;
 // }
-// inline const VSVector3 &VSCamera::GetWorldRight()const
+// inline const Math::Vector3 &VSCamera::GetWorldRight()const
 // {
 // 	return m_WorldRight;
 // }

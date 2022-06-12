@@ -35,8 +35,8 @@ bool VSGPULodTerrainGeometry::CreateMesh(unsigned int uiTileNumX, unsigned int u
         return 0;
     }
 
-    VSVector3 *pVer = (VSVector3 *)pVertexData->GetData();
-    VSVector3 *pVerTemp = pVer;
+    Math::Vector3 *pVer = (Math::Vector3 *)pVertexData->GetData();
+    Math::Vector3 *pVerTemp = pVer;
 
     for (unsigned int i = 0; i < (uiTileNumX + 1); i++)
     {

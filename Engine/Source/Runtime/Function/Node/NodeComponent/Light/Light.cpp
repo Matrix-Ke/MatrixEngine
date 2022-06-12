@@ -186,7 +186,7 @@ void VSLocalLight::DrawLightMaterial(double dAppTime)
         }
     }
 }
-void VSLocalLight::GetCullerAABBArray(VSCuller &Culler, Container::MArray<VSAABB3> &AABBArray)
+void VSLocalLight::GetCullerAABBArray(VSCuller &Culler, Container::MArray<Primitive::AABB3> &AABBArray)
 {
 
     for (unsigned int i = 0; i < VSCuller::VST_MAX; i++)
@@ -207,12 +207,12 @@ VSIndirectLight::VSIndirectLight()
     m_bInheritScale = false;
     m_bInheritRotate = false;
 
-    m_Range = VSVector3(999999.0f, 999999.0f, 999999.0f);
+    m_Range = Math::Vector3(999999.0f, 999999.0f, 999999.0f);
 }
 VSIndirectLight::~VSIndirectLight()
 {
 }
-void VSIndirectLight::SetLocalRotate(const VSMatrix3X3 &Rotate)
+void VSIndirectLight::SetLocalRotate(const Math::Matrix3 &Rotate)
 {
 }
 bool VSIndirectLight::IsRelative(VSGeometry *pGeometry)
@@ -221,30 +221,30 @@ bool VSIndirectLight::IsRelative(VSGeometry *pGeometry)
     {
         return false;
     }
-    VSAABB3 GeometryAABB = pGeometry->GetWorldAABB();
+    Primitive::AABB3 GeometryAABB = pGeometry->GetWorldAABB();
     if (GeometryAABB.RelationWith(m_WorldRenderBV) == VSNOINTERSECT)
     {
         return false;
     }
     return true;
 }
-void VSIndirectLight::SetLocalTransform(const VSTransform &LocalTransform)
+void VSIndirectLight::SetLocalTransform(const Math::VSTransform &LocalTransform)
 {
-    VSVector3 Tranlation = LocalTransform.GetTranslate();
+    Math::Vector3 Tranlation = LocalTransform.GetTranslate();
     SetLocalTranslate(Tranlation);
 }
 void VSIndirectLight::SetLocalMat(const VSMatrix3X3W VSMat)
 {
-    VSVector3 Tranlation = VSMat.GetTranslation();
+    Math::Vector3 Tranlation = VSMat.GetTranslation();
     SetLocalTranslate(Tranlation);
 }
-void VSIndirectLight::SetLocalScale(const VSVector3 &fScale)
+void VSIndirectLight::SetLocalScale(const Math::Vector3 &fScale)
 {
 }
 void VSIndirectLight::GetLightRange()
 {
-    VSVector3 Pos = GetWorldTranslate();
-    m_WorldRenderBV = VSAABB3(Pos, m_Range.x, m_Range.y, m_Range.z);
+    Math::Vector3 Pos = GetWorldTranslate();
+    m_WorldRenderBV = Primitive::AABB3(Pos, m_Range.x, m_Range.y, m_Range.z);
 }
 bool VSIndirectLight::Cullby(VSCuller &Culler)
 {

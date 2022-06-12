@@ -107,8 +107,8 @@ void VSBoneKey::CompressSameFrame()
     }
 }
 void VSBoneKey::Get(VSBoneKeyCompress *pBoneKeyCompress,
-                    const VSVector3 &MaxTranslation, const VSVector3 &MinTranslation,
-                    const VSVector3 MaxScale, const VSVector3 MinScale)
+                    const Math::Vector3 &MaxTranslation, const Math::Vector3 &MinTranslation,
+                    const Math::Vector3 MaxScale, const Math::Vector3 MinScale)
 {
     pBoneKeyCompress->m_cName = m_cName;
     for (unsigned int i = 0; i < m_ScaleArray.GetNum(); i++)
@@ -158,8 +158,8 @@ VSBoneKeyCompress::~VSBoneKeyCompress()
 {
 }
 void VSBoneKeyCompress::Get(VSBoneKey *pBoneKey,
-                            const VSVector3 &MaxTranslation, const VSVector3 &MinTranslation,
-                            const VSVector3 MaxScale, const VSVector3 MinScale)
+                            const Math::Vector3 &MaxTranslation, const Math::Vector3 &MinTranslation,
+                            const Math::Vector3 MaxScale, const Math::Vector3 MinScale)
 {
     pBoneKey->m_cName = m_cName;
     for (unsigned int i = 0; i < m_ScaleArray.GetNum(); i++)
@@ -214,10 +214,10 @@ VSAnim::VSAnim()
     m_pBoneKeyArray.Clear();
     m_fLength = 0.0f;
     m_bCompress = false;
-    m_MaxCompressTranslation = VSVector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
-    m_MinCompressTranslation = VSVector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
-    m_MaxCompressScale = VSVector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
-    m_MinCompressScale = VSVector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
+    m_MaxCompressTranslation = Math::Vector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
+    m_MinCompressTranslation = Math::Vector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
+    m_MaxCompressScale = Math::Vector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
+    m_MinCompressScale = Math::Vector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
     m_pBlendAnim = NULL;
     m_bRootAnimPlay = false;
 }
@@ -279,11 +279,11 @@ void VSAnim::Compress()
     m_bCompress = true;
     m_pBoneKeyCompressArray.Clear();
 
-    m_MaxCompressScale = VSVector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
-    m_MaxCompressTranslation = VSVector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
+    m_MaxCompressScale = Math::Vector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
+    m_MaxCompressTranslation = Math::Vector3(-VSMAX_REAL, -VSMAX_REAL, -VSMAX_REAL);
 
-    m_MinCompressScale = VSVector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
-    m_MinCompressTranslation = VSVector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
+    m_MinCompressScale = Math::Vector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
+    m_MinCompressTranslation = Math::Vector3(VSMAX_REAL, VSMAX_REAL, VSMAX_REAL);
 
     for (unsigned int i = 0; i < m_pBoneKeyArray.GetNum(); i++)
     {
@@ -365,13 +365,13 @@ VSBoneKey *VSAnim::GetBoneKey(unsigned int i) const
     VSMAC_ASSERT(i < m_pBoneKeyArray.GetNum());
     return m_pBoneKeyArray[i];
 }
-VSVector3 VSAnim::GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
+Math::Vector3 VSAnim::GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
 {
     VSBoneKey *pBoneKey = GetBoneKey(UseName);
     unsigned int uiKeyNum = pBoneKey->m_TranslationArray.GetNum();
     if (!pBoneKey || !uiKeyNum)
     {
-        return VSVector3(0, 0, 0);
+        return Math::Vector3(0, 0, 0);
     }
 
     if (uiRepeatType == VSController::RT_NONE || uiRepeatType == VSController::RT_MAX)
@@ -408,13 +408,13 @@ VSVector3 VSAnim::GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsign
         fFactor = 1.0f;
     return pBoneKey->m_TranslationArray[uiIndex1].m_Vector * (1.0f - fFactor) + pBoneKey->m_TranslationArray[uiIndex2].m_Vector * fFactor;
 }
-VSVector3 VSAnim::GetScale(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
+Math::Vector3 VSAnim::GetScale(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
 {
     VSBoneKey *pBoneKey = GetBoneKey(UseName);
     unsigned int uiKeyNum = pBoneKey->m_ScaleArray.GetNum();
     if (!pBoneKey || !uiKeyNum)
     {
-        return VSVector3(1.0f, 1.0f, 1.0f);
+        return Math::Vector3(1.0f, 1.0f, 1.0f);
     }
 
     if (uiRepeatType == VSController::RT_NONE || uiRepeatType == VSController::RT_MAX)
@@ -502,16 +502,16 @@ VSQuat VSAnim::GetQuat(const VSUsedName &UseName, VSREAL fTime, unsigned int uiR
 }
 VSMatrix3X3W VSAnim::GetMat(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
 {
-    VSVector3 Scale = GetScale(UseName, fTime, uiRepeatType);
+    Math::Vector3 Scale = GetScale(UseName, fTime, uiRepeatType);
     VSQuat Rotator = GetQuat(UseName, fTime, uiRepeatType);
-    VSVector3 Translate = GetTranslation(UseName, fTime, uiRepeatType);
+    Math::Vector3 Translate = GetTranslation(UseName, fTime, uiRepeatType);
 
     VSMatrix3X3W Output;
 
-    VSMatrix3X3 mRotate;
+    Math::Matrix3 mRotate;
     Rotator.GetMatrix(mRotate);
-    VSMatrix3X3 Mat;
-    Mat = VSMatrix3X3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
+    Math::Matrix3 Mat;
+    Mat = Math::Matrix3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
                       mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
                       mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
 
@@ -520,13 +520,13 @@ VSMatrix3X3W VSAnim::GetMat(const VSUsedName &UseName, VSREAL fTime, unsigned in
     return Output;
 }
 
-VSVector3 VSAnim::GetTranslation(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeatType) const
+Math::Vector3 VSAnim::GetTranslation(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeatType) const
 {
     VSBoneKey *pBoneKey = GetBoneKey(uiIndex);
     unsigned int uiKeyNum = pBoneKey->m_TranslationArray.GetNum();
     if (!pBoneKey || !uiKeyNum)
     {
-        return VSVector3(0, 0, 0);
+        return Math::Vector3(0, 0, 0);
     }
 
     if (uiRepeatType == VSController::RT_NONE || uiRepeatType == VSController::RT_MAX)
@@ -563,13 +563,13 @@ VSVector3 VSAnim::GetTranslation(unsigned int uiIndex, VSREAL fTime, unsigned in
         fFactor = 1.0f;
     return pBoneKey->m_TranslationArray[uiIndex1].m_Vector * (1 - fFactor) + pBoneKey->m_TranslationArray[uiIndex2].m_Vector * fFactor;
 }
-VSVector3 VSAnim::GetScale(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeatType) const
+Math::Vector3 VSAnim::GetScale(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeatType) const
 {
     VSBoneKey *pBoneKey = GetBoneKey(uiIndex);
     unsigned int uiKeyNum = pBoneKey->m_ScaleArray.GetNum();
     if (!pBoneKey || !uiKeyNum)
     {
-        return VSVector3(1.0f, 1.0f, 1.0f);
+        return Math::Vector3(1.0f, 1.0f, 1.0f);
     }
 
     if (uiRepeatType == VSController::RT_NONE || uiRepeatType == VSController::RT_MAX)
@@ -657,15 +657,15 @@ VSQuat VSAnim::GetQuat(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeat
 }
 VSMatrix3X3W VSAnim::GetMat(unsigned int uiIndex, VSREAL fTime, unsigned int uiRepeatType) const
 {
-    VSVector3 Scale = GetScale(uiIndex, fTime, uiRepeatType);
+    Math::Vector3 Scale = GetScale(uiIndex, fTime, uiRepeatType);
     VSQuat Rotator = GetQuat(uiIndex, fTime, uiRepeatType);
-    VSVector3 Translate = GetTranslation(uiIndex, fTime, uiRepeatType);
+    Math::Vector3 Translate = GetTranslation(uiIndex, fTime, uiRepeatType);
 
     VSMatrix3X3W Output;
-    VSMatrix3X3 mRotate;
+    Math::Matrix3 mRotate;
     Rotator.GetMatrix(mRotate);
-    VSMatrix3X3 Mat;
-    Mat = VSMatrix3X3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
+    Math::Matrix3 Mat;
+    Mat = Math::Matrix3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
                       mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
                       mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
 

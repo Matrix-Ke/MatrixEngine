@@ -21,7 +21,7 @@ namespace Matrix
     public:
         VSKeyTimeVector(){};
         ~VSKeyTimeVector(){};
-        VSVector3 m_Vector;
+        Math::Vector3 m_Vector;
     };
     class MATRIX_FUNCTION_API VSKeyTimeReal : public VSKeyTimeInfo
     {
@@ -85,8 +85,8 @@ namespace Matrix
         VSUsedName m_cName;
         void CompressSameFrame();
         void Get(VSBoneKeyCompress *pBoneKeyCompress,
-                 const VSVector3 &MaxTranslation, const VSVector3 &MinTranslation,
-                 const VSVector3 MaxScale, const VSVector3 MinScale);
+                 const Math::Vector3 &MaxTranslation, const Math::Vector3 &MinTranslation,
+                 const Math::Vector3 MaxScale, const Math::Vector3 MinScale);
     };
     DECLARE_Ptr(VSBoneKey);
     VSTYPE_MARCO(VSBoneKey);
@@ -109,8 +109,8 @@ namespace Matrix
         Container::MArray<VSKeyTimeQuaternionCompress> m_RotatorArray;
         VSUsedName m_cName;
         void Get(VSBoneKey *pBoneKey,
-                 const VSVector3 &MaxTranslation, const VSVector3 &MinTranslation,
-                 const VSVector3 MaxScale, const VSVector3 MinScale);
+                 const Math::Vector3 &MaxTranslation, const Math::Vector3 &MinTranslation,
+                 const Math::Vector3 MaxScale, const Math::Vector3 MinScale);
     };
     DECLARE_Ptr(VSBoneKeyCompress);
     VSTYPE_MARCO(VSBoneKeyCompress);
@@ -153,10 +153,10 @@ namespace Matrix
         Container::MArray<VSBoneKeyCompressPtr> m_pBoneKeyCompressArray;
         VSREAL m_fLength;
         bool m_bCompress;
-        VSVector3 m_MaxCompressTranslation;
-        VSVector3 m_MinCompressTranslation;
-        VSVector3 m_MaxCompressScale;
-        VSVector3 m_MinCompressScale;
+        Math::Vector3 m_MaxCompressTranslation;
+        Math::Vector3 m_MinCompressTranslation;
+        Math::Vector3 m_MaxCompressScale;
+        Math::Vector3 m_MinCompressScale;
         bool m_bRootAnimPlay;
         VSAnimRPtr m_pBlendAnim;
 
@@ -178,13 +178,13 @@ namespace Matrix
         virtual bool PostLoad(MStream *pStream);
         VSUsedName m_cName;
 
-        VSVector3 GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
-        VSVector3 GetScale(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
+        Math::Vector3 GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
+        Math::Vector3 GetScale(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
         VSQuat GetQuat(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
         VSMatrix3X3W GetMat(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
 
-        VSVector3 GetTranslation(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
-        VSVector3 GetScale(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
+        Math::Vector3 GetTranslation(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
+        Math::Vector3 GetScale(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
         VSQuat GetQuat(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
         VSMatrix3X3W GetMat(unsigned int i, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
 

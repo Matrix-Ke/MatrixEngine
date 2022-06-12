@@ -190,7 +190,7 @@ void VSShaderMainFunction::GetAlphaTestString(VSString &OutString, MaterialShade
     if (m_fAlphaTestValue < 1.0f)
     {
         VSString AlphaName = GetAlphaNode()->GetNodeName().GetString();
-        VSString AlphaTestValue = RealToString(m_fAlphaTestValue);
+        VSString AlphaTestValue = Container::RealToString(m_fAlphaTestValue);
 
         VSRenderer::ms_pRenderer->Clip(AlphaName + _T(" - ") + AlphaTestValue, OutString);
         OutString += _T(";\n");
@@ -412,12 +412,12 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                     ShadowString = _T(" * ");
                     if (MSPara.pCamera->GetFov() <= AngleToRadian(90.0f))
                     {
-                        VSRenderer::ms_pRenderer->PointLightCubeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
+                        VSRenderer::ms_pRenderer->PointLightCubeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
                                                                        *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_ViewMatrix, *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     }
                     else
                     {
-                        VSRenderer::ms_pRenderer->PointLightCubeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
+                        VSRenderer::ms_pRenderer->PointLightCubeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
                                                                        *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     }
 
@@ -426,7 +426,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 else if (((VSPointLight *)pLocalLight)->GetShadowType() == VSPointLight::ST_VOLUME)
                 {
                     ShadowString = _T(" * ");
-                    VSRenderer::ms_pRenderer->PointLightVolumeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
+                    VSRenderer::ms_pRenderer->PointLightVolumeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
                                                                      *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     uiShadowNum++;
                 }
@@ -434,7 +434,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 {
                     ShadowString = _T(" * ");
                     unsigned int uiIndex = uiShadowNum;
-                    VSRenderer::ms_pRenderer->PointLightDualParaboloidShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
+                    VSRenderer::ms_pRenderer->PointLightDualParaboloidShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_POINT] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_POINT]) + _T("]"),
                                                                              *VSShaderStringFactory::ms_PSConstantShadowResource[uiIndex], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     uiShadowNum++;
                 }
@@ -444,7 +444,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 if (((VSDirectionLight *)pLocalLight)->GetShadowType() == VSDirectionLight::ST_VOLUME)
                 {
                     ShadowString = _T(" * ");
-                    VSRenderer::ms_pRenderer->DirectionLightVolumeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
+                    VSRenderer::ms_pRenderer->DirectionLightVolumeShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
                                                                          *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     uiShadowNum++;
                 }
@@ -452,7 +452,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 {
                     ShadowString = _T(" * ");
                     unsigned int uiIndex = uiShadowNum;
-                    VSRenderer::ms_pRenderer->DirectionLightCSMShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
+                    VSRenderer::ms_pRenderer->DirectionLightCSMShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
                                                                       *VSShaderStringFactory::ms_PSConstantShadowResource[uiIndex],
                                                                       *VSShaderStringFactory::ms_WorldPos, *VSShaderStringFactory::ms_ViewPos, *VSShaderStringFactory::ms_FarZ, ShadowString);
                     uiShadowNum++;
@@ -463,7 +463,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 else
                 {
                     ShadowString = _T(" * ");
-                    VSRenderer::ms_pRenderer->DirectionLightShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
+                    VSRenderer::ms_pRenderer->DirectionLightShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_DIRECTION] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_DIRECTION]) + _T("]"),
                                                                    *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     uiShadowNum++;
                 }
@@ -474,7 +474,7 @@ void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container:
                 {
                     // use the same to dirlightshadow
                     ShadowString = _T(" * ");
-                    VSRenderer::ms_pRenderer->SpotLightShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_SPOT] + _T("[") + IntToString(uiLightIndex[VSLight::LT_SPOT]) + _T("]"),
+                    VSRenderer::ms_pRenderer->SpotLightShadow(*VSShaderStringFactory::ms_LightName[VSLight::LT_SPOT] + _T("[") + Container::IntToString(uiLightIndex[VSLight::LT_SPOT]) + _T("]"),
                                                               *VSShaderStringFactory::ms_PSConstantShadowResource[uiShadowNum], *VSShaderStringFactory::ms_WorldPos, ShadowString);
                     uiShadowNum++;
                 }

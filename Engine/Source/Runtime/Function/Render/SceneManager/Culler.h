@@ -106,9 +106,9 @@ namespace Matrix
         inline void ClearLight();
         void InsertLight(VSLight *pLight);
         bool HasLight(VSLight *pLight);
-        virtual unsigned int IsVisible(const VSAABB3 &BV, bool bClearState = false);
+        virtual unsigned int IsVisible(const Primitive::AABB3 &BV, bool bClearState = false);
         virtual unsigned int IsVisible(const VSSphere3 &S, bool bClearState = false);
-        virtual unsigned int IsVisible(const VSVector3 &Point, bool bClearState = false);
+        virtual unsigned int IsVisible(const Math::Vector3 &Point, bool bClearState = false);
         inline void SetUseMaterialIndex(int iUseMaterialIndex)
         {
             m_iUseMaterialIndex = iUseMaterialIndex;
@@ -149,7 +149,7 @@ namespace Matrix
         virtual void CollectDynamicInstance();
         virtual bool CullGeometry(VSGeometry *pGeometry);
 
-        void GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<VSAABB3> &AABBArray);
+        void GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<Primitive::AABB3> &AABBArray);
 
         void GetAndSortLight();
         inline void SetBeignDynamicInstanceNum(unsigned int uiBeignDynamicInstanceNum)

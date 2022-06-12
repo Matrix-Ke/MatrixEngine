@@ -6,7 +6,7 @@ namespace Matrix
 {
 	namespace Core
 	{
-		class MATRIX_CORE_API File
+		class MATRIX_PLATFORM_API File
 		{
 		public:
 			//选出几种代表的openmode

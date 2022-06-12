@@ -40,9 +40,9 @@ namespace Matrix
 
         };
 
-        virtual void Tessellate(const VSVector3 &CameraPos);
+        virtual void Tessellate(const Math::Vector3 &CameraPos);
         bool RecursiveComputeVariance(unsigned int uiLevel);
-        void RecursiveTessellate(const VSVector3 &CameraPos, unsigned int uiLevel, unsigned int A, unsigned int B,
+        void RecursiveTessellate(const Math::Vector3 &CameraPos, unsigned int uiLevel, unsigned int A, unsigned int B,
                                  unsigned int C, unsigned int D);
         static inline void AddTriangle(VSUSHORT_INDEX *&pIndexData, unsigned int A, unsigned int B,
                                        unsigned int C, unsigned int D, unsigned int uiATFlag, unsigned int &uiCurRenderTriNum);
