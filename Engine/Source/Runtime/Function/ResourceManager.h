@@ -134,73 +134,74 @@ namespace Matrix
 		//static void CacheResource();
 		//static void DeleteMapResource(const TCHAR* pFileName);
 		//static void DeleteAllMapResource();
-		//template <typename T>
-		//static VSResourceProxy<T>* LoadASYNResource(const TCHAR* pFileName, bool IsAsyn)
-		//{
-		//	if (!pFileName)
-		//	{
-		//		return NULL;
-		//	}
-		//	VSFileName FileName = pFileName;
-		//	Container::MString Extension;
-		//	VSUsedName ResourceName;
-		//	if (FileName.GetExtension(Extension))
-		//	{
-		//		if (Extension != T::ms_FileSuffix)
-		//		{
-		//			return NULL;
-		//		}
-		//		else
-		//		{
-		//			ResourceName = FileName;
-		//			FileName = T::ms_ResourcePath + FileName;
-		//		}
-		//	}
-		//	else
-		//	{
-		//		ResourceName = FileName + T::ms_PointFileSuffix;
-		//		FileName = T::ms_ResourcePath + FileName + T::ms_PointFileSuffix;
-		//	}
-		//	Core::MSynchronize::Locker Temp(T::ms_LoadResourceCriticalSection);
-		//	VSPointer<VSResourceProxy<T>> pResourceR = NULL;
-		//	pResourceR = (VSResourceProxy<T> *)T::GetASYNResourceSet().CheckIsHaveTheResource(ResourceName);
-		//	if (pResourceR)
-		//	{
-		//		return pResourceR;
-		//	}
-		//	pResourceR = MX_NEW VSResourceProxy<T>();
+		template <typename T>
+		static VSResourceProxy<T>* LoadASYNResource(const TCHAR* pFileName, bool IsAsyn)
+		{
+			if (!pFileName)
+			{
+				return NULL;
+			}
+			VSFileName FileName = pFileName;
+			Container::MString Extension;
+			VSUsedName ResourceName;
+			if (FileName.GetExtension(Extension))
+			{
+				if (Extension != T::ms_FileSuffix)
+				{
+					return NULL;
+				}
+				else
+				{
+					ResourceName = FileName;
+					FileName = T::ms_ResourcePath + FileName;
+				}
+			}
+			else
+			{
+				ResourceName = FileName + T::ms_PointFileSuffix;
+				FileName = T::ms_ResourcePath + FileName + T::ms_PointFileSuffix;
+			}
+			Core::MSynchronize::Locker Temp(T::ms_LoadResourceCriticalSection);
+			VSPointer<VSResourceProxy<T>> pResourceR = NULL;
+			//判断资源是否存在
+			pResourceR = (VSResourceProxy<T> *)T::GetASYNResourceSet().CheckIsHaveTheResource(ResourceName);
+			if (pResourceR)
+			{
+				return pResourceR;
+			}
+			pResourceR = MX_NEW VSResourceProxy<T>();
 
-		//	pResourceR->SetResourceName(ResourceName);
+			pResourceR->SetResourceName(ResourceName);
 
-		//	T::GetASYNResourceSet().AddResource(ResourceName, pResourceR);
-
-		//	if (IsAsyn && VSConfig::ms_EnableAsynLoad && (pResourceR->GetResourceAbility() & RA_ASYN_LOAD))
-		//	{
-		//		MATRIX_ENGINE_ASSERT(VSASYNLoadManager::ms_pASYNLoadManager);
-		//		VSASYNLoadManager::ms_pASYNLoadManager->AddResource(pResourceR, FileName);
-		//	}
-		//	else
-		//	{
-		//		T* pResource = LoadResource<T>(FileName.GetBuffer());
-		//		if (pResource)
-		//		{
-		//			pResourceR->SetNewResource(pResource);
-		//			if (pResourceR->GetResourceAbility() & RA_NEED_CACHE)
-		//			{
-		//				T::CacheType* pCacheResouce = LoadResource<T::CacheType>(pResource->GetCacheFilePath().GetBuffer());
-		//				MATRIX_ENGINE_ASSERT(pCacheResouce);
-		//				pCacheResouce->SetCacheResource(pResource);
-		//				ENGINE_DELETE(pCacheResouce);
-		//			}
-		//			pResourceR->Loaded();
-		//		}
-		//		else
-		//		{
-		//			MATRIX_ENGINE_ASSERT(0);
-		//		}
-		//	}
-		//	return pResourceR;
-		//}
+			T::GetASYNResourceSet().AddResource(ResourceName, pResourceR);
+			//如果是异步加载
+			if (IsAsyn && VSConfig::ms_EnableAsynLoad && (pResourceR->GetResourceAbility() & RA_ASYN_LOAD))
+			{
+				MATRIX_ENGINE_ASSERT(VSASYNLoadManager::ms_pASYNLoadManager);
+				VSASYNLoadManager::ms_pASYNLoadManager->AddResource(pResourceR, FileName);
+			}
+			else
+			{
+				T* pResource = LoadResource<T>(FileName.GetBuffer());
+				if (pResource)
+				{
+					pResourceR->SetNewResource(pResource);
+					if (pResourceR->GetResourceAbility() & RA_NEED_CACHE)
+					{
+						T::CacheType* pCacheResouce = LoadResource<T::CacheType>(pResource->GetCacheFilePath().GetBuffer());
+						MATRIX_ENGINE_ASSERT(pCacheResouce);
+						pCacheResouce->SetCacheResource(pResource);
+						ENGINE_DELETE(pCacheResouce);
+					}
+					pResourceR->Loaded();
+				}
+				else
+				{
+					MATRIX_ENGINE_ASSERT(0);
+				}
+			}
+			return pResourceR;
+		}
 
 		////内部管理resource
 		//GET_INNER_RESOURCE_SET(VertexFormat);
@@ -235,7 +236,7 @@ namespace Matrix
 		//static VSTexAllState* Create3DTexture(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiLength, unsigned int uiFormatType, unsigned int uiMipLevel, T* pBuffer, bool bSRGB = false);
 		//static VSCaptureTexAllState* CreateCaptureTexture(const Container::MString& ViewFamilyName, unsigned int uiMipLevel = 1);
 
-		//static VSTexAllState* Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState, CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip);
+		static VSTexAllState* Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState, CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip);
 		//static VS2DTexture* CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType, bool bIsNormal, bool bSRGB, bool bMip);
 
 		//static VSVertexFormat* LoadVertexFormat(VSVertexBuffer* pVertexBuffer, Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>* pFormatArray = NULL);
@@ -439,7 +440,6 @@ namespace Matrix
 		//static void DeleteRootObject(MObject* p);
 		//static void AddGCObject(MObject* p);
 		//static void GCObject();
-		//static void RunAllGCTask();
 
 		////GPU skin  
 		//static unsigned int GetGpuSkinBoneNum()
@@ -502,14 +502,16 @@ namespace Matrix
 
 	protected:
 		friend class MStream;
-		//friend class VSAsynStream;
-		//friend class VSWorld;
-		//static VSGCTask* ms_pCurGCTask;
-		//static VSGCTask* ms_pEndGCTask;
-		//static void RunGCTask();
-		//static void AddCanGCObject(Container::MArray<MObject*>& CanGCObject);
-		//static Container::MArray<MObject*> ms_pRootObject;
-		//static Container::MArrayOrder<MObject*> ms_pGCObject;
+		friend class VSAsynStream;
+		friend class VSWorld;
+		//每帧形成一个GCtask， 这样就形成一个链表
+		static VSGCTask* ms_pCurGCTask;
+		static VSGCTask* ms_pEndGCTask;
+		static void RunAllGCTask();  //如果游戏结束还没有释放完毕，则全部都释放掉
+		static void RunGCTask(); //运行每帧来释放 VSObject 对象
+		static void AddCanGCObject(Container::MArray<MObject*>& CanGCObject); //添加本帧要释放的 VSObject 对象
+		static Container::MArray<MObject*> ms_pRootObject;
+		static Container::MArrayOrder<MObject*> ms_pGCObject;
 
 	protected:
 		//static unsigned int ms_uiGpuSkinBoneNum;

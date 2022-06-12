@@ -721,7 +721,7 @@ namespace Matrix
 
 		MStream(DWORD dwFlag = 0);
 		~MStream();
-		//此read 和 write 并非实际写入，都是操作内存，并非操作文件 
+		//此read 和 write 并非实际写入，都是流操作，并非操作文件 
 		bool Read(void* pvBuffer, unsigned int uiSize);
 		bool Write(const void* pvBuffer, unsigned int uiSize);
 		bool ReadString(Container::MString& str);

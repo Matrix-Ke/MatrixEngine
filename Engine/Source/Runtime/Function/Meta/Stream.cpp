@@ -214,6 +214,8 @@ const MObject* MStream::GetObjectByRtti(const VSRtti& Rtti)
 	{
 		MObject* p = m_pObjectArray[i];
 		MATRIX_ENGINE_ASSERT(p != NULL);
+		//刚刚加载好的文件，需要设置为OF_UNREACH
+		//todo  设置OF_UNREACH存在疑问
 		if (p)
 		{
 			p->ClearFlag(MObject::OF_REACH);
@@ -240,8 +242,7 @@ const MObject* MStream::GetObjectByRtti(const VSRtti& Rtti)
 				i++;
 			}
 		}
-		//todo  GC
-		//VSResourceManager::AddCanGCObject(CanGCObject);
+		VSResourceManager::AddCanGCObject(CanGCObject);
 	}
 	else
 	{

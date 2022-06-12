@@ -520,6 +520,8 @@ namespace Matrix
 	public:
 		VSProxyResourceSet(unsigned int uiGCMaxTimeCount = 5000);
 		~VSProxyResourceSet();
+		//资源垃圾回收的代码。遍历所有资源，如果这种类型的资源能够回收，它已经加载完毕，
+		//而且没有其他对象引用，那么就判断时间计数。若时间计数大于 m_uiGCMaxTimeCount，就把这个资源代理释放掉；否则，就把时间计数清零
 		virtual void GCResource();
 	};
 	template <class KEY, class VALUE>

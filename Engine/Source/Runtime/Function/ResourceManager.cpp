@@ -21,10 +21,15 @@ namespace Matrix
 			GCStream.SetStreamFlag(MStream::AT_CLEAR_OBJECT_PROPERTY_GC);
 			m_pNextTask = NULL;
 		}
+
+		//每帧清除CanGCNum 个VSObject 对象的内部连接，处理完毕后，每帧释放CanGCNum 个VSObject 对象
 		void Run()
 		{
+			//如果需要清理的object索引大于m_CanGCObject的数量，那么就需要先进行释放
+		   //否则就需要先进行断开object各种属性连接。
 			if (CurClearIndex >= m_CanGCObject.GetNum())
 			{
+				//释放 CanGCNum 个 VSObject 对象
 				unsigned int MaxDeleteIndex = CurDeleteIndex + m_CanGCNum;
 				for (; CurDeleteIndex < MaxDeleteIndex && CurDeleteIndex < m_CanGCObject.GetNum(); CurDeleteIndex++)
 				{
@@ -33,6 +38,7 @@ namespace Matrix
 			}
 			else
 			{
+				//断开准备释放的 VSObject 对象的指针连接
 				unsigned int MaxClearIndex = CurClearIndex + m_CanGCNum;
 				for (; CurClearIndex < MaxClearIndex && CurClearIndex < m_CanGCObject.GetNum(); CurClearIndex++)
 				{
@@ -40,12 +46,13 @@ namespace Matrix
 				}
 			}
 		}
-		VSGCTask* m_pNextTask;
+		//是否释放完毕
 		bool IsEnd()
 		{
 			return CurDeleteIndex >= m_CanGCObject.GetNum();
 		}
 
+		VSGCTask* m_pNextTask;
 	private:
 		Container::MArray<MObject*> m_CanGCObject;
 		unsigned int m_CanGCNum;
@@ -234,45 +241,45 @@ VSResourceManager::~VSResourceManager()
 //
 //	LOAD_SHADER_CACHE(Inner);
 //}
-//void VSResourceManager::AddCanGCObject(Container::MArray<MObject*>& CanGCObject)
-//{
-//	if (CanGCObject.GetNum() == 0)
-//	{
-//		return;
-//	}
-//	if (!ms_pCurGCTask)
-//	{
-//		ms_pCurGCTask = MX_NEW VSGCTask(CanGCObject);
-//		ms_pEndGCTask = ms_pCurGCTask;
-//	}
-//	else
-//	{
-//		ms_pEndGCTask->m_pNextTask = MX_NEW VSGCTask(CanGCObject);
-//		ms_pEndGCTask = ms_pEndGCTask->m_pNextTask;
-//	}
-//}
-//void VSResourceManager::RunGCTask()
-//{
-//	if (ms_pCurGCTask)
-//	{
-//		ms_pCurGCTask->Run();
-//		if (ms_pCurGCTask->IsEnd())
-//		{
-//			VSGCTask* Temp = ms_pCurGCTask;
-//			ms_pCurGCTask = ms_pCurGCTask->m_pNextTask;
-//			ENGINE_DELETE(Temp);
-//		}
-//	}
-//}
-//void VSResourceManager::RunAllGCTask()
-//{
-//	ms_pRootObject.Clear();
-//	while (ms_pCurGCTask)
-//	{
-//		RunGCTask();
-//	}
-//	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
-//}
+void VSResourceManager::AddCanGCObject(Container::MArray<MObject*>& CanGCObject)
+{
+	if (CanGCObject.GetNum() == 0)
+	{
+		return;
+	}
+	if (!ms_pCurGCTask)
+	{
+		ms_pCurGCTask = MX_NEW VSGCTask(CanGCObject);
+		ms_pEndGCTask = ms_pCurGCTask;
+	}
+	else
+	{
+		ms_pEndGCTask->m_pNextTask = MX_NEW VSGCTask(CanGCObject);
+		ms_pEndGCTask = ms_pEndGCTask->m_pNextTask;
+	}
+}
+void VSResourceManager::RunGCTask()
+{
+	if (ms_pCurGCTask)
+	{
+		ms_pCurGCTask->Run();
+		if (ms_pCurGCTask->IsEnd())
+		{
+			VSGCTask* Temp = ms_pCurGCTask;
+			ms_pCurGCTask = ms_pCurGCTask->m_pNextTask;
+			ENGINE_DELETE(Temp);
+		}
+	}
+}
+void VSResourceManager::RunAllGCTask()
+{
+	ms_pRootObject.Clear();
+	while (ms_pCurGCTask)
+	{
+		RunGCTask();
+	}
+	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
+}
 //DECLEAR_NOCLEAR_COUNT_PROFILENODE(RootGCObjectNum, )
 //void VSResourceManager::AddRootObject(MObject* p)
 //{
@@ -1040,130 +1047,130 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	}
 //	return uiVSTextureType;
 //}
-//VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState,
-//	CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
-//{
-//	if (bIsNormal)
-//	{
-//		bSRGB = false;
-//	}
-//
-//	if (!pFileName)
-//	{
-//
-//		return NULL;
-//	}
-//
-//	if (uiCompressType > CT_MAX)
-//	{
-//
-//		return NULL;
-//	}
-//
-//	VSFileName FileName = pFileName;
-//	Container::MString Extension;
-//
-//	if (!FileName.GetExtension(Extension))
-//	{
-//
-//		return NULL;
-//	}
-//	VSTexAllState* pTexAllState = NULL;
-//
-//	VSImage* pImage = NULL;
-//	unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
-//	if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
-//	{
-//		pImage = MX_NEW VSBMPImage();
-//	}
-//	else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
-//	{
-//		pImage = MX_NEW VSTGAImage();
-//	}
-//	else
-//	{
-//
-//		return NULL;
-//	}
-//
-//	if (!pImage->Load(FileName.GetBuffer()))
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//
-//	unsigned int uiWidth = pImage->GetWidth();
-//	unsigned int uiHeight = pImage->GetHeight();
-//	if (!uiWidth || !uiHeight)
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//	if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
-//	{
-//		ENGINE_DELETE(pImage);
-//
-//		return NULL;
-//	}
-//
-//	pTexAllState = MX_NEW VSTexAllState();
-//	pTexAllState->m_uiWidth = uiWidth;
-//	pTexAllState->m_uiHeight = uiHeight;
-//	pTexAllState->m_bNormal = bIsNormal;
-//	pTexAllState->m_bSRGB = bSRGB;
-//	pTexAllState->m_bMip = bMip;
-//	pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
-//	pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
-//
-//	for (unsigned int cy = 0; cy < uiHeight; cy++)
-//	{
-//		for (unsigned int cx = 0; cx < uiWidth; cx++)
-//		{
-//
-//			unsigned int uiIndex = cy * uiWidth + cx;
-//			unsigned char* pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
-//			const unsigned char* pImageBuffer = pImage->GetPixel(cx, cy);
-//			if (pImage->GetBPP() == 8)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[0];
-//				pBuffer[2] = pImageBuffer[0];
-//				pBuffer[3] = pImageBuffer[0];
-//			}
-//			else if (pImage->GetBPP() == 24)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[1];
-//				pBuffer[2] = pImageBuffer[2];
-//				pBuffer[3] = 255;
-//			}
-//			else if (pImage->GetBPP() == 32)
-//			{
-//				pBuffer[0] = pImageBuffer[0];
-//				pBuffer[1] = pImageBuffer[1];
-//				pBuffer[2] = pImageBuffer[2];
-//				pBuffer[3] = pImageBuffer[3];
-//			}
-//		} // for
-//	}     // for
-//
-//	if (pImage)
-//	{
-//		ENGINE_DELETE(pImage);
-//	}
-//
-//	VS2DTexture* pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
-//		pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
-//	pTexAllState->m_pTex = pNewTexture;
-//
-//	if (pSamplerState)
-//	{
-//		pTexAllState->SetSamplerState(pSamplerState);
-//	}
-//	return pTexAllState;
-//}
+VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState,
+	CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
+{
+	if (bIsNormal)
+	{
+		bSRGB = false;
+	}
+
+	if (!pFileName)
+	{
+
+		return NULL;
+	}
+
+	if (uiCompressType > CT_MAX)
+	{
+
+		return NULL;
+	}
+
+	VSFileName FileName = pFileName;
+	Container::MString Extension;
+
+	if (!FileName.GetExtension(Extension))
+	{
+
+		return NULL;
+	}
+	//根据不同文件类型处理
+	VSTexAllState* pTexAllState = NULL;
+	VSImage* pImage = NULL;
+	unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
+	if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
+	{
+		pImage = MX_NEW VSBMPImage();
+	}
+	else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
+	{
+		pImage = MX_NEW VSTGAImage();
+	}
+	else
+	{
+
+		return NULL;
+	}
+
+	if (!pImage->Load(FileName.GetBuffer()))
+	{
+		ENGINE_DELETE(pImage);
+
+		return NULL;
+	}
+
+	unsigned int uiWidth = pImage->GetWidth();
+	unsigned int uiHeight = pImage->GetHeight();
+	if (!uiWidth || !uiHeight)
+	{
+		ENGINE_DELETE(pImage);
+
+		return NULL;
+	}
+	if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
+	{
+		ENGINE_DELETE(pImage);
+
+		return NULL;
+	}
+
+	pTexAllState = MX_NEW VSTexAllState();
+	pTexAllState->m_uiWidth = uiWidth;
+	pTexAllState->m_uiHeight = uiHeight;
+	pTexAllState->m_bNormal = bIsNormal;
+	pTexAllState->m_bSRGB = bSRGB;
+	pTexAllState->m_bMip = bMip;
+	pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
+	pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
+
+	for (unsigned int cy = 0; cy < uiHeight; cy++)
+	{
+		for (unsigned int cx = 0; cx < uiWidth; cx++)
+		{
+
+			unsigned int uiIndex = cy * uiWidth + cx;
+			unsigned char* pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
+			const unsigned char* pImageBuffer = pImage->GetPixel(cx, cy);
+			if (pImage->GetBPP() == 8)
+			{
+				pBuffer[0] = pImageBuffer[0];
+				pBuffer[1] = pImageBuffer[0];
+				pBuffer[2] = pImageBuffer[0];
+				pBuffer[3] = pImageBuffer[0];
+			}
+			else if (pImage->GetBPP() == 24)
+			{
+				pBuffer[0] = pImageBuffer[0];
+				pBuffer[1] = pImageBuffer[1];
+				pBuffer[2] = pImageBuffer[2];
+				pBuffer[3] = 255;
+			}
+			else if (pImage->GetBPP() == 32)
+			{
+				pBuffer[0] = pImageBuffer[0];
+				pBuffer[1] = pImageBuffer[1];
+				pBuffer[2] = pImageBuffer[2];
+				pBuffer[3] = pImageBuffer[3];
+			}
+		} // for
+	}     // for
+
+	if (pImage)
+	{
+		ENGINE_DELETE(pImage);
+	}
+
+	VS2DTexture* pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
+		pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
+	pTexAllState->m_pTex = pNewTexture;
+
+	if (pSamplerState)
+	{
+		pTexAllState->SetSamplerState(pSamplerState);
+	}
+	return pTexAllState;
+}
 //VS2DTexture* VSResourceManager::CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool bIsNormal, bool bSRGB, bool bMip)
 //{
