@@ -2,7 +2,7 @@
 #include "ShaderFunction.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
 
     class MATRIX_FUNCTION_API VSViewWorldDir : public VSShaderFunction
     {

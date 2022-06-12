@@ -25,12 +25,12 @@ namespace Matrix
         virtual void PostCreate(){};
         virtual void OnDestroy();
         void AttachParentSocket(const VSUsedName &AttackSocketName);
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual void UpdateTransform(double dAppTime);
         virtual void UpdateLightState(double dAppTime);
         virtual void UpdateCameraState(double dAppTime);
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
 
     protected:
         virtual void UpdateNodeAll(double dAppTime);
@@ -46,7 +46,7 @@ namespace Matrix
 
         if (T::ms_Type.IsDerived(VSNodeComponent::ms_Type))
         {
-            T *Component = (T *)VSObject::GetInstance<T>();
+            T *Component = (T *)MObject::GetInstance<T>();
             Component->PostCreate();
             return Component;
         }

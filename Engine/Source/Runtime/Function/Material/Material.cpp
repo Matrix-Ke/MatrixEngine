@@ -19,10 +19,10 @@
 #include "ArithmeticShaderFunction.h"
 #include "ColorBuffer.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(MaterialCustomPara, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(MaterialCustomPara, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(MaterialCustomPara)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(MaterialCustomPara, VSObject)
+    BEGIN_ADD_PROPERTY(MaterialCustomPara, MObject)
         REGISTER_PROPERTY(ConstValueName, ConstValueName, VSProperty::F_SAVE_LOAD_CLONE)
             END_ADD_PROPERTY
 
@@ -70,12 +70,12 @@ CustomBuffer::CustomBuffer()
 CustomBuffer::~CustomBuffer()
 {
 }
-IMPLEMENT_RTTI_NoCreateFun(VSCustomMaterialInterface, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSCustomMaterialInterface, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSCustomMaterialInterface)
         ADD_INITIAL_FUNCTION(InitialDefaultState)
             ADD_TERMINAL_FUNCTION(TerminalDefaultState)
                 IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSCustomMaterialInterface, VSObject)
+    BEGIN_ADD_PROPERTY(VSCustomMaterialInterface, MObject)
 END_ADD_PROPERTY
 VSCustomMaterialInterface::VSCustomMaterialInterface()
 {
@@ -1392,8 +1392,8 @@ VSPointer<VSMaterial> VSMaterial::ms_DefaultOnlyVertexColor;
 VSPointer<VSMaterial> VSMaterial::ms_DefaultOnlyColorDisableDepth;
 VSPointer<VSMaterial> VSMaterial::ms_DefaultOnlyVertexColorDisableDepth;
 VSMaterialRPtr VSMaterial::ms_DefaultOnlyColorResource = NULL;
-IMPLEMENT_RTTI(VSMaterial, VSObject)
-BEGIN_ADD_PROPERTY(VSMaterial, VSObject)
+IMPLEMENT_RTTI(VSMaterial, MObject)
+BEGIN_ADD_PROPERTY(VSMaterial, MObject)
 REGISTER_PROPERTY(m_ShowName, ShowName, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pShaderMainFunction, ShaderMainFunction, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pShaderFunctionArray, ShaderFunctionArray, VSProperty::F_SAVE_LOAD_CLONE)
@@ -1772,7 +1772,7 @@ int VSMaterial::GetInstanceIndex(const VSConstFloatValue *pCFValue)
     VSMAC_ASSERT(0);
     return -1;
 }
-void VSMaterial::GetInstanceVertexFormat(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int &uiOffset)
+void VSMaterial::GetInstanceVertexFormat(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int &uiOffset)
 {
     LinkAllResource();
     unsigned int TypeMap[] = {VSDataBuffer::DT_FLOAT32_1, VSDataBuffer::DT_FLOAT32_2, VSDataBuffer::DT_FLOAT32_3, VSDataBuffer::DT_FLOAT32_4};
@@ -1810,7 +1810,7 @@ bool VSMaterial::GetCustomDeclareString(VSString &OutString, MaterialShaderPara 
 bool VSMaterial::GetVShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, VSArray<VSShaderFunction *>> NoValidMap;
+    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1832,7 +1832,7 @@ bool VSMaterial::GetVShaderTreeString(VSString &OutString, MaterialShaderPara &M
 bool VSMaterial::GetDShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, VSArray<VSShaderFunction *>> NoValidMap;
+    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1854,7 +1854,7 @@ bool VSMaterial::GetDShaderTreeString(VSString &OutString, MaterialShaderPara &M
 bool VSMaterial::GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, VSArray<VSShaderFunction *>> NoValidMap;
+    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1898,13 +1898,13 @@ bool VSMaterial::GetPShaderTreeString(VSString &OutString, MaterialShaderPara &M
         return m_pShaderMainFunction[uPassId]->GetPShaderTreeString(OutString, MSPara);
     }
 }
-bool VSMaterial::PostClone(VSObject *pObjectSrc)
+bool VSMaterial::PostClone(MObject *pObjectSrc)
 {
     LinkAllResource();
     return true;
 }
 
-bool VSMaterial::PostLoad(VSStream *pStream)
+bool VSMaterial::PostLoad(MStream *pStream)
 {
     LinkAllResource();
     return true;
@@ -1942,7 +1942,7 @@ void VSMaterial::CreateCustomTexture(VSShader *pShader)
 }
 void VSMaterial::CreateTextureDeclare(VSString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara)
 {
-    VSArray<VSTexSampler *> TexSampler[VSEngineFlag::SS_MAX];
+    Container::MArray<VSTexSampler *> TexSampler[VSEngineFlag::SS_MAX];
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
     {
         VSTexSampler *Temp = DynamicCast<VSTexSampler>(m_pShaderFunctionArray[i]);
@@ -2007,8 +2007,8 @@ void VSMaterial::CreateConstValueDeclare(VSString &OutString, unsigned int &uiRe
         uiRegisterID++;
     }
 }
-IMPLEMENT_RTTI(VSMaterialInstance, VSObject)
-BEGIN_ADD_PROPERTY(VSMaterialInstance, VSObject)
+IMPLEMENT_RTTI(VSMaterialInstance, MObject)
+BEGIN_ADD_PROPERTY(VSMaterialInstance, MObject)
 REGISTER_PROPERTY(m_ShaderCustomValue, ShaderCustomValue, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_ShaderCustomTex, ShaderCustomTex, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pMaterial, Material, VSProperty::F_SAVE_LOAD_CLONE)
@@ -2045,7 +2045,7 @@ void VSMaterialInstance::GetAllMaterialPara()
     m_ShaderCustomValue = m_pMaterial->GetResource()->m_ShaderCustomValue;
     m_ShaderCustomTex = m_pMaterial->GetResource()->m_ShaderCustomTex;
 }
-bool VSMaterialInstance::PostLoad(VSStream *pStream)
+bool VSMaterialInstance::PostLoad(MStream *pStream)
 {
     if (!m_pMaterial)
     {
@@ -2055,7 +2055,7 @@ bool VSMaterialInstance::PostLoad(VSStream *pStream)
     m_pMaterial->AddLoadEventObject(this);
     return true;
 }
-bool VSMaterialInstance::PostClone(VSObject *pObjectSrc)
+bool VSMaterialInstance::PostClone(MObject *pObjectSrc)
 {
     if (!m_pMaterial)
     {
@@ -2076,7 +2076,7 @@ void VSMaterialInstance::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *
         m_pCurDShader[i] = NULL;
     }
 }
-void VSMaterialInstance::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSMaterialInstance::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     for (const auto &Temp : m_ShaderCustomTex)
     {

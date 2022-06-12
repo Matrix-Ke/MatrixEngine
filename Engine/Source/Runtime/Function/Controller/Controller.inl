@@ -1,4 +1,4 @@
-inline VSObject * VSController::GetObject()const
+inline MObject * VSController::GetObject()const
 {
 	return m_pObject;
 }

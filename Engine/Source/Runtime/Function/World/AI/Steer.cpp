@@ -1,7 +1,7 @@
 #include "Steer.h"
 #include "GraphicInclude.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSSteerComponent, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSSteerComponent, MObject)
     VSSteerComponent::VSSteerComponent()
 {
     m_pSteer = NULL;
@@ -10,7 +10,7 @@ VSSteerComponent::~VSSteerComponent()
 {
     m_pSteer = NULL;
 }
-IMPLEMENT_RTTI_NoCreateFun(VSSteer, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSSteer, MObject)
     VSSteer::VSSteer()
 {
     m_pActor = NULL;

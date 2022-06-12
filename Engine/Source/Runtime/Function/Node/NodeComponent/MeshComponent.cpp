@@ -202,7 +202,7 @@ unsigned int VSMeshComponent::GetSubMeshNum()
 
     return pGeometryNode->GetNormalGeometryNum();
 }
-void VSMeshComponent::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSMeshComponent::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     VSNodeComponent::GetStreamResource(pResourceProxy, StreamInformation);
     if (m_pNode)

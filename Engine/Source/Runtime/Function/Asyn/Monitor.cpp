@@ -196,7 +196,7 @@ void VSResourceMonitor::Update(double tick)
         return;
     }
     // remove redundant files
-    VSArray<FileChangedArgs> files;
+    Container::MArray<FileChangedArgs> files;
     while (m_changedFiles.IsEmpty())
     {
         FileChangedArgs file;

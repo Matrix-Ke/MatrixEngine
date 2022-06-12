@@ -2,7 +2,7 @@
 #include "MeshNode.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSTerrainNode : public VSMeshNode
     {
         // RTTI

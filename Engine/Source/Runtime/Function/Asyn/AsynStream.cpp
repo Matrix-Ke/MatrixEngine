@@ -4,7 +4,7 @@
 #include "GraphicInclude.h"
 using namespace Matrix;
 VSAsynStream::VSAsynStream()
-    : VSStream(ASYN_LOAD_FLAG)
+    : MStream(ASYN_LOAD_FLAG)
 {
 }
 bool VSAsynStream::LoadFromBuffer(unsigned char *pBuffer, unsigned int uiSize)
@@ -35,7 +35,7 @@ bool VSAsynStream::LoadFromBuffer(unsigned char *pBuffer, unsigned int uiSize)
     // Object Table
     for (unsigned int i = 0; i < iObjectNum; i++)
     {
-        VSObject *pObject = 0;
+        MObject *pObject = 0;
         //读取指针
         if (!Read(&m_ObjectTable[i].m_uiGUID, sizeof(unsigned int)))
         {
@@ -63,14 +63,14 @@ void VSAsynStream::CreateAndRegisterObject()
 {
     for (unsigned int i = 0; i < m_ObjectTable.GetNum(); i++)
     {
-        VSObject *pObject = NULL;
+        MObject *pObject = NULL;
         if (m_bLoadUseGC)
         {
-            pObject = VSObject::GetInstance(m_ObjectTable[i].m_RttiName);
+            pObject = MObject::GetInstance(m_ObjectTable[i].m_RttiName);
         }
         else
         {
-            pObject = VSObject::GetNoGCInstance(m_ObjectTable[i].m_RttiName);
+            pObject = MObject::GetNoGCInstance(m_ObjectTable[i].m_RttiName);
         }
         //创建空对象
 
@@ -166,9 +166,9 @@ bool VSAsynStream::ReadResource(VSResourceProxyBasePtr &Resource)
 
     return true;
 }
-const VSObject *VSAsynStream::GetObjectByRtti(const VSRtti &Rtti)
+const MObject *VSAsynStream::GetObjectByRtti(const VSRtti &Rtti)
 {
-    VSObject *pObject = NULL;
+    MObject *pObject = NULL;
     for (unsigned int i = 0; i < m_pVObjectArray.GetNum(); i++)
     {
         if ((m_pVObjectArray[i]->GetType()).IsSameType(Rtti))
@@ -191,25 +191,25 @@ const VSObject *VSAsynStream::GetObjectByRtti(const VSRtti &Rtti)
     }
     for (unsigned int i = 0; i < m_pVObjectArray.GetNum(); i++)
     {
-        VSObject *p = m_pVObjectArray[i];
+        MObject *p = m_pVObjectArray[i];
         VSMAC_ASSERT(p != NULL);
         if (p)
         {
-            p->ClearFlag(VSObject::OF_REACH);
-            p->SetFlag(VSObject::OF_UNREACH);
+            p->ClearFlag(MObject::OF_REACH);
+            p->SetFlag(MObject::OF_UNREACH);
         }
     }
     if (pObject)
     {
-        VSStream GCCollectStream;
-        GCCollectStream.SetStreamFlag(VSStream::AT_LOAD_OBJECT_COLLECT_GC);
+        MStream GCCollectStream;
+        GCCollectStream.SetStreamFlag(MStream::AT_LOAD_OBJECT_COLLECT_GC);
         GCCollectStream.ArchiveAll(pObject);
 
-        VSArray<VSObject *> CanGCObject;
+        Container::MArray<MObject *> CanGCObject;
         for (unsigned int i = 0; i < m_pVObjectArray.GetNum();)
         {
-            VSObject *p = m_pVObjectArray[i];
-            if (p->IsHasFlag(VSObject::OF_UNREACH))
+            MObject *p = m_pVObjectArray[i];
+            if (p->IsHasFlag(MObject::OF_UNREACH))
             {
                 CanGCObject.AddElement(p);
                 m_pVObjectArray.Erase(i);
@@ -228,7 +228,7 @@ const VSObject *VSAsynStream::GetObjectByRtti(const VSRtti &Rtti)
     }
     return pObject;
 }
-void VSAsynStream::PostLoadObject(VSObject *pPostLoadObject)
+void VSAsynStream::PostLoadObject(MObject *pPostLoadObject)
 {
     m_uiStreamFlag = AT_POSTLOAD;
     ArchiveAll(pPostLoadObject);

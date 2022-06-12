@@ -6,7 +6,7 @@
 #include "Slot.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSBufferResource : public VSMemBind, public VSBindLockInterface, public VSSlot
     {
         // PRIORITY

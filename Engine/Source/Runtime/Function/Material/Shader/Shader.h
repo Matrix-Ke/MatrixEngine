@@ -9,7 +9,7 @@
 #include "Resource.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSShader : public VSBind
     {
         // RTTI
@@ -79,9 +79,9 @@ namespace Matrix
         void AddShareSampler(unsigned int ShareSamplerRegister, unsigned int ShareSamplerType);
 
     public:
-        VSArray<VSUserConstantPtr> m_pUserConstant;
-        VSArray<VSUserSamplerPtr> m_pUserSampler;
-        VSArray<VSUserBufferPtr> m_pUserBuffer;
+        Container::MArray<VSUserConstantPtr> m_pUserConstant;
+        Container::MArray<VSUserSamplerPtr> m_pUserSampler;
+        Container::MArray<VSUserBufferPtr> m_pUserBuffer;
         VSShaderKey m_ShaderKey;
         bool m_bCreatePara;
         unsigned int m_uiArithmeticInstructionSlots;

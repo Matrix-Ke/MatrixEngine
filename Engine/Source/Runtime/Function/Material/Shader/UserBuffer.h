@@ -5,8 +5,8 @@
 #include "BufferResource.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSUserBuffer : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSUserBuffer : public MObject
     {
         // PRIORITY
 
@@ -46,8 +46,8 @@ namespace Matrix
         {
             return m_uiRegisterNum;
         }
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
 
     protected:
         friend class VSRenderer;
@@ -55,7 +55,7 @@ namespace Matrix
 
     private:
         unsigned int m_uiDT;
-        VSArray<VSBufferResourcePtr> m_pBufferResourceArray;
+        Container::MArray<VSBufferResourcePtr> m_pBufferResourceArray;
         VSUsedName m_Name;
         unsigned int m_uiRegisterIndex;
         unsigned int m_uiRegisterNum;

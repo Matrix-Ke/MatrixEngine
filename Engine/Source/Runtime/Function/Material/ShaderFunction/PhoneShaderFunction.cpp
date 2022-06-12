@@ -128,7 +128,7 @@ bool VSPhoneShaderFunction::GetFunctionString(VSString &OutString, MaterialShade
         OutString += m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(" = ") +
                      VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("0"));
 
-        VSArray<VSString> ShadowStringArray[VSLight::LT_MAX];
+        Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX];
         GetLightShadow(MSPara, ShadowStringArray);
         for (unsigned int i = 0; i < VSLight::LT_MAX; i++)
         {
@@ -170,7 +170,7 @@ VSPhoneShaderFunction::VSPhoneShaderFunction()
 {
     m_uiSpecularType = ST_BlinnPhong;
 }
-bool VSPhoneShaderFunction::PostLoad(VSStream *pStream)
+bool VSPhoneShaderFunction::PostLoad(MStream *pStream)
 {
     if (!GetWorldOffsetNode())
     {

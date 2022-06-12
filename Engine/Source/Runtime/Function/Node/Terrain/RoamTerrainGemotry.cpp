@@ -23,7 +23,7 @@ VSRoamTerrainGeometry::VSRoamTerrainGeometry()
 VSRoamTerrainGeometry::~VSRoamTerrainGeometry()
 {
 }
-VSREAL VSRoamTerrainGeometry::RecursiveComputeVariance(VSArray<VSREAL> &Variance, unsigned int uiIndex,
+VSREAL VSRoamTerrainGeometry::RecursiveComputeVariance(Container::MArray<VSREAL> &Variance, unsigned int uiIndex,
                                                        unsigned int A, unsigned int B, unsigned int C)
 {
 
@@ -100,7 +100,7 @@ void VSRoamTerrainGeometry::LinkNeighbor()
     m_TriTreeNode[0].pOwner = this;
     m_TriTreeNode[1].pOwner = this;
 }
-void VSRoamTerrainGeometry::RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, VSArray<VSREAL> &Variance,
+void VSRoamTerrainGeometry::RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, Container::MArray<VSREAL> &Variance,
                                                 unsigned int uiIndex, unsigned int A, unsigned int B, unsigned int C)
 {
 

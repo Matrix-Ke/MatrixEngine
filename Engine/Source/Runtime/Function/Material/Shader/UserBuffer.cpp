@@ -3,8 +3,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSUserBuffer, VSObject)
-BEGIN_ADD_PROPERTY(VSUserBuffer, VSObject)
+IMPLEMENT_RTTI(VSUserBuffer, MObject)
+BEGIN_ADD_PROPERTY(VSUserBuffer, MObject)
 REGISTER_PROPERTY(m_uiDT, DataType, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_Name, Name, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiRegisterIndex, RegisterIndex, VSProperty::F_SAVE_LOAD_CLONE)
@@ -30,12 +30,12 @@ VSUserBuffer::VSUserBuffer(const VSUsedName &Name, unsigned int uiDataType, unsi
     m_uiRegisterNum = uiRegisterNum;
     m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
 }
-bool VSUserBuffer::PostLoad(VSStream *pStream)
+bool VSUserBuffer::PostLoad(MStream *pStream)
 {
     m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
     return true;
 }
-bool VSUserBuffer::PostClone(VSObject *pObjectSrc)
+bool VSUserBuffer::PostClone(MObject *pObjectSrc)
 {
     m_pBufferResourceArray.SetBufferNum(m_uiRegisterNum);
     return true;

@@ -48,7 +48,7 @@ void VSFileJob::AsynThreadProcess()
     return;
 }
 bool VSResourceJob::ms_bEnableBreakLoadResouce = true;
-VSResourceJob::VSResourceJob() : m_LoadStream(VSStream::ASYN_LOAD_FLAG)
+VSResourceJob::VSResourceJob() : m_LoadStream(MStream::ASYN_LOAD_FLAG)
 {
 }
 VSResourceJob::~VSResourceJob()

@@ -8,7 +8,7 @@ using namespace Matrix;
 VSDebugDraw::VSDebugDraw()
 {
 
-    VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
+    Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
     VSVertexFormat::VERTEXFORMAT_TYPE Pos;
     Pos.DataType = VSDataBuffer::DT_FLOAT32_3;
     Pos.Offset = 0;

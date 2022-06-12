@@ -2,8 +2,8 @@
 #include "Bind.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSDepthStencilDesc : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSDepthStencilDesc : public MObject
     {
         DECLARE_RTTI;
         DECLARE_INITIAL
@@ -79,7 +79,7 @@ namespace Matrix
 
         void *GetCRC32Data(unsigned int &DataSize) const
         {
-            DataSize = sizeof(VSDepthStencilDesc) - sizeof(VSObject);
+            DataSize = sizeof(VSDepthStencilDesc) - sizeof(MObject);
             return (void *)&m_bDepthEnable;
         }
     };

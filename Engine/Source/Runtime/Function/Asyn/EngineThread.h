@@ -35,7 +35,7 @@ namespace Matrix
 
     protected:
         VSCriticalSection m_Lock;
-        VSArray<unsigned char> m_Buffer;
+        Container::MArray<unsigned char> m_Buffer;
         unsigned int m_uiCurBufferP;
     };
 #define DECLARE_UNIQUE_THREAD_COMMAND(TypeName, Code) \

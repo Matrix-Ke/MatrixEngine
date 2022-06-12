@@ -4,8 +4,8 @@
 #include "2DTexture.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSFont : public VSObject, public VSResource
+    class MStream;
+    class MATRIX_FUNCTION_API VSFont : public MObject, public VSResource
     {
         // PRIORITY
         // RTTI
@@ -50,8 +50,8 @@ namespace Matrix
             return m_pFontTexAllState;
         }
         DECLARE_RESOURCE(VSFont, RA_ASYN_LOAD | RA_ASYN_POSTLOAD | RA_ENABLE_GC, RT_FONTTYPE, FONT, Resource / Font, VSCacheResource)
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
 
     protected:
         VSString m_Face;

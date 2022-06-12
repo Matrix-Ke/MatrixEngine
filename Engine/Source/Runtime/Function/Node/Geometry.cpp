@@ -71,9 +71,9 @@ void VSGeometry::LoadDefault()
 {
     // Quad
     {
-        VSArray<VSVector3W> VertexArray;
-        VSArray<VSVector2> m_TexCoordArray;
-        VSArray<VSUSHORT_INDEX> IndexArray;
+        Container::MArray<VSVector3W> VertexArray;
+        Container::MArray<VSVector2> m_TexCoordArray;
+        Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         VertexArray.AddElement(VSVector3W(-1.0f, 1.0f, 0.0f, 1.0f));
         VertexArray.AddElement(VSVector3W(1.0f, 1.0f, 0.0f, 1.0f));
@@ -120,9 +120,9 @@ void VSGeometry::LoadDefault()
 
     // Cub
     {
-        VSArray<VSVector3> VertexArray;
+        Container::MArray<VSVector3> VertexArray;
 
-        VSArray<VSUSHORT_INDEX> IndexArray;
+        Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 0.0f));
         VertexArray.AddElement(VSVector3(1.0f, 1.0f, 0.0f));
@@ -206,9 +206,9 @@ void VSGeometry::LoadDefault()
 
     // Cub Cone
     {
-        VSArray<VSVector3> VertexArray;
+        Container::MArray<VSVector3> VertexArray;
 
-        VSArray<VSUSHORT_INDEX> IndexArray;
+        Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         VertexArray.AddElement(VSVector3(0.0f, 0.0f, 0.0f));
 
@@ -272,9 +272,9 @@ void VSGeometry::LoadDefault()
         unsigned int uiLevel = 1;
         unsigned int CircleLevel = 5;
 
-        VSArray<VSVector3> VertexArray;
+        Container::MArray<VSVector3> VertexArray;
 
-        VSArray<VSUSHORT_INDEX> IndexArray;
+        Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         VertexArray.AddElement(VSVector3(0.0f, 0.0f, 0.0f));
 
@@ -373,10 +373,10 @@ void VSGeometry::LoadDefault()
 
     // Quad Cub
     {
-        VSArray<VSVector3> VertexArray;
-        VSArray<VSVector2> TexCoordArray;
-        VSArray<VSVector3> NormalArray;
-        VSArray<VSUSHORT_INDEX> IndexArray;
+        Container::MArray<VSVector3> VertexArray;
+        Container::MArray<VSVector2> TexCoordArray;
+        Container::MArray<VSVector3> NormalArray;
+        Container::MArray<VSUSHORT_INDEX> IndexArray;
 
         // pos uv
         VertexArray.AddElement(VSVector3(-1.0f, 1.0f, 1.0f));
@@ -700,7 +700,7 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
     if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_VertexIDInShader))
     {
         VSDataBuffer *pIDBuffer = VS_NEW VSDataBuffer();
-        VSArray<float> IDArray;
+        Container::MArray<float> IDArray;
         for (unsigned int i = 0; i < pVertexBuffer->GetVertexNum(); i++)
         {
             IDArray.AddElement(i * 1.0f);
@@ -735,7 +735,7 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
             {
                 return;
             }
-            VSArray<VSVector3> TempBuffer;
+            Container::MArray<VSVector3> TempBuffer;
             TempBuffer.SetBufferNum(uiVertexNum);
 
             if (pBlendIndex->GetDT() == VSDataBuffer::DT_UBYTE4)
@@ -818,7 +818,7 @@ void VSGeometry::CreateLocalAABB()
             {
                 return;
             }
-            VSArray<VSVector3> TempBuffer;
+            Container::MArray<VSVector3> TempBuffer;
             TempBuffer.SetBufferNum(uiVertexNum);
 
             if (pBlendIndex->GetDT() == VSDataBuffer::DT_UBYTE4)
@@ -1012,7 +1012,7 @@ VSGeometry::~VSGeometry()
 {
     m_pMeshData = NULL;
 }
-void VSGeometry::SetAffectBoneArray(const VSArray<VSBoneNode *> &pBoneNodeArray)
+void VSGeometry::SetAffectBoneArray(const Container::MArray<VSBoneNode *> &pBoneNodeArray)
 {
     if (pBoneNodeArray.GetNum())
     {
@@ -1026,7 +1026,7 @@ void VSGeometry::SetAffectBoneArray(const VSArray<VSBoneNode *> &pBoneNodeArray)
         }
     }
 }
-void VSGeometry::SetAffectBoneArray(const VSArray<VSUsedName> &BoneNodeArray)
+void VSGeometry::SetAffectBoneArray(const Container::MArray<VSUsedName> &BoneNodeArray)
 {
     if (BoneNodeArray.GetNum())
     {
@@ -1036,7 +1036,7 @@ void VSGeometry::SetAffectBoneArray(const VSArray<VSUsedName> &BoneNodeArray)
         // LinkBoneNode();
     }
 }
-bool VSGeometry::PostLoad(VSStream *pStream)
+bool VSGeometry::PostLoad(MStream *pStream)
 {
     if (!VSSpatial::PostLoad(pStream))
     {
@@ -1049,7 +1049,7 @@ bool VSGeometry::PostLoad(VSStream *pStream)
     }
     return 1;
 }
-bool VSGeometry::PostClone(VSObject *pObjectSrc)
+bool VSGeometry::PostClone(MObject *pObjectSrc)
 {
     if (!VSSpatial::PostClone(pObjectSrc))
     {
@@ -1183,7 +1183,7 @@ unsigned int VSGeometry::AddMaterialInstance(VSMaterialR *pMaterial)
 unsigned int VSGeometry::AddMaterialInstance(VSMaterialInstance *pMaterial)
 {
     VSMAC_ASSERT(pMaterial && pMaterial->GetMaterial());
-    VSMaterialInstance *pMaterialInstance = (VSMaterialInstance *)VSObject::CloneCreateObject(pMaterial);
+    VSMaterialInstance *pMaterialInstance = (VSMaterialInstance *)MObject::CloneCreateObject(pMaterial);
     m_pMaterialInstance.AddElement(pMaterialInstance);
 
     return m_pMaterialInstance.GetNum();
@@ -1200,7 +1200,7 @@ bool VSGeometry::SetMaterialInstance(VSMaterialInstance *pMaterial, unsigned int
 {
     VSMAC_ASSERT(uiIndex < m_pMaterialInstance.GetNum() && pMaterial);
 
-    m_pMaterialInstance[uiIndex] = (VSMaterialInstance *)VSObject::CloneCreateObject(pMaterial);
+    m_pMaterialInstance[uiIndex] = (VSMaterialInstance *)MObject::CloneCreateObject(pMaterial);
 
     return true;
 }
@@ -1278,7 +1278,7 @@ void VSGeometry::UpdateOther(double dAppTime)
         }
     }
 }
-void VSGeometry::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSGeometry::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     for (unsigned int i = 0; i < m_pMaterialInstance.GetNum(); i++)
     {

@@ -2,7 +2,7 @@
 #include "AnimFunction.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSAnimBlendFunction : public VSAnimFunction
     {
         // RTTI

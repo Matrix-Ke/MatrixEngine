@@ -11,7 +11,7 @@ namespace Matrix
         | /  |
        A|/___|D______X i
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSQuadTerrainGeometry : public VSCLodTerrainGeometry
     {
         // PRIORITY
@@ -50,7 +50,7 @@ namespace Matrix
 
     protected:
         unsigned int m_uiCurLevel;
-        VSArray<VSREAL> m_Variance;
+        Container::MArray<VSREAL> m_Variance;
     };
     DECLARE_Ptr(VSQuadTerrainGeometry);
     VSTYPE_MARCO(VSQuadTerrainGeometry);

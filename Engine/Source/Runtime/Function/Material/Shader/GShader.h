@@ -2,7 +2,7 @@
 #include "Shader.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSGShader : public VSShader
     {
         // PRIORITY

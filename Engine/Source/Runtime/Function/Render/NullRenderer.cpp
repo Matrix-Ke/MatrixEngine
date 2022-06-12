@@ -148,12 +148,12 @@ unsigned int VSNullRenderer::SetRasterizerState(VSRasterizerState *pRasterizerSt
     VSMAC_ASSERT(0);
     return 0;
 }
-void VSNullRenderer::SetClipPlane(VSArray<VSPlane3> &Plane, bool bEnable)
+void VSNullRenderer::SetClipPlane(Container::MArray<VSPlane3> &Plane, bool bEnable)
 {
     VSMAC_ASSERT(0);
     return;
 }
-void VSNullRenderer::SetScissorRect(VSArray<VSRect2> &Rect, bool bEnable)
+void VSNullRenderer::SetScissorRect(Container::MArray<VSRect2> &Rect, bool bEnable)
 {
     VSMAC_ASSERT(0);
     return;
@@ -900,20 +900,20 @@ void VSNullRenderer::SkyLight(const VSString &WorldNormal, const VSString &UpCol
     return;
 }
 void VSNullRenderer::DirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                      const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                                      const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                       VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
-void VSNullRenderer::CustomDirectionalLight(int iLightNum, const VSString &CustomString, VSArray<VSString> ShadowString, VSString &OutString) const
+void VSNullRenderer::CustomDirectionalLight(int iLightNum, const VSString &CustomString, Container::MArray<VSString> ShadowString, VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
 
 void VSNullRenderer::OrenNayarDirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                               const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                               const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                                VSString &OutString) const
 {
     VSMAC_ASSERT(0);
@@ -921,20 +921,20 @@ void VSNullRenderer::OrenNayarDirectionalLight(int iLightNum, const VSString &Di
 }
 
 void VSNullRenderer::PointLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                                const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                 VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
-void VSNullRenderer::CustomPointLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, VSArray<VSString> ShadowString, VSString &OutString) const
+void VSNullRenderer::CustomPointLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
 
 void VSNullRenderer::OrenNayarPointLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                         const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                         const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                          VSString &OutString) const
 {
     VSMAC_ASSERT(0);
@@ -942,19 +942,19 @@ void VSNullRenderer::OrenNayarPointLight(int iLightNum, const VSString &Diffuse,
 }
 
 void VSNullRenderer::SpotLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                               const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                               const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
-void VSNullRenderer::CustomSpotLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, VSArray<VSString> ShadowString, VSString &OutString) const
+void VSNullRenderer::CustomSpotLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
 void VSNullRenderer::OrenNayarSpotLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                        const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                        const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                         VSString &OutString) const
 {
     VSMAC_ASSERT(0);
@@ -1144,13 +1144,13 @@ void VSNullRenderer::SpotLightShadow(const VSString &SpotLightName, const VSStri
     return;
 }
 
-void VSNullRenderer::TranLightToTemp(VSArray<VSLight *> LightArray, VSString &OutString) const
+void VSNullRenderer::TranLightToTemp(Container::MArray<VSLight *> LightArray, VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;
 }
 
-void VSNullRenderer::GetLightFunction(VSArray<VSLight *> LightArray, const VSString &WorldPos, VSString &OutString) const
+void VSNullRenderer::GetLightFunction(Container::MArray<VSLight *> LightArray, const VSString &WorldPos, VSString &OutString) const
 {
     VSMAC_ASSERT(0);
     return;

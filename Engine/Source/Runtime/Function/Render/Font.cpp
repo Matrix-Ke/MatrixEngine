@@ -80,7 +80,7 @@ void VSFont::SetFontData(VS2DTexture *pTexture, VSREAL *pCharacterData)
     VSMemcpy(m_pCharacterData, pCharacterData, sizeof(VSREAL) * (ASCII_NUM + 1));
     return;
 }
-bool VSFont::PostLoad(VSStream *pStream)
+bool VSFont::PostLoad(MStream *pStream)
 {
     if (m_pFontTex)
     {
@@ -90,7 +90,7 @@ bool VSFont::PostLoad(VSStream *pStream)
     }
     return true;
 }
-bool VSFont::PostClone(VSObject *pObjectSrc)
+bool VSFont::PostClone(MObject *pObjectSrc)
 {
     if (m_pFontTex)
     {

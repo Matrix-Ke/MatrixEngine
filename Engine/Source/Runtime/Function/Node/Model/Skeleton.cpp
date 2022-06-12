@@ -62,7 +62,7 @@ VSBoneNode *VSSkeleton::GetBoneNode(unsigned int i) const
 void VSSkeleton::CreateBoneArray()
 {
     m_pBoneArray.Clear();
-    VSArray<VSBoneNode *> Temp;
+    Container::MArray<VSBoneNode *> Temp;
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
     {
         VSBoneNode *pBoneNode = DynamicCast<VSBoneNode>(m_pChild[i]);
@@ -80,7 +80,7 @@ void VSSkeleton::CreateBoneArray()
 void VSSkeleton::LinkBoneArray()
 {
     m_pBoneArray.Clear();
-    VSArray<VSBoneNode *> Temp;
+    Container::MArray<VSBoneNode *> Temp;
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
     {
         VSBoneNode *pBoneNode = DynamicCast<VSBoneNode>(m_pChild[i]);
@@ -148,7 +148,7 @@ void VSSkeleton::Draw(VSCamera *pCamera)
     VSVector3 Dist = pCamera->GetWorldTranslate() - pMesh->GetWorldTranslate();
     ms_fBoneAxisLength = Dist.GetLength() * 0.05f;
 
-    static VSArray<VSDebugDraw *> s_DebugDrawArray;
+    static Container::MArray<VSDebugDraw *> s_DebugDrawArray;
     s_DebugDrawArray.Clear();
     for (unsigned int i = 0; i < pCamera->GetViewFamilyNum(); i++)
     {

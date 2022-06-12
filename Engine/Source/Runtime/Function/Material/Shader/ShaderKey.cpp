@@ -10,8 +10,8 @@
 #include "DirectionLight.h"
 #include "SpotLight.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSShaderKey, VSObject)
-BEGIN_ADD_PROPERTY(VSShaderKey, VSObject)
+IMPLEMENT_RTTI(VSShaderKey, MObject)
+BEGIN_ADD_PROPERTY(VSShaderKey, MObject)
 REGISTER_PROPERTY(m_KeyMap, KeyMap, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSShaderKey)
@@ -45,7 +45,7 @@ unsigned int VSShaderKey::GetLightNum(unsigned int uiLightKey, unsigned int uiLi
     }
     return uiNum;
 }
-unsigned int VSShaderKey::GenerateKey(const VSArray<VSLight *> &LightArray, ShadowKeyInfo ShadowInfo[VSLight::LT_MAX], unsigned int &uiLightFunctionKey)
+unsigned int VSShaderKey::GenerateKey(const Container::MArray<VSLight *> &LightArray, ShadowKeyInfo ShadowInfo[VSLight::LT_MAX], unsigned int &uiLightFunctionKey)
 {
     unsigned int uiLightNum[VSLight::LT_MAX] = {0};
     unsigned char DirLightFunKey = 0;

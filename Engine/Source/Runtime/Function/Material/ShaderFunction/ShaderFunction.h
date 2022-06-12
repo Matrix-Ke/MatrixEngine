@@ -7,9 +7,9 @@
 namespace Matrix
 {
     class VSMaterial;
-    class VSStream;
+    class MStream;
     class VSShaderMainFunction;
-    class MATRIX_FUNCTION_API VSShaderFunction : public VSObject
+    class MATRIX_FUNCTION_API VSShaderFunction : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -22,8 +22,8 @@ namespace Matrix
         VSUsedName m_ShowName;
         VSShaderFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         VSShaderFunction();
-        VSArray<VSInputNode *> m_pInput;
-        VSArray<VSOutputNode *> m_pOutput;
+        Container::MArray<VSInputNode *> m_pInput;
+        Container::MArray<VSOutputNode *> m_pOutput;
         VSMaterial *m_pOwner;
         bool m_bIsVisited;
         inline void SetOwner(VSMaterial *pOwner)
@@ -70,15 +70,15 @@ namespace Matrix
 
         virtual bool IsValidNodeToThis(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 
-        virtual bool CheckChildNodeValidToThis(VSArray<VSShaderFunction *> &NoValidShaderFunctionArray, MaterialShaderPara &MSPara);
+        virtual bool CheckChildNodeValidToThis(Container::MArray<VSShaderFunction *> &NoValidShaderFunctionArray, MaterialShaderPara &MSPara);
 
-        virtual bool GetAllChildNode(VSArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara);
+        virtual bool GetAllChildNode(Container::MArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara);
 
-        virtual bool CheckChildNodeValidAll(VSMap<VSShaderFunction *, VSArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara);
+        virtual bool CheckChildNodeValidAll(VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara);
 
         virtual bool HaveThisChild(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 
-        virtual void GetNoLightFunctionParentNode(VSArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara);
+        virtual void GetNoLightFunctionParentNode(Container::MArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara);
 
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
     };

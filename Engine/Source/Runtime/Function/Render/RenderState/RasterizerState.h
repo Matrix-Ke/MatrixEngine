@@ -2,8 +2,8 @@
 #include "Bind.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSRasterizerDesc : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSRasterizerDesc : public MObject
     {
         DECLARE_RTTI;
         DECLARE_INITIAL
@@ -35,7 +35,7 @@ namespace Matrix
         VSREAL m_fDepthBias;
         void *GetCRC32Data(unsigned int &DataSize) const
         {
-            DataSize = sizeof(VSRasterizerDesc) - sizeof(VSObject);
+            DataSize = sizeof(VSRasterizerDesc) - sizeof(MObject);
             return (void *)&m_bWireEnable;
         }
     };

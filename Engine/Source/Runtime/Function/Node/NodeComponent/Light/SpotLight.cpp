@@ -55,13 +55,13 @@ void VSSpotLight::GetLightRange()
         m_WVP = LightCamera.GetViewMatrix() * LightCamera.GetProjMatrix();
     }
 }
-bool VSSpotLight::PostClone(VSObject *pObjectSrc)
+bool VSSpotLight::PostClone(MObject *pObjectSrc)
 {
     VSLight::PostClone(pObjectSrc);
     SetShadowType(m_uiShadowType);
     return true;
 }
-bool VSSpotLight::PostLoad(VSStream *pStream)
+bool VSSpotLight::PostLoad(MStream *pStream)
 {
     VSLight::PostLoad(pStream);
     SetShadowType(m_uiShadowType);

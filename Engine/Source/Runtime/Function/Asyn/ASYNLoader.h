@@ -72,7 +72,7 @@ namespace Matrix
         virtual ~VSResourceJob() = 0;
         virtual unsigned int GetResourceType() const = 0;
         VSAsynStream m_BreakLoadStream;
-        VSStream m_LoadStream;
+        MStream m_LoadStream;
         virtual void AsynThreadProcess();
         virtual void MainThreadProcess();
         virtual unsigned int GetJobType() const
@@ -387,7 +387,7 @@ namespace Matrix
             return pResourceCacheJob;
         }
         VSAsynJobThread m_AsynJobThread[TASK_THREAD_NUM];
-        VSArray<VSAsynJob *> m_JobArray;
+        Container::MArray<VSAsynJob *> m_JobArray;
         void AddJob(VSAsynJob *pJob);
         void AddHaveJob(VSAsynJob *pJob);
     };

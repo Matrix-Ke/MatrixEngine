@@ -2,7 +2,7 @@
 #include "Node.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSBoneNode : public VSNode
     {
         // PRIORITY
@@ -21,13 +21,13 @@ namespace Matrix
         bool m_bIsEffector;
         VSVector3 m_TargetPosInWorld;
 
-        VSArray<bool> m_bAllowTranslation;
-        VSArray<VSREAL> m_fMinTranslation;
-        VSArray<VSREAL> m_fMaxTranslation;
+        Container::MArray<bool> m_bAllowTranslation;
+        Container::MArray<VSREAL> m_fMinTranslation;
+        Container::MArray<VSREAL> m_fMaxTranslation;
 
-        VSArray<bool> m_bAllowRotation;
-        VSArray<VSREAL> m_fMinRotation;
-        VSArray<VSREAL> m_fMaxRotation;
+        Container::MArray<bool> m_bAllowRotation;
+        Container::MArray<VSREAL> m_fMinRotation;
+        Container::MArray<VSREAL> m_fMaxRotation;
 
         VSREAL m_fIKWeight;
 
@@ -48,7 +48,7 @@ namespace Matrix
 
         VSBoneNode *GetBoneNodeFromLevel(const VSUsedName &BoneName);
         unsigned int GetAllBoneNum() const;
-        void GetAllBoneArray(VSArray<VSBoneNode *> &AllNodeArray);
+        void GetAllBoneArray(Container::MArray<VSBoneNode *> &AllNodeArray);
     };
     DECLARE_Ptr(VSBoneNode);
     VSTYPE_MARCO(VSBoneNode);

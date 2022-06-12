@@ -6,10 +6,10 @@ namespace Matrix
 
     typedef VSDelegateEvent<void(void)> TriggerAnimEventType;
 
-    class VSStream;
+    class MStream;
     class VSController;
 
-    class MATRIX_FUNCTION_API VSTimeEvent : public VSObject
+    class MATRIX_FUNCTION_API VSTimeEvent : public MObject
     {
         // RTTI
         DECLARE_RTTI;

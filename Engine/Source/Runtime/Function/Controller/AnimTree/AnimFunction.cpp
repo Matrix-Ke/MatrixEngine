@@ -16,7 +16,7 @@ VSAnimFunction::VSAnimFunction(const VSUsedName &ShowName, VSAnimTree *pAnimTree
     : VSAnimBaseFunction(ShowName, pAnimTree)
 {
 }
-bool VSAnimFunction::SetObject(VSObject *pObject)
+bool VSAnimFunction::SetObject(MObject *pObject)
 {
     if (VSAnimBaseFunction::SetObject(pObject))
     {

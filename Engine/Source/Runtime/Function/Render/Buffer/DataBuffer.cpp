@@ -7,8 +7,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSDataBuffer, VSObject)
-BEGIN_ADD_PROPERTY(VSDataBuffer, VSObject)
+IMPLEMENT_RTTI(VSDataBuffer, MObject)
+BEGIN_ADD_PROPERTY(VSDataBuffer, MObject)
 REGISTER_PROPERTY(m_uiNum, Num, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiDT, DataType, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY_DATA(m_pData, m_uiSize, Data)

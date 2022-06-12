@@ -8,7 +8,7 @@ namespace Matrix
 {
     // cube shadow 限制在于光源距离物体太远，rt分辨率不够，存放具体精度不够
     // volume 限制在于参与投影的物体必须是闭合的，表面是光滑的，不同光滑组有棱角的地方，要求内嵌三角形。
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSPointLight : public VSLocalLight
     {
         // PRIORITY
@@ -21,8 +21,8 @@ namespace Matrix
         virtual ~VSPointLight();
 
     public:
-        virtual bool PostClone(VSObject *pObjectSrc);
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
 
         inline void SetRange(VSREAL Range)
         {

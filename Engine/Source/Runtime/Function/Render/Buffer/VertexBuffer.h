@@ -7,7 +7,7 @@
 #include "VertexFormat.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSVertexBuffer : public VSMemBind, public VSBindLockInterface
     {
         // PRIORITY
@@ -19,7 +19,7 @@ namespace Matrix
         friend class VSVertexFormat;
         friend class VSResourceManager;
         VSVertexBuffer(bool bIsStatic);
-        VSVertexBuffer(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiNum);
+        VSVertexBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiNum);
         virtual ~VSVertexBuffer();
         bool SetData(VSDataBuffer *pData, unsigned int uiVF);
         inline VSDataBuffer *GetData(unsigned int uiVF, unsigned int uiLevel) const;
@@ -47,7 +47,7 @@ namespace Matrix
 
         inline unsigned int GetVertexNum() const;
 
-        bool GetVertexFormat(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray);
+        bool GetVertexFormat(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray);
 
         inline VSVertexFormat *GetVertexFormat() const;
 
@@ -111,7 +111,7 @@ namespace Matrix
         friend class VSVertexFormat;
         friend class VSGeometry;
         VSVertexBuffer();
-        VSArray<VSDataBufferPtr> m_pData[VSVertexFormat::VF_MAX];
+        Container::MArray<VSDataBufferPtr> m_pData[VSVertexFormat::VF_MAX];
         unsigned int m_uiVertexNum;
         unsigned int m_uiOneVertexSize;
 

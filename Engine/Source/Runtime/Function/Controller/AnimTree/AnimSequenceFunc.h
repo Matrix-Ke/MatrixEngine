@@ -2,7 +2,7 @@
 #include "AnimFunction.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
 
     class MATRIX_FUNCTION_API VSAnimSequenceFunc : public VSAnimFunction
     {
@@ -19,7 +19,7 @@ namespace Matrix
         VSAnimSequenceFunc(const VSUsedName &ShowName, VSAnimTree *pAnimTree);
         virtual bool IsSupportSimpleInstance();
         void SetAnim(const VSUsedName &AnimName);
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         inline const VSAnimR *GetAnim() const
         {
             return m_pAnimR;
@@ -37,7 +37,7 @@ namespace Matrix
 
     protected:
         VSAnimRPtr m_pAnimR;
-        VSArray<unsigned int> m_UsedBoneIndexInAnim;
+        Container::MArray<unsigned int> m_UsedBoneIndexInAnim;
         VSUsedName m_AnimName;
         struct LAST_KEY_TYPE
         {
@@ -59,14 +59,14 @@ namespace Matrix
                 uiLKRotator = 0;
             }
         };
-        VSArray<LAST_KEY_TYPE> m_LastKey;
-        VSArray<LAST_KEY_TYPE> m_AdditiveLastKey;
+        Container::MArray<LAST_KEY_TYPE> m_LastKey;
+        Container::MArray<LAST_KEY_TYPE> m_AdditiveLastKey;
         // used only in SkeletonMeshNode
         void UpdateBone();
         void LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data = NULL);
 
-        void ComputeAnim(VSAnim *pAnim, VSArray<LAST_KEY_TYPE> &LastKey, VSArray<VSAnimAtom> &BoneOutput);
-        VSArray<VSAnimAtom> m_AdditiveBoneOutput;
+        void ComputeAnim(VSAnim *pAnim, Container::MArray<LAST_KEY_TYPE> &LastKey, Container::MArray<VSAnimAtom> &BoneOutput);
+        Container::MArray<VSAnimAtom> m_AdditiveBoneOutput;
         VSAnimAtom m_RootStartAtom;
         VSAnimAtom m_LastRootAtom;
         void GetRootStartAtom(VSAnimAtom &OutAtom, VSAnim *pAnim);

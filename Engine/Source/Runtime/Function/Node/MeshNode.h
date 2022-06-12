@@ -5,7 +5,7 @@ namespace Matrix
 {
     class VSGeometryNode;
     class VSSwitchNode;
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSMeshNode : public VSNode
     {
         // PRIORITY

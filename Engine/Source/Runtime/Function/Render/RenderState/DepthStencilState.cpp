@@ -42,8 +42,8 @@ VSDepthStencilState::~VSDepthStencilState()
 {
     ReleaseResource();
 }
-IMPLEMENT_RTTI(VSDepthStencilDesc, VSObject)
-BEGIN_ADD_PROPERTY(VSDepthStencilDesc, VSObject)
+IMPLEMENT_RTTI(VSDepthStencilDesc, MObject)
+BEGIN_ADD_PROPERTY(VSDepthStencilDesc, MObject)
 REGISTER_PROPERTY(m_bDepthEnable, DepthEnable, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_bDepthWritable, DepthWritable, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiDepthCompareMethod, DepthCompareMethod, VSProperty::F_SAVE_LOAD_CLONE)

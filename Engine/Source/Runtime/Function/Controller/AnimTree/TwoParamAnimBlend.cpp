@@ -52,7 +52,7 @@ bool VSTwoParamAnimBlend::ComputePara(double dAppTime)
 
     return 1;
 }
-bool VSTwoParamAnimBlend::SetObject(VSObject *pObject)
+bool VSTwoParamAnimBlend::SetObject(MObject *pObject)
 {
     if (VSAnimBlendFunction::SetObject(pObject))
     {
@@ -171,8 +171,8 @@ VSAnimFunction *VSTwoParamAnimBlend::GetAnimFunction(unsigned int i, unsigned in
     }
     return NULL;
 }
-void VSTwoParamAnimBlend::LineBlendTwo(VSArray<VSAnimAtom> *pOut,
-                                       const VSArray<VSAnimAtom> *pIn1, const VSArray<VSAnimAtom> *pIn2,
+void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
+                                       const Container::MArray<VSAnimAtom> *pIn1, const Container::MArray<VSAnimAtom> *pIn2,
                                        VSREAL fWeight)
 {
 
@@ -212,7 +212,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(VSArray<VSAnimAtom> *pOut,
         }
     }
 }
-void VSTwoParamAnimBlend::LineBlendTwo(VSArray<VSAnimAtom> *pOut,
+void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
                                        VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2,
                                        VSREAL fWeight)
 {

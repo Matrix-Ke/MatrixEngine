@@ -82,7 +82,7 @@ namespace Matrix
 
         DECLARE_INITIAL
     public:
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
     };
     DECLARE_Ptr(VSCustomShaderFunction);
     VSTYPE_MARCO(VSCustomShaderFunction);

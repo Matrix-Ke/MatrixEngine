@@ -3,8 +3,8 @@
 #include "Vector3W.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSSamplerDesc : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSSamplerDesc : public MObject
     {
         DECLARE_RTTI;
         DECLARE_INITIAL
@@ -58,7 +58,7 @@ namespace Matrix
         VSColorRGBA m_BorderColor;
         void *GetCRC32Data(unsigned int &DataSize) const
         {
-            DataSize = sizeof(VSSamplerDesc) - sizeof(VSObject);
+            DataSize = sizeof(VSSamplerDesc) - sizeof(MObject);
             return (void *)&m_uiMag;
         }
     };

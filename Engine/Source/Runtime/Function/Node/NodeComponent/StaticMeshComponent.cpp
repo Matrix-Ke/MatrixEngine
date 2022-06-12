@@ -48,7 +48,7 @@ void VSStaticMeshComponent::LoadedEvent(VSResourceProxyBase *pResourceProxy, voi
     {
         m_pNode->SetParent(NULL);
     }
-    m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pStaticMeshResource->GetResource());
+    m_pNode = (VSModelMeshNode *)MObject::CloneCreateObject(m_pStaticMeshResource->GetResource());
     m_pNode->SetParent(this);
     if (m_pStaticMeshResource->IsLoaded())
     {
@@ -57,7 +57,7 @@ void VSStaticMeshComponent::LoadedEvent(VSResourceProxyBase *pResourceProxy, voi
     SetPostLoadNodeParam();
     m_bIsStatic = !m_pNode->IsDynamic();
 }
-bool VSStaticMeshComponent::PostLoad(VSStream *pStream)
+bool VSStaticMeshComponent::PostLoad(MStream *pStream)
 {
     if (!VSMeshComponent::PostLoad(pStream))
     {

@@ -4,7 +4,7 @@
 #include "PutNode.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSAnimBaseFunction : public VSController
     {
         // RTTI
@@ -22,8 +22,8 @@ namespace Matrix
         VSAnimBaseFunction();
 
     protected:
-        VSArray<VSInputNode *> m_pInput;
-        VSArray<VSOutputNode *> m_pOutput;
+        Container::MArray<VSInputNode *> m_pInput;
+        Container::MArray<VSOutputNode *> m_pOutput;
         VSAnimTree *m_pOwner;
         VSUsedName m_ShowName;
 
@@ -36,7 +36,7 @@ namespace Matrix
             m_pOwner = pOwner;
         }
         friend class VSAnimMainFunction;
-        VSArray<ANIM_INSTANCE_DATA> m_AnimDataInstance;
+        Container::MArray<ANIM_INSTANCE_DATA> m_AnimDataInstance;
         static void GetAnimDataInstance(VSAnimBaseFunction *pSource, VSAnimBaseFunction *pTarget, VSREAL fWeight);
 
         virtual void SetOnlyUpdateRootMotion(bool bOnlyUpdateRootMotion)
@@ -45,7 +45,7 @@ namespace Matrix
         }
 
     public:
-        void GetAnimInstanceData(VSArray<ANIM_INSTANCE_DATA> &InstanceData)
+        void GetAnimInstanceData(Container::MArray<ANIM_INSTANCE_DATA> &InstanceData)
         {
             InstanceData.Clear();
             for (unsigned int i = 0; i < m_AnimDataInstance.GetNum(); i++)
@@ -71,7 +71,7 @@ namespace Matrix
         virtual void SetPara(void *pPara){};
 
         virtual bool IsLeafNode();
-        void GetLeafArray(VSArray<VSAnimBaseFunction *> &LeafNode);
+        void GetLeafArray(Container::MArray<VSAnimBaseFunction *> &LeafNode);
 
         void EnableLeafStart();
         void NoLeafStart();

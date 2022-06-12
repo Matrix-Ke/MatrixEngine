@@ -4,8 +4,8 @@
 #include "World.h"
 #include "ViewFamily.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSViewFamliyInfo, VSObject)
-BEGIN_ADD_PROPERTY(VSViewFamliyInfo, VSObject)
+IMPLEMENT_RTTI(VSViewFamliyInfo, MObject)
+BEGIN_ADD_PROPERTY(VSViewFamliyInfo, MObject)
 REGISTER_PROPERTY(m_SceneMapName, SceneMapName, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiWidth, Width, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiHeight, Height, VSProperty::F_SAVE_LOAD_CLONE)

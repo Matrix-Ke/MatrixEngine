@@ -1,8 +1,8 @@
 #pragma once
-#include "Reference.h"
 #include "Priority.h"
-#include "CustomArchiveObject.h"
 #include "InitialMacro.h"
+#include "Core/Reference.h"
+#include "Core/Stream/CustomArchiveObject.h"
 
 #include "Container/String.h"
 

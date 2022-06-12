@@ -25,7 +25,7 @@ VSString VSShaderStringFactory::ms_InputProjectZ;
 VSString VSShaderStringFactory::ms_InputInstancePos[3];
 VSString VSShaderStringFactory::ms_InputInstanceAnimData;
 VSString VSShaderStringFactory::ms_InputInstanceAnimNum;
-VSArray<VSString> VSShaderStringFactory::ms_InputMaterialInstance;
+Container::MArray<VSString> VSShaderStringFactory::ms_InputMaterialInstance;
 
 VSUsedName VSShaderStringFactory::ms_PSOrenNayarLookUpTableResource = _T("Tex_OrenNayarLookUpTable");
 VSUsedName VSShaderStringFactory::ms_VSMorphVDataResource = _T("Tex_MorphVData");

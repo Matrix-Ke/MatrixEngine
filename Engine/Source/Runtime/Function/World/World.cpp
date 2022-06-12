@@ -9,8 +9,8 @@
 #include "LightActor.h"
 #include "Profiler.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSWorld, VSObject)
-BEGIN_ADD_PROPERTY(VSWorld, VSObject)
+IMPLEMENT_RTTI(VSWorld, MObject)
+BEGIN_ADD_PROPERTY(VSWorld, MObject)
 REGISTER_PROPERTY(m_SceneArray, SceneArray, VSProperty::F_REFLECT_NAME)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSWorld)
@@ -94,7 +94,7 @@ void VSWorld::ProcessInput(unsigned int uiInputType, unsigned int uiEvent, unsig
 
     for (unsigned int i = 0; i < m_ActorArray.GetNum(); i++)
     {
-        if (!m_ActorArray[i]->IsHasFlag(VSObject::OF_PendingKill))
+        if (!m_ActorArray[i]->IsHasFlag(MObject::OF_PendingKill))
         {
             m_ActorArray[i]->ProcessInput(uiInputType, uiEvent, uiKey, x, y, z);
         }
@@ -109,7 +109,7 @@ void VSWorld::Update(double dAppTime)
 
     for (unsigned int i = 0; i < m_ActorArray.GetNum(); i++)
     {
-        if (!m_ActorArray[i]->IsHasFlag(VSObject::OF_PendingKill))
+        if (!m_ActorArray[i]->IsHasFlag(MObject::OF_PendingKill))
         {
             m_ActorArray[i]->Update(dAppTime);
         }
@@ -228,7 +228,7 @@ VSActor *VSWorld::CreateActor(const TCHAR *ActorPath, const VSVector3 &Pos, cons
             }
             else
             {
-                pActor = (VSActor *)VSObject::CloneCreateObject(((VSActorR *)pResource)->GetResource());
+                pActor = (VSActor *)MObject::CloneCreateObject(((VSActorR *)pResource)->GetResource());
                 if (pSceneMap)
                 {
                     pSceneMap->AddActor(pActor);
@@ -255,7 +255,7 @@ void VSWorld::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data)
 {
     if (pResourceProxy->GetResourceType() == VSResource::RT_ACTOR)
     {
-        VSActor *pActor = (VSActor *)VSObject::CloneCreateObject(((VSActorR *)pResourceProxy)->GetResource());
+        VSActor *pActor = (VSActor *)MObject::CloneCreateObject(((VSActorR *)pResourceProxy)->GetResource());
         unsigned int i = SizeTypeToGUID32((USIZE_TYPE)Data);
         m_SceneArray[i]->AddActor(pActor);
     }
@@ -279,7 +279,7 @@ void VSWorld::AddMessage(const VSMessage &Message)
 void VSWorld::AttachCaptureViewFamilyToCamera(VSCameraActor *pCameraActor,
                                               unsigned int uiCaptureViewFamilyType, const VSString &ViewFamilyName,
                                               unsigned int uiWidth, unsigned int uiHeight,
-                                              VSArray<VSString> &SceneMapName,
+                                              Container::MArray<VSString> &SceneMapName,
                                               const TCHAR *RenderMethodRTTIName,
                                               VSPostEffectSetR *pPostEffectSet)
 {
@@ -311,7 +311,7 @@ void VSWorld::AttachCaptureViewFamilyToCamera(VSCameraActor *pCameraActor,
 }
 void VSWorld::AttachWindowViewFamilyToCamera(VSCameraActor *pCameraActor,
                                              unsigned int uiWindowViewFamilyType, const VSString &ViewFamilyName,
-                                             VSArray<VSString> &SceneMapName,
+                                             Container::MArray<VSString> &SceneMapName,
                                              const TCHAR *RenderMethodRTTIName,
                                              int iWindowID,
                                              VSPostEffectSetR *pPostEffectSet)

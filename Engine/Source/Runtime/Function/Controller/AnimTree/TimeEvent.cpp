@@ -2,10 +2,10 @@
 #include "Stream.h"
 #include "GraphicInclude.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSTimeEvent, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSTimeEvent, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSTimeEvent)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSTimeEvent, VSObject)
+    BEGIN_ADD_PROPERTY(VSTimeEvent, MObject)
         REGISTER_PROPERTY(m_bEnable, Enable, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_pController, Controller, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_fTriggerPercent, TriggerPercent, VSProperty::F_SAVE_LOAD_CLONE);

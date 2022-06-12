@@ -5,7 +5,7 @@ namespace Matrix
 {
     class VSGeometry;
     class VSVertexBuffer;
-    class VSStream;
+    class MStream;
     DECLARE_Ptr(VSGeometry);
     DECLARE_Ptr(VSVertexBuffer);
     DECLARE_Ptr(VSMaterialInstance);
@@ -35,7 +35,7 @@ namespace Matrix
         }
         VSCamera *pCamera;
         VSMaterialInstance *pMaterialInstance;
-        VSArray<VSLight *> LightArray;
+        Container::MArray<VSLight *> LightArray;
         unsigned int uiPassId;
         unsigned int uiPassType;
         VSGeometry *pGeometry;
@@ -56,8 +56,8 @@ namespace Matrix
         unsigned int uiCompileShaderType;
         bool bUseTessellation;
     };
-    class VSStream;
-    class MATRIX_FUNCTION_API VSShaderKey : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSShaderKey : public MObject
     {
 
         DECLARE_RTTI;
@@ -106,7 +106,7 @@ namespace Matrix
             unsigned int uiDualParaboloidShadowNum;
             unsigned int uiCSMShadowNum;
         };
-        static unsigned int GenerateKey(const VSArray<VSLight *> &LightArray, ShadowKeyInfo ShadowInfo[VSLight::LT_MAX], unsigned int &uiLightFunctionKey);
+        static unsigned int GenerateKey(const Container::MArray<VSLight *> &LightArray, ShadowKeyInfo ShadowInfo[VSLight::LT_MAX], unsigned int &uiLightFunctionKey);
 
         static unsigned int GetLightNum(unsigned int uiLightKey, unsigned int uiLightType);
 

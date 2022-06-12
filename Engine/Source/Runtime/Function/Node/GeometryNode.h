@@ -4,7 +4,7 @@
 #include "Geometry.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSGeometryNode : public VSNode
     {
         // PRIORITY
@@ -23,12 +23,12 @@ namespace Matrix
         VSGeometry *GetGeometry(unsigned int i) const;
         VSGeometry *GetNormalGeometry(unsigned int index) const;
         unsigned int GetNormalGeometryNum() const;
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         void SetMorphData(const VSUsedName &ShowName, float fData);
         void SetMorphData(unsigned int Index, float fData);
         VSREAL m_fLODScreenSize = 1.0f;
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
 
     protected:
         VSMorphSetPtr m_pMorphSet;

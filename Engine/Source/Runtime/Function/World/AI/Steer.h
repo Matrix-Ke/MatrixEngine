@@ -3,7 +3,7 @@
 namespace Matrix
 {
 
-    class VSSteerComponent : public VSObject
+    class VSSteerComponent : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -26,7 +26,7 @@ namespace Matrix
     };
     DECLARE_Ptr(VSSteerComponent);
 
-    class VSSteer : public VSObject
+    class VSSteer : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -51,7 +51,7 @@ namespace Matrix
 
     protected:
         VSActor *m_pActor;
-        VSArray<VSSteerComponentPtr> m_ComponentArray;
+        Container::MArray<VSSteerComponentPtr> m_ComponentArray;
         bool AddForce(VSVector3 &CurForce, VSVector3 &AddForce);
         class PriorityCompare
         {

@@ -20,7 +20,7 @@ namespace Matrix
         virtual void LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data = NULL);
         virtual void PostCreate();
         virtual bool BeforeSave(void *pData = NULL);
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
 
     protected:
         VSStaticMeshNodeRPtr m_pStaticMeshResource;

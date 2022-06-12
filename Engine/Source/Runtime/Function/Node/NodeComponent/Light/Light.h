@@ -8,7 +8,7 @@
 namespace Matrix
 {
     class VSShadowMapSceneRender;
-    class VSStream;
+    class MStream;
     class VS2DTexture;
     class VSCamera;
     DECLARE_Ptr(VSTexAllState);
@@ -136,8 +136,8 @@ namespace Matrix
     protected:
         bool m_bIsCastShadow;
         unsigned int m_uiRTWidth;
-        VSArray<VSScene *> m_pScene;
-        VSArray<VSTexAllStatePtr> m_pShadowTexture;
+        Container::MArray<VSScene *> m_pScene;
+        Container::MArray<VSTexAllStatePtr> m_pShadowTexture;
         VSTexAllStatePtr m_pLightFunDiffuseTexture;
         VSMaterialInstancePtr m_pLightMaterial;
         unsigned int m_uiLightMaterialRTWidth;
@@ -146,7 +146,7 @@ namespace Matrix
         VSRenderTargetPtr m_pLightFunSpecularRenderTarget;
         VSMatrix3X3W m_WVP;
         virtual void GetLightRange() = 0;
-        void GetCullerAABBArray(VSCuller &Culler, VSArray<VSAABB3> &AABBArray);
+        void GetCullerAABBArray(VSCuller &Culler, Container::MArray<VSAABB3> &AABBArray);
         bool m_bShadowMapDrawEnd;
     };
     DECLARE_Ptr(VSLocalLight);

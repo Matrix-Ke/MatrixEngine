@@ -394,9 +394,9 @@ bool VSShaderMainFunction::GetInputValueString(VSString &OutString, MaterialShad
     }
     return 1;
 }
-void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, VSArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const
+void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const
 {
-    VSArray<VSLight *> pLightArray = MSPara.LightArray;
+    Container::MArray<VSLight *> pLightArray = MSPara.LightArray;
     unsigned int uiShadowNum = 0;
     unsigned int uiLightIndex[VSLight::LT_MAX] = {0};
     for (unsigned int i = 0; i < pLightArray.GetNum(); i++)

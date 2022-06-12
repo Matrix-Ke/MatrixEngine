@@ -113,8 +113,8 @@ VSSamplerState::~VSSamplerState()
     ReleaseResource();
 }
 
-IMPLEMENT_RTTI(VSSamplerDesc, VSObject)
-BEGIN_ADD_PROPERTY(VSSamplerDesc, VSObject)
+IMPLEMENT_RTTI(VSSamplerDesc, MObject)
+BEGIN_ADD_PROPERTY(VSSamplerDesc, MObject)
 REGISTER_PROPERTY(m_uiMag, Mag, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiMin, Min, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiMip, Mip, VSProperty::F_SAVE_LOAD_CLONE)

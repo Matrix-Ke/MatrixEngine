@@ -104,7 +104,7 @@ bool VSAnimBaseFunction::IsLeafNode()
 {
     return false;
 }
-void VSAnimBaseFunction::GetLeafArray(VSArray<VSAnimBaseFunction *> &LeafNode)
+void VSAnimBaseFunction::GetLeafArray(Container::MArray<VSAnimBaseFunction *> &LeafNode)
 {
     if (IsLeafNode())
     {

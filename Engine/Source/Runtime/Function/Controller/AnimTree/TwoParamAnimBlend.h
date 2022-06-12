@@ -2,7 +2,7 @@
 #include "AnimBlendFunction.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSTwoParamAnimBlend : public VSAnimBlendFunction
     {
         // RTTI
@@ -13,7 +13,7 @@ namespace Matrix
 
         VSTwoParamAnimBlend(const VSUsedName &ShowName, VSAnimTree *pAnimTree);
         void CreateSlot(unsigned int uiWidth, unsigned int uiHeight);
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         static void LineBlendTwoAll(VSTwoParamAnimBlend *pOut,
                                     VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2,
                                     VSAnimFunction *pAnimFunction3, VSAnimFunction *pAnimFunction4,
@@ -23,7 +23,7 @@ namespace Matrix
         VSREAL m_fParam[2];
         VSREAL m_fParamMax[2];
         VSREAL m_fParamMin[2];
-        VSArray<VSAnimAtom> m_BlendBoneMatrix[2];
+        Container::MArray<VSAnimAtom> m_BlendBoneMatrix[2];
         VSAnimAtom m_BlendRootMatrix[2];
         unsigned int m_uiWidth;
         unsigned int m_uiHeight;
@@ -34,9 +34,9 @@ namespace Matrix
         VSAnimFunction *GetAnimFunction(unsigned int i, unsigned int j);
 
     private:
-        static void LineBlendTwo(VSArray<VSAnimAtom> *pOut,
-                                 const VSArray<VSAnimAtom> *pIn1, const VSArray<VSAnimAtom> *pIn2, VSREAL fWeight);
-        static void LineBlendTwo(VSArray<VSAnimAtom> *pOut,
+        static void LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
+                                 const Container::MArray<VSAnimAtom> *pIn1, const Container::MArray<VSAnimAtom> *pIn2, VSREAL fWeight);
+        static void LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
                                  VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2, VSREAL fWeight);
         static bool LineBlendTwoRoot(VSAnimAtom &pOut,
                                      VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2, VSREAL fWeight);

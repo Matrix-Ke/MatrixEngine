@@ -7,7 +7,7 @@ namespace Matrix
 
     class VSSkeleton;
     class VSMeshNode;
-    class VSStream;
+    class MStream;
     DECLARE_Ptr(VSBoneNode);
     DECLARE_Ptr(VSMorphSet);
     DECLARE_Ptr(VSMeshData);
@@ -54,13 +54,13 @@ namespace Matrix
 
         virtual void CreateLocalAABB();
 
-        void SetAffectBoneArray(const VSArray<VSBoneNode *> &pBoneNodeArray);
-        void SetAffectBoneArray(const VSArray<VSUsedName> &BoneNodeArray);
+        void SetAffectBoneArray(const Container::MArray<VSBoneNode *> &pBoneNodeArray);
+        void SetAffectBoneArray(const Container::MArray<VSUsedName> &BoneNodeArray);
         inline unsigned int GetAffectBoneNum() const
         {
             return m_pBoneNode.GetNum();
         }
-        inline VSArray<VSVector3W> &GetSkinWeightBuffer()
+        inline Container::MArray<VSVector3W> &GetSkinWeightBuffer()
         {
             return m_SkinWeightBuffer;
         }
@@ -79,8 +79,8 @@ namespace Matrix
         // must send to render thread
         virtual void UpdateGeometryBeforeDrawCall();
 
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         inline void SetLocalBV(const VSAABB3 &BV)
         {
             m_LocalBV = BV;
@@ -139,11 +139,11 @@ namespace Matrix
             return m_MorphData;
         }
         void SetMorphData(unsigned int Index, float fData);
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
 
     protected:
         // friend class VSRenderer;
-        VSArray<VSMaterialInstancePtr> m_pMaterialInstance;
+        Container::MArray<VSMaterialInstancePtr> m_pMaterialInstance;
         unsigned int m_uiCurUseMaterial;
 
         virtual void UpdateView(VSCuller &Culler, double dAppTime);
@@ -153,12 +153,12 @@ namespace Matrix
         virtual void UpdateOther(double dAppTime);
         VSMeshDataPtr m_pMeshData;
         unsigned int m_uiActiveNum;
-        VSArray<VSBoneNode *> m_pBoneNode;
+        Container::MArray<VSBoneNode *> m_pBoneNode;
 
-        VSArray<VSUsedName> m_BoneName;
+        Container::MArray<VSUsedName> m_BoneName;
         VSAABB3 m_LocalBV;
         void LinkBoneNode();
-        VSArray<VSVector3W> m_SkinWeightBuffer;
+        Container::MArray<VSVector3W> m_SkinWeightBuffer;
         MorphDataType m_MorphData;
         static VSPointer<VSGeometry> ms_Quad;
         static VSPointer<VSGeometry> ms_DefaultCube;

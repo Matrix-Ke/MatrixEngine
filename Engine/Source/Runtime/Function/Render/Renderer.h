@@ -71,7 +71,7 @@ namespace Matrix
     {
         unsigned int m_uiAdapter;
         VSString AdapterName;
-        VSArray<VSDisplayMode> DisplayMode;
+        Container::MArray<VSDisplayMode> DisplayMode;
         UINT uiDisplayModeNum;
         // HAL SW REF
         VSDeviceInfo DeviceInfo[3];
@@ -339,8 +339,8 @@ namespace Matrix
         virtual unsigned int SetBlendState(VSBlendState *pBlendState, bool bForceSet = false) = 0;
         virtual unsigned int SetDepthStencilState(VSDepthStencilState *pDepthStencilState, bool bForceSet = false) = 0;
         virtual unsigned int SetRasterizerState(VSRasterizerState *pRasterizerState, bool bForceSet = false) = 0;
-        virtual void SetClipPlane(VSArray<VSPlane3> &Plane, bool bEnable) = 0;
-        virtual void SetScissorRect(VSArray<VSRect2> &Rect, bool bEnable) = 0;
+        virtual void SetClipPlane(Container::MArray<VSPlane3> &Plane, bool bEnable) = 0;
+        virtual void SetScissorRect(Container::MArray<VSRect2> &Rect, bool bEnable) = 0;
 
         virtual void SetPTexAllState(VSTexAllState *pTexAllState, unsigned int i);
         virtual void SetVTexAllState(VSTexAllState *pTexAllState, unsigned int i);
@@ -466,12 +466,12 @@ namespace Matrix
 
         VSQuery *m_pQuery;
 
-        VSArray<VSSlot *> m_pVTex;
-        VSArray<VSSlot *> m_pPTex;
-        VSArray<VSSlot *> m_pGTex;
-        VSArray<VSSlot *> m_pDTex;
-        VSArray<VSSlot *> m_pHTex;
-        VSArray<VSSlot *> m_pCTex;
+        Container::MArray<VSSlot *> m_pVTex;
+        Container::MArray<VSSlot *> m_pPTex;
+        Container::MArray<VSSlot *> m_pGTex;
+        Container::MArray<VSSlot *> m_pDTex;
+        Container::MArray<VSSlot *> m_pHTex;
+        Container::MArray<VSSlot *> m_pCTex;
 
         VSVertexFormat *m_pVertexFormat;
         VSVShader *m_pVShader;
@@ -484,7 +484,7 @@ namespace Matrix
         VSMap<unsigned int, VSTexAllState *> m_pTexAllStateBuffer;
         VSMap<unsigned int, VSBufferResource *> m_pBufferResource;
 
-        VSArray<VSSamplerState *> m_pSamplerState[VSEngineFlag::ST_MAX];
+        Container::MArray<VSSamplerState *> m_pSamplerState[VSEngineFlag::ST_MAX];
 
         VSRenderState m_LocalRenderState;
 
@@ -646,8 +646,8 @@ namespace Matrix
         static unsigned int ms_uiChannelPerPixel[SFT_MAX];
         static SCREEN_QUAD_TYPE ms_FullScreen[4];
         static VSUSHORT_INDEX ms_FullScreenI[6];
-        VSArray<SCREEN_FONT_TYPE> m_FontVertex;
-        VSArray<VSUSHORT_INDEX> m_FontIndex;
+        Container::MArray<SCREEN_FONT_TYPE> m_FontVertex;
+        Container::MArray<VSUSHORT_INDEX> m_FontIndex;
 
         VSViewPort m_CurViewPort;
 
@@ -774,29 +774,29 @@ namespace Matrix
 
         virtual void SkyLight(const VSString &WorldNormal, const VSString &UpColor, const VSString &DownColor, const VSString &DiffuseColor, VSString &OutString) = 0;
         virtual void DirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                      const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                                      const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                       VSString &OutString) const = 0;
-        virtual void CustomDirectionalLight(int iLightNum, const VSString &CustomString, VSArray<VSString> ShadowString, VSString &OutString) const = 0;
+        virtual void CustomDirectionalLight(int iLightNum, const VSString &CustomString, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
 
         virtual void OrenNayarDirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                               const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                               const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                                VSString &OutString) const = 0;
 
         virtual void PointLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                                const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                 VSString &OutString) const = 0;
-        virtual void CustomPointLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, VSArray<VSString> ShadowString, VSString &OutString) const = 0;
+        virtual void CustomPointLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
 
         virtual void OrenNayarPointLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                         const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                         const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                          VSString &OutString) const = 0;
 
         virtual void SpotLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                               const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, VSArray<VSString> ShadowString,
+                               const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
                                VSString &OutString) const = 0;
-        virtual void CustomSpotLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, VSArray<VSString> ShadowString, VSString &OutString) const = 0;
+        virtual void CustomSpotLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
         virtual void OrenNayarSpotLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                        const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, VSArray<VSString> ShadowString,
+                                        const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
                                         VSString &OutString) const = 0;
 
         virtual void LocalToWorldPos(const VSString &LocalPos, VSString &OutString) const = 0;
@@ -859,9 +859,9 @@ namespace Matrix
         virtual void SpotLightShadow(const VSString &SpotLightName, const VSString &ShadowSampler,
                                      const VSString &WorldPos, VSString &OutString) const = 0;
 
-        virtual void TranLightToTemp(VSArray<VSLight *> LightArray, VSString &OutString) const = 0;
+        virtual void TranLightToTemp(Container::MArray<VSLight *> LightArray, VSString &OutString) const = 0;
 
-        virtual void GetLightFunction(VSArray<VSLight *> LightArray, const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void GetLightFunction(Container::MArray<VSLight *> LightArray, const VSString &WorldPos, VSString &OutString) const = 0;
 
         virtual void EncodeReflect(const VSString &Mip, const VSString &Pow, VSString &OutString) = 0;
 

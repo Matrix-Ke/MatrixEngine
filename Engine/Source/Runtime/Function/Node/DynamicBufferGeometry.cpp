@@ -43,7 +43,7 @@ VSDVGeometry::~VSDVGeometry()
     m_pVertexUseBufferRender = NULL;
     VSResourceManager::GetDelayUpdateNoTimeObject().RemoveMethod<VSDVGeometry, &VSDVGeometry::ClearInfo>(this);
 }
-void VSDVGeometry::Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+void VSDVGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                           unsigned int uiMeshDataType,
                           unsigned int uiVertexNum)
 {
@@ -214,7 +214,7 @@ VSDVDIGeometry::~VSDVDIGeometry()
         VSResourceManager::GetDelayUpdateNoTimeObject().RemoveMethod<VSDVDIGeometry, &VSDVDIGeometry::ClearInfo>(this);
     }
 }
-void VSDVDIGeometry::Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+void VSDVDIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                             unsigned int uiMeshDataType,
                             unsigned int uiVertexNum,
                             unsigned int uiIndexNum)
@@ -687,7 +687,7 @@ VSDVSIGeometry::~VSDVSIGeometry()
         VSResourceManager::GetDelayUpdateNoTimeObject().RemoveMethod<VSDVSIGeometry, &VSDVSIGeometry::ClearInfo>(this);
     }
 }
-void VSDVSIGeometry::Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+void VSDVSIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                             unsigned int uiMeshDataType,
                             unsigned int uiVertexNum,
                             VSIndexBuffer *pIndexBuffer)

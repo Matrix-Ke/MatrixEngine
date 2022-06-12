@@ -44,11 +44,11 @@ namespace Matrix
 
         unsigned int GetSubMeshNum();
 
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
 
     protected:
         VSModelMeshNodePtr m_pNode;
-        VSArray<unsigned int> m_UseID;
+        Container::MArray<unsigned int> m_UseID;
         bool m_bCastShadow;
         void ResetUseID();
     };

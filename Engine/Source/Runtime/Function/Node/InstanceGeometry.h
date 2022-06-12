@@ -11,7 +11,7 @@ namespace Matrix
             MaterialData.SetBufferNum(uiMaterialParaNum);
         }
         VSTransform T;
-        VSArray<VSArray<VSREAL>> MaterialData;
+        Container::MArray<Container::MArray<VSREAL>> MaterialData;
     };
     class MATRIX_FUNCTION_API VSInstanceGeometry : public VSGeometry
     {
@@ -39,7 +39,7 @@ namespace Matrix
         VSInstanceGeometry();
 
         virtual ~VSInstanceGeometry();
-        void SetMaxInstanceBuffer(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiMaxNum);
+        void SetMaxInstanceBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiMaxNum);
         inline VSVertexBuffer *GetInstanceVertexBuffer() const
         {
             return m_InstanceBuffer;
@@ -54,7 +54,7 @@ namespace Matrix
         void CreateInstanceBuffer(VSMeshData *pSourceMeshData, VSMaterialR *pMaterial);
         void ClearInstanceData();
         unsigned int GetInstanceNum();
-        unsigned int AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, VSArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData = NULL);
+        unsigned int AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData = NULL);
         static bool InitialDefaultState();
         static bool TerminalDefaultState();
         inline bool IsUsed() const

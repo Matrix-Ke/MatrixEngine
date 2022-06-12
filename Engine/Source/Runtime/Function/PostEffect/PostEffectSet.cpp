@@ -8,8 +8,8 @@
 #include "Stream.h"
 using namespace Matrix;
 IMPLEMENT_RESOURCE(VSPostEffectSet)
-IMPLEMENT_RTTI(VSPostEffectSet, VSObject)
-BEGIN_ADD_PROPERTY(VSPostEffectSet, VSObject)
+IMPLEMENT_RTTI(VSPostEffectSet, MObject)
+BEGIN_ADD_PROPERTY(VSPostEffectSet, MObject)
 REGISTER_PROPERTY(m_ShowName, ShowName, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pPEBeginFunc, BeginFunction, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pPEEndFunc, EndFunction, VSProperty::F_SAVE_LOAD_CLONE)
@@ -65,7 +65,7 @@ void VSPostEffectSet::Draw(VSCuller &Culler, double dAppTime)
     m_pPEEndFunc->ClearFlag();
     m_pPEEndFunc->Draw(Culler, dAppTime);
 }
-void VSPostEffectSet::SetBeginTargetArray(VSArray<VSRenderTarget *> *pBeginTargetArray)
+void VSPostEffectSet::SetBeginTargetArray(Container::MArray<VSRenderTarget *> *pBeginTargetArray)
 {
     VSMAC_ASSERT(pBeginTargetArray && pBeginTargetArray->GetNum());
     m_pPEBeginFunc->SetPara(pBeginTargetArray);

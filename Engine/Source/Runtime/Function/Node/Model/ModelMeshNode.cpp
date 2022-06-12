@@ -56,12 +56,12 @@ VSSwitchNode *VSModelMeshNode::GetLodNode() const
     }
     return NULL;
 }
-bool VSModelMeshNode::PostLoad(VSStream *pStream)
+bool VSModelMeshNode::PostLoad(MStream *pStream)
 {
     VSMeshNode::PostLoad(pStream);
     return true;
 }
-bool VSModelMeshNode::PostClone(VSObject *pObjectSrc)
+bool VSModelMeshNode::PostClone(MObject *pObjectSrc)
 {
     VSMeshNode::PostClone(pObjectSrc);
 
@@ -126,7 +126,7 @@ bool VSModelMeshNode::AddLODGeometryNode(VSGeometryNode *pGeoNode)
         return false;
     }
 }
-void VSModelMeshNode::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSModelMeshNode::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     VSModelSwitchNode *Temp = DynamicCast<VSModelSwitchNode>(m_pChild[0]);
     if (!Temp)

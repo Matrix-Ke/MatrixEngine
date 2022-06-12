@@ -38,8 +38,8 @@ namespace Matrix
         VSMaterial *m_pMaterial;
         unsigned int m_uiPassId;
         VSMeshNode *m_pMeshNode;
-        VSArray<VSLight *> m_pIndirectLight;
-        VSArray<VSLight *> m_pDirectLight;
+        Container::MArray<VSLight *> m_pIndirectLight;
+        Container::MArray<VSLight *> m_pDirectLight;
         int m_uiInstanceID;
         bool bOcclusion;
         inline bool IsInstanceData() const
@@ -149,7 +149,7 @@ namespace Matrix
         virtual void CollectDynamicInstance();
         virtual bool CullGeometry(VSGeometry *pGeometry);
 
-        void GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, VSArray<VSAABB3> &AABBArray);
+        void GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<VSAABB3> &AABBArray);
 
         void GetAndSortLight();
         inline void SetBeignDynamicInstanceNum(unsigned int uiBeignDynamicInstanceNum)
@@ -163,17 +163,17 @@ namespace Matrix
             ClearVisibleSet();
             ClearLight();
         }
-        void GetSceneContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, double dAppTime, bool bSort = true);
+        void GetSceneContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, double dAppTime, bool bSort = true);
 
     protected:
-        void GetSceneGeometryContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, double dAppTime, bool bSort);
-        void GetSceneLightContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, double dAppTime);
-        virtual void CollectDynamicInstance(VSArray<VSRenderContext> &inContext);
+        void GetSceneGeometryContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, double dAppTime, bool bSort);
+        void GetSceneLightContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, double dAppTime);
+        virtual void CollectDynamicInstance(Container::MArray<VSRenderContext> &inContext);
         unsigned int m_uiPlaneNum;
         VSPlane3 m_Plane[VS_MAX_PLANE_NUM];
         unsigned int m_uiPlaneState;
-        VSArray<VSRenderContext> m_VisibleSet[RG_MAX][VST_MAX];
-        VSArray<VSLight *> m_LightSet;
+        Container::MArray<VSRenderContext> m_VisibleSet[RG_MAX][VST_MAX];
+        Container::MArray<VSLight *> m_LightSet;
         VSCamera *m_pCamera;
         int m_iUseMaterialIndex;
         unsigned int m_uiBeignDynamicInstanceNum;
@@ -200,7 +200,7 @@ namespace Matrix
             bool operator()(VSRenderContext &p1, VSRenderContext &p2);
         };
         bool TestObjectWithCameraIntersectOnLightDirPlane(const VSSpatial *pSpatial);
-        void GetSceneContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, VSLocalLight *pLocalLight, double dAppTime, bool bCollectDynamicInstance = true);
+        void GetSceneContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, VSLocalLight *pLocalLight, double dAppTime, bool bCollectDynamicInstance = true);
 
     protected:
         VSLocalLight *m_pLocalLight;
@@ -293,7 +293,7 @@ namespace Matrix
         void DeleteAllReleaseOcclusionQuery();
 
     private:
-        VSArray<VSOcclusionQueryType> m_ElementArray;
+        Container::MArray<VSOcclusionQueryType> m_ElementArray;
         VSStack<unsigned int> m_FreeElement;
     };
     class MATRIX_FUNCTION_API VSCullerManager
@@ -317,11 +317,11 @@ namespace Matrix
         void ClearAllOcclusionQuery();
 
     protected:
-        VSArray<VSGeometryOcclusionQueryData> &GetGroupGeometryOcclusionQueryData(VSCuller *pCuller, unsigned int uiGroup);
+        Container::MArray<VSGeometryOcclusionQueryData> &GetGroupGeometryOcclusionQueryData(VSCuller *pCuller, unsigned int uiGroup);
 
-        VSArray<VSCuller *> m_CullerArray;
-        VSArray<VSArrayOrder<VSGeometry *>> m_NoVisibleGeometry[VSCuller::RG_MAX];
-        typedef VSArray<VSArray<VSGeometryOcclusionQueryData>> GeometryOcclusionQueryDataType;
+        Container::MArray<VSCuller *> m_CullerArray;
+        Container::MArray<VSArrayOrder<VSGeometry *>> m_NoVisibleGeometry[VSCuller::RG_MAX];
+        typedef Container::MArray<Container::MArray<VSGeometryOcclusionQueryData>> GeometryOcclusionQueryDataType;
         GeometryOcclusionQueryDataType m_GeometryOcclusionQueryBuffer[VSCuller::RG_MAX][3];
 
         GeometryOcclusionQueryDataType *m_GOQBufferPointer[VSCuller::RG_MAX][3];
@@ -329,8 +329,8 @@ namespace Matrix
         VSOcclusionQueryPool m_OcclusionQueryPool;
 
         void GetQueryData();
-        VSArray<VSCuller *> m_PendingRegister;
-        VSArray<VSCuller *> m_PendingDelete;
+        Container::MArray<VSCuller *> m_PendingRegister;
+        Container::MArray<VSCuller *> m_PendingDelete;
         void OnRegisterCuller(VSCuller *pCuller);
         void OnUnRegisterCuller(VSCuller *pCuller);
     };

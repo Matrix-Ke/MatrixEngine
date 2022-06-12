@@ -6,7 +6,7 @@
 #include "Resource.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     //状态变换一种是自身的内部提出的主动变换，还一种是外界的。
     //自身主动的通过update来变换，而外界的通过发消息来变换。外界强迫发过来的消息，提出变换状态，但当前所在状态可能不要变换
     //所以这种情况下就不能变换。
@@ -28,7 +28,7 @@ namespace Matrix
     DECLARE_Ptr(VSAIStateInputNode);
     VSTYPE_MARCO(VSAIStateInputNode);
     class VSFSM;
-    class VSAIState : public VSObject
+    class VSAIState : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -52,7 +52,7 @@ namespace Matrix
 
     protected:
         VSOutputNode *m_pStateOutput;
-        VSArray<VSAIStateInputNode *> m_pStateInputNode;
+        Container::MArray<VSAIStateInputNode *> m_pStateInputNode;
         VSUsedName m_StateName;
         VSAIState();
         VSFSM *m_pOwner;
@@ -60,7 +60,7 @@ namespace Matrix
     DECLARE_Ptr(VSAIState);
     VSTYPE_MARCO(VSAIState);
 
-    class VSBeginState : public VSObject
+    class VSBeginState : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -85,7 +85,7 @@ namespace Matrix
 
     DECLARE_Ptr(VSActor);
 
-    class VSFSM : public VSObject, public VSResource
+    class VSFSM : public MObject, public VSResource
     {
         // RTTI
         DECLARE_RTTI;
@@ -175,7 +175,7 @@ namespace Matrix
             }
             return false;
         }
-        VSArray<VSAIState *> m_AllState;
+        Container::MArray<VSAIState *> m_AllState;
         VSAIState *m_pCurState;
         VSAIState *m_pGlobleState;
         VSAIState *m_pBeginState;

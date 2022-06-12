@@ -34,7 +34,7 @@ namespace Matrix
         virtual void ClearRTAndDepth() = 0;
 
     protected:
-        VSArray<VSRenderTargetPtr> m_pTargetArray;
+        Container::MArray<VSRenderTargetPtr> m_pTargetArray;
 
         unsigned int m_uiClearFlag;
         VSColorRGBA m_ClearColorRGBA;
@@ -106,12 +106,12 @@ namespace Matrix
         virtual bool OnDraw(VSCuller &Culler, unsigned int uiRenderGroup, double dAppTime);
         VS2DTexturePtr m_pNormalDepthTexture;
 
-        VSArray<VSRenderContext *> m_NormalAndDepth;
-        VSArray<VSRenderContext *> m_NoNormalOrDepth;
-        VSArray<VSRenderContext *> m_Combine;
-        VSArray<VSRenderContext *> m_AlphaBlend;
+        Container::MArray<VSRenderContext *> m_NormalAndDepth;
+        Container::MArray<VSRenderContext *> m_NoNormalOrDepth;
+        Container::MArray<VSRenderContext *> m_Combine;
+        Container::MArray<VSRenderContext *> m_AlphaBlend;
         void GetGroup(VSCuller &Culler, unsigned int uiRenderGroup);
-        void DrawGroup(VSCuller &Culler, unsigned int uiRenderGroup, VSArray<VSRenderContext *> &Group, double dAppTime);
+        void DrawGroup(VSCuller &Culler, unsigned int uiRenderGroup, Container::MArray<VSRenderContext *> &Group, double dAppTime);
         void DrawProjectShadow(VSCuller &Culler, unsigned int uiRenderGroup, double dAppTime);
         void DrawVolumeShadow(VSCuller &Culler, unsigned int uiRenderGroup, double dAppTime);
     };
@@ -220,7 +220,7 @@ namespace Matrix
         virtual void OnUpdate(unsigned int uiPassID, double dAppTime) = 0;
 
     protected:
-        VSArray<VSCommonPESceneRenderPtr> m_CPEArray;
+        Container::MArray<VSCommonPESceneRenderPtr> m_CPEArray;
     };
     DECLARE_Ptr(VSCombinePostEffectSceneRender);
 

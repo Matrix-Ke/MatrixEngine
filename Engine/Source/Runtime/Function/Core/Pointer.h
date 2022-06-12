@@ -49,6 +49,7 @@ namespace Matrix
 	};
 
 #include "Pointer.inl"
+
 #define DECLARE_Ptr(ClassName) \
      class ClassName;           \
      typedef VSPointer<ClassName>	##ClassName##Ptr;

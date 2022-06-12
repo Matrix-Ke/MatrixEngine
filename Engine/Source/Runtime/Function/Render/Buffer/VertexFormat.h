@@ -3,7 +3,7 @@
 #include "Bind.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSVertexFormat : public VSBind
     {
         // PRIORITY
@@ -73,7 +73,7 @@ namespace Matrix
         unsigned int m_uiVertexFormatCode;
 
     public:
-        VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> m_FormatArray;
+        Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> m_FormatArray;
         inline unsigned int GetVertexFormatCode() const
         {
             return m_uiVertexFormatCode;

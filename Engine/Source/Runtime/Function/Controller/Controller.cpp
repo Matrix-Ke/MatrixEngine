@@ -3,10 +3,10 @@
 #include "Stream.h"
 #include "GraphicInclude.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSController, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSController, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSController)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSController, VSObject)
+    BEGIN_ADD_PROPERTY(VSController, MObject)
         REGISTER_PROPERTY(m_bEnable, Enable, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_uiRepeatType, uiRepeatType, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_dMinTime, MinTime, VSProperty::F_SAVE_LOAD_CLONE);
@@ -202,7 +202,7 @@ double VSController::GetControlTime(double dAppTime)
         return m_dMinTime;
     }
 }
-bool VSController::SetObject(VSObject *pObject)
+bool VSController::SetObject(MObject *pObject)
 {
     if (!pObject)
         return 0;

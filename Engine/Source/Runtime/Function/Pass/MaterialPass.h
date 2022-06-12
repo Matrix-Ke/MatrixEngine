@@ -36,7 +36,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSLight *> m_Light;
+        Container::MArray<VSLight *> m_Light;
         VSRenderState m_RenderSceondPassUsed;
 
     public:

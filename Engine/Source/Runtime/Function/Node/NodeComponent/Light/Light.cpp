@@ -186,7 +186,7 @@ void VSLocalLight::DrawLightMaterial(double dAppTime)
         }
     }
 }
-void VSLocalLight::GetCullerAABBArray(VSCuller &Culler, VSArray<VSAABB3> &AABBArray)
+void VSLocalLight::GetCullerAABBArray(VSCuller &Culler, Container::MArray<VSAABB3> &AABBArray)
 {
 
     for (unsigned int i = 0; i < VSCuller::VST_MAX; i++)

@@ -126,14 +126,14 @@ void VSPointLight::SetShadowType(unsigned int uiShadowType)
     }
     m_uiShadowType = uiShadowType;
 }
-bool VSPointLight::PostClone(VSObject *pObjectSrc)
+bool VSPointLight::PostClone(MObject *pObjectSrc)
 {
     VSLight::PostClone(pObjectSrc);
 
     SetShadowType(m_uiShadowType);
     return true;
 }
-bool VSPointLight::PostLoad(VSStream *pStream)
+bool VSPointLight::PostLoad(MStream *pStream)
 {
     VSLight::PostLoad(pStream);
 

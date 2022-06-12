@@ -6,7 +6,7 @@
 #include "SocketNode.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSSkeletonMeshNode : public VSModelMeshNode, public VSResource
     {
         // PRIORITY
@@ -57,8 +57,8 @@ namespace Matrix
         bool PlayAnim(const VSString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
         void StopAnim();
 
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual void UpdateAll(double dAppTime);
         VSSocketNode *CreateSocket(const VSUsedName &BoneName, const VSUsedName &SocketName);
         void DeleteSocket(const VSUsedName &SocketName);
@@ -80,14 +80,14 @@ namespace Matrix
         VSAnimTreePtr m_pAnimTreeInstance;
 
         void UpdateLocalAABB();
-        VSArray<VSSocketNodePtr> m_pSocketArray;
+        Container::MArray<VSSocketNodePtr> m_pSocketArray;
         void UpdateInstanceTexture();
         void CreateAnimInstanceData();
-        VSArray<VSVector3W> m_AnimData;
-        VSArray<VSHalfVector3W> m_HalfAnimData;
+        Container::MArray<VSVector3W> m_AnimData;
+        Container::MArray<VSHalfVector3W> m_HalfAnimData;
         unsigned int m_uiAnimInstanceTextureHeight;
         unsigned int m_uiAnimInstanceTextureWidth;
-        VSArray<unsigned int> m_uiKeyFrameLengthArrray;
+        Container::MArray<unsigned int> m_uiKeyFrameLengthArrray;
         VSTexAllStatePtr m_AnimInstanceTexture;
 
     public:
@@ -96,7 +96,7 @@ namespace Matrix
         static bool TerminalDefaultState();
         const VSAnimAtom &GetRootDelta();
         virtual bool SetDrawInstance(bool bDrawInstance);
-        VSArray<ANIM_INSTANCE_SHADER_DATA> m_AnimInstanceData;
+        Container::MArray<ANIM_INSTANCE_SHADER_DATA> m_AnimInstanceData;
         inline VSTexAllState *GetAnimInstanceTexture() const
         {
             return m_AnimInstanceTexture;

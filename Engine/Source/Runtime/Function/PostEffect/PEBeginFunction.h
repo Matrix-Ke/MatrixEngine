@@ -49,7 +49,7 @@ namespace Matrix
             }
             return NULL;
         }
-        inline void SetPara(VSArray<VSRenderTarget *> *pBeginTargetArray)
+        inline void SetPara(Container::MArray<VSRenderTarget *> *pBeginTargetArray)
         {
             m_pBeginTargetArray = pBeginTargetArray;
         }
@@ -60,7 +60,7 @@ namespace Matrix
 
     protected:
         VSPEBeginFunction();
-        VSArray<VSRenderTarget *> *m_pBeginTargetArray;
+        Container::MArray<VSRenderTarget *> *m_pBeginTargetArray;
         virtual VSPostEffectSceneRender *CreateSceneRender();
         virtual void OnDraw(VSCuller &Culler, double dAppTime);
     };

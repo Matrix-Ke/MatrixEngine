@@ -126,7 +126,7 @@ void VSGeometryNode::UpdateLocalAABB()
         }
     }
 }
-bool VSGeometryNode::PostLoad(VSStream *pStream)
+bool VSGeometryNode::PostLoad(MStream *pStream)
 {
     if (VSNode::PostLoad(pStream) == false)
     {
@@ -149,7 +149,7 @@ bool VSGeometryNode::PostLoad(VSStream *pStream)
     }
     return true;
 }
-bool VSGeometryNode::PostClone(VSObject *pObjectSrc)
+bool VSGeometryNode::PostClone(MObject *pObjectSrc)
 {
     if (VSNode::PostClone(pObjectSrc) == false)
     {
@@ -183,7 +183,7 @@ void VSGeometryNode::SetMorphData(const VSUsedName &ShowName, float fData)
     unsigned int Index = m_pMorphSet->GetMorphIndex(ShowName);
     SetMorphData(Index, fData);
 }
-void VSGeometryNode::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSGeometryNode::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     for (unsigned int j = 0; j < GetNormalGeometryNum(); j++)
     {

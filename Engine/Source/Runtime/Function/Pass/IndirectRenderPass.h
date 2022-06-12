@@ -35,7 +35,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSLight *> m_Light;
+        Container::MArray<VSLight *> m_Light;
 
     public:
         virtual bool Draw(VSRenderer *pRenderer);

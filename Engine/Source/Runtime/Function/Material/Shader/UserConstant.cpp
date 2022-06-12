@@ -3,8 +3,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSUserConstant, VSObject)
-BEGIN_ADD_PROPERTY(VSUserConstant, VSObject)
+IMPLEMENT_RTTI(VSUserConstant, MObject)
+BEGIN_ADD_PROPERTY(VSUserConstant, MObject)
 REGISTER_PROPERTY(m_uiValueType, ValueType, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiRegisterIndex, RegisterIndex, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiRegisterNum, RegisterNum, VSProperty::F_SAVE_LOAD_CLONE)
@@ -56,7 +56,7 @@ VSUserConstant::~VSUserConstant()
 {
     VSMAC_DELETEA(m_pData);
 }
-bool VSUserConstant::PostLoad(VSStream *pStream)
+bool VSUserConstant::PostLoad(MStream *pStream)
 {
     VSMAC_DELETEA(m_pData);
     if (m_uiSize)
@@ -66,7 +66,7 @@ bool VSUserConstant::PostLoad(VSStream *pStream)
     }
     return true;
 }
-bool VSUserConstant::PostClone(VSObject *pObjectSrc)
+bool VSUserConstant::PostClone(MObject *pObjectSrc)
 {
     VSMAC_DELETEA(m_pData);
     if (m_uiSize)

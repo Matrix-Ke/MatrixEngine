@@ -5,10 +5,10 @@
 #include "Stream.h"
 #include "LightShaderFunction.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSShaderFunction, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSShaderFunction, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSShaderFunction)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSShaderFunction, VSObject)
+    BEGIN_ADD_PROPERTY(VSShaderFunction, MObject)
         REGISTER_PROPERTY(m_ShowName, ShowName, VSProperty::F_SAVE_LOAD_CLONE)
             REGISTER_PROPERTY(m_pOwner, Owner, VSProperty::F_SAVE_LOAD_CLONE)
                 REGISTER_PROPERTY(m_pInput, Input, VSProperty::F_SAVE_LOAD_CLONE)
@@ -262,7 +262,7 @@ bool VSShaderFunction::IsValidNodeToThis(VSShaderFunction *pShaderFunction, Mate
     }
     return true;
 }
-bool VSShaderFunction::GetAllChildNode(VSArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara)
+bool VSShaderFunction::GetAllChildNode(Container::MArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara)
 {
 
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
@@ -287,9 +287,9 @@ bool VSShaderFunction::GetAllChildNode(VSArray<VSShaderFunction *> &ChildNodeArr
     }
     return ChildNodeArray.GetNum() > 0;
 }
-bool VSShaderFunction::CheckChildNodeValidToThis(VSArray<VSShaderFunction *> &NoValidShaderFunctionArray, MaterialShaderPara &MSPara)
+bool VSShaderFunction::CheckChildNodeValidToThis(Container::MArray<VSShaderFunction *> &NoValidShaderFunctionArray, MaterialShaderPara &MSPara)
 {
-    VSArray<VSShaderFunction *> ChildNodeArray;
+    Container::MArray<VSShaderFunction *> ChildNodeArray;
     if (GetAllChildNode(ChildNodeArray, MSPara))
     {
         for (unsigned int i = 0; i < ChildNodeArray.GetNum(); i++)
@@ -303,9 +303,9 @@ bool VSShaderFunction::CheckChildNodeValidToThis(VSArray<VSShaderFunction *> &No
 
     return NoValidShaderFunctionArray.GetNum() == 0;
 }
-bool VSShaderFunction::CheckChildNodeValidAll(VSMap<VSShaderFunction *, VSArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara)
+bool VSShaderFunction::CheckChildNodeValidAll(VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara)
 {
-    VSArray<VSShaderFunction *> NoValidShaderFunctionArray;
+    Container::MArray<VSShaderFunction *> NoValidShaderFunctionArray;
     if (!CheckChildNodeValidToThis(NoValidShaderFunctionArray, MSPara))
     {
         NoValidMap.AddElement(this, NoValidShaderFunctionArray);
@@ -348,9 +348,9 @@ bool VSShaderFunction::HaveThisChild(VSShaderFunction *pShaderFunction, Material
     }
     return false;
 }
-void VSShaderFunction::GetNoLightFunctionParentNode(VSArray<VSShaderFunction *> &NoLightFunctionParentNodeArray, MaterialShaderPara &MSPara)
+void VSShaderFunction::GetNoLightFunctionParentNode(Container::MArray<VSShaderFunction *> &NoLightFunctionParentNodeArray, MaterialShaderPara &MSPara)
 {
-    VSArray<VSShaderFunction *> ChildNodeArray;
+    Container::MArray<VSShaderFunction *> ChildNodeArray;
     GetAllChildNode(ChildNodeArray, MSPara);
 
     bool bHaveLightNode = false;

@@ -5,7 +5,7 @@
 namespace Matrix
 {
     class VSViewFamily;
-    class MATRIX_FUNCTION_API VSViewFamliyInfo : public VSObject
+    class MATRIX_FUNCTION_API VSViewFamliyInfo : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -14,7 +14,7 @@ namespace Matrix
         DECLARE_INITIAL
         VSViewFamliyInfo();
         ~VSViewFamliyInfo();
-        VSArray<VSString> m_SceneMapName;
+        Container::MArray<VSString> m_SceneMapName;
         unsigned int m_uiWidth;
         unsigned int m_uiHeight;
         unsigned int m_uiCaptureViewFamilyType;
@@ -38,7 +38,7 @@ namespace Matrix
         virtual ~VSCameraActor();
         DECLARE_INITIAL
 
-        VSArray<VSViewFamliyInfoPtr> m_ViewFamliyInfoArray;
+        Container::MArray<VSViewFamliyInfoPtr> m_ViewFamliyInfoArray;
         GET_TYPE_NODE(VSCamera)
         virtual void Update(double dAppTime);
         virtual void CreateDefaultComponentNode();

@@ -25,7 +25,7 @@ VSAnimSequenceFunc::VSAnimSequenceFunc(const VSUsedName &ShowName, VSAnimTree *p
     m_uiRepeatType = VSController::RT_WRAP;
     m_bOnlyAddtiveOutput = false;
 }
-bool VSAnimSequenceFunc::SetObject(VSObject *pObject)
+bool VSAnimSequenceFunc::SetObject(MObject *pObject)
 {
     if (VSAnimFunction::SetObject(pObject))
     {
@@ -175,7 +175,7 @@ void VSAnimSequenceFunc::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *
         }
     }
 }
-void VSAnimSequenceFunc::ComputeAnim(VSAnim *pAnim, VSArray<LAST_KEY_TYPE> &LastKey, VSArray<VSAnimAtom> &BoneOutput)
+void VSAnimSequenceFunc::ComputeAnim(VSAnim *pAnim, Container::MArray<LAST_KEY_TYPE> &LastKey, Container::MArray<VSAnimAtom> &BoneOutput)
 {
     unsigned int uiUpdateBoneNum = m_UsedBoneIndexInAnim.GetNum();
     if (m_bOnlyUpdateRootMotion)

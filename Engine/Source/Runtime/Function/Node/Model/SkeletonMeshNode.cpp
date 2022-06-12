@@ -75,7 +75,7 @@ void VSSkeletonMeshNode::CreateAnimInstanceData()
     m_AnimData.SetBufferNum(m_uiAnimInstanceTextureWidth * m_uiAnimInstanceTextureHeight);
     VSVector3W *pTexData = m_AnimData.GetBuffer();
 #endif
-    VSArray<VSMatrix3X3W> SaveBoneMatrix;
+    Container::MArray<VSMatrix3X3W> SaveBoneMatrix;
     SaveBoneMatrix.SetBufferNum(m_pSkeleton->GetBoneNum());
     for (unsigned int i = 0; i < m_pSkeleton->GetBoneNum(); i++)
     {
@@ -157,8 +157,8 @@ void VSSkeletonMeshNode::UpdateInstanceTexture()
 {
     unsigned int uiTextureW = m_uiAnimInstanceTextureWidth;
     unsigned int uiTextureH = m_uiAnimInstanceTextureHeight;
-    VSArray<VSVector3W> AnimDataTemp;
-    VSArray<VSHalfVector3W> HalfAnimDataTemp;
+    Container::MArray<VSVector3W> AnimDataTemp;
+    Container::MArray<VSHalfVector3W> HalfAnimDataTemp;
 
     bool CopyDirect = true;
     if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_NoPow2Texture))
@@ -271,7 +271,7 @@ bool VSSkeletonMeshNode::InitialDefaultState()
     ms_Default = VS_NEW VSSkeletonMeshNode();
     VSGeometryNodePtr GeometryNode = VS_NEW VSGeometryNode();
     ms_Default->AddChild(GeometryNode);
-    VSGeometryPtr Geometry = (VSGeometry *)VSObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
+    VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);
     ms_Default->CreateLocalAABB();
     GeometryNode->SetLocalScale(VSVector3(100.0f, 100.0f, 100.0f));
@@ -362,7 +362,7 @@ void VSSkeletonMeshNode::UpdateLocalAABB()
 {
     if (m_pAnimSet && m_pSkeleton)
     {
-        VSArray<VSMatrix3X3W> SaveBoneMatrix;
+        Container::MArray<VSMatrix3X3W> SaveBoneMatrix;
         SaveBoneMatrix.SetBufferNum(m_pSkeleton->GetBoneNum());
         for (unsigned int i = 0; i < m_pSkeleton->GetBoneNum(); i++)
         {
@@ -446,7 +446,7 @@ void VSSkeletonMeshNode::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *
 {
     if (m_pAnimTree == pResourceProxy)
     {
-        m_pAnimTreeInstance = (VSAnimTree *)VSObject::CloneCreateObject(m_pAnimTree->GetResource());
+        m_pAnimTreeInstance = (VSAnimTree *)MObject::CloneCreateObject(m_pAnimTree->GetResource());
         m_pAnimTreeInstance->SetObject(this);
         if (!m_pAnimTreeInstance->IsSupportSimpleInstance() && VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_AdvanceInstance))
         {
@@ -455,7 +455,7 @@ void VSSkeletonMeshNode::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *
         }
     }
 }
-bool VSSkeletonMeshNode::PostLoad(VSStream *pStream)
+bool VSSkeletonMeshNode::PostLoad(MStream *pStream)
 {
     VSModelMeshNode::PostLoad(pStream);
     if (m_pAnimTree)
@@ -468,7 +468,7 @@ bool VSSkeletonMeshNode::PostLoad(VSStream *pStream)
     }
     return true;
 }
-bool VSSkeletonMeshNode::PostClone(VSObject *pObjectSrc)
+bool VSSkeletonMeshNode::PostClone(MObject *pObjectSrc)
 {
     VSModelMeshNode::PostClone(pObjectSrc);
     if (m_pAnimTree)
@@ -618,7 +618,7 @@ void VSSkeletonMeshNode::StopAnim()
 void VSSkeletonMeshNode::UpdateController(double dAppTime)
 {
     VSModelMeshNode::UpdateController(dAppTime);
-    VSArray<ANIM_INSTANCE_DATA> TempAnimInstanceData;
+    Container::MArray<ANIM_INSTANCE_DATA> TempAnimInstanceData;
     if (m_pAnimTreeInstance)
     {
         if (m_pAnimSequence)

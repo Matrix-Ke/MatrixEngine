@@ -3,7 +3,7 @@
 #include "SceneRender.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSSpotLight : public VSLocalLight
     {
         // PRIORITY
@@ -49,8 +49,8 @@ namespace Matrix
         {
             return m_Phi;
         }
-        virtual bool PostClone(VSObject *pObjectSrc);
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
         virtual unsigned int GetLightType() const { return LT_SPOT; }
         virtual bool Cullby(VSCuller &Culler);
         virtual bool IsRelative(VSGeometry *pGeometry);

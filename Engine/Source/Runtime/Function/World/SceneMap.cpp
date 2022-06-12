@@ -3,8 +3,8 @@
 #include "Stream.h"
 #include "SceneManager.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSSceneMap, VSObject)
-BEGIN_ADD_PROPERTY(VSSceneMap, VSObject)
+IMPLEMENT_RTTI(VSSceneMap, MObject)
+BEGIN_ADD_PROPERTY(VSSceneMap, MObject)
 REGISTER_PROPERTY(m_Name, Name, VSProperty::F_SAVE_LOAD_CLONE | VSProperty::F_REFLECT_NAME)
 REGISTER_PROPERTY(m_pScene, Scene, VSProperty::F_SAVE_LOAD_CLONE | VSProperty::F_NO_USE_GC)
 REGISTER_PROPERTY(m_pActorArray, ActorArray, VSProperty::F_SAVE_LOAD_CLONE | VSProperty::F_REFLECT_NAME)
@@ -101,7 +101,7 @@ void VSSceneMap::DeleteActor(VSActor *pActor)
         }
     }
 }
-bool VSSceneMap::PostLoad(VSStream *pStream)
+bool VSSceneMap::PostLoad(MStream *pStream)
 {
     VSSceneManager::ms_pSceneManager->AddScene(m_pScene);
     return true;

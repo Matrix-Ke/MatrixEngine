@@ -18,7 +18,7 @@ namespace Matrix
         virtual VSGeometryNode *GetGeometryNode(unsigned int uiLodLevel);
         virtual void UpdateView(VSCuller &Culler, double dAppTime);
         void SetUseMaterialInstance(unsigned int SubMeshID, unsigned int UsedID);
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
     };
     DECLARE_Ptr(VSModelSwitchNode);
     VSTYPE_MARCO(VSModelSwitchNode);

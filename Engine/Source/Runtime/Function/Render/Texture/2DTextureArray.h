@@ -14,7 +14,7 @@ namespace Matrix
     public:
         VS2DTextureArray(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
                          unsigned int uiMipLevel, unsigned int uiArraySize, bool bIsStatic, bool bSRGB = false);
-        VS2DTextureArray(VSArray<VS2DTexture *> &pTextureArray);
+        VS2DTextureArray(Container::MArray<VS2DTexture *> &pTextureArray);
         virtual ~VS2DTextureArray();
 
         virtual unsigned int GetTexType() const { return TT_2DARRAY; }

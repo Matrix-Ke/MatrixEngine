@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "Font.h"
-#include "VShader.h"
+#include "Shader.h"
 #include "PShader.h"
 #include "GShader.h"
 #include "DShader.h"
@@ -311,7 +311,7 @@ bool VSRenderer::SetDefaultValue()
 
     m_pFont = VSFont::ms_DefaultResource;
 
-    VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
+    Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
     VSVertexFormat::VERTEXFORMAT_TYPE Pos;
     Pos.DataType = VSDataBuffer::DT_FLOAT32_4;
     Pos.Offset = 0;
@@ -2171,10 +2171,10 @@ unsigned int VSRenderer::SetRasterizerState(VSRasterizerState *pRasterizerState,
 
     return FRI_SUCCESS;
 }
-void VSRenderer::SetClipPlane(VSArray<VSPlane3> &Plane, bool bEnable)
+void VSRenderer::SetClipPlane(Container::MArray<VSPlane3> &Plane, bool bEnable)
 {
 }
-void VSRenderer::SetScissorRect(VSArray<VSRect2> &Rect, bool bEnable)
+void VSRenderer::SetScissorRect(Container::MArray<VSRect2> &Rect, bool bEnable)
 {
 }
 VSRenderer::VSRenderer()

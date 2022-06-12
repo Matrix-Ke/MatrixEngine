@@ -2,7 +2,7 @@
 #include "SwitchNode.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSDLodTerrainSwitchNode : public VSSwitchNode
     {
         // PRIORITY

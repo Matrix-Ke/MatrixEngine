@@ -5,8 +5,8 @@
 #include "ResourceManager.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSRenderState, VSObject)
-BEGIN_ADD_PROPERTY(VSRenderState, VSObject)
+IMPLEMENT_RTTI(VSRenderState, MObject)
+BEGIN_ADD_PROPERTY(VSRenderState, MObject)
 REGISTER_PROPERTY(m_DepthStencilDesc, DepthStencilDesc, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_RasterizerDesc, RasterizerDesc, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_BlendDesc, BlendDesc, VSProperty::F_SAVE_LOAD_CLONE)
@@ -15,14 +15,14 @@ REGISTER_PROPERTY(m_Plane, Plane, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSRenderState)
 IMPLEMENT_INITIAL_END
-bool VSRenderState::PostLoad(VSStream *pStream)
+bool VSRenderState::PostLoad(MStream *pStream)
 {
     m_pDepthStencilState = VSResourceManager::CreateDepthStencilState(m_DepthStencilDesc);
     m_pBlendState = VSResourceManager::CreateBlendState(m_BlendDesc);
     m_pRasterizerState = VSResourceManager::CreateRasterizerState(m_RasterizerDesc);
     return true;
 }
-bool VSRenderState::PostClone(VSObject *pObjectSrc)
+bool VSRenderState::PostClone(MObject *pObjectSrc)
 {
     m_pDepthStencilState = VSResourceManager::CreateDepthStencilState(m_DepthStencilDesc);
     m_pBlendState = VSResourceManager::CreateBlendState(m_BlendDesc);

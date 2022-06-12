@@ -32,7 +32,7 @@ namespace Matrix
             Reset();
         }
     } VSViewPort;
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSCamera : public VSNodeComponent
     {
         // PRIORITY
@@ -122,7 +122,7 @@ namespace Matrix
         }
         void AddCustomCullPlane(const VSPlane3 &P);
         void ClearCustomCullPlane();
-        VSArray<VSPlane3> m_CustomCullPlane;
+        Container::MArray<VSPlane3> m_CustomCullPlane;
         virtual void UpdateCameraState(double dAppTime);
         VSREAL GetProjectScreenSize(const VSAABB3 &WorldAABB);
 
@@ -143,7 +143,7 @@ namespace Matrix
         friend class VSSceneManager;
         friend class VSViewFamily;
         friend class VSLight;
-        VSArray<VSViewPort> m_ViewPort;
+        Container::MArray<VSViewPort> m_ViewPort;
         VSMatrix3X3W m_ViewMat; //Ïà»ú¾ØÕó
         VSMatrix3X3W m_ProjMat;
 

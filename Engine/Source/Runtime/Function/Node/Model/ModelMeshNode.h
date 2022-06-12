@@ -5,7 +5,7 @@ namespace Matrix
 {
     class VSGeometryNode;
     class VSSwitchNode;
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSModelMeshNode : public VSMeshNode
     {
         // PRIORITY
@@ -20,13 +20,13 @@ namespace Matrix
         virtual VSSwitchNode *GetLodNode() const;
         virtual VSGeometryNode *GetGeometryNode(unsigned int uiLodLevel);
         void SetUseMaterialInstance(unsigned int SubMeshID, unsigned int UsedID);
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual void UpdateController(double dAppTime);
         void SetMorphData(const VSUsedName &ShowName, float fData);
         virtual bool SetDrawInstance(bool bDrawInstance);
         void ClearLodMesh();
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
 
     protected:
         bool AddLODGeometryNode(VSGeometryNode *pGeoNode);

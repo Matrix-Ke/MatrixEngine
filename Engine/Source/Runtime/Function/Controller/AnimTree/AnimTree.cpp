@@ -92,7 +92,7 @@ bool VSAnimTree::Update(double dAppTime)
         return false;
     return true;
 }
-void VSAnimTree::GetAnimInstanceData(VSArray<ANIM_INSTANCE_DATA> &InstanceData)
+void VSAnimTree::GetAnimInstanceData(Container::MArray<ANIM_INSTANCE_DATA> &InstanceData)
 {
     return m_pAnimMainFunction->GetAnimInstanceData(InstanceData);
 }
@@ -104,7 +104,7 @@ bool VSAnimTree::IsSupportSimpleInstance()
 {
     return m_pAnimMainFunction->IsSupportSimpleInstance();
 }
-bool VSAnimTree::SetObject(VSObject *pObject)
+bool VSAnimTree::SetObject(MObject *pObject)
 {
     VSSkeletonMeshNode *Temp = DynamicCast<VSSkeletonMeshNode>(pObject);
     VSMAC_ASSERT(Temp);

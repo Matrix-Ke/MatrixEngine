@@ -3,7 +3,7 @@
 #include "ShaderMap.h"
 #include "ShaderKey.h"
 #include "PShader.h"
-#include "VShader.h"
+#include "Shader.h"
 #include "GShader.h"
 #include "DShader.h"
 #include "HShader.h"
@@ -13,7 +13,7 @@ namespace Matrix
 {
     class VSSpatial;
     class VSCamera;
-    class MATRIX_FUNCTION_API VSPass : public VSObject
+    class MATRIX_FUNCTION_API VSPass : public MObject
     {
         // RTTI
         DECLARE_RTTI;

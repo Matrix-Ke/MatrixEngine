@@ -20,7 +20,7 @@ namespace Matrix
         GET_TYPE_NODE(VSLight)
         virtual void Update(double dAppTime);
         DECLARE_INITIAL_NO_CLASS_FACTORY
-        VSArray<VSUsedName> m_ShadowSceneNameArray;
+        Container::MArray<VSUsedName> m_ShadowSceneNameArray;
         virtual void AddToSceneMap(VSSceneMap *pSceneMap);
     };
     DECLARE_Ptr(VSLightActor);

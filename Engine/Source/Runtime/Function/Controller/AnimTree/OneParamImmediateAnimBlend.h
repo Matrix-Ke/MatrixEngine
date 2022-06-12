@@ -8,7 +8,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSOneParamImmediateAnimBlend : public VSOneParamAnimBlend
     {
         // RTTI
@@ -28,7 +28,7 @@ namespace Matrix
         virtual bool ComputeOutBoneMatrix(double dAppTime);
 
     protected:
-        VSArray<VSREAL> m_NodeCrossFadingTime;
+        Container::MArray<VSREAL> m_NodeCrossFadingTime;
         VSREAL m_fCrossFadingTime;
         unsigned int m_uiLastAnimIndex;
         unsigned int m_uiCurAnimIndex;

@@ -145,7 +145,7 @@ VSAnimSequenceFunc *VSTwoParamAnimBlendSequence::GetAnimSequenceFunction(unsigne
 {
     return m_AnimSequenceFuncArray[i * m_uiWidth + j];
 }
-bool VSTwoParamAnimBlendSequence::SetObject(VSObject *pObject)
+bool VSTwoParamAnimBlendSequence::SetObject(MObject *pObject)
 {
     if (VSTwoParamAnimBlend::SetObject(pObject))
     {

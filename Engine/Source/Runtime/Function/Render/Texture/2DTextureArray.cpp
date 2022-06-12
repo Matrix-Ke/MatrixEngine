@@ -67,7 +67,7 @@ bool VS2DTextureArray::SetOutput(class VSOutputResource *pOutputResource)
     return true;
 }
 
-VS2DTextureArray::VS2DTextureArray(VSArray<VS2DTexture *> &pTextureArray)
+VS2DTextureArray::VS2DTextureArray(Container::MArray<VS2DTexture *> &pTextureArray)
 {
     bool bFind = false;
     unsigned int uiWidth = 0;

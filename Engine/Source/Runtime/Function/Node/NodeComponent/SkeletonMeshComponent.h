@@ -25,7 +25,7 @@ namespace Matrix
         bool PlayAnim(const VSString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
         VSSocketNode *GetSocketNode(const VSUsedName &SocketName);
         void SetAnimTreeNodePara(const VSUsedName &ShowName, void *pPara);
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
         const VSAnimAtom &GetRootDelta();
 
     protected:

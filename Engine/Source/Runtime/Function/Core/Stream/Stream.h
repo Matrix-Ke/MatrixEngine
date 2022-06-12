@@ -1,17 +1,15 @@
 #pragma once
-#include "Rtti.h"
-#include "Pointer.h"
-#include "Type.h"
+#include "Core/Meta/Rtti.h"
+#include "Core/Pointer.h"
+#include "Core/Type.h"
 #include "CustomArchiveObject.h"
-#include "Object.h"
+#include "Core/Object.h"
 
-#include "Core/File.h"
+#include "Platform/File.h"
 #include "Container/Array.h"
 #include "Container/Map.h"
 #include "Container/String.h"
 #include "Function/Resource.h"
-
-
 
 namespace Matrix
 {
@@ -86,11 +84,11 @@ namespace Matrix
 	public:
 		enum // Archive Type序列化类型
 		{
-			AT_SAVE, //保存
-			AT_LOAD, //加载
-			AT_LINK, //链接
+			AT_SAVE,     //保存
+			AT_LOAD,     //加载
+			AT_LINK,     //链接
 			AT_REGISTER, //注册
-			AT_SIZE, //计算存储数据大小
+			AT_SIZE,     //计算存储数据大小
 			AT_POSTLOAD, //后处理
 			AT_OBJECT_COLLECT_GC,
 			AT_CLEAR_OBJECT_PROPERTY_GC,
@@ -341,9 +339,9 @@ namespace Matrix
 					LinkObjectPtr(Value);
 					MATRIX_ENGINE_ASSERT(Value);
 					MObject::CloneObject(Value, Key);
-					//unsigned int uiIndex = m_pObjectArray.FindElement(Value);
-					//MATRIX_ENGINE_ASSERT(uiIndex < m_CopyUsed.GetNum());
-					//m_CopyUsed[uiIndex] = true;
+					// unsigned int uiIndex = m_pObjectArray.FindElement(Value);
+					// MATRIX_ENGINE_ASSERT(uiIndex < m_CopyUsed.GetNum());
+					// m_CopyUsed[uiIndex] = true;
 				}
 				else if (TIsCustomType<T>::Value)
 				{
@@ -673,9 +671,9 @@ namespace Matrix
 				m_uiNameID = 0;
 			}
 			Container::MString m_PropertyName; //当前 MObject 属性名字
-			unsigned int m_uiOffset; //当前 MObject 属性距离首地址的偏移量
-			unsigned int m_uiSize; //当前 MObject 属性大小
-			unsigned int m_uiNameID; //当前 MObject 属性名字的 ID
+			unsigned int m_uiOffset;           //当前 MObject 属性距离首地址的偏移量
+			unsigned int m_uiSize;             //当前 MObject 属性大小
+			unsigned int m_uiNameID;           //当前 MObject 属性名字的 ID
 		};
 
 		struct ObjectTableType
@@ -688,13 +686,13 @@ namespace Matrix
 				m_uiObjectPropertyTableSize = 0;
 				m_uiObjectPropertyNum = 0;
 			}
-			unsigned int m_uiGUID; // 以 MObject 的地址作为唯一标识，恢复加载时指针的指向
-			Container::MString m_RttiName; //MObject Rtti 的名字，加载的时候才知道创建的是什么对象
-			unsigned int m_uiOffset; //ObjectPropertyTable距离首地址偏移
-			unsigned int m_uiObjectPropertySize; //MObject 所有属性占用的空间大小
-			unsigned int m_uiObjectPropertyNum;  //MObject 属性的个数
-			unsigned int m_uiObjectPropertyTableSize; //ObjectPropertyTable 占用空间大小
-			Container::MArray<ObjectPropertyTable> m_ObjectPropertyTable; //MObject 属性表数组
+			unsigned int m_uiGUID;                                        // 以 MObject 的地址作为唯一标识，恢复加载时指针的指向
+			Container::MString m_RttiName;                                // MObject Rtti 的名字，加载的时候才知道创建的是什么对象
+			unsigned int m_uiOffset;                                      // ObjectPropertyTable距离首地址偏移
+			unsigned int m_uiObjectPropertySize;                          // MObject 所有属性占用的空间大小
+			unsigned int m_uiObjectPropertyNum;                           // MObject 属性的个数
+			unsigned int m_uiObjectPropertyTableSize;                     // ObjectPropertyTable 占用空间大小
+			Container::MArray<ObjectPropertyTable> m_ObjectPropertyTable; // MObject 属性表数组
 		};
 		bool m_bLoadUseGC;
 
@@ -721,7 +719,7 @@ namespace Matrix
 
 		MStream(DWORD dwFlag = 0);
 		~MStream();
-		//此read 和 write 并非实际写入，都是流操作，并非操作文件 
+		//此read 和 write 并非实际写入，都是流操作，并非操作文件
 		bool Read(void* pvBuffer, unsigned int uiSize);
 		bool Write(const void* pvBuffer, unsigned int uiSize);
 		bool ReadString(Container::MString& str);
@@ -770,13 +768,13 @@ namespace Matrix
 
 	protected:
 		unsigned char* m_pcCurBufPtr; //初始为m_pcBuffer， 随着write()写入逐渐递增。
-		unsigned char* m_pcBuffer; //m_pcBuffer 是缓存的首地址， 是当前空闲空间的地址，在执行save()时候申请的空间，申请的内存大小为m_uiBufferSize。
-		unsigned int m_uiBufferSize; //
+		unsigned char* m_pcBuffer;    // m_pcBuffer 是缓存的首地址， 是当前空闲空间的地址，在执行save()时候申请的空间，申请的内存大小为m_uiBufferSize。
+		unsigned int m_uiBufferSize;  //
 		Container::MArray<MObject*> m_pObjectArray;
 		Container::MArray<MObject*> m_pPostLoadObject;
 
 		Container::MMap<unsigned int, MObject*> m_pmLoadMap;
-		Container::MMap<MObject*, unsigned int> m_pmSaveMap;     //GUID 与 相关object的映射
+		Container::MMap<MObject*, unsigned int> m_pmSaveMap; // GUID 与 相关object的映射
 		Container::MMap<MObject*, MObject*> m_pmVSTypeLoadMap;
 
 		static unsigned int ms_uiCurVersion;

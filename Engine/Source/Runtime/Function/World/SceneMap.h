@@ -3,7 +3,7 @@
 #include "Actor.h"
 namespace Matrix
 {
-    class MATRIX_FUNCTION_API VSSceneMap : public VSObject, public VSResource
+    class MATRIX_FUNCTION_API VSSceneMap : public MObject, public VSResource
     {
         DECLARE_RTTI;
         DECLARE_INITIAL
@@ -18,7 +18,7 @@ namespace Matrix
         friend class VSViewFamliyInfo;
         friend class VSWorld;
         friend class VSReflectCubLightActor;
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
         VSScene *GetScene()
         {
             return m_pScene;
@@ -29,7 +29,7 @@ namespace Matrix
         DECLARE_RESOURCE(VSSceneMap, RA_ASYN_LOAD, RT_MAP, MAP, Resource / Map, VSCacheResource)
     protected:
         VSScenePtr m_pScene;
-        VSArray<VSActorPtr> m_pActorArray;
+        Container::MArray<VSActorPtr> m_pActorArray;
     };
     DECLARE_Ptr(VSSceneMap);
     VSTYPE_MARCO(VSSceneMap);

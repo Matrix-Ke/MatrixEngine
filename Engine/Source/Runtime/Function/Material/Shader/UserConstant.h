@@ -5,8 +5,8 @@
 #include "Name.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSUserConstant : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSUserConstant : public MObject
     {
         // PRIORITY
 
@@ -44,8 +44,8 @@ namespace Matrix
             return m_NameInShader;
         }
 
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         unsigned int m_uiSize;
         unsigned int m_uiValueType;
         unsigned int m_uiRegisterIndex;

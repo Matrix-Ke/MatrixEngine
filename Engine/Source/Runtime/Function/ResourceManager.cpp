@@ -1,140 +1,139 @@
 #include "ResourceManager.h"
-#include "Meta/Config.h"
-#include "Meta/Stream.h"
-
+#include "Core/Config.h"
+#include "Core/Stream.h"
 
 using namespace Matrix;
 
-
 namespace Matrix
 {
 
-	class VSGCTask : public Core::MemoryObject
-	{
-	public:
-		VSGCTask(Container::MArray<MObject*>& CanGCObject, unsigned int CanGCNum = 50)
-		{
-			m_CanGCNum = CanGCNum;
-			m_CanGCObject = CanGCObject;
-			CurClearIndex = 0;
-			CurDeleteIndex = 0;
-			GCStream.SetStreamFlag(MStream::AT_CLEAR_OBJECT_PROPERTY_GC);
-			m_pNextTask = NULL;
-		}
+    class VSGCTask : public Core::MemoryObject
+    {
+    public:
+        VSGCTask(Container::MArray<MObject *> &CanGCObject, unsigned int CanGCNum = 50)
+        {
+            m_CanGCNum = CanGCNum;
+            m_CanGCObject = CanGCObject;
+            CurClearIndex = 0;
+            CurDeleteIndex = 0;
+            GCStream.SetStreamFlag(MStream::AT_CLEAR_OBJECT_PROPERTY_GC);
+            m_pNextTask = NULL;
+        }
 
-		//每帧清除CanGCNum 个VSObject 对象的内部连接，处理完毕后，每帧释放CanGCNum 个VSObject 对象
-		void Run()
-		{
-			//如果需要清理的object索引大于m_CanGCObject的数量，那么就需要先进行释放
-		   //否则就需要先进行断开object各种属性连接。
-			if (CurClearIndex >= m_CanGCObject.GetNum())
-			{
-				//释放 CanGCNum 个 VSObject 对象
-				unsigned int MaxDeleteIndex = CurDeleteIndex + m_CanGCNum;
-				for (; CurDeleteIndex < MaxDeleteIndex && CurDeleteIndex < m_CanGCObject.GetNum(); CurDeleteIndex++)
-				{
-					ENGINE_DELETE(m_CanGCObject[CurDeleteIndex]);
-				}
-			}
-			else
-			{
-				//断开准备释放的 VSObject 对象的指针连接
-				unsigned int MaxClearIndex = CurClearIndex + m_CanGCNum;
-				for (; CurClearIndex < MaxClearIndex && CurClearIndex < m_CanGCObject.GetNum(); CurClearIndex++)
-				{
-					GCStream.ArchiveAll(m_CanGCObject[CurClearIndex]);
-				}
-			}
-		}
-		//是否释放完毕
-		bool IsEnd()
-		{
-			return CurDeleteIndex >= m_CanGCObject.GetNum();
-		}
+        //每帧清除CanGCNum 个MObject 对象的内部连接，处理完毕后，每帧释放CanGCNum 个MObject 对象
+        void Run()
+        {
+            //如果需要清理的object索引大于m_CanGCObject的数量，那么就需要先进行释放
+            //否则就需要先进行断开object各种属性连接。
+            if (CurClearIndex >= m_CanGCObject.GetNum())
+            {
+                //释放 CanGCNum 个 MObject 对象
+                unsigned int MaxDeleteIndex = CurDeleteIndex + m_CanGCNum;
+                for (; CurDeleteIndex < MaxDeleteIndex && CurDeleteIndex < m_CanGCObject.GetNum(); CurDeleteIndex++)
+                {
+                    ENGINE_DELETE(m_CanGCObject[CurDeleteIndex]);
+                }
+            }
+            else
+            {
+                //断开准备释放的 MObject 对象的指针连接
+                unsigned int MaxClearIndex = CurClearIndex + m_CanGCNum;
+                for (; CurClearIndex < MaxClearIndex && CurClearIndex < m_CanGCObject.GetNum(); CurClearIndex++)
+                {
+                    GCStream.ArchiveAll(m_CanGCObject[CurClearIndex]);
+                }
+            }
+        }
+        //是否释放完毕
+        bool IsEnd()
+        {
+            return CurDeleteIndex >= m_CanGCObject.GetNum();
+        }
 
-		VSGCTask* m_pNextTask;
-	private:
-		Container::MArray<MObject*> m_CanGCObject;
-		unsigned int m_CanGCNum;
-		unsigned int CurClearIndex;
-		unsigned int CurDeleteIndex;
-		MStream GCStream;
-	};
+        VSGCTask *m_pNextTask;
+
+    private:
+        Container::MArray<MObject *> m_CanGCObject;
+        unsigned int m_CanGCNum;
+        unsigned int CurClearIndex;
+        unsigned int CurDeleteIndex;
+        MStream GCStream;
+    };
 }
 
 namespace Matrix
 {
 
-	//bool operator==(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-	//{
-	//	return DBI1.pVertexFormat == DBI2.pVertexFormat && DBI1.uiMeshDataType == DBI2.uiMeshDataType;
-	//}
-	//bool operator>(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-	//{
-	//	if (DBI1.pVertexFormat > DBI2.pVertexFormat)
-	//	{
-	//		return true;
-	//	}
-	//	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
-	//	{
-	//		return DBI1.uiMeshDataType > DBI2.uiMeshDataType;
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
-	//}
-	//bool operator<(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
-	//{
-	//	if (DBI1.pVertexFormat < DBI2.pVertexFormat)
-	//	{
-	//		return true;
-	//	}
-	//	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
-	//	{
-	//		return DBI1.uiMeshDataType < DBI2.uiMeshDataType;
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
-	//}
+    // bool operator==(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+    //{
+    //	return DBI1.pVertexFormat == DBI2.pVertexFormat && DBI1.uiMeshDataType == DBI2.uiMeshDataType;
+    // }
+    // bool operator>(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+    //{
+    //	if (DBI1.pVertexFormat > DBI2.pVertexFormat)
+    //	{
+    //		return true;
+    //	}
+    //	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
+    //	{
+    //		return DBI1.uiMeshDataType > DBI2.uiMeshDataType;
+    //	}
+    //	else
+    //	{
+    //		return false;
+    //	}
+    // }
+    // bool operator<(const DynamicBufferIndex& DBI1, const DynamicBufferIndex& DBI2)
+    //{
+    //	if (DBI1.pVertexFormat < DBI2.pVertexFormat)
+    //	{
+    //		return true;
+    //	}
+    //	else if (DBI1.pVertexFormat == DBI2.pVertexFormat)
+    //	{
+    //		return DBI1.uiMeshDataType < DBI2.uiMeshDataType;
+    //	}
+    //	else
+    //	{
+    //		return false;
+    //	}
+    // }
 }
-//Container::MArray<VSDynamicBufferGeometryPtr> VSResourceManager::ms_SaveDelete;
-//unsigned int VSResourceManager::ms_uiGpuSkinBoneNum = 70;
-//unsigned int VSResourceManager::ms_uiGpuMorphTargetNum = 40;
-//unsigned int VSResourceManager::ms_uiGpuMorphTextureSize = 512;
-//bool VSResourceManager::ms_bLerpSimpleInstanceAnim = true;
-//bool VSResourceManager::ms_bActiveDebugDraw = true;
-//bool VSResourceManager::ms_bDrawSkeleton = true;
-//bool VSResourceManager::ms_bRenderThread = false;
-//bool VSResourceManager::ms_bUpdateThread = false;
-//bool VSResourceManager::ms_bIsCacheShader = true;
+// Container::MArray<VSDynamicBufferGeometryPtr> VSResourceManager::ms_SaveDelete;
+// unsigned int VSResourceManager::ms_uiGpuSkinBoneNum = 70;
+// unsigned int VSResourceManager::ms_uiGpuMorphTargetNum = 40;
+// unsigned int VSResourceManager::ms_uiGpuMorphTextureSize = 512;
+// bool VSResourceManager::ms_bLerpSimpleInstanceAnim = true;
+// bool VSResourceManager::ms_bActiveDebugDraw = true;
+// bool VSResourceManager::ms_bDrawSkeleton = true;
+// bool VSResourceManager::ms_bRenderThread = false;
+// bool VSResourceManager::ms_bUpdateThread = false;
+// bool VSResourceManager::ms_bIsCacheShader = true;
 Core::MCriticalSection VSResourceManager::ms_NameCri;
-//unsigned int VSResourceManager::ms_CurRenderAPIType = 0;
+// unsigned int VSResourceManager::ms_CurRenderAPIType = 0;
 unsigned int VSResourceManager::ms_uiSimpleInstanceAnimFloat4Num = 0;
-//Container::MArray<MObject*> VSResourceManager::ms_pRootObject;
-//Container::MArrayOrder<MObject*> VSResourceManager::ms_pGCObject;
-//VSGCTask* VSResourceManager::ms_pCurGCTask = NULL;
-//VSGCTask* VSResourceManager::ms_pEndGCTask = NULL;
+// Container::MArray<MObject*> VSResourceManager::ms_pRootObject;
+// Container::MArrayOrder<MObject*> VSResourceManager::ms_pGCObject;
+// VSGCTask* VSResourceManager::ms_pCurGCTask = NULL;
+// VSGCTask* VSResourceManager::ms_pEndGCTask = NULL;
 
 IMPLEMENT_PRIORITY(VSResourceManager)
 IMPLEMENT_INITIAL_ONLY_BEGIN(VSResourceManager);
-//ADD_PRIORITY(VSTexAllState);
-//ADD_PRIORITY(VSMaterial);
-//ADD_PRIORITY(VSGeometry);
+// ADD_PRIORITY(VSTexAllState);
+// ADD_PRIORITY(VSMaterial);
+// ADD_PRIORITY(VSGeometry);
 ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
 ADD_TERMINAL_FUNCTION(TerminalDefaultState)
 IMPLEMENT_INITIAL_ONLY_END
 
 bool VSResourceManager::TerminalDefaultState()
 {
-	return true;
+    return true;
 }
 bool VSResourceManager::InitialDefaultState()
 {
-	ms_uiSimpleInstanceAnimFloat4Num = (unsigned int)CEIL((MAX_SIMPLE_INSTANCE_ANIM * 2 + 1) / 4.0f);
-	return 1;
+    ms_uiSimpleInstanceAnimFloat4Num = (unsigned int)CEIL((MAX_SIMPLE_INSTANCE_ANIM * 2 + 1) / 4.0f);
+    return 1;
 }
 VSResourceManager::VSResourceManager()
 {
@@ -143,7 +142,7 @@ VSResourceManager::~VSResourceManager()
 {
 }
 
-//VSDVGeometry* VSResourceManager::GetDVGeometry(VSVertexFormat* pVertexFormat, unsigned int MeshDataType, unsigned int VertexNum)
+// VSDVGeometry* VSResourceManager::GetDVGeometry(VSVertexFormat* pVertexFormat, unsigned int MeshDataType, unsigned int VertexNum)
 //{
 //	if (!pVertexFormat || !VertexNum || MeshDataType >= VSMeshData::MDT_MAX)
 //	{
@@ -174,15 +173,14 @@ VSResourceManager::~VSResourceManager()
 //	}
 //
 //	return pBuffer;
-//}
-
+// }
 
 ////load and GC resource
-//void VSResourceManager::LoadDefaultDeviceResource(unsigned int RenderTypeAPI)
+// void VSResourceManager::LoadDefaultDeviceResource(unsigned int RenderTypeAPI)
 //{
 //	InitCacheShader(RenderTypeAPI);
-//}
-//void VSResourceManager::InitCacheShader(unsigned int RenderTypeAPI)
+// }
+// void VSResourceManager::InitCacheShader(unsigned int RenderTypeAPI)
 //{
 //	ms_CurRenderAPIType = RenderTypeAPI;
 //	if (ms_CurRenderAPIType == VSRenderer::RAT_NULL)
@@ -199,7 +197,7 @@ VSResourceManager::~VSResourceManager()
 //	Container::MString Suffix;
 //#endif
 //
-//#define LOAD_SHADER_CACHE_INNER(ShaderMapName)                                                                            \
+//#defi ne L OAD_ SHADER_CACHE_INNER(ShaderMapName)                                                                            \
 //     {                                                                                                                     \
 //         MStream LoadStream;                                                                                              \
 //         Container::MString FileName = VSShaderMapCache::GetCachePath() + Get##ShaderMapName().m_ShaderMapName + Suffix;   \
@@ -213,7 +211,7 @@ VSResourceManager::~VSResourceManager()
 //         }                                                                                                                 \
 //     }
 //
-//#define LOAD_SHADER_CACHE(Name)                       \
+//#defi ne LOAD_SHADER_CACHE(Name)                       \
 //     LOAD_SHADER_CACHE_INNER(Name##VertexShaderMap);   \
 //     LOAD_SHADER_CACHE_INNER(Name##PixelShaderMap);    \
 //     LOAD_SHADER_CACHE_INNER(Name##GeometryShaderMap); \
@@ -240,54 +238,54 @@ VSResourceManager::~VSResourceManager()
 //	LOAD_SHADER_CACHE(PreZ);
 //
 //	LOAD_SHADER_CACHE(Inner);
-//}
-void VSResourceManager::AddCanGCObject(Container::MArray<MObject*>& CanGCObject)
+// }
+void VSResourceManager::AddCanGCObject(Container::MArray<MObject *> &CanGCObject)
 {
-	if (CanGCObject.GetNum() == 0)
-	{
-		return;
-	}
-	if (!ms_pCurGCTask)
-	{
-		ms_pCurGCTask = MX_NEW VSGCTask(CanGCObject);
-		ms_pEndGCTask = ms_pCurGCTask;
-	}
-	else
-	{
-		ms_pEndGCTask->m_pNextTask = MX_NEW VSGCTask(CanGCObject);
-		ms_pEndGCTask = ms_pEndGCTask->m_pNextTask;
-	}
+    if (CanGCObject.GetNum() == 0)
+    {
+        return;
+    }
+    if (!ms_pCurGCTask)
+    {
+        ms_pCurGCTask = MX_NEW VSGCTask(CanGCObject);
+        ms_pEndGCTask = ms_pCurGCTask;
+    }
+    else
+    {
+        ms_pEndGCTask->m_pNextTask = MX_NEW VSGCTask(CanGCObject);
+        ms_pEndGCTask = ms_pEndGCTask->m_pNextTask;
+    }
 }
 void VSResourceManager::RunGCTask()
 {
-	if (ms_pCurGCTask)
-	{
-		ms_pCurGCTask->Run();
-		if (ms_pCurGCTask->IsEnd())
-		{
-			VSGCTask* Temp = ms_pCurGCTask;
-			ms_pCurGCTask = ms_pCurGCTask->m_pNextTask;
-			ENGINE_DELETE(Temp);
-		}
-	}
+    if (ms_pCurGCTask)
+    {
+        ms_pCurGCTask->Run();
+        if (ms_pCurGCTask->IsEnd())
+        {
+            VSGCTask *Temp = ms_pCurGCTask;
+            ms_pCurGCTask = ms_pCurGCTask->m_pNextTask;
+            ENGINE_DELETE(Temp);
+        }
+    }
 }
 void VSResourceManager::RunAllGCTask()
 {
-	ms_pRootObject.Clear();
-	while (ms_pCurGCTask)
-	{
-		RunGCTask();
-	}
-	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
+    ms_pRootObject.Clear();
+    while (ms_pCurGCTask)
+    {
+        RunGCTask();
+    }
+    MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
 }
-//DECLEAR_NOCLEAR_COUNT_PROFILENODE(RootGCObjectNum, )
-//void VSResourceManager::AddRootObject(MObject* p)
+// DECLEAR_NOCLEAR_COUNT_PROFILENODE(RootGCObjectNum, )
+// void VSResourceManager::AddRootObject(MObject* p)
 //{
 //	p->SetFlag(MObject::OF_RootObject);
 //	ms_pRootObject.AddElement(p);
 //	ADD_COUNT_PROFILE(RootGCObjectNum, 1)
-//}
-//void VSResourceManager::DeleteRootObject(MObject* p)
+// }
+// void VSResourceManager::DeleteRootObject(MObject* p)
 //{
 //	for (unsigned int i = 0; i < ms_pRootObject.GetNum(); i++)
 //	{
@@ -299,15 +297,15 @@ void VSResourceManager::RunAllGCTask()
 //				return;
 //		}
 //	}
-//}
-//DECLEAR_NOCLEAR_COUNT_PROFILENODE(GCObjectNum, )
-//void VSResourceManager::AddGCObject(MObject* p)
+// }
+// DECLEAR_NOCLEAR_COUNT_PROFILENODE(GCObjectNum, )
+// void VSResourceManager::AddGCObject(MObject* p)
 //{
 //	ms_pGCObject.AddElement(p);
 //	p->SetFlag(MObject::OF_GCObject);
 //	ADD_COUNT_PROFILE(GCObjectNum, 1)
-//}
-//void VSResourceManager::GCObject()
+// }
+// void VSResourceManager::GCObject()
 //{
 //	{
 //		for (unsigned int i = 0; i < ms_pRootObject.GetNum(); i++)
@@ -351,8 +349,8 @@ void VSResourceManager::RunAllGCTask()
 //		AddCanGCObject(CanGCObject);
 //		RunGCTask();
 //	}
-//}
-//bool VSResourceManager::CacheShader()
+// }
+// bool VSResourceManager::CacheShader()
 //{
 //	if (ms_CurRenderAPIType == VSRenderer::RAT_NULL)
 //	{
@@ -365,7 +363,7 @@ void VSResourceManager::RunAllGCTask()
 //	Container::MString Suffix;
 //#endif
 //
-//#define SAVE_SHADER_CACHE_INNER(ShaderMapName)                                                                          \
+//#defi ne S AVE_SHADER_CACHE_INNER(ShaderMapName)                                                                          \
 //     {                                                                                                                   \
 //         MStream SaveStream;                                                                                            \
 //         SaveStream.SetStreamFlag(MStream::AT_REGISTER);                                                                \
@@ -377,7 +375,7 @@ void VSResourceManager::RunAllGCTask()
 //         SaveStream.Save(FileName.GetBuffer());                                                                          \
 //         VSDelete(pShaderMapLoadSave);                                                                                   \
 //     }
-//#define SAVE_SHADER_CACHE(Name)                       \
+//#defi ne SAVE_SHADER_CACHE(Name)                       \
 //     SAVE_SHADER_CACHE_INNER(Name##VertexShaderMap);   \
 //     SAVE_SHADER_CACHE_INNER(Name##PixelShaderMap);    \
 //     SAVE_SHADER_CACHE_INNER(Name##GeometryShaderMap); \
@@ -406,8 +404,8 @@ void VSResourceManager::RunAllGCTask()
 //	SAVE_SHADER_CACHE(Inner);
 //
 //	return 1;
-//}
-//void VSResourceManager::CacheResource()
+// }
+// void VSResourceManager::CacheResource()
 //{
 //	VSResourceControl::AllClear();
 //
@@ -416,7 +414,7 @@ void VSResourceManager::RunAllGCTask()
 //		CacheShader();
 //	}
 //#define CLEAR_SHADER_CACHE_INNER(ShaderMapName) Get##ShaderMapName().Clear();
-//#define CLEAR_SHADER_CACHE(Name)                       \
+//#defi ne CLEAR_SHADER_CACHE(Name)                       \
 //     CLEAR_SHADER_CACHE_INNER(Name##VertexShaderMap);   \
 //     CLEAR_SHADER_CACHE_INNER(Name##PixelShaderMap);    \
 //     CLEAR_SHADER_CACHE_INNER(Name##GeometryShaderMap); \
@@ -458,9 +456,9 @@ void VSResourceManager::RunAllGCTask()
 //	GetUnorderAccessBufferArray().ClearAll();
 //	GetDVGeometryArray().ClearAll();
 //	GetDynamicInstanceGeometryArray().ClearAll();
-//}
-//DECLEAR_TIME_PROFILENODE(GCTime, ApplicationUpdate)
-//void VSResourceManager::GC()
+// }
+// DECLEAR_TIME_PROFILENODE(GCTime, ApplicationUpdate)
+// void VSResourceManager::GC()
 //{
 //	ADD_TIME_PROFILE(GCTime)
 //
@@ -471,16 +469,16 @@ void VSResourceManager::RunAllGCTask()
 //	GetUnorderAccessBufferArray().GCResource();
 //	GetDynamicInstanceGeometryArray().GCResource();
 //	GCObject();
-//}
-//bool VSResourceManager::IsReleaseAll()
+// }
+// bool VSResourceManager::IsReleaseAll()
 //{
-//#define IS_RELEASE_ALL(MapName)        \
+//#defi ne I S_RELEASE_ALL(MapName)        \
 //     if (!Get##MapName().IsReleseAll()) \
 //     {                                  \
 //         return false;                  \
 //     }
 //
-//#define IS_RELEASE_ALL_SHADER(Name)          \
+//#defi ne IS_RELEASE_ALL_SHADER(Name)          \
 //     IS_RELEASE_ALL(Name##VertexShaderMap);   \
 //     IS_RELEASE_ALL(Name##PixelShaderMap);    \
 //     IS_RELEASE_ALL(Name##GeometryShaderMap); \
@@ -530,8 +528,8 @@ void VSResourceManager::RunAllGCTask()
 //	MATRIX_ENGINE_ASSERT(ms_pRootObject.GetNum() == 0);
 //	MATRIX_ENGINE_ASSERT(ms_pGCObject.GetNum() == 0);
 //	return true;
-//}
-//VSResourceProxyBase* VSResourceManager::LoadResource(const TCHAR* pFileName, bool IsAsyn)
+// }
+// VSResourceProxyBase* VSResourceManager::LoadResource(const TCHAR* pFileName, bool IsAsyn)
 //{
 //	VSFileName FileName = pFileName;
 //	Container::MString Extension;
@@ -574,8 +572,8 @@ void VSResourceManager::RunAllGCTask()
 //		pResource = LoadASYNResource<VSFont>(pFileName, IsAsyn);
 //	}
 //	return pResource;
-//}
-//void VSResourceManager::DeleteAllMapResource()
+// }
+// void VSResourceManager::DeleteAllMapResource()
 //{
 //	Core::MSynchronize::Locker Temp(VSSceneMap::ms_LoadResourceCriticalSection);
 //	for (unsigned int i = 0; i < VSSceneMap::GetASYNResourceSet().GetResourceNum();)
@@ -595,8 +593,8 @@ void VSResourceManager::RunAllGCTask()
 //		}
 //		VSSceneMap::GetASYNResourceSet().DeleteResource(pMapR->GetResourceName());
 //	}
-//}
-//void VSResourceManager::DeleteMapResource(const TCHAR* pFileName)
+// }
+// void VSResourceManager::DeleteMapResource(const TCHAR* pFileName)
 //{
 //	VSFileName FileName = pFileName;
 //	Container::MString Extension;
@@ -637,8 +635,8 @@ void VSResourceManager::RunAllGCTask()
 //		VSASYNLoadManager::ms_pASYNLoadManager->DeleteLoadResource(FileName);
 //	}
 //	VSSceneMap::GetASYNResourceSet().DeleteResource(ResourceName);
-//}
-//VSVertexFormat* VSResourceManager::LoadVertexFormat(VSVertexBuffer* pVertexBuffer, Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>* pFormatArray)
+// }
+// VSVertexFormat* VSResourceManager::LoadVertexFormat(VSVertexBuffer* pVertexBuffer, Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>* pFormatArray)
 //{
 //	if (!pVertexBuffer && !pFormatArray)
 //		return NULL;
@@ -686,53 +684,52 @@ void VSResourceManager::RunAllGCTask()
 //	pVertexFormat->m_uiVertexFormatCode = lVertexFormatCode;
 //	pVertexFormat->LoadResource(VSRenderer::ms_pRenderer);
 //	return pVertexFormat;
-//}
+// }
 
-VSName* VSResourceManager::CreateName(const TCHAR* pChar)
+VSName *VSResourceManager::CreateName(const TCHAR *pChar)
 {
-	if (!pChar)
-	{
-		return NULL;
-	}
-	Core::MCriticalSection::Locker Temp(ms_NameCri);
-	unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pChar, (unsigned int)Core::MXStrLen(pChar));
-	VSName* pName = NULL;
-	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
-	if (!pName)
-	{
-		pName = MX_NEW VSName(pChar, uiCRCCode);
-		if (!pName)
-		{
-			return NULL;
-		}
+    if (!pChar)
+    {
+        return NULL;
+    }
+    Core::MCriticalSection::Locker Temp(ms_NameCri);
+    unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(pChar, (unsigned int)Core::MXStrLen(pChar));
+    VSName *pName = NULL;
+    pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
+    if (!pName)
+    {
+        pName = MX_NEW VSName(pChar, uiCRCCode);
+        if (!pName)
+        {
+            return NULL;
+        }
 
-		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
-	}
-	return pName;
+        VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
+    }
+    return pName;
 }
-VSName* VSResourceManager::CreateName(const Container::MString& String)
+VSName *VSResourceManager::CreateName(const Container::MString &String)
 {
 
-	Core::MCriticalSection::Locker Temp(ms_NameCri);
-	unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(String.GetBuffer(), String.GetLength());
-	VSName* pName = NULL;
-	pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
-	if (!pName)
-	{
-		pName = MX_NEW VSName(String, uiCRCCode);
-		if (!pName)
-		{
-			return NULL;
-		}
+    Core::MCriticalSection::Locker Temp(ms_NameCri);
+    unsigned int uiCRCCode = Math::VSMathInstance::GetMathInstance().CRC32Compute(String.GetBuffer(), String.GetLength());
+    VSName *pName = NULL;
+    pName = VSResourceManager::GetNameSet().CheckIsHaveTheResource(uiCRCCode);
+    if (!pName)
+    {
+        pName = MX_NEW VSName(String, uiCRCCode);
+        if (!pName)
+        {
+            return NULL;
+        }
 
-		VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
-	}
-	return pName;
+        VSResourceManager::GetNameSet().AddResource(pName->m_uiID, pName);
+    }
+    return pName;
 }
 
-
-//create shader
-//VSVShader* VSResourceManager::CreateVShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
+// create shader
+// VSVShader* VSResourceManager::CreateVShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
 //	MATRIX_ENGINE_ASSERT(MSPara.pGeometry && MSPara.pMaterialInstance);
@@ -784,8 +781,8 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	VSShaderKey::SetMaterialVShaderKey(&pVShader->m_ShaderKey, MSPara);
 //	VSRenderer::ms_pRenderer->LoadVShaderProgram(pVShader);
 //	return pVShader;
-//}
-//VSHShader* VSResourceManager::CreateHShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
+// }
+// VSHShader* VSResourceManager::CreateHShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
 //	MATRIX_ENGINE_ASSERT(MSPara.pGeometry && MSPara.pMaterialInstance);
@@ -839,8 +836,8 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	VSShaderKey::SetMaterialHShaderKey(&pHShader->m_ShaderKey, MSPara);
 //	VSRenderer::ms_pRenderer->LoadHShaderProgram(pHShader);
 //	return pHShader;
-//}
-//VSDShader* VSResourceManager::CreateDShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
+// }
+// VSDShader* VSResourceManager::CreateDShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
 //	MATRIX_ENGINE_ASSERT(MSPara.pGeometry && MSPara.pMaterialInstance);
@@ -894,8 +891,8 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	VSShaderKey::SetMaterialDShaderKey(&pDShader->m_ShaderKey, MSPara);
 //	VSRenderer::ms_pRenderer->LoadDShaderProgram(pDShader);
 //	return pDShader;
-//}
-//VSGShader* VSResourceManager::CreateGShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
+// }
+// VSGShader* VSResourceManager::CreateGShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
 //	MATRIX_ENGINE_ASSERT(MSPara.pGeometry && MSPara.pMaterialInstance);
@@ -949,8 +946,8 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	VSShaderKey::SetMaterialGShaderKey(&pGShader->m_ShaderKey, MSPara);
 //	VSRenderer::ms_pRenderer->LoadGShaderProgram(pGShader);
 //	return pGShader;
-//}
-//VSPShader* VSResourceManager::CreatePShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
+// }
+// VSPShader* VSResourceManager::CreatePShader(MaterialShaderPara& MSPara, unsigned int uiShaderID)
 //{
 //	MATRIX_ENGINE_ASSERT(VSIsMainThread());
 //	MATRIX_ENGINE_ASSERT(MSPara.pGeometry && MSPara.pMaterialInstance);
@@ -1004,12 +1001,10 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	VSShaderKey::SetMaterialPShaderKey(&pPShader->m_ShaderKey, MSPara);
 //	VSRenderer::ms_pRenderer->LoadPShaderProgram(pPShader);
 //	return pPShader;
-//}
-
-
+// }
 
 ////RenderTarget and texture
-//VSCaptureTexAllState* VSResourceManager::CreateCaptureTexture(const Container::MString& ViewFamilyName, unsigned int uiMipLevel)
+// VSCaptureTexAllState* VSResourceManager::CreateCaptureTexture(const Container::MString& ViewFamilyName, unsigned int uiMipLevel)
 //{
 //	VSCaptureTexAllState* pCaptureTexture = MX_NEW VSCaptureTexAllState();
 //	pCaptureTexture->SetViewCapture(ViewFamilyName);
@@ -1017,8 +1012,8 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //	pCaptureTexture->SetMipLevel(uiMipLevel);
 //
 //	return pCaptureTexture;
-//}
-//unsigned int GetEngineCompressFormat(VSResourceManager::CompressType uiCompressType)
+// }
+// unsigned int GetEngineCompressFormat(VSResourceManager::CompressType uiCompressType)
 //{
 //	unsigned int uiVSTextureType = VSRenderer::SFT_A8R8G8B8;
 //	if (uiCompressType == VSResourceManager::CT_NONE)
@@ -1046,132 +1041,132 @@ VSName* VSResourceManager::CreateName(const Container::MString& String)
 //		uiVSTextureType = VSRenderer::SFT_BC5;
 //	}
 //	return uiVSTextureType;
-//}
-VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSamplerStatePtr pSamplerState,
-	CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
+// }
+VSTexAllState *VSResourceManager::Load2DTexture(const TCHAR *pFileName, VSSamplerStatePtr pSamplerState,
+                                                CompressType uiCompressType, bool bIsNormal, bool bSRGB, bool bMip)
 {
-	if (bIsNormal)
-	{
-		bSRGB = false;
-	}
+    if (bIsNormal)
+    {
+        bSRGB = false;
+    }
 
-	if (!pFileName)
-	{
+    if (!pFileName)
+    {
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	if (uiCompressType > CT_MAX)
-	{
+    if (uiCompressType > CT_MAX)
+    {
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	VSFileName FileName = pFileName;
-	Container::MString Extension;
+    VSFileName FileName = pFileName;
+    Container::MString Extension;
 
-	if (!FileName.GetExtension(Extension))
-	{
+    if (!FileName.GetExtension(Extension))
+    {
 
-		return NULL;
-	}
-	//根据不同文件类型处理
-	VSTexAllState* pTexAllState = NULL;
-	VSImage* pImage = NULL;
-	unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
-	if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
-	{
-		pImage = MX_NEW VSBMPImage();
-	}
-	else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
-	{
-		pImage = MX_NEW VSTGAImage();
-	}
-	else
-	{
+        return NULL;
+    }
+    //根据不同文件类型处理
+    VSTexAllState *pTexAllState = NULL;
+    VSImage *pImage = NULL;
+    unsigned int uiFormatType = VSRenderer::SFT_A8R8G8B8;
+    if (Extension == VSImage::ms_ImageFormat[VSImage::IF_BMP])
+    {
+        pImage = MX_NEW VSBMPImage();
+    }
+    else if (Extension == VSImage::ms_ImageFormat[VSImage::IF_TGA])
+    {
+        pImage = MX_NEW VSTGAImage();
+    }
+    else
+    {
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	if (!pImage->Load(FileName.GetBuffer()))
-	{
-		ENGINE_DELETE(pImage);
+    if (!pImage->Load(FileName.GetBuffer()))
+    {
+        ENGINE_DELETE(pImage);
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	unsigned int uiWidth = pImage->GetWidth();
-	unsigned int uiHeight = pImage->GetHeight();
-	if (!uiWidth || !uiHeight)
-	{
-		ENGINE_DELETE(pImage);
+    unsigned int uiWidth = pImage->GetWidth();
+    unsigned int uiHeight = pImage->GetHeight();
+    if (!uiWidth || !uiHeight)
+    {
+        ENGINE_DELETE(pImage);
 
-		return NULL;
-	}
-	if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
-	{
-		ENGINE_DELETE(pImage);
+        return NULL;
+    }
+    if (!IsTwoPower(uiWidth) || !IsTwoPower(uiHeight))
+    {
+        ENGINE_DELETE(pImage);
 
-		return NULL;
-	}
+        return NULL;
+    }
 
-	pTexAllState = MX_NEW VSTexAllState();
-	pTexAllState->m_uiWidth = uiWidth;
-	pTexAllState->m_uiHeight = uiHeight;
-	pTexAllState->m_bNormal = bIsNormal;
-	pTexAllState->m_bSRGB = bSRGB;
-	pTexAllState->m_bMip = bMip;
-	pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
-	pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
+    pTexAllState = MX_NEW VSTexAllState();
+    pTexAllState->m_uiWidth = uiWidth;
+    pTexAllState->m_uiHeight = uiHeight;
+    pTexAllState->m_bNormal = bIsNormal;
+    pTexAllState->m_bSRGB = bSRGB;
+    pTexAllState->m_bMip = bMip;
+    pTexAllState->m_uiFormatType = GetEngineCompressFormat(uiCompressType);
+    pTexAllState->m_SourceData.SetBufferNum(uiWidth * uiHeight * VSRenderer::GetBytesPerPixel(uiFormatType));
 
-	for (unsigned int cy = 0; cy < uiHeight; cy++)
-	{
-		for (unsigned int cx = 0; cx < uiWidth; cx++)
-		{
+    for (unsigned int cy = 0; cy < uiHeight; cy++)
+    {
+        for (unsigned int cx = 0; cx < uiWidth; cx++)
+        {
 
-			unsigned int uiIndex = cy * uiWidth + cx;
-			unsigned char* pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
-			const unsigned char* pImageBuffer = pImage->GetPixel(cx, cy);
-			if (pImage->GetBPP() == 8)
-			{
-				pBuffer[0] = pImageBuffer[0];
-				pBuffer[1] = pImageBuffer[0];
-				pBuffer[2] = pImageBuffer[0];
-				pBuffer[3] = pImageBuffer[0];
-			}
-			else if (pImage->GetBPP() == 24)
-			{
-				pBuffer[0] = pImageBuffer[0];
-				pBuffer[1] = pImageBuffer[1];
-				pBuffer[2] = pImageBuffer[2];
-				pBuffer[3] = 255;
-			}
-			else if (pImage->GetBPP() == 32)
-			{
-				pBuffer[0] = pImageBuffer[0];
-				pBuffer[1] = pImageBuffer[1];
-				pBuffer[2] = pImageBuffer[2];
-				pBuffer[3] = pImageBuffer[3];
-			}
-		} // for
-	}     // for
+            unsigned int uiIndex = cy * uiWidth + cx;
+            unsigned char *pBuffer = pTexAllState->m_SourceData.GetBuffer() + uiIndex * VSRenderer::GetBytesPerPixel(uiFormatType);
+            const unsigned char *pImageBuffer = pImage->GetPixel(cx, cy);
+            if (pImage->GetBPP() == 8)
+            {
+                pBuffer[0] = pImageBuffer[0];
+                pBuffer[1] = pImageBuffer[0];
+                pBuffer[2] = pImageBuffer[0];
+                pBuffer[3] = pImageBuffer[0];
+            }
+            else if (pImage->GetBPP() == 24)
+            {
+                pBuffer[0] = pImageBuffer[0];
+                pBuffer[1] = pImageBuffer[1];
+                pBuffer[2] = pImageBuffer[2];
+                pBuffer[3] = 255;
+            }
+            else if (pImage->GetBPP() == 32)
+            {
+                pBuffer[0] = pImageBuffer[0];
+                pBuffer[1] = pImageBuffer[1];
+                pBuffer[2] = pImageBuffer[2];
+                pBuffer[3] = pImageBuffer[3];
+            }
+        } // for
+    }     // for
 
-	if (pImage)
-	{
-		ENGINE_DELETE(pImage);
-	}
+    if (pImage)
+    {
+        ENGINE_DELETE(pImage);
+    }
 
-	VS2DTexture* pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
-		pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
-	pTexAllState->m_pTex = pNewTexture;
+    VS2DTexture *pNewTexture = CreateTextureCache(pTexAllState->m_SourceData.GetBuffer(), uiWidth, uiHeight,
+                                                  pTexAllState->m_uiFormatType, bIsNormal, bSRGB, bMip);
+    pTexAllState->m_pTex = pNewTexture;
 
-	if (pSamplerState)
-	{
-		pTexAllState->SetSamplerState(pSamplerState);
-	}
-	return pTexAllState;
+    if (pSamplerState)
+    {
+        pTexAllState->SetSamplerState(pSamplerState);
+    }
+    return pTexAllState;
 }
-//VS2DTexture* VSResourceManager::CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight,
+// VS2DTexture* VSResourceManager::CreateTextureCache(void* SourceData, unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool bIsNormal, bool bSRGB, bool bMip)
 //{
 //	unsigned int uiCompressFormat = VSNVCompression::NV_ARGB;
@@ -1211,8 +1206,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		Core::MXMemcpy(pNewTexture->GetBuffer(i), Help.OutputHandler.m_DataBufferArray[i].GetBuffer(), Help.OutputHandler.m_DataBufferArray[i].GetNum());
 //	}
 //	return pNewTexture;
-//}
-//VSBlendState* VSResourceManager::CreateBlendState(const VSBlendDesc& BlendDesc)
+// }
+// VSBlendState* VSResourceManager::CreateBlendState(const VSBlendDesc& BlendDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = BlendDesc.GetCRC32Data(uiDataSize);
@@ -1229,8 +1224,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	pBlendState->m_BlendDesc = BlendDesc;
 //	VSResourceManager::GetBlendStateSet().AddResource(uiHashCode, pBlendState);
 //	return pBlendState;
-//}
-//VSDepthStencilState* VSResourceManager::CreateDepthStencilState(const VSDepthStencilDesc& DepthStencilDesc)
+// }
+// VSDepthStencilState* VSResourceManager::CreateDepthStencilState(const VSDepthStencilDesc& DepthStencilDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = DepthStencilDesc.GetCRC32Data(uiDataSize);
@@ -1247,8 +1242,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	pDepthStencilState->m_DepthStencilDesc = DepthStencilDesc;
 //	VSResourceManager::GetDepthStencilStateSet().AddResource(uiHashCode, pDepthStencilState);
 //	return pDepthStencilState;
-//}
-//VSRasterizerState* VSResourceManager::CreateRasterizerState(const VSRasterizerDesc& RasterizerDesc)
+// }
+// VSRasterizerState* VSResourceManager::CreateRasterizerState(const VSRasterizerDesc& RasterizerDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = RasterizerDesc.GetCRC32Data(uiDataSize);
@@ -1265,8 +1260,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	pRasterizerState->m_RasterizerDesc = RasterizerDesc;
 //	VSResourceManager::GetRasterizerStateSet().AddResource(uiHashCode, pRasterizerState);
 //	return pRasterizerState;
-//}
-//VSSamplerState* VSResourceManager::CreateSamplerState(const VSSamplerDesc& SamplerDesc)
+// }
+// VSSamplerState* VSResourceManager::CreateSamplerState(const VSSamplerDesc& SamplerDesc)
 //{
 //	unsigned int uiDataSize = 0;
 //	void* pData = SamplerDesc.GetCRC32Data(uiDataSize);
@@ -1283,8 +1278,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	pSamplerState->m_SamplerDesc = SamplerDesc;
 //	VSResourceManager::GetSamplerStateSet().AddResource(uiHashCode, pSamplerState);
 //	return pSamplerState;
-//}
-//VSRenderTarget* VSResourceManager::CreateRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// VSRenderTarget* VSResourceManager::CreateRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	unsigned int uiMulSample, bool CPURead)
 //{
 //	if (uiMulSample != VSRenderer::MS_NONE && CPURead && !VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_MSBufferRead))
@@ -1299,8 +1294,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSRenderTarget* Temp = MX_NEW VSRenderTarget(uiWidth, uiHeight, uiFormatType, uiMulSample, CPURead);
 //	GetRenderTargetArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateBufferUnorderAccess(VSBufferResource* pCreateBy, bool CPURead)
+// }
+// VSUnorderAccess* VSResourceManager::CreateBufferUnorderAccess(VSBufferResource* pCreateBy, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
 //	{
@@ -1309,8 +1304,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSBufferUnorderAccess(pCreateBy, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSDepthStencil* VSResourceManager::CreateDepthStencil(VS2DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, bool CPURead)
+// }
+// VSDepthStencil* VSResourceManager::CreateDepthStencil(VS2DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_DepthStensilToTexture))
 //	{
@@ -1338,8 +1333,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSDepthStencil* Temp = MX_NEW VSDepthStencil(pCreateBy, uiMulSample, uiLevel, CPURead);
 //	GetDepthStencilArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSDepthStencil* VSResourceManager::CreateDepthStencil(VS2DTextureArray* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
+// }
+// VSDepthStencil* VSResourceManager::CreateDepthStencil(VS2DTextureArray* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_DepthStensilToTexture))
 //	{
@@ -1370,8 +1365,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSDepthStencil* Temp = MX_NEW VSDepthStencil(pCreateBy, uiMulSample, uiLevel, First, m_uiArraySize, CPURead);
 //	GetDepthStencilArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSDepthStencil* VSResourceManager::CreateDepthStencil(VS3DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
+// }
+// VSDepthStencil* VSResourceManager::CreateDepthStencil(VS3DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_DepthStensilToTexture))
 //	{
@@ -1404,8 +1399,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSDepthStencil* Temp = MX_NEW VSDepthStencil(pCreateBy, uiMulSample, uiLevel, First, m_uiArraySize, CPURead);
 //	GetDepthStencilArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSRenderTarget* VSResourceManager::GetRenderTarget(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSRenderTarget* VSResourceManager::GetRenderTarget(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool TextureUse, bool CPURead)
 //{
 //	if (TextureUse)
@@ -1416,8 +1411,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return GetRenderTargetNoTexture(uiWidth, uiHeight, uiFormatType, uiMulSample, CPURead);
 //	}
-//}
-//VSDepthStencil* VSResourceManager::GetDepthStencil(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSDepthStencil* VSResourceManager::GetDepthStencil(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool TextureUse, bool CPURead)
 //{
 //	if (VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_DepthStensilToTexture) && TextureUse)
@@ -1428,8 +1423,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return GetDepthStencilNoTexture(uiWidth, uiHeight, uiFormatType, uiMulSample, CPURead);
 //	}
-//}
-//VSUnorderAccess* VSResourceManager::GetBufferUnorderAccess(unsigned int uiNum, unsigned int uiDT,
+// }
+// VSUnorderAccess* VSResourceManager::GetBufferUnorderAccess(unsigned int uiNum, unsigned int uiDT,
 //	unsigned int uiStructStride, bool BufferResource, bool CPURead)
 //{
 //	if (VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1447,8 +1442,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return NULL;
 //	}
-//}
-//VSRenderTarget* VSResourceManager::CreateRenderTarget(VS2DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, bool CPURead)
+// }
+// VSRenderTarget* VSResourceManager::CreateRenderTarget(VS2DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, bool CPURead)
 //{
 //	if (pCreateBy->IsCompress())
 //	{
@@ -1467,8 +1462,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSRenderTarget* Temp = MX_NEW VSRenderTarget(pCreateBy, uiMulSample, uiLevel, CPURead);
 //	GetRenderTargetArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSRenderTarget* VSResourceManager::CreateRenderTarget(VS2DTextureArray* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
+// }
+// VSRenderTarget* VSResourceManager::CreateRenderTarget(VS2DTextureArray* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (pCreateBy->IsCompress())
 //	{
@@ -1491,8 +1486,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSRenderTarget* Temp = MX_NEW VSRenderTarget(pCreateBy, uiMulSample, uiLevel, First, m_uiArraySize, CPURead);
 //	GetRenderTargetArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSRenderTarget* VSResourceManager::CreateRenderTarget(VS3DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
+// }
+// VSRenderTarget* VSResourceManager::CreateRenderTarget(VS3DTexture* pCreateBy, unsigned int uiMulSample, unsigned int uiLevel, unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (pCreateBy->IsCompress())
 //	{
@@ -1515,8 +1510,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSRenderTarget* Temp = MX_NEW VSRenderTarget(pCreateBy, uiMulSample, uiLevel, First, m_uiArraySize, CPURead);
 //	GetRenderTargetArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1526,8 +1521,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSTextureUnorderAccess(uiWidth, uiHeight, uiFormatType, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS2DTexture* pCreateBy, unsigned int uiLevel, bool CPURead)
+// }
+// VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS2DTexture* pCreateBy, unsigned int uiLevel, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
 //	{
@@ -1546,8 +1541,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSTextureUnorderAccess(pCreateBy, uiLevel, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS2DTextureArray* pCreateBy, unsigned int uiLevel,
+// }
+// VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS2DTextureArray* pCreateBy, unsigned int uiLevel,
 //	unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1570,8 +1565,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSTextureUnorderAccess(pCreateBy, uiLevel, First, m_uiArraySize, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS3DTexture* pCreateBy, unsigned int uiLevel,
+// }
+// VSUnorderAccess* VSResourceManager::CreateTextureUnorderAccess(VS3DTexture* pCreateBy, unsigned int uiLevel,
 //	unsigned int First, unsigned int m_uiArraySize, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1595,8 +1590,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSTextureUnorderAccess(pCreateBy, uiLevel, First, m_uiArraySize, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSDepthStencil* VSResourceManager::CreateDepthStencil(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSDepthStencil* VSResourceManager::CreateDepthStencil(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiMulSample, unsigned int uiFormatType, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -1612,8 +1607,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSDepthStencil* Temp = MX_NEW VSDepthStencil(uiWidth, uiHeight, uiMulSample, uiFormatType, CPURead);
 //	GetDepthStencilArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSUnorderAccess* VSResourceManager::CreateBufferUnorderAccess(unsigned int uiNum, unsigned int uiDT,
+// }
+// VSUnorderAccess* VSResourceManager::CreateBufferUnorderAccess(unsigned int uiNum, unsigned int uiDT,
 //	unsigned int uiStructStride, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1623,8 +1618,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	VSUnorderAccess* Temp = MX_NEW VSBufferUnorderAccess(uiNum, uiDT, uiStructStride, CPURead);
 //	GetUnorderAccessArray().AddResource(Temp);
 //	return Temp;
-//}
-//VSRenderTarget* VSResourceManager::GetRenderTargetNoTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSRenderTarget* VSResourceManager::GetRenderTargetNoTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -1656,8 +1651,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //
 //	pNewRt->m_bUsed = true;
 //	return pNewRt;
-//}
-//VSRenderTarget* VSResourceManager::GetRenderTargetTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSRenderTarget* VSResourceManager::GetRenderTargetTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -1697,8 +1692,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //
 //	pNewRt->m_bUsed = true;
 //	return pNewRt;
-//}
-//VSUnorderAccess* VSResourceManager::GetTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSUnorderAccess* VSResourceManager::GetTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool TextureUse, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1714,8 +1709,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return GetUnorderAccessNoTexture(uiWidth, uiHeight, uiFormatType, CPURead);
 //	}
-//}
-//bool VSResourceManager::GetCubeUnorderAccess(unsigned int uiWidth, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::GetCubeUnorderAccess(unsigned int uiWidth, unsigned int uiFormatType,
 //	VSUnorderAccess* OutUA[VSCubeTexture::F_MAX], bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1836,8 +1831,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::Get2DTextureArrayUnorderAccess(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get2DTextureArrayUnorderAccess(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSUnorderAccess*>& UAArray, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -1918,8 +1913,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::Get3DTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get3DTextureUnorderAccess(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSUnorderAccess*>& UAArray, bool CPURead)
 //{
 //	if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -2001,8 +1996,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::GetCubDepthStencil(unsigned int uiWidth, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::GetCubDepthStencil(unsigned int uiWidth, unsigned int uiFormatType,
 //	unsigned int uiMulSample, VSDepthStencil* OutDS[VSCubeTexture::F_MAX], bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2127,8 +2122,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::CheckTextureBindInfo(Container::MArray<TextureBindInfoType>& TextureBindInfo)
+// }
+// bool VSResourceManager::CheckTextureBindInfo(Container::MArray<TextureBindInfoType>& TextureBindInfo)
 //{
 //	if (!TextureBindInfo.GetNum())
 //	{
@@ -2147,8 +2142,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //	}
 //	return false;
-//}
-//bool VSResourceManager::CheckTextureBindInfo(Container::MArray<TextureBindInfoType>& TextureBindInfo, VSTextureOutputInfo* pTextureOutputInfo)
+// }
+// bool VSResourceManager::CheckTextureBindInfo(Container::MArray<TextureBindInfoType>& TextureBindInfo, VSTextureOutputInfo* pTextureOutputInfo)
 //{
 //	for (unsigned int i = 0; i < TextureBindInfo.GetNum(); i++)
 //	{
@@ -2162,8 +2157,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //	}
 //	return false;
-//}
-//bool VSResourceManager::Get2DTextureArrayDepthStencil(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get2DTextureArrayDepthStencil(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	unsigned int uiMulSample, Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSDepthStencil*>& DSArray, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2244,8 +2239,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::Get3DTextureDepthStencil(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get3DTextureDepthStencil(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	unsigned int uiMulSample, Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSDepthStencil*>& DSArray, bool CPURead)
 //{
 //
@@ -2328,8 +2323,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::Get3DTextureRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get3DTextureRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	unsigned int uiMulSample, Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSRenderTarget*>& RTArray, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2411,8 +2406,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::Get2DTextureArrayRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::Get2DTextureArrayRenderTarget(unsigned int uiWidth, unsigned int uiHeight, unsigned int uiFormatType,
 //	unsigned int uiMulSample, Container::MArray<TextureBindInfoType>& TextureBindInfo, Container::MArray<VSRenderTarget*>& RTArray, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2493,8 +2488,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//bool VSResourceManager::GetCubRenderTarget(unsigned int uiWidth, unsigned int uiFormatType,
+// }
+// bool VSResourceManager::GetCubRenderTarget(unsigned int uiWidth, unsigned int uiFormatType,
 //	unsigned int uiMulSample, VSRenderTarget* OutRT[VSCubeTexture::F_MAX], bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2616,8 +2611,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		}
 //		return true;
 //	}
-//}
-//VSDepthStencil* VSResourceManager::GetDepthStencilTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSDepthStencil* VSResourceManager::GetDepthStencilTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2657,8 +2652,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //
 //	pNewDS->m_bUsed = true;
 //	return pNewDS;
-//}
-//VSUnorderAccess* VSResourceManager::GetUnorderAccessBuffer(unsigned int uiNum, unsigned int uiDT,
+// }
+// VSUnorderAccess* VSResourceManager::GetUnorderAccessBuffer(unsigned int uiNum, unsigned int uiDT,
 //	unsigned int uiStructStride, bool CPURead)
 //{
 //	if (VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -2703,8 +2698,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return NULL;
 //	}
-//}
-//VSUnorderAccess* VSResourceManager::GetUnorderAccessNoBuffer(unsigned int uiNum, unsigned int uiDT,
+// }
+// VSUnorderAccess* VSResourceManager::GetUnorderAccessNoBuffer(unsigned int uiNum, unsigned int uiDT,
 //	unsigned int uiStructStride, bool CPURead)
 //{
 //	if (VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_UnorderAccess))
@@ -2743,8 +2738,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	{
 //		return NULL;
 //	}
-//}
-//VSUnorderAccess* VSResourceManager::GetUnorderAccessNoTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSUnorderAccess* VSResourceManager::GetUnorderAccessNoTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool CPURead)
 //{
 //	VSResourceArrayControl<VSUnorderAccessPtr>& UnorderAccessArray = GetUnorderAccessBufferArray();
@@ -2771,8 +2766,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	UnorderAccessArray.AddResource(pNewUA);
 //	pNewUA->m_bUsed = true;
 //	return pNewUA;
-//}
-//VSUnorderAccess* VSResourceManager::GetUnorderAccessTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSUnorderAccess* VSResourceManager::GetUnorderAccessTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, bool CPURead)
 //{
 //	VSResourceArrayControl<VSUnorderAccessPtr>& UnorderAccessArray = GetUnorderAccessBufferArray();
@@ -2808,8 +2803,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //
 //	pNewUA->m_bUsed = true;
 //	return pNewUA;
-//}
-//VSDepthStencil* VSResourceManager::GetDepthStencilNoTexture(unsigned int uiWidth, unsigned int uiHeight,
+// }
+// VSDepthStencil* VSResourceManager::GetDepthStencilNoTexture(unsigned int uiWidth, unsigned int uiHeight,
 //	unsigned int uiFormatType, unsigned int uiMulSample, bool CPURead)
 //{
 //	MATRIX_ENGINE_ASSERT(uiMulSample < VSRenderer::MS_MAX)
@@ -2845,11 +2840,10 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	GetDepthStencilBufferArray().AddResource(pNewDS);
 //	pNewDS->m_bUsed = true;
 //	return pNewDS;
-//}
-
+// }
 
 ////AdAnimation
-//VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR)
+// VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR)
 //{
 //	if (!pSourceAnim || !pTargetAnim || !pBlendAnimR)
 //	{
@@ -2941,8 +2935,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	}
 //
 //	return pAddAnim;
-//}
-//VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR, VSREAL fTargetTime)
+// }
+// VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR, VSREAL fTargetTime)
 //{
 //
 //	if (!pSourceAnim || !pTargetAnim)
@@ -3031,8 +3025,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		pAddAnim->AddBoneKey(pAddBoneKey);
 //	}
 //	return pAddAnim;
-//}
-//VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR, VSREAL fSourceTime, VSREAL fTargetTime)
+// }
+// VSAnim* VSResourceManager::CreateAdditiveAnim(VSAnim* pSourceAnim, VSAnim* pTargetAnim, VSAnimR* pBlendAnimR, VSREAL fSourceTime, VSREAL fTargetTime)
 //{
 //	if (!pSourceAnim || !pTargetAnim)
 //	{
@@ -3099,8 +3093,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		pAddAnim->AddBoneKey(pAddBoneKey);
 //	}
 //	return pAddAnim;
-//}
-//VSInstanceGeometry* VSResourceManager::GetDynamicInstanceGeometry(VSMeshData* pSourceMeshData, VSMaterialR* pMaterial)
+// }
+// VSInstanceGeometry* VSResourceManager::GetDynamicInstanceGeometry(VSMeshData* pSourceMeshData, VSMaterialR* pMaterial)
 //{
 //	if (!pSourceMeshData || !pMaterial)
 //	{
@@ -3134,8 +3128,8 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //	pInstanceGeometry->CreateInstanceBuffer(pSourceMeshData, pMaterial);
 //	GetDynamicInstanceGeometryArray().AddResource(pInstanceGeometry);
 //	return pInstanceGeometry;
-//}
-//VSAnim* VSResourceManager::CreateAnim(VSAnim* pSourceAnim, VSREAL fSourceTime)
+// }
+// VSAnim* VSResourceManager::CreateAnim(VSAnim* pSourceAnim, VSREAL fSourceTime)
 //{
 //	if (!pSourceAnim)
 //	{
@@ -3179,4 +3173,4 @@ VSTexAllState* VSResourceManager::Load2DTexture(const TCHAR* pFileName, VSSample
 //		pAddAnim->AddBoneKey(pAddBoneKey);
 //	}
 //	return pAddAnim;
-//}
+// }

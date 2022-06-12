@@ -51,8 +51,8 @@ VSRasterizerState::~VSRasterizerState()
     ReleaseResource();
 }
 
-IMPLEMENT_RTTI(VSRasterizerDesc, VSObject)
-BEGIN_ADD_PROPERTY(VSRasterizerDesc, VSObject)
+IMPLEMENT_RTTI(VSRasterizerDesc, MObject)
+BEGIN_ADD_PROPERTY(VSRasterizerDesc, MObject)
 REGISTER_PROPERTY(m_bWireEnable, WireEnable, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiCullType, CullType, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_bClipPlaneEnable, ClipPlaneEnable, VSProperty::F_SAVE_LOAD_CLONE)

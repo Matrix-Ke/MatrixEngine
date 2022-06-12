@@ -40,7 +40,7 @@ bool VSMaterialPass::Draw(VSRenderer *pRenderer)
         MSPara.bUseTessellation = false;
     }
 
-    VSArray<VSLight *> LightTemp;
+    Container::MArray<VSLight *> LightTemp;
 
     m_RenderSceondPassUsed = pMaterial->GetRenderState(MSPara.uiPassId);
 

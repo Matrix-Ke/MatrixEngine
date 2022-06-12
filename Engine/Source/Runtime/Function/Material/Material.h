@@ -19,8 +19,8 @@
 #include "BufferResource.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API MaterialCustomPara : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API MaterialCustomPara : public MObject
     {
     public:
         DECLARE_RTTI;
@@ -59,7 +59,7 @@ namespace Matrix
         DECLARE_INITIAL
         CustomFloatValue();
         virtual ~CustomFloatValue();
-        VSArray<VSREAL> Value;
+        Container::MArray<VSREAL> Value;
         CustomFloatValue &operator=(const CustomFloatValue &Para)
         {
             MaterialCustomPara::operator=(Para);
@@ -105,7 +105,7 @@ namespace Matrix
     };
     DECLARE_Ptr(CustomBuffer);
     VSTYPE_MARCO(CustomBuffer);
-    class MATRIX_FUNCTION_API VSCustomMaterialInterface : public VSObject
+    class MATRIX_FUNCTION_API VSCustomMaterialInterface : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -177,7 +177,7 @@ namespace Matrix
         static VSPointer<VSCustomCSMaterial> ms_pTestTexture;
         static bool LoadDefault();
         void LoadDeviceShader();
-        VSArray<VSUnorderAccessPtr> m_pUnorderAccessArray;
+        Container::MArray<VSUnorderAccessPtr> m_pUnorderAccessArray;
     };
     DECLARE_Ptr(VSCustomCSMaterial);
     VSTYPE_MARCO(VSCustomCSMaterial);
@@ -388,7 +388,7 @@ namespace Matrix
     DECLARE_Ptr(VSCustomMaterial);
     VSTYPE_MARCO(VSCustomMaterial);
 
-    class MATRIX_FUNCTION_API VSMaterial : public VSObject, public VSResource
+    class MATRIX_FUNCTION_API VSMaterial : public MObject, public VSResource
     {
         // RTTI
         DECLARE_RTTI;
@@ -398,8 +398,8 @@ namespace Matrix
     protected:
         VSMaterial();
         VSUsedName m_ShowName;
-        VSArray<VSShaderMainFunction *> m_pShaderMainFunction;
-        VSArray<VSShaderFunction *> m_pShaderFunctionArray;
+        Container::MArray<VSShaderMainFunction *> m_pShaderMainFunction;
+        Container::MArray<VSShaderFunction *> m_pShaderFunctionArray;
         VSLightShaderFunction *m_pLightShaderFunction;
         VSPostEffectShaderFunction *m_pPostEffectShaderFunction;
 
@@ -559,8 +559,8 @@ namespace Matrix
         static bool TerminalDefaultState();
 
     public:
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
 
     protected:
         static VSPointer<VSMaterial> ms_DefaultOnlyColor;
@@ -603,14 +603,14 @@ namespace Matrix
         }
         // more bigger more later render
         unsigned int m_uiCustomLayer;
-        void GetInstanceVertexFormat(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int &uiOffset);
+        void GetInstanceVertexFormat(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int &uiOffset);
         int GetInstanceIndex(const class VSConstFloatValue *pCFValue);
     };
     DECLARE_Ptr(VSMaterial);
     DECLARE_Proxy(VSMaterial);
     VSTYPE_MARCO(VSMaterial);
 
-    class MATRIX_FUNCTION_API VSMaterialInstance : public VSObject
+    class MATRIX_FUNCTION_API VSMaterialInstance : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -648,8 +648,8 @@ namespace Matrix
         void GetInstanceData(unsigned char *pInstanceDataBuffer, unsigned int &GetSize);
 
         void GetAllMaterialPara();
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual void LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data = NULL);
         inline VSMaterial *GetMaterial() const
         {
@@ -659,7 +659,7 @@ namespace Matrix
         {
             return m_pMaterial;
         }
-        virtual void GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
+        virtual void GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const;
         friend class VSMaterialPass;
         friend class VSNormalDepthPass;
         friend class VSPreZPass;

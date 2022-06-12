@@ -4,7 +4,7 @@
 #include "Texture.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSDepthStencil : public VSOutputResource, public VSTextureOutputInfo
     {
         // RTTI

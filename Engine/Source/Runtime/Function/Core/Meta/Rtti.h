@@ -1,15 +1,13 @@
 #pragma once
-
 #include "Function/FunctionCore.h"
 #include "RttiMacro.h"
 #include "InitialMacro.h"
 #include "Priority.h"
 #include "ObjName.h"
 
-#include "Core/MemoryManager.h"
+#include "Platform/MemoryManager.h"
 #include "Container/String.h"
 #include "Container/Array.h"
-
 
 namespace Matrix
 {
@@ -69,7 +67,7 @@ namespace Matrix
 	private:
 		Container::MString m_cRttiName;
 		VSRtti* m_pBase;
-		Container::MArray<VSProperty*> m_PropertyArray; //存放所有属性 
+		Container::MArray<VSProperty*> m_PropertyArray; //存放所有属性
 		Container::MArray<VSFunction*> m_FunctionArray; //存放function
 		CreateObjectFun m_CreateFun;
 		static Container::MMapOrder<VSUsedName, VSRtti*> ms_RttiMap;

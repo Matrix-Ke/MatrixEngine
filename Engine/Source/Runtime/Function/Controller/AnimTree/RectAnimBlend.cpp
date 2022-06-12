@@ -30,7 +30,7 @@ VSRectAnimBlend::VSRectAnimBlend(const VSUsedName &ShowName, VSAnimTree *pAnimTr
     m_BlendBoneMatrix[0].SetBufferNum(BoneNum);
     m_BlendBoneMatrix[1].SetBufferNum(BoneNum);
 }
-bool VSRectAnimBlend::SetObject(VSObject *pObject)
+bool VSRectAnimBlend::SetObject(MObject *pObject)
 {
     if (VSTwoParamAnimBlend::SetObject(pObject))
     {

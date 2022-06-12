@@ -8,7 +8,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSPartialAnimBlend : public VSAnimBlendFunction
     {
         // RTTI
@@ -31,18 +31,18 @@ namespace Matrix
 
     protected:
 #if (FAST_BLEND_PARIAL_ANIMITION == 0)
-        VSArray<VSMatrix3X3W> m_FastTempMatrix;
+        Container::MArray<VSMatrix3X3W> m_FastTempMatrix;
         VSMatrix3X3W m_FastRootMatrix;
 #endif
-        VSArray<VSArray<VSREAL>> m_Weight;
-        VSMap<VSUsedName, VSArray<VSREAL>> m_BoneWeight;
+        Container::MArray<Container::MArray<VSREAL>> m_Weight;
+        VSMap<VSUsedName, Container::MArray<VSREAL>> m_BoneWeight;
         void ComputeWeight();
         virtual bool IsSupportSimpleInstance() { return false; }
 
     public:
         VSPartialAnimBlend();
         virtual bool ComputeOutBoneMatrix(double dAppTime);
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
     };
     DECLARE_Ptr(VSPartialAnimBlend);
     VSTYPE_MARCO(VSPartialAnimBlend);

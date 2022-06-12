@@ -3,7 +3,7 @@
 namespace Matrix
 {
     class VSRenderer;
-    class VSStream;
+    class MStream;
     class VSQuadNode : public VSNode
     {
         DECLARE_RTTI;
@@ -12,7 +12,7 @@ namespace Matrix
         VSQuadNode();
         ~VSQuadNode();
         virtual void ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dAppTime);
-        bool RecursiveBuild(const VSArray<VSSpatial *> &pObjectArray);
+        bool RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArray);
         virtual unsigned int AddChild(VSSpatial *pChild);
         virtual unsigned int DeleteChild(VSSpatial *pChild);
         virtual bool DeleteChild(unsigned int i);
@@ -23,12 +23,12 @@ namespace Matrix
     protected:
         void DeleteNeedDrawNode(VSNodeComponent *pNeedDrawNode);
         void AddNeedDrawNode(VSNodeComponent *pNeedDrawNode);
-        VSArray<VSNodeComponent *> m_pNeedDrawNode;
+        Container::MArray<VSNodeComponent *> m_pNeedDrawNode;
     };
     DECLARE_Ptr(VSQuadNode);
     VSTYPE_MARCO(VSQuadNode);
 
-    class MATRIX_FUNCTION_API VSScene : public VSObject
+    class MATRIX_FUNCTION_API VSScene : public MObject
     {
         // PRIORITY
 
@@ -58,12 +58,12 @@ namespace Matrix
         void GetStreamResource(const VSVector3 &CameraPos, const VSVector3W &ProjectInfo);
 
     protected:
-        VSArray<VSLight *> m_pAllLight;
-        VSArray<VSCamera *> m_pAllCamera;
+        Container::MArray<VSLight *> m_pAllLight;
+        Container::MArray<VSCamera *> m_pAllCamera;
 
-        VSArray<VSNode *> m_pDynamic;
+        Container::MArray<VSNode *> m_pDynamic;
         VSQuadNodePtr m_pStaticRoot;
-        VSArray<VSNode *> m_ObjectNodes;
+        Container::MArray<VSNode *> m_ObjectNodes;
         bool m_bIsBuild;
     };
     DECLARE_Ptr(VSScene);

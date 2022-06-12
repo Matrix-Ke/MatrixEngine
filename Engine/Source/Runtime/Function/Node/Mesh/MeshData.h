@@ -3,8 +3,8 @@
 #include "IndexBuffer.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSMeshData : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSMeshData : public MObject
     {
         // RTTI
         DECLARE_RTTI;

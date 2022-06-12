@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "GraphicInclude.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSAIState, VSObject) bool VSAIState::HandleMessage(VSMessage &Message)
+IMPLEMENT_RTTI_NoCreateFun(VSAIState, MObject) bool VSAIState::HandleMessage(VSMessage &Message)
 {
     return true;
 }

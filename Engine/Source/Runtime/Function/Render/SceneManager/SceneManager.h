@@ -28,8 +28,8 @@ namespace Matrix
         inline unsigned int GetSceneNum() const;
 
     protected:
-        VSArray<VSViewFamily *> m_pViewFamily;
-        VSArray<VSScene *> m_pScene;
+        Container::MArray<VSViewFamily *> m_pViewFamily;
+        Container::MArray<VSScene *> m_pScene;
     };
 
     inline void VSSceneManager::AddScene(VSScene *pSecen)

@@ -22,7 +22,7 @@ bool VSStaticMeshNode::InitialDefaultState()
     ms_Default = VS_NEW VSStaticMeshNode();
     VSGeometryNodePtr GeometryNode = VS_NEW VSGeometryNode();
     ms_Default->AddChild(GeometryNode);
-    VSGeometryPtr Geometry = (VSGeometry *)VSObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
+    VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);
     ms_Default->CreateLocalAABB();
     GeometryNode->SetLocalScale(VSVector3(100.0f, 100.0f, 100.0f));

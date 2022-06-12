@@ -3,7 +3,7 @@
 namespace Matrix
 {
 
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSSkyLight : public VSIndirectLight
     {
         DECLARE_RTTI;

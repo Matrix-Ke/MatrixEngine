@@ -49,7 +49,7 @@ void VSSkeletonMeshComponent::LoadedEvent(VSResourceProxyBase *pResourceProxy, v
     {
         m_pNode->SetParent(NULL);
     }
-    m_pNode = (VSModelMeshNode *)VSObject::CloneCreateObject(m_pSkeletonMeshResource->GetResource());
+    m_pNode = (VSModelMeshNode *)MObject::CloneCreateObject(m_pSkeletonMeshResource->GetResource());
     m_pNode->SetParent(this);
     if (m_pSkeletonMeshResource->IsLoaded())
     {
@@ -92,7 +92,7 @@ void VSSkeletonMeshComponent::SetAnimTreeNodePara(const VSUsedName &ShowName, vo
         return pSkeletonNode->SetAnimTreeNodePara(ShowName, pPara);
     }
 }
-bool VSSkeletonMeshComponent::PostLoad(VSStream *pStream)
+bool VSSkeletonMeshComponent::PostLoad(MStream *pStream)
 {
     if (!VSMeshComponent::PostLoad(pStream))
     {

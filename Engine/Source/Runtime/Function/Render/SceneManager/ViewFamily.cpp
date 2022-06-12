@@ -5,10 +5,10 @@
 #include "ResourceManager.h"
 #include "Profiler.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSSceneRenderMethod, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSSceneRenderMethod, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSSceneRenderMethod)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSSceneRenderMethod, VSObject)
+    BEGIN_ADD_PROPERTY(VSSceneRenderMethod, MObject)
 END_ADD_PROPERTY
 VSSceneRenderMethod::VSSceneRenderMethod()
 {
@@ -112,7 +112,7 @@ void VSSceneRenderMethod::GetRT(VSCuller &Culler, unsigned int uiWidth, unsigned
 
     if (m_pPostEffectInstance)
     {
-        static VSArray<VSRenderTarget *> Temp;
+        static Container::MArray<VSRenderTarget *> Temp;
         Temp.Clear();
         Temp.AddElement(m_pColorRT);
         m_pPostEffectInstance->SetBeginTargetArray(&Temp);
@@ -138,7 +138,7 @@ void VSSceneRenderMethod::Draw(VSCuller &Culler, double dAppTime)
 void VSSceneRenderMethod::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data)
 {
     VSPostEffectSet *pPostEffectInstance = m_pPostEffectSet->GetResource();
-    m_pPostEffectInstance = (VSPostEffectSet *)VSObject::CloneCreateObject(pPostEffectInstance);
+    m_pPostEffectInstance = (VSPostEffectSet *)MObject::CloneCreateObject(pPostEffectInstance);
 }
 
 VSDebugDraw *VSSceneRenderMethod::GetDebugDraw(unsigned int uiRenderGroup)
@@ -149,7 +149,7 @@ VSDebugDraw *VSSceneRenderMethod::GetDebugDraw(unsigned int uiRenderGroup)
     }
     return NULL;
 }
-IMPLEMENT_RTTI_NoCreateFun(VSViewFamily, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSViewFamily, MObject)
     VSViewFamily::VSViewFamily(const VSString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
 {
     m_pCamera = pCamera;
@@ -165,7 +165,7 @@ IMPLEMENT_RTTI_NoCreateFun(VSViewFamily, VSObject)
     m_bEnable = true;
 
     VSString RMName = RenderMethodRTTIName;
-    m_pSceneRenderMethod = DynamicCast<VSSceneRenderMethod>(VSObject::GetNoGCInstance(RMName));
+    m_pSceneRenderMethod = DynamicCast<VSSceneRenderMethod>(MObject::GetNoGCInstance(RMName));
 
     m_pSceneRenderMethod->SetPostEffect(pPostEffectSet);
 }
@@ -202,7 +202,7 @@ bool VSViewFamily::GetStreamCameraInfo(VSVector3 &CameraPos, VSVector3W &Project
 void VSViewFamily::Update(double dAppTime)
 {
 
-    VSArray<VSScene *> Temp;
+    Container::MArray<VSScene *> Temp;
     VSMAC_ASSERT(m_pCamera);
 
     if (!m_pCamera->m_bEnable)
@@ -440,7 +440,7 @@ void VSCubCaptureViewFamily::CreateRenderTargetBuffer(unsigned int uiWidth, unsi
 }
 void VSCubCaptureViewFamily::Update(double dAppTime)
 {
-    VSArray<VSScene *> Temp;
+    Container::MArray<VSScene *> Temp;
     if (!m_pCamera)
     {
         return;

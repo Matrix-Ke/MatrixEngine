@@ -115,7 +115,7 @@ void VSOneParamSmoothAnimBlendSequence::SetAnim(unsigned int i, const VSUsedName
         }
     }
 }
-bool VSOneParamSmoothAnimBlendSequence::SetObject(VSObject *pObject)
+bool VSOneParamSmoothAnimBlendSequence::SetObject(MObject *pObject)
 {
     if (VSOneParamSmoothAnimBlend::SetObject(pObject))
     {

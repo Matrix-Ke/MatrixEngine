@@ -4,7 +4,7 @@
 namespace Matrix
 {
     DECLARE_Ptr(VSBoneNode);
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSSkeleton : public VSNode
     {
         // PRIORITY
@@ -17,7 +17,7 @@ namespace Matrix
         virtual ~VSSkeleton();
 
     protected:
-        VSArray<VSBoneNode *> m_pBoneArray;
+        Container::MArray<VSBoneNode *> m_pBoneArray;
 
         void LinkBoneArray();
         virtual void UpdateNoChild(double dAppTime);

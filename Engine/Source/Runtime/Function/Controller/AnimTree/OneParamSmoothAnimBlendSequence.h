@@ -9,7 +9,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSOneParamSmoothAnimBlendSequence : public VSOneParamSmoothAnimBlend
     {
         // RTTI
@@ -29,7 +29,7 @@ namespace Matrix
 
         void SetAnimFrequency(unsigned int Index, double Frequency);
         void SetAnimPhase(unsigned int Index, double Phase);
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         virtual bool IsLeafNode() { return true; }
         virtual void SetOnlyUpdateRootMotion(bool bOnlyUpdateRootMotion)
         {
@@ -58,7 +58,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSAnimSequenceFuncPtr> m_AnimSequenceFuncArray;
+        Container::MArray<VSAnimSequenceFuncPtr> m_AnimSequenceFuncArray;
     };
     DECLARE_Ptr(VSOneParamSmoothAnimBlendSequence);
     VSTYPE_MARCO(VSOneParamSmoothAnimBlendSequence);

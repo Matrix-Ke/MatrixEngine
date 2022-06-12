@@ -71,7 +71,7 @@ void VSPartialAnimBlend::DeleteInputNode()
 }
 void VSPartialAnimBlend::AddControllBone(const VSUsedName &BoneName)
 {
-    VSArray<VSREAL> Temp;
+    Container::MArray<VSREAL> Temp;
     Temp.SetBufferNum(m_pInput.GetNum());
     for (unsigned int i = 0; i < Temp.GetNum(); i++)
     {
@@ -98,7 +98,7 @@ void VSPartialAnimBlend::SetBoneWeight(unsigned int i, const VSUsedName &BoneNam
         m_BoneWeight[uiIndex].Value[i] = Weight;
     }
 }
-bool VSPartialAnimBlend::SetObject(VSObject *pObject)
+bool VSPartialAnimBlend::SetObject(MObject *pObject)
 {
     if (VSAnimFunction::SetObject(pObject))
     {
@@ -263,9 +263,9 @@ void VSPartialAnimBlend::ComputeWeight()
 
         VSBoneNode *pBone = pSkeleton->GetBoneNode(m_BoneWeight[i].Key);
 
-        VSArray<VSUsedName> AllBoneName;
+        Container::MArray<VSUsedName> AllBoneName;
 
-        VSArray<VSBoneNode *> AllBoneArray;
+        Container::MArray<VSBoneNode *> AllBoneArray;
         pBone->GetAllBoneArray(AllBoneArray);
 
         for (unsigned int m = 0; m < AllBoneArray.GetNum(); m++)
@@ -273,7 +273,7 @@ void VSPartialAnimBlend::ComputeWeight()
             AllBoneName.AddElement(AllBoneArray[m]->m_cName);
         }
 
-        VSArray<unsigned int> BoneIndex;
+        Container::MArray<unsigned int> BoneIndex;
         BoneIndex.SetBufferNum(AllBoneName.GetNum());
         for (unsigned int s = 0; s < AllBoneName.GetNum(); s++)
         {

@@ -50,7 +50,7 @@ bool VSCaptureTexAllState::SetViewCapture(const VSString &ViewCaptureName)
     ForceUpdate(!m_bDynamic);
     return true;
 }
-bool VSCaptureTexAllState::PostLoad(VSStream *pStream)
+bool VSCaptureTexAllState::PostLoad(MStream *pStream)
 {
     VSTexAllState::PostLoad(pStream);
     if (!m_pTex)
@@ -60,13 +60,13 @@ bool VSCaptureTexAllState::PostLoad(VSStream *pStream)
 
     return true;
 }
-bool VSCaptureTexAllState::PostClone(VSObject *pObjectSrc)
+bool VSCaptureTexAllState::PostClone(MObject *pObjectSrc)
 {
     VSTexAllState::PostClone(pObjectSrc);
     SetViewCapture(m_ViewCaptureName);
     return true;
 }
-bool VSCaptureTexAllState::BeforeSave(VSStream *pStream)
+bool VSCaptureTexAllState::BeforeSave(MStream *pStream)
 {
     VSTexAllState::BeforeSave(pStream);
     if (m_bDynamic)
@@ -75,7 +75,7 @@ bool VSCaptureTexAllState::BeforeSave(VSStream *pStream)
     }
     return true;
 }
-bool VSCaptureTexAllState::PostSave(VSStream *pStream)
+bool VSCaptureTexAllState::PostSave(MStream *pStream)
 {
     VSTexAllState::PostSave(pStream);
     if (m_bDynamic)

@@ -12,6 +12,6 @@ source_group("Resource File" FILES ${ResourceFile})
 add_executable(${DemoName} ${SourceFiles} ${ResourceFile})
 set_target_properties(${DemoName} PROPERTIES FOLDER ${SampleName}/${DemoName})
 
-add_dependencies(${DemoName} "Core")
+add_dependencies(${DemoName} "Platform")
 target_include_directories(${DemoName} PRIVATE ${ENGINE_SOURCE_RUNTIME_DIR})
-target_link_libraries(${DemoName} "Core")
+target_link_libraries(${DemoName} "Platform")

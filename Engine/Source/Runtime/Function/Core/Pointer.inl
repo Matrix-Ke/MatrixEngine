@@ -15,7 +15,6 @@ VSPointer<T>::VSPointer(const VSPointer& rPointer)
 	if (m_pObject)
 	{
 		m_pObject->IncreRef();
-
 	}
 }
 //----------------------------------------------------------------------------

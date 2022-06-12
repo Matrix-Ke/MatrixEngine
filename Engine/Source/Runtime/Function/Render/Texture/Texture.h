@@ -5,7 +5,7 @@
 #include "Slot.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSTexture : public VSMemBind, public VSSlot
     {
         // RTTI
@@ -86,7 +86,7 @@ namespace Matrix
         virtual void ClearInfo();
 
     protected:
-        VSArray<VSArray<unsigned char>> m_DataBufferArray;
+        Container::MArray<Container::MArray<unsigned char>> m_DataBufferArray;
         unsigned int m_uiArraySize;
         unsigned int m_uiFormatType;
         unsigned int m_uiWidth;
@@ -99,7 +99,7 @@ namespace Matrix
     protected:
         virtual bool OnLoadResource(VSResourceIdentifier *&pID);
         virtual bool SetOutput(class VSOutputResource *pOutputResource);
-        VSArray<class VSOutputResource *> m_pOutputResource;
+        Container::MArray<class VSOutputResource *> m_pOutputResource;
         class VSTextureOutputInfo *GetTextureOutputInfo(class VSOutputResource *pOutputResource);
     };
 #include "VSTexture.inl"
@@ -110,12 +110,12 @@ namespace Matrix
     {
     public:
         virtual ~VSTextureCache();
-        VSTextureCache(VSObject *pCacheObject = NULL);
+        VSTextureCache(MObject *pCacheObject = NULL);
         // RTTI
         DECLARE_RTTI;
         DECLARE_INITIAL;
         DECLARE_CACHE_RESOURCE(CacheTexture, Resource / Texture, Cache / Texture, false, false)
-        virtual bool SetCacheResource(VSObject *pOwner);
+        virtual bool SetCacheResource(MObject *pOwner);
         virtual bool SetStreamResouce(VSResourceProxyBase *pOwner);
         inline const VSTexture *GetTexture() const
         {

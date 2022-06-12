@@ -92,14 +92,14 @@ void VSDirectionLight::SetShadowType(unsigned int uiShadowType)
     }
     m_uiShadowType = uiShadowType;
 }
-bool VSDirectionLight::PostClone(VSObject *pObjectSrc)
+bool VSDirectionLight::PostClone(MObject *pObjectSrc)
 {
     VSLight::PostClone(pObjectSrc);
 
     SetShadowType(m_uiShadowType);
     return true;
 }
-bool VSDirectionLight::PostLoad(VSStream *pStream)
+bool VSDirectionLight::PostLoad(MStream *pStream)
 {
     VSLight::PostLoad(pStream);
     SetShadowType(m_uiShadowType);
@@ -148,7 +148,7 @@ void VSDirectionLight::DrawVolumeShadow(VSCuller &CurCuller, double dAppTime)
 
     m_pShadowTexture[0]->SetTexture((VSTexture *)m_pVolumeShadowRenderTarget->GetCreateBy());
 }
-VSAABB3 VSDirectionLight::GetMaxAABB(VSArray<VSAABB3> &AABBArray)
+VSAABB3 VSDirectionLight::GetMaxAABB(Container::MArray<VSAABB3> &AABBArray)
 {
     VSAABB3 Temp;
     for (unsigned int i = 0; i < AABBArray.GetNum(); i++)
@@ -270,7 +270,7 @@ void VSDirectionLight::DrawCSM(VSCuller &CurCuller, double dAppTime)
         pCamera->SetPerspectiveFov(pCamera->GetFov(), pCamera->GetAspect(), Range[i], Range[i + 1]);
         m_ShadowCuller.GetSceneContent(*pCamera, m_pScene, this, dAppTime);
 
-        VSArray<VSAABB3> CasterAABBArray;
+        Container::MArray<VSAABB3> CasterAABBArray;
         GetCullerAABBArray(m_ShadowCuller, CasterAABBArray);
         if (CasterAABBArray.GetNum() == 0)
         {
@@ -367,7 +367,7 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
         GetWorldDir(Dir, Up, Right);
         m_ShadowCuller.GetSceneContent(*CurCuller.GetCamera(), m_pScene, this, dAppTime, false);
 
-        VSArray<VSDirShadowMapCuller> Temp;
+        Container::MArray<VSDirShadowMapCuller> Temp;
         VSMeshNode *pCurMeshNode = NULL;
         for (unsigned int t = 0; t <= VSCuller::VST_MAX; t++)
         {
@@ -386,7 +386,7 @@ void VSDirectionLight::DrawPorjectShadow(VSCuller &CurCuller, double dAppTime, V
         m_pProjectShadowSceneRender->m_pNormalDepthTexture = pNormalDepthTexture;
         for (unsigned int i = 0; i < Temp.GetNum(); i++)
         {
-            VSArray<VSAABB3> CasterAABBArray;
+            Container::MArray<VSAABB3> CasterAABBArray;
             GetCullerAABBArray(Temp[i], CasterAABBArray);
 
             VSAABB3 CasterAABB = GetMaxAABB(CasterAABBArray);

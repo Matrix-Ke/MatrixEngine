@@ -265,14 +265,14 @@ REGISTER_PROPERTY(m_pTex, Tex, VSProperty::F_SAVE_LOAD)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSTextureCache)
 IMPLEMENT_INITIAL_END
-VSTextureCache::VSTextureCache(VSObject *pCacheObject)
+VSTextureCache::VSTextureCache(MObject *pCacheObject)
 {
     m_pTex = DynamicCast<VSTexture>(pCacheObject);
 }
 VSTextureCache::~VSTextureCache()
 {
 }
-bool VSTextureCache::SetCacheResource(VSObject *pOwner)
+bool VSTextureCache::SetCacheResource(MObject *pOwner)
 {
     VSTexAllState *pTex = DynamicCast<VSTexAllState>(pOwner);
     VSMAC_ASSERT(pTex);

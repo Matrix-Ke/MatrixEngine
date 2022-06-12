@@ -7,7 +7,7 @@ namespace Matrix
     class VSAnimMainFunction;
     class VSAnimBaseFunction;
     class VSSkeletonMeshNode;
-    class VSStream;
+    class MStream;
     class VSAnimAtom;
     class MATRIX_FUNCTION_API VSAnimTree : public VSController, public VSResource
     {
@@ -25,7 +25,7 @@ namespace Matrix
         VSAnimTree();
 
     protected:
-        VSArray<VSAnimBaseFunction *> m_pAnimFunctionArray;
+        Container::MArray<VSAnimBaseFunction *> m_pAnimFunctionArray;
 
         VSAnimMainFunction *m_pAnimMainFunction;
         VSUsedName m_ShowName;
@@ -43,7 +43,7 @@ namespace Matrix
         {
             return m_pAnimMainFunction;
         }
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         void ResetAnimFunction();
 
         VSAnimBaseFunction *GetAnimFunctionFromShowName(const VSUsedName &ShowName);
@@ -52,7 +52,7 @@ namespace Matrix
         const VSAnimAtom &GetRootDelta();
         void SetOnlyUpdateRootMotion(bool bOnlyUpdateRootMotion);
 
-        void GetAnimInstanceData(VSArray<ANIM_INSTANCE_DATA> &InstanceData);
+        void GetAnimInstanceData(Container::MArray<ANIM_INSTANCE_DATA> &InstanceData);
         bool IsSupportSimpleInstance();
         bool HasRootMotion();
     };

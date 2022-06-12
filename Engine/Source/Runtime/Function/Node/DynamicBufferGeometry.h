@@ -30,7 +30,7 @@ namespace Matrix
 
     public:
         VSDVGeometry();
-        void Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+        void Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                     unsigned int uiMeshDataType,
                     unsigned int uiVertexNum);
         virtual ~VSDVGeometry();
@@ -66,7 +66,7 @@ namespace Matrix
 
     public:
         VSDVDIGeometry();
-        void Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+        void Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                     unsigned int uiMeshDataType,
                     unsigned int uiVertexNum,
                     unsigned int uiIndexNum);
@@ -140,7 +140,7 @@ namespace Matrix
 
     public:
         VSDVSIGeometry();
-        void Create(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
+        void Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray,
                     unsigned int uiMeshDataType,
                     unsigned int uiVertexNum,
                     VSIndexBuffer *pIndexBuffer);

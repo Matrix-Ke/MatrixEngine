@@ -67,7 +67,7 @@ bool VSCuller::PushCameraPlane(VSCamera &Camera)
         if (!PushPlane(Plane[i]))
             return 0;
     }
-    VSArray<VSPlane3> &CustomCullPlane = Camera.m_CustomCullPlane;
+    Container::MArray<VSPlane3> &CustomCullPlane = Camera.m_CustomCullPlane;
     for (unsigned int i = 0; i < CustomCullPlane.GetNum(); i++)
     {
         if (!PushPlane(CustomCullPlane[i]))
@@ -280,13 +280,13 @@ unsigned int VSCuller::IsVisible(const VSAABB3 &BV, bool bClearState)
         return VSF_PARTIAL;
     }
 }
-void VSCuller::GetSceneContent(VSCamera &pCamera, VSArray<VSScene *> &pSceneArray, double dAppTime, bool bSort)
+void VSCuller::GetSceneContent(VSCamera &pCamera, Container::MArray<VSScene *> &pSceneArray, double dAppTime, bool bSort)
 {
     GetSceneGeometryContent(pCamera, pSceneArray, dAppTime, bSort);
     GetSceneLightContent(pCamera, pSceneArray, dAppTime);
     CollectDynamicInstance();
 }
-void VSCuller::GetSceneLightContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, double dAppTime)
+void VSCuller::GetSceneLightContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, double dAppTime)
 {
     for (unsigned int i = 0; i < pSceneArray.GetNum(); i++)
     {
@@ -306,7 +306,7 @@ void VSCuller::GetSceneLightContent(VSCamera &pCamera, VSArray<class VSScene *> 
     }
     GetAndSortLight();
 }
-void VSCuller::GetSceneGeometryContent(VSCamera &pCamera, VSArray<VSScene *> &pSceneArray, double dAppTime, bool bSort)
+void VSCuller::GetSceneGeometryContent(VSCamera &pCamera, Container::MArray<VSScene *> &pSceneArray, double dAppTime, bool bSort)
 {
     ClearAll();
     if (pSceneArray.GetNum() > 0)
@@ -404,7 +404,7 @@ void VSCuller::CollectDynamicInstance()
         CollectDynamicInstance(m_VisibleSet[j][VST_ALPHABLEND]);
     }
 }
-void VSCuller::CollectDynamicInstance(VSArray<VSRenderContext> &inContext)
+void VSCuller::CollectDynamicInstance(Container::MArray<VSRenderContext> &inContext)
 {
     ADD_TIME_PROFILE(CollectDynamicInstance);
     if (!inContext.GetNum())
@@ -444,8 +444,8 @@ void VSCuller::CollectDynamicInstance(VSArray<VSRenderContext> &inContext)
         {
             if (CollectNum > m_uiBeignDynamicInstanceNum)
             {
-                VSArray<VSLight *> pIndirectLightCollection;
-                VSArray<VSLight *> pDirectLightCollection;
+                Container::MArray<VSLight *> pIndirectLightCollection;
+                Container::MArray<VSLight *> pDirectLightCollection;
                 VSInstanceGeometry *pIG = VSResourceManager::GetDynamicInstanceGeometry(pIndexMeshData, pIndexMaterial);
                 if (pIndexSK)
                 {
@@ -499,8 +499,8 @@ void VSCuller::CollectDynamicInstance(VSArray<VSRenderContext> &inContext)
     }
     if (CollectNum > m_uiBeignDynamicInstanceNum)
     {
-        VSArray<VSLight *> pIndirectLightCollection;
-        VSArray<VSLight *> pDirectLightCollection;
+        Container::MArray<VSLight *> pIndirectLightCollection;
+        Container::MArray<VSLight *> pDirectLightCollection;
         VSInstanceGeometry *pIG = VSResourceManager::GetDynamicInstanceGeometry(pIndexMeshData, pIndexMaterial);
         VSSkeletonMeshNode *pIndexSK = DynamicCast<VSSkeletonMeshNode>(pIndexMeshNode);
         if (pIndexSK)
@@ -596,7 +596,7 @@ bool VSCuller::CullGeometry(VSGeometry *pGeometry)
     }
     return false;
 }
-void VSCuller::GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, VSArray<VSAABB3> &AABBArray)
+void VSCuller::GetAllVisibleAABB(unsigned int uiVisibleSetType, unsigned int uiRenderGroup, Container::MArray<VSAABB3> &AABBArray)
 {
 
     for (unsigned int i = 0; i < m_VisibleSet[uiRenderGroup][uiVisibleSetType].GetNum(); i++)
@@ -612,7 +612,7 @@ VSShadowCuller::VSShadowCuller()
 VSShadowCuller::~VSShadowCuller()
 {
 }
-void VSShadowCuller::GetSceneContent(VSCamera &pCamera, VSArray<class VSScene *> &pSceneArray, VSLocalLight *pLocalLight, double dAppTime, bool bCollectDynamicInstance)
+void VSShadowCuller::GetSceneContent(VSCamera &pCamera, Container::MArray<class VSScene *> &pSceneArray, VSLocalLight *pLocalLight, double dAppTime, bool bCollectDynamicInstance)
 {
     m_pLocalLight = pLocalLight;
     VSCuller::GetSceneGeometryContent(pCamera, pSceneArray, dAppTime, true);
@@ -1005,7 +1005,7 @@ void VSCullerManager::FillGeometryOcclusionQueryData()
     }
     m_OcclusionQueryPool.ReleaseAllOcclusionQuery();
 }
-VSArray<VSGeometryOcclusionQueryData> &VSCullerManager::GetGroupGeometryOcclusionQueryData(VSCuller *pCuller, unsigned int uiGroup)
+Container::MArray<VSGeometryOcclusionQueryData> &VSCullerManager::GetGroupGeometryOcclusionQueryData(VSCuller *pCuller, unsigned int uiGroup)
 {
     unsigned int uiCullIndex = m_CullerArray.FindElement(pCuller);
     if (uiCullIndex == m_CullerArray.GetNum())
@@ -1039,7 +1039,7 @@ void VSCullerManager::OnRegisterCuller(VSCuller *pCuller)
         m_CullerArray.AddElement(pCuller);
         for (unsigned int uiRenderGroup = 0; uiRenderGroup < VSCuller::RG_MAX; uiRenderGroup++)
         {
-            VSArray<VSGeometryOcclusionQueryData> Temp;
+            Container::MArray<VSGeometryOcclusionQueryData> Temp;
             m_GeometryOcclusionQueryBuffer[uiRenderGroup][0].AddElement(Temp);
             m_GeometryOcclusionQueryBuffer[uiRenderGroup][1].AddElement(Temp);
             m_GeometryOcclusionQueryBuffer[uiRenderGroup][2].AddElement(Temp);

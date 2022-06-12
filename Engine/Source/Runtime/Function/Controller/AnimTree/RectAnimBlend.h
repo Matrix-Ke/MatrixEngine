@@ -27,7 +27,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSRectAnimBlend : public VSTwoParamAnimBlend
     {
         // RTTI
@@ -53,7 +53,7 @@ namespace Matrix
         virtual bool ComputeOutBoneMatrix(double dAppTime);
 
     public:
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
     };
     DECLARE_Ptr(VSRectAnimBlend);
     VSTYPE_MARCO(VSRectAnimBlend);

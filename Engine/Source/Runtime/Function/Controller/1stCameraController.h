@@ -4,7 +4,7 @@
 #include "Controller.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VS1stCameraController : public VSController
     {
         // PRIORITY

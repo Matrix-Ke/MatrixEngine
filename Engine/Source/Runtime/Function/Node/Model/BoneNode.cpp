@@ -109,7 +109,7 @@ void VSBoneNode::SetLocalMat(const VSMatrix3X3W VSMat)
     m_bIsChanged = true;
     m_Local.SetMatrix(VSMat);
 }
-void VSBoneNode::GetAllBoneArray(VSArray<VSBoneNode *> &AllNodeArray)
+void VSBoneNode::GetAllBoneArray(Container::MArray<VSBoneNode *> &AllNodeArray)
 {
     AllNodeArray.AddElement(this);
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)

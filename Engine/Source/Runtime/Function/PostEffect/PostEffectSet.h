@@ -11,8 +11,8 @@ namespace Matrix
     class VSCamera;
     class VS2DTexture;
     class VSRenderTarget;
-    class VSStream;
-    class MATRIX_FUNCTION_API VSPostEffectSet : public VSObject, public VSResource
+    class MStream;
+    class MATRIX_FUNCTION_API VSPostEffectSet : public MObject, public VSResource
     {
         // RTTI
         DECLARE_RTTI;
@@ -30,7 +30,7 @@ namespace Matrix
         void DeletePostEffectFunction(VSPostEffectFunction *pPostEffectFunction);
         void Draw(VSCuller &Culler, double dAppTime);
         VSRenderTarget *GetEndTarget(unsigned int i);
-        void SetBeginTargetArray(VSArray<VSRenderTarget *> *pBeginTargetArray);
+        void SetBeginTargetArray(Container::MArray<VSRenderTarget *> *pBeginTargetArray);
         void DisableRT();
 
         DECLARE_RESOURCE(VSPostEffectSet, RA_ASYN_LOAD | RA_ASYN_POSTLOAD | RA_ENABLE_GC, RT_POSTEFFECT, POSTEFFECT, Resource / MaterialEffect, VSCacheResource)
@@ -45,7 +45,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSPostEffectFunction *> m_pPostEffectFunctionArray;
+        Container::MArray<VSPostEffectFunction *> m_pPostEffectFunctionArray;
         VSPEBeginFunction *m_pPEBeginFunc;
         VSPEEndFunction *m_pPEEndFunc;
         VSUsedName m_ShowName;

@@ -40,7 +40,7 @@ VSInstanceGeometry::~VSInstanceGeometry()
 void VSInstanceGeometry::CreateInstanceBuffer(VSMeshData *pSourceMeshData, VSMaterialR *pMaterial)
 {
     unsigned int uiOffset = 0;
-    VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
+    Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
     VSVertexFormat::VERTEXFORMAT_TYPE Transform1;
     Transform1.Stream = 1;
     Transform1.DataType = VSDataBuffer::DT_FLOAT32_4;
@@ -95,7 +95,7 @@ void VSInstanceGeometry::CreateInstanceBuffer(VSMeshData *pSourceMeshData, VSMat
 
     AddMaterialInstance(pMaterial);
 
-    VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> InstanceFormatArray;
+    Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> InstanceFormatArray;
     pSourceMeshData->GetVertexBuffer()->GetVertexFormat(InstanceFormatArray);
     for (unsigned int i = 0; i < FormatArray.GetNum(); i++)
     {
@@ -113,7 +113,7 @@ bool VSInstanceGeometry::HaveSkinInstance()
 {
     return m_pMeshData->GetVertexBuffer()->HaveBlendIndicesInfo(1);
 }
-void VSInstanceGeometry::SetMaxInstanceBuffer(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiMaxNum)
+void VSInstanceGeometry::SetMaxInstanceBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiMaxNum)
 {
     m_uiMaxInstanceNum = uiMaxNum;
     m_PendingDeleteInstanceBuffer = m_InstanceBuffer;
@@ -155,7 +155,7 @@ unsigned char *VSInstanceGeometry::GetCurDataBufferAddr(unsigned int i)
 {
     return m_pInstanceDataBuffer + i * m_uiInstanceSize;
 }
-unsigned int VSInstanceGeometry::AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, VSArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData)
+unsigned int VSInstanceGeometry::AddInstance(const VSAABB3 WorldBound, const VSTransform &T, VSMaterialInstance *pMaterialInstance, Container::MArray<ANIM_INSTANCE_SHADER_DATA> *pAnimData)
 {
     if (m_uiInstanceNum > m_uiMaxInstanceNum - 1)
     {
@@ -166,7 +166,7 @@ unsigned int VSInstanceGeometry::AddInstance(const VSAABB3 WorldBound, const VST
         }
         else
         {
-            VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
+            Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> FormatArray;
             m_InstanceBuffer->GetVertexFormat(FormatArray);
             SetMaxInstanceBuffer(FormatArray, m_uiMaxInstanceNum + 100);
         }

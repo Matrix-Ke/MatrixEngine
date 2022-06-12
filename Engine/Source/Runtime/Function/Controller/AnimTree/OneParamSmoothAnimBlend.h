@@ -8,7 +8,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSOneParamSmoothAnimBlend : public VSOneParamAnimBlend
     {
         // RTTI

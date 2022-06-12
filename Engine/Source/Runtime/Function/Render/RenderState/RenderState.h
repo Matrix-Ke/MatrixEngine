@@ -7,8 +7,8 @@
 #include "Rect2.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSRenderState : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSRenderState : public MObject
     {
         friend class VSSpatial;
         friend class VSRenderer;
@@ -141,8 +141,8 @@ namespace Matrix
         {
             return m_pRasterizerState;
         }
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
 
     protected:
         VSDepthStencilStatePtr m_pDepthStencilState;
@@ -153,9 +153,9 @@ namespace Matrix
         VSRasterizerDesc m_RasterizerDesc;
         VSBlendDesc m_BlendDesc;
 
-        VSArray<VSRect2> m_RectArray;
+        Container::MArray<VSRect2> m_RectArray;
         // Clip Space Plane : the distance to plane > 0 will be discard.
-        VSArray<VSPlane3> m_Plane;
+        Container::MArray<VSPlane3> m_Plane;
     };
     VSTYPE_MARCO(VSRenderState);
     DECLARE_Ptr(VSRenderState);

@@ -6,7 +6,7 @@
 #include "SceneRender.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSDirectionLight : public VSLocalLight
     {
         // PRIORITY
@@ -19,8 +19,8 @@ namespace Matrix
         virtual ~VSDirectionLight();
 
     public:
-        virtual bool PostClone(VSObject *pObjectSrc);
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
         virtual unsigned int GetLightType() const { return LT_DIRECTION; }
 
         enum // ShadowType
@@ -55,12 +55,12 @@ namespace Matrix
 
 #define m_pOSMShadowRenderTarget m_pVolumeShadowRenderTarget
 #define m_pProjectShadowRenderTarget m_pVolumeShadowRenderTarget
-        VSArray<VSRenderTargetPtr> m_pCSMRTArray;
+        Container::MArray<VSRenderTargetPtr> m_pCSMRTArray;
 
         void DrawOSM(VSCuller &CurCuller, double dAppTime);
         void DrawCSM(VSCuller &CurCuller, double dAppTime);
 
-        VSAABB3 GetMaxAABB(VSArray<VSAABB3> &AABBArray);
+        VSAABB3 GetMaxAABB(Container::MArray<VSAABB3> &AABBArray);
 
         void ResetShadow();
 

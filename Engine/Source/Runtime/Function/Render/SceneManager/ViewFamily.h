@@ -7,7 +7,7 @@
 namespace Matrix
 {
     DECLARE_Proxy(VSPostEffectSet);
-    class MATRIX_FUNCTION_API VSSceneRenderMethod : public VSObject
+    class MATRIX_FUNCTION_API VSSceneRenderMethod : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -115,7 +115,7 @@ namespace Matrix
     };
     DECLARE_Ptr(VSSimpleForwardEffectSceneRenderMethod);
     VSTYPE_MARCO(VSSimpleForwardEffectSceneRenderMethod);
-    class MATRIX_FUNCTION_API VSViewFamily : public VSObject
+    class MATRIX_FUNCTION_API VSViewFamily : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -151,7 +151,7 @@ namespace Matrix
 
     protected:
         VSCamera *m_pCamera;
-        VSArray<VSScene *> m_pScene;
+        Container::MArray<VSScene *> m_pScene;
         VSCuller m_Culler;
 
     protected:

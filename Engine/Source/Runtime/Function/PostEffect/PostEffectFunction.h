@@ -5,8 +5,8 @@
 #include "SceneRender.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSPostEffectFunction : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSPostEffectFunction : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -19,8 +19,8 @@ namespace Matrix
         VSUsedName m_ShowName;
         VSPostEffectFunction(const VSUsedName &ShowName, VSPostEffectSet *pPostEffectSet);
         VSPostEffectFunction();
-        VSArray<VSInputNode *> m_pInput;
-        VSArray<VSOutputNode *> m_pOutput;
+        Container::MArray<VSInputNode *> m_pInput;
+        Container::MArray<VSOutputNode *> m_pOutput;
         VSPostEffectSet *m_pOwner;
         bool m_bIsVisited;
         inline void SetOwner(VSPostEffectSet *pOwner)
@@ -129,7 +129,7 @@ namespace Matrix
             {
                 return;
             }
-            VSArray<VSPostEffectFunction *> Out;
+            Container::MArray<VSPostEffectFunction *> Out;
             GetValidLinkOutputPostEffectFunction(Out);
             bool CanDisableRT = false;
             unsigned int k = 0;
@@ -190,7 +190,7 @@ namespace Matrix
                 DisableRT();
             }
         }
-        void VSPostEffectFunction::GetValidLinkOutputPostEffectFunction(VSArray<VSPostEffectFunction *> &Out)
+        void VSPostEffectFunction::GetValidLinkOutputPostEffectFunction(Container::MArray<VSPostEffectFunction *> &Out)
         {
             for (unsigned int i = 0; i < m_pOutput.GetNum(); i++)
             {

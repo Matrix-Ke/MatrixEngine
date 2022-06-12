@@ -15,8 +15,8 @@ namespace Matrix
         { /**/
         }
     };
-    class VSStream;
-    class MATRIX_FUNCTION_API VSBind : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSBind : public MObject
     {
 
         // RTTI
@@ -30,7 +30,7 @@ namespace Matrix
         virtual VSResourceIdentifier *GetIdentifier();
         unsigned int GetInfoQuantity() const;
 
-        static VSArray<VSBind *> ms_BindArray;
+        static Container::MArray<VSBind *> ms_BindArray;
 
     protected:
         friend class VSRenderer;
@@ -48,7 +48,7 @@ namespace Matrix
             }
             VSResourceIdentifier *ID;
         };
-        VSArray<INFO_TYPE> m_InfoArray;
+        Container::MArray<INFO_TYPE> m_InfoArray;
 
         VSRenderer *m_pUser;
 

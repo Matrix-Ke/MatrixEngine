@@ -88,7 +88,7 @@ namespace Matrix
         unsigned int m_uiSpecularType;
         DECLARE_INITIAL
     public:
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
     };
     DECLARE_Ptr(VSPhoneShaderFunction);
     VSTYPE_MARCO(VSPhoneShaderFunction);

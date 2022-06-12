@@ -1,8 +1,7 @@
 #include "ObjName.h"
-#include "PropertyMarco.h"
-#include "Function/ResourceManager.h"
-#include "Stream.h"
 
+#include "Core/Stream/Stream.h"
+#include "Function/ResourceManager.h"
 #include "Function/EngineInit.h"
 
 

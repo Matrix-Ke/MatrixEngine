@@ -145,7 +145,7 @@ bool VSVertexBuffer::SetData(VSDataBuffer *pData, unsigned int uiVF)
     m_uiOneVertexSize += pData->GetStride();
     return 1;
 }
-bool VSVertexBuffer::GetVertexFormat(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray)
+bool VSVertexBuffer::GetVertexFormat(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray)
 {
 
     if (m_pVertexFormat)
@@ -368,7 +368,7 @@ void VSVertexBuffer::UnLock()
 
     m_pLockData = NULL;
 }
-VSVertexBuffer::VSVertexBuffer(VSArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiNum)
+VSVertexBuffer::VSVertexBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiNum)
 {
     VSMAC_ASSERT(FormatArray.GetNum() && uiNum);
     m_pVertexFormat = NULL;

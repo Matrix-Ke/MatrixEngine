@@ -20,7 +20,7 @@ void VSModelSwitchNode::SetUseMaterialInstance(unsigned int SubMeshID, unsigned 
         pGeometryNode->GetNormalGeometry(SubMeshID)->SetUseMaterialInstance(UsedID);
     }
 }
-void VSModelSwitchNode::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSModelSwitchNode::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     VSGeometryNode *pGeometryNode = DynamicCast<VSGeometryNode>(m_pChild[m_uiActiveNode]);
     if (pGeometryNode)

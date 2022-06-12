@@ -22,7 +22,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSThreadCommand *> m_CommandArray;
+        Container::MArray<VSThreadCommand *> m_CommandArray;
     };
     class VSUpdateCenter
     {
@@ -126,9 +126,9 @@ namespace Matrix
 
     protected:
         unsigned int m_uiThreadNum;
-        VSArray<VSUpdateThread> m_UpdateThread;
+        Container::MArray<VSUpdateThread> m_UpdateThread;
 #ifdef EVENT_UPDATE
-        VSArray<VSSynchronize *> m_WaitEvent;
+        Container::MArray<VSSynchronize *> m_WaitEvent;
 #endif
         unsigned int m_uiCurUpdateType;
         VSUpdateCenter *m_UpdateCenter[UPDATE_MAX];

@@ -27,14 +27,14 @@ namespace Matrix
     DECLARE_Ptr(VSEndAnimEvent);
     VSTYPE_MARCO(VSEndAnimEvent);
 
-    class MATRIX_FUNCTION_API VSController : public VSObject
+    class MATRIX_FUNCTION_API VSController : public MObject
     {
         // RTTI
         DECLARE_RTTI;
         DECLARE_INITIAL_NO_CLASS_FACTORY
     public:
         virtual ~VSController() = 0;
-        inline VSObject *GetObject() const;
+        inline MObject *GetObject() const;
         virtual bool Update(double dAppTime);
         virtual bool UpdateEx(double aAppTime);
 
@@ -59,12 +59,12 @@ namespace Matrix
         static double GetTime(double fTime, double fMin, double fMax, unsigned int uiRepeatType);
 
     public:
-        friend class VSObject;
+        friend class MObject;
         VSController();
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         double GetControlTime(double dAppTime);
 
-        VSObject *m_pObject;
+        MObject *m_pObject;
         double m_dNowAnimTime;
         double m_dLastAppTime;
         double m_dLastAnimTime;
@@ -91,7 +91,7 @@ namespace Matrix
         bool m_bIsVisibleUpdate;
 
     protected:
-        VSArray<VSTimeEventPtr> m_TimeEventArray;
+        Container::MArray<VSTimeEventPtr> m_TimeEventArray;
         void TimeEvent(double dAppTime);
         VSREAL m_fInnerTimeScale;
         bool m_bEnable;

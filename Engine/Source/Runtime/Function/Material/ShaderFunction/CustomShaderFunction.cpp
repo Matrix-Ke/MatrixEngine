@@ -114,7 +114,7 @@ bool VSCustomShaderFunction::GetFunctionString(VSString &OutString, MaterialShad
         OutString += m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(" = ") +
                      VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("0"));
 
-        VSArray<VSString> ShadowStringArray[VSLight::LT_MAX];
+        Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX];
         GetLightShadow(MSPara, ShadowStringArray);
         for (unsigned int i = 0; i < VSLight::LT_MAX; i++)
         {
@@ -203,7 +203,7 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
         return;
     }
     VSString CustomFunctionString;
-    VSArray<VSShaderFunction *> NoLightFunctionParentNodeArray;
+    Container::MArray<VSShaderFunction *> NoLightFunctionParentNodeArray;
     m_LightFunctionString.Clear();
     m_CustomContentString.Clear();
     m_CustomDefine.Clear();
@@ -481,7 +481,7 @@ bool VSCustomShaderFunction::GetPShaderTreeString(VSString &OutString, MaterialS
         return 1;
     }
 }
-bool VSCustomShaderFunction::PostLoad(VSStream *pStream)
+bool VSCustomShaderFunction::PostLoad(MStream *pStream)
 {
     if (!GetWorldOffsetNode())
     {

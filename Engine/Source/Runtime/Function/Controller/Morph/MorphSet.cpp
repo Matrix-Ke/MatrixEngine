@@ -2,8 +2,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSMorph, VSObject)
-BEGIN_ADD_PROPERTY(VSMorph, VSObject)
+IMPLEMENT_RTTI(VSMorph, MObject)
+BEGIN_ADD_PROPERTY(VSMorph, MObject)
 REGISTER_PROPERTY(m_pVertexBufferArray, pVertexBufferArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_cName, MorphName, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
@@ -18,8 +18,8 @@ VSMorph::~VSMorph()
     m_pVertexBufferArray.Clear();
 }
 
-IMPLEMENT_RTTI(VSMorphSet, VSObject)
-BEGIN_ADD_PROPERTY(VSMorphSet, VSObject)
+IMPLEMENT_RTTI(VSMorphSet, MObject)
+BEGIN_ADD_PROPERTY(VSMorphSet, MObject)
 REGISTER_PROPERTY(m_pMorphArray, MorphArray, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSMorphSet)

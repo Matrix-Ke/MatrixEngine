@@ -127,7 +127,7 @@ VSOcclusionQuerySceneRender::~VSOcclusionQuerySceneRender()
 }
 bool VSOcclusionQuerySceneRender::OnDraw(VSCuller &Culler, unsigned int uiRenderGroup, double dAppTime)
 {
-    // 	VSArray<VSGeometryOcclusionQueryData> & GeometryOcclusionQueryData = VSCullerManager::GetCullerManager().GetGroupGeometryOcclusionQueryData(&Culler, uiRenderGroup);
+    // 	Container::MArray<VSGeometryOcclusionQueryData> & GeometryOcclusionQueryData = VSCullerManager::GetCullerManager().GetGroupGeometryOcclusionQueryData(&Culler, uiRenderGroup);
     // 	for (unsigned int i = 0; i < GeometryOcclusionQueryData.GetNum(); i++)
     // 	{
     // 		VSGeometryOcclusionQueryData & GOQD = GeometryOcclusionQueryData[i];
@@ -155,7 +155,7 @@ bool VSOcclusionQuerySceneRender::OnDraw(VSCuller &Culler, unsigned int uiRender
     VSVShader *pVShader = pOcclustionCullPass->GetCurVShader(*VSShaderKey::ms_NULLShaderKey);
     VSPShader *pPShader = pOcclustionCullPass->GetCurPShader(*VSShaderKey::ms_NULLShaderKey);
 
-    VSArray<VSGeometryOcclusionQueryData> &GeometryOcclusionQueryData = VSCullerManager::GetCullerManager().GetGroupGeometryOcclusionQueryData(&Culler, uiRenderGroup);
+    Container::MArray<VSGeometryOcclusionQueryData> &GeometryOcclusionQueryData = VSCullerManager::GetCullerManager().GetGroupGeometryOcclusionQueryData(&Culler, uiRenderGroup);
     for (unsigned int i = 0; i < GeometryOcclusionQueryData.GetNum(); i++)
     {
         VSGeometryOcclusionQueryData &GOQD = GeometryOcclusionQueryData[i];
@@ -549,7 +549,7 @@ void VSMaterialSceneRender::GetGroup(VSCuller &Culler, unsigned int uiRenderGrou
         }
     }
 }
-void VSMaterialSceneRender::DrawGroup(VSCuller &Culler, unsigned int uiRenderGroup, VSArray<VSRenderContext *> &Group, double dAppTime)
+void VSMaterialSceneRender::DrawGroup(VSCuller &Culler, unsigned int uiRenderGroup, Container::MArray<VSRenderContext *> &Group, double dAppTime)
 {
     for (unsigned int i = 0; i < Group.GetNum(); i++)
     {

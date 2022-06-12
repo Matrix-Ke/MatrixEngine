@@ -29,7 +29,7 @@ void VSNodeComponent::AttachParentSocket(const VSUsedName &AttackSocketName)
         m_AttachSocketName = AttackSocketName;
     }
 }
-bool VSNodeComponent::PostLoad(VSStream *pStream)
+bool VSNodeComponent::PostLoad(MStream *pStream)
 {
     VSSkeletonMeshComponent *pParent = DynamicCast<VSSkeletonMeshComponent>(m_pParent);
     if (pParent)
@@ -38,7 +38,7 @@ bool VSNodeComponent::PostLoad(VSStream *pStream)
     }
     return true;
 }
-bool VSNodeComponent::PostClone(VSObject *pObjectSrc)
+bool VSNodeComponent::PostClone(MObject *pObjectSrc)
 {
     VSSkeletonMeshComponent *pParent = DynamicCast<VSSkeletonMeshComponent>(m_pParent);
     if (pParent)
@@ -123,7 +123,7 @@ void VSNodeComponent::UpdateTransform(double dAppTime)
         VSNode::UpdateTransform(dAppTime);
     }
 }
-void VSNodeComponent::GetStreamResource(VSArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
+void VSNodeComponent::GetStreamResource(Container::MArray<VSResourceProxyBase *> &pResourceProxy, StreamInformation_TYPE &StreamInformation) const
 {
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
     {

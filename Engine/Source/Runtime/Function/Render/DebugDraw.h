@@ -27,8 +27,8 @@ namespace Matrix
             VSVector3 Pos;
             DWORD Color;
         };
-        VSArray<DebugVertexType> DepthDebugLineArray;
-        VSArray<DebugVertexType> NoDepthDebugLineArray;
+        Container::MArray<DebugVertexType> DepthDebugLineArray;
+        Container::MArray<DebugVertexType> NoDepthDebugLineArray;
 
         VSMaterialRPtr m_pOnlyVertexColor;
         VSMaterialRPtr m_pOnlyVertexColorDisableDepth;

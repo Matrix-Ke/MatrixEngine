@@ -8,7 +8,7 @@
 #include "Resource.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSKeyTimeInfo
     {
     public:
@@ -66,7 +66,7 @@ namespace Matrix
     };
 
     DECLARE_Ptr(VSBoneKeyCompress);
-    class MATRIX_FUNCTION_API VSBoneKey : public VSObject
+    class MATRIX_FUNCTION_API VSBoneKey : public MObject
     {
         // RTTI
         // RTTI
@@ -79,9 +79,9 @@ namespace Matrix
 
     public:
         VSBoneKey();
-        VSArray<VSKeyTimeVector> m_TranslationArray;
-        VSArray<VSKeyTimeVector> m_ScaleArray;
-        VSArray<VSKeyTimeQuaternion> m_RotatorArray;
+        Container::MArray<VSKeyTimeVector> m_TranslationArray;
+        Container::MArray<VSKeyTimeVector> m_ScaleArray;
+        Container::MArray<VSKeyTimeQuaternion> m_RotatorArray;
         VSUsedName m_cName;
         void CompressSameFrame();
         void Get(VSBoneKeyCompress *pBoneKeyCompress,
@@ -91,7 +91,7 @@ namespace Matrix
     DECLARE_Ptr(VSBoneKey);
     VSTYPE_MARCO(VSBoneKey);
 
-    class MATRIX_FUNCTION_API VSBoneKeyCompress : public VSObject
+    class MATRIX_FUNCTION_API VSBoneKeyCompress : public MObject
     {
         // RTTI
         // RTTI
@@ -104,9 +104,9 @@ namespace Matrix
 
     public:
         VSBoneKeyCompress();
-        VSArray<VSKeyTimeVectorCompress> m_TranslationArray;
-        VSArray<VSKeyTimeVectorCompress> m_ScaleArray;
-        VSArray<VSKeyTimeQuaternionCompress> m_RotatorArray;
+        Container::MArray<VSKeyTimeVectorCompress> m_TranslationArray;
+        Container::MArray<VSKeyTimeVectorCompress> m_ScaleArray;
+        Container::MArray<VSKeyTimeQuaternionCompress> m_RotatorArray;
         VSUsedName m_cName;
         void Get(VSBoneKey *pBoneKey,
                  const VSVector3 &MaxTranslation, const VSVector3 &MinTranslation,
@@ -116,7 +116,7 @@ namespace Matrix
     VSTYPE_MARCO(VSBoneKeyCompress);
 
     DECLARE_Proxy(VSAnim);
-    class MATRIX_FUNCTION_API VSAnim : public VSObject, public VSResource
+    class MATRIX_FUNCTION_API VSAnim : public MObject, public VSResource
     {
         // RTTI
         DECLARE_RTTI;
@@ -149,8 +149,8 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSBoneKeyPtr> m_pBoneKeyArray;
-        VSArray<VSBoneKeyCompressPtr> m_pBoneKeyCompressArray;
+        Container::MArray<VSBoneKeyPtr> m_pBoneKeyArray;
+        Container::MArray<VSBoneKeyCompressPtr> m_pBoneKeyCompressArray;
         VSREAL m_fLength;
         bool m_bCompress;
         VSVector3 m_MaxCompressTranslation;
@@ -175,7 +175,7 @@ namespace Matrix
         {
             return m_pBoneKeyArray.GetNum();
         }
-        virtual bool PostLoad(VSStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
         VSUsedName m_cName;
 
         VSVector3 GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType = VSController::RT_CLAMP) const;
@@ -196,7 +196,7 @@ namespace Matrix
 
     typedef VSDelegateEvent<void(void)> AddAnimEventType;
 
-    class MATRIX_FUNCTION_API VSAnimSet : public VSObject
+    class MATRIX_FUNCTION_API VSAnimSet : public MObject
     {
         // RTTI
         DECLARE_RTTI;

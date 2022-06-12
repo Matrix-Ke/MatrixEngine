@@ -2,8 +2,8 @@
 #include "Object.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSDataBuffer : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSDataBuffer : public MObject
     {
         // PRIORITY
 

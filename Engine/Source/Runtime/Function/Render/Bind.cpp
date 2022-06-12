@@ -4,11 +4,11 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-VSArray<VSBind *> VSBind::ms_BindArray;
-IMPLEMENT_RTTI_NoCreateFun(VSBind, VSObject)
+Container::MArray<VSBind *> VSBind::ms_BindArray;
+IMPLEMENT_RTTI_NoCreateFun(VSBind, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSBind)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSBind, VSObject)
+    BEGIN_ADD_PROPERTY(VSBind, MObject)
 END_ADD_PROPERTY
 VSResourceIdentifier *VSBind::GetIdentifier()
 {

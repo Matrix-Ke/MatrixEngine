@@ -42,8 +42,8 @@ VSBlendState::~VSBlendState()
 {
     ReleaseResource();
 }
-IMPLEMENT_RTTI(VSBlendDesc, VSObject)
-BEGIN_ADD_PROPERTY(VSBlendDesc, VSObject)
+IMPLEMENT_RTTI(VSBlendDesc, MObject)
+BEGIN_ADD_PROPERTY(VSBlendDesc, MObject)
 REGISTER_PROPERTY(bBlendEnable[0], BlendEnable0, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(ucSrcBlend[0], SrcBlend0, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(ucDestBlend[0], DestBlend0, VSProperty::F_SAVE_LOAD_CLONE)

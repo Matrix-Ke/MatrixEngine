@@ -1,6 +1,6 @@
 //#pragma once
 //#include "Function/FunctionCore.h"
-//#include "Core/MemoryManager.h"
+//#include "Platform/MemoryManager.h"
 ////#include "TexAllState.h"
 ////#include "MeshComponent.h"
 //

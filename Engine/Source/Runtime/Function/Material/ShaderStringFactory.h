@@ -1,6 +1,6 @@
 #pragma once
 #include "Material.h"
-#include "VShader.h"
+#include "Shader.h"
 #include "PShader.h"
 #include "GShader.h"
 #include "DShader.h"
@@ -32,7 +32,7 @@ namespace Matrix
         static VSString ms_InputInstanceAnimData;
         static VSString ms_InputInstanceAnimNum;
 
-        static VSArray<VSString> ms_InputMaterialInstance;
+        static Container::MArray<VSString> ms_InputMaterialInstance;
 
         static VSUsedName ms_PSConstantShadowResource[MAX_DYNAMIC_LIGHT];
         static VSUsedName ms_PSConstantLightFunResource[MAX_DYNAMIC_LIGHT];

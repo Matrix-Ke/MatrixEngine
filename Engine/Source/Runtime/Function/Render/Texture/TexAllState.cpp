@@ -7,8 +7,8 @@
 #include "Config.h"
 #include "RenderThread.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSTexAllState, VSObject)
-BEGIN_ADD_PROPERTY(VSTexAllState, VSObject)
+IMPLEMENT_RTTI(VSTexAllState, MObject)
+BEGIN_ADD_PROPERTY(VSTexAllState, MObject)
 REGISTER_PROPERTY(m_pTex, Tex, VSProperty::F_CLONE)
 REGISTER_PROPERTY(m_SamplerDesc, SamplerDesc, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_bSRGB, bSRGB, VSProperty::F_SAVE_LOAD_CLONE)
@@ -130,7 +130,7 @@ VSTexAllState::~VSTexAllState()
 
     m_pSamplerState = NULL;
 }
-bool VSTexAllState::BeforeSave(VSStream *pStream)
+bool VSTexAllState::BeforeSave(MStream *pStream)
 {
     if (m_SourceData.GetNum() > 0 && m_uiLength == 1 && m_uiArraySize == 1)
     {
@@ -142,13 +142,13 @@ bool VSTexAllState::BeforeSave(VSStream *pStream)
     }
     return true;
 }
-bool VSTexAllState::PostLoad(VSStream *pStream)
+bool VSTexAllState::PostLoad(MStream *pStream)
 {
     m_pSamplerState = VSResourceManager::CreateSamplerState(m_SamplerDesc);
 
     return true;
 }
-bool VSTexAllState::PostClone(VSObject *pObjectSrc)
+bool VSTexAllState::PostClone(MObject *pObjectSrc)
 {
     m_pSamplerState = VSResourceManager::CreateSamplerState(m_SamplerDesc);
 
@@ -162,7 +162,7 @@ unsigned int VSTexAllState::GetCurStreamLevel() const
 {
     return m_pTex->GetMipLevel();
 }
-VSObject *VSTexAllState::CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource *pCacheResouce) const
+MObject *VSTexAllState::CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource *pCacheResouce) const
 {
     const VSTextureCache *pTextureCache = DynamicCast<VSTextureCache>(pCacheResouce);
     const VSTexture *pTexture = pTextureCache->GetTexture();
@@ -192,7 +192,7 @@ VSObject *VSTexAllState::CreateToStreamObject(unsigned int uiWantSteamLevel, con
 
     return pNewTexture;
 }
-void VSTexAllState::StreamEnd(VSObject *pStreamResource)
+void VSTexAllState::StreamEnd(MObject *pStreamResource)
 {
     if (m_pTex)
     {

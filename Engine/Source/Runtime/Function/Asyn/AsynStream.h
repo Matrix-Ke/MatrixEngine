@@ -2,10 +2,10 @@
 #include "Stream.h"
 namespace Matrix
 {
-    class MATRIX_FUNCTION_API VSAsynStream : public VSStream
+    class MATRIX_FUNCTION_API VSAsynStream : public MStream
     {
     private:
-        VSArray<ObjectTableType> m_ObjectTable;
+        Container::MArray<ObjectTableType> m_ObjectTable;
 
     public:
         VSAsynStream();
@@ -13,13 +13,13 @@ namespace Matrix
         void CreateAndRegisterObject();
         void LoadAndLinkOjbect();
         virtual bool ReadResource(VSResourceProxyBasePtr &Resource);
-        virtual const VSObject *GetObjectByRtti(const VSRtti &Rtti);
+        virtual const MObject *GetObjectByRtti(const VSRtti &Rtti);
         template <typename T>
         friend class VSTResourceJob;
         template <typename CacheType>
         friend class VSCacheResourceJobBase;
 
     protected:
-        void PostLoadObject(VSObject *pPostLoadObject);
+        void PostLoadObject(MObject *pPostLoadObject);
     };
 }

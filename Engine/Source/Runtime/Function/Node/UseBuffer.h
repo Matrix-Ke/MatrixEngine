@@ -69,7 +69,7 @@ namespace Matrix
         bool m_bIsStatic;
         unsigned char *m_pBuffer;
         unsigned int m_uiCurSize;
-        VSArray<VSBufferElementInfo> m_BufferElemetnArray;
+        Container::MArray<VSBufferElementInfo> m_BufferElemetnArray;
         unsigned int m_uiOneAddLimitSize;
     };
     DECLARE_Ptr(VSUseBuffer);

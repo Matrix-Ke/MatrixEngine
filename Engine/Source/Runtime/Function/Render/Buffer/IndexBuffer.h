@@ -5,7 +5,7 @@
 #include "DataBuffer.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSIndexBuffer : public VSMemBind, public VSBindLockInterface
     {
         // PRIORITY

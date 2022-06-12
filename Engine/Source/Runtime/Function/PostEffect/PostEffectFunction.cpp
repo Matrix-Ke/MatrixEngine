@@ -3,10 +3,10 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI_NoCreateFun(VSPostEffectFunction, VSObject)
+IMPLEMENT_RTTI_NoCreateFun(VSPostEffectFunction, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSPostEffectFunction)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
-    BEGIN_ADD_PROPERTY(VSPostEffectFunction, VSObject)
+    BEGIN_ADD_PROPERTY(VSPostEffectFunction, MObject)
         REGISTER_PROPERTY(m_ShowName, ShowName, VSProperty::F_SAVE_LOAD_CLONE)
             REGISTER_PROPERTY(m_bEnable, Enable, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_pOwner, Owner, VSProperty::F_SAVE_LOAD_CLONE);

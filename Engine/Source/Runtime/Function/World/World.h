@@ -8,9 +8,9 @@
 #include "CameraActor.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class VSLightActor;
-    class MATRIX_FUNCTION_API VSWorld : public VSObject
+    class MATRIX_FUNCTION_API VSWorld : public MObject
     {
         // PRIORITY
 
@@ -25,9 +25,9 @@ namespace Matrix
         static VSWorld *ms_pWorld;
 
     protected:
-        VSArray<VSSceneMapPtr> m_SceneArray;
-        VSArray<VSActor *> m_ActorArray;
-        VSArray<VSMessage> m_MessageArray;
+        Container::MArray<VSSceneMapPtr> m_SceneArray;
+        Container::MArray<VSActor *> m_ActorArray;
+        Container::MArray<VSMessage> m_MessageArray;
 
     public:
         VSSceneMap *CreateScene(const TCHAR *pName);
@@ -45,12 +45,12 @@ namespace Matrix
         void AttachCaptureViewFamilyToCamera(VSCameraActor *pCameraActor,
                                              unsigned int uiCaptureViewFamilyType, const VSString &ViewFamilyName,
                                              unsigned int uiWidth, unsigned int uiHeight,
-                                             VSArray<VSString> &SceneMapName,
+                                             Container::MArray<VSString> &SceneMapName,
                                              const TCHAR *RenderMethodRTTIName,
                                              VSPostEffectSetR *pPostEffectSet = NULL);
         void AttachWindowViewFamilyToCamera(VSCameraActor *pCameraActor,
                                             unsigned int uiWindowViewFamilyType, const VSString &ViewFamilyName,
-                                            VSArray<VSString> &SceneMapName,
+                                            Container::MArray<VSString> &SceneMapName,
                                             const TCHAR *RenderMethodRTTIName,
                                             int iWindowID = -1,
                                             VSPostEffectSetR *pPostEffectSet = NULL);
@@ -76,7 +76,7 @@ namespace Matrix
         if (!T::ms_Type.IsDerived(VSActor::ms_Type))
             return NULL;
         VSActor *pActor = NULL;
-        pActor = (VSActor *)VSObject::GetInstance<T>();
+        pActor = (VSActor *)MObject::GetInstance<T>();
         pActor->CreateDefaultComponentNode();
         pActor->SetWorldPos(Pos);
         pActor->SetWorldRotate(Rotate);

@@ -1,4 +1,4 @@
-set(SharedLibName "Core")
+set(SharedLibName "Platform")
 
 # ===============================文件分组==============================
 FILE(GLOB_RECURSE HeaderFiles ./*.h ./*.inl) # GLOB 获取./include/目录下的*.h 储存在变量HEAD_RIGEL_EDITOR中

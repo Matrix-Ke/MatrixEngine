@@ -3,8 +3,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSBoneKey, VSObject)
-BEGIN_ADD_PROPERTY(VSBoneKey, VSObject)
+IMPLEMENT_RTTI(VSBoneKey, MObject)
+BEGIN_ADD_PROPERTY(VSBoneKey, MObject)
 REGISTER_PROPERTY(m_TranslationArray, TranslationArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_ScaleArray, ScaleArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_RotatorArray, RotatorArray, VSProperty::F_SAVE_LOAD_CLONE)
@@ -23,7 +23,7 @@ void VSBoneKey::CompressSameFrame()
     // process translation
     if (m_TranslationArray.GetNum() >= 2)
     {
-        VSArray<VSKeyTimeVector> NewTranslationArray;
+        Container::MArray<VSKeyTimeVector> NewTranslationArray;
         VSKeyTimeVector First = m_TranslationArray[0];
         NewTranslationArray.AddElement(First);
         unsigned int Index = 0;
@@ -52,7 +52,7 @@ void VSBoneKey::CompressSameFrame()
     // process scale
     if (m_ScaleArray.GetNum() >= 2)
     {
-        VSArray<VSKeyTimeVector> NewScaleArray;
+        Container::MArray<VSKeyTimeVector> NewScaleArray;
         VSKeyTimeVector First = m_ScaleArray[0];
         NewScaleArray.AddElement(First);
         unsigned int Index = 0;
@@ -80,7 +80,7 @@ void VSBoneKey::CompressSameFrame()
     // process Rotator
     if (m_RotatorArray.GetNum() >= 2)
     {
-        VSArray<VSKeyTimeQuaternion> NewRotatorArray;
+        Container::MArray<VSKeyTimeQuaternion> NewRotatorArray;
         VSKeyTimeQuaternion First = m_RotatorArray[0];
         NewRotatorArray.AddElement(First);
         unsigned int Index = 0;
@@ -142,8 +142,8 @@ void VSBoneKey::Get(VSBoneKeyCompress *pBoneKeyCompress,
         pBoneKeyCompress->m_RotatorArray.AddElement(Compress);
     }
 }
-IMPLEMENT_RTTI(VSBoneKeyCompress, VSObject)
-BEGIN_ADD_PROPERTY(VSBoneKeyCompress, VSObject)
+IMPLEMENT_RTTI(VSBoneKeyCompress, MObject)
+BEGIN_ADD_PROPERTY(VSBoneKeyCompress, MObject)
 REGISTER_PROPERTY(m_TranslationArray, TranslationArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_ScaleArray, ScaleArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_RotatorArray, RotatorArray, VSProperty::F_SAVE_LOAD_CLONE)
@@ -194,8 +194,8 @@ void VSBoneKeyCompress::Get(VSBoneKey *pBoneKey,
     }
 }
 IMPLEMENT_RESOURCE(VSAnim)
-IMPLEMENT_RTTI(VSAnim, VSObject)
-BEGIN_ADD_PROPERTY(VSAnim, VSObject)
+IMPLEMENT_RTTI(VSAnim, MObject)
+BEGIN_ADD_PROPERTY(VSAnim, MObject)
 REGISTER_PROPERTY(m_fLength, Length, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pBoneKeyArray, BoneKeyArray, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pBoneKeyCompressArray, BoneKeyCompressArray, VSProperty::F_SAVE_LOAD_CLONE)
@@ -331,7 +331,7 @@ void VSAnim::Compress()
     }
     m_pBoneKeyArray.Destroy();
 }
-bool VSAnim::PostLoad(VSStream *pStream)
+bool VSAnim::PostLoad(MStream *pStream)
 {
     if (m_bCompress)
     {
@@ -674,8 +674,8 @@ VSMatrix3X3W VSAnim::GetMat(unsigned int uiIndex, VSREAL fTime, unsigned int uiR
     return Output;
 }
 /*******************************VSAnimSet*****************************************/
-IMPLEMENT_RTTI(VSAnimSet, VSObject)
-BEGIN_ADD_PROPERTY(VSAnimSet, VSObject)
+IMPLEMENT_RTTI(VSAnimSet, MObject)
+BEGIN_ADD_PROPERTY(VSAnimSet, MObject)
 REGISTER_PROPERTY(m_pAnimArray, AnimArray, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSAnimSet)

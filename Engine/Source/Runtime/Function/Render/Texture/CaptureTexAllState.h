@@ -19,12 +19,12 @@ namespace Matrix
 
         bool SetViewCapture(const VSString &ViewCaptureName);
 
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual void ForceUpdate(bool OnlyUpdateOneTime);
         virtual void NotifyEndDraw();
-        virtual bool BeforeSave(VSStream *pStream);
-        virtual bool PostSave(VSStream *pStream);
+        virtual bool BeforeSave(MStream *pStream);
+        virtual bool PostSave(MStream *pStream);
         void SetMipLevel(unsigned int uiMipLevel);
         VSCaptureViewFamily *GetViewFamily();
 

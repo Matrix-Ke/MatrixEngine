@@ -8,8 +8,8 @@
 #include "Profiler.h"
 #include "StreamingManager.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSScene, VSObject)
-BEGIN_ADD_PROPERTY(VSScene, VSObject)
+IMPLEMENT_RTTI(VSScene, MObject)
+BEGIN_ADD_PROPERTY(VSScene, MObject)
 REGISTER_PROPERTY(m_pDynamic, Dynamic, VSProperty::F_SAVE_LOAD_COPY)
 REGISTER_PROPERTY(m_pStaticRoot, StaticRoot, VSProperty::F_SAVE_LOAD_COPY)
 REGISTER_PROPERTY(m_ObjectNodes, ObjectNodes, VSProperty::F_SAVE_LOAD_COPY)
@@ -232,7 +232,7 @@ bool VSScene::Build()
 {
     m_pDynamic.Clear();
     m_pStaticRoot = NULL;
-    VSArray<VSSpatial *> pStatic;
+    Container::MArray<VSSpatial *> pStatic;
     for (unsigned int i = 0; i < m_ObjectNodes.GetNum(); i++)
     {
         m_ObjectNodes[i]->UpdateAll(0);
@@ -378,7 +378,7 @@ void VSQuadNode::DeleteNeedDrawNode(VSNodeComponent *pNeedDrawNode)
         m_pNeedDrawNode.Erase(i);
     }
 }
-bool VSQuadNode::RecursiveBuild(const VSArray<VSSpatial *> &pObjectArray)
+bool VSQuadNode::RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArray)
 {
     if (!pObjectArray.GetNum())
     {
@@ -416,7 +416,7 @@ bool VSQuadNode::RecursiveBuild(const VSArray<VSSpatial *> &pObjectArray)
     //划分四个区域，然后给节点归类
     VSAABB3 ChildAABB[4];
     Total.GetQuadAABB(ChildAABB);
-    VSArray<VSSpatial *> ChildStatic[4];
+    Container::MArray<VSSpatial *> ChildStatic[4];
     for (unsigned int i = 0; i < pObjectArray.GetNum(); i++)
     {
         if (!pObjectArray[i])

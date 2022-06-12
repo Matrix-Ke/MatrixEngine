@@ -2,7 +2,7 @@
 #include "ShaderFunction.h"
 #include "RenderState.h"
 #include "ShaderKey.h"
-#include "VShader.h"
+#include "Shader.h"
 #include "PShader.h"
 #include "GShader.h"
 #include "HShader.h"
@@ -99,7 +99,7 @@ namespace Matrix
         virtual void SetGlobleValue(MaterialShaderPara &MSPara, VSVShader *pVShader, VSPShader *pPShader,
                                     VSGShader *pGShader, VSHShader *pHShader, VSDShader *pDShader) {}
         virtual void ResetInShaderName(MaterialShaderPara &MSPara) {}
-        virtual void GetLightShadow(MaterialShaderPara &MSPara, VSArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const;
+        virtual void GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const;
         virtual bool IsValidNodeToThis(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 
         inline void SetAlphaTestValue(VSREAL AlphaTestValue)

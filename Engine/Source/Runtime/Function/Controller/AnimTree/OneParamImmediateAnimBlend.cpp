@@ -75,13 +75,13 @@ bool VSOneParamImmediateAnimBlend::Update(double dAppTime)
     }
     if (m_uiLastAnimIndex != m_uiCurAnimIndex && m_fCrossFadingTime < 0.00001f)
     {
-        VSArray<VSAnimBaseFunction *> CurLeafNodeArray;
+        Container::MArray<VSAnimBaseFunction *> CurLeafNodeArray;
         if (m_pInput[m_uiCurAnimIndex]->GetOutputLink())
         {
             VSAnimBaseFunction *pAnimBaseFunction = (VSAnimBaseFunction *)m_pInput[m_uiCurAnimIndex]->GetOutputLink()->GetOwner();
             pAnimBaseFunction->GetLeafArray(CurLeafNodeArray);
         }
-        VSArray<VSAnimBaseFunction *> LastLeafNodeArray;
+        Container::MArray<VSAnimBaseFunction *> LastLeafNodeArray;
         if (m_pInput[m_uiLastAnimIndex]->GetOutputLink())
         {
             VSAnimBaseFunction *pAnimBaseFunction = (VSAnimBaseFunction *)m_pInput[m_uiLastAnimIndex]->GetOutputLink()->GetOwner();

@@ -6,8 +6,8 @@
 #include "World.h"
 using namespace Matrix;
 IMPLEMENT_RESOURCE(VSActor)
-IMPLEMENT_RTTI(VSActor, VSObject)
-BEGIN_ADD_PROPERTY(VSActor, VSObject)
+IMPLEMENT_RTTI(VSActor, MObject)
+BEGIN_ADD_PROPERTY(VSActor, MObject)
 REGISTER_PROPERTY(m_ChildActor, ChildActor, VSProperty::F_SAVE_LOAD_COPY)
 REGISTER_PROPERTY(m_pOwner, Owner, VSProperty::F_SAVE_LOAD_COPY)
 REGISTER_PROPERTY(m_pSceneMap, SceneMap, VSProperty::F_SAVE_LOAD_COPY)
@@ -122,7 +122,7 @@ bool VSActor::HandleMessage(VSMessage &Message)
 void VSActor::Update(double dAppTime)
 {
 }
-bool VSActor::PostClone(VSObject *pObjectSrc)
+bool VSActor::PostClone(MObject *pObjectSrc)
 {
     VSResourceManager::AddGCObject(this);
     VSResourceManager::AddGCObject(m_pNode);
@@ -256,9 +256,9 @@ void VSActor::DeleteComponentNode(VSNodeComponent *pComponent)
     {
         return;
     }
-    pComponent->SetFlag(VSObject::OF_PendingKill);
+    pComponent->SetFlag(MObject::OF_PendingKill);
     pComponent->OnDestroy();
-    VSArray<VSSpatialPtr> ChildList = *pComponent->GetChildList();
+    Container::MArray<VSSpatialPtr> ChildList = *pComponent->GetChildList();
     pComponent->DeleteAllChild();
     for (unsigned int i = 0; i < ChildList.GetNum(); i++)
     {

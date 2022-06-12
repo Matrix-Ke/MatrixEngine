@@ -25,7 +25,7 @@ namespace Matrix
         VSThreadCommand *AssignCommand();
         void Execute(bool bMustFlust = false);
         VSConstantBuffer m_ConstantBuffer;
-        VSArray<VSThreadCommand *> m_CommandList;
+        Container::MArray<VSThreadCommand *> m_CommandList;
         VSCriticalSection m_Lock;
     };
     template <class T>

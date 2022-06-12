@@ -24,7 +24,7 @@ namespace Matrix
 
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSTwoParamAnimBlendSequence : public VSTwoParamAnimBlend
     {
         // RTTI
@@ -45,7 +45,7 @@ namespace Matrix
         void SetAnimFrequency(unsigned int i, unsigned int j, double Frequency);
         void SetAnimPhase(unsigned int i, unsigned int j, double Phase);
         virtual bool IsLeafNode() { return true; }
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
         virtual void SetOnlyUpdateRootMotion(bool bOnlyUpdateRootMotion)
         {
             for (unsigned int i = 0; i < m_AnimSequenceFuncArray.GetNum(); i++)
@@ -73,7 +73,7 @@ namespace Matrix
         }
 
     protected:
-        VSArray<VSAnimSequenceFuncPtr> m_AnimSequenceFuncArray;
+        Container::MArray<VSAnimSequenceFuncPtr> m_AnimSequenceFuncArray;
 
         VSAnimSequenceFunc *GetAnimSequenceFunction(unsigned int i, unsigned int j);
     };

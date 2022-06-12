@@ -5,8 +5,8 @@
 #include "String.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSTexAllState : public VSObject, public VSResource
+    class MStream;
+    class MATRIX_FUNCTION_API VSTexAllState : public MObject, public VSResource
     {
         // PRIORITY
 
@@ -40,7 +40,7 @@ namespace Matrix
         unsigned int m_uiWidth;
         unsigned int m_uiHeight;
         unsigned int m_uiLength;
-        VSArray<unsigned char> m_SourceData;
+        Container::MArray<unsigned char> m_SourceData;
 
     protected:
         static VSPointer<VSTexAllState> ms_pOrenNayarLookUpTable;
@@ -95,9 +95,9 @@ namespace Matrix
         {
             return m_pSamplerState;
         }
-        virtual bool BeforeSave(VSStream *pStream);
-        virtual bool PostLoad(VSStream *pStream);
-        virtual bool PostClone(VSObject *pObjectSrc);
+        virtual bool BeforeSave(MStream *pStream);
+        virtual bool PostLoad(MStream *pStream);
+        virtual bool PostClone(MObject *pObjectSrc);
         virtual bool IsCanSave()
         {
             if (!m_SourceData.GetNum())
@@ -106,8 +106,8 @@ namespace Matrix
             }
             return true;
         }
-        virtual VSObject *CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource *pCacheResouce) const;
-        virtual void StreamEnd(VSObject *pStreamResource);
+        virtual MObject *CreateToStreamObject(unsigned int uiWantSteamLevel, const VSCacheResource *pCacheResouce) const;
+        virtual void StreamEnd(MObject *pStreamResource);
     };
     DECLARE_Ptr(VSTexAllState);
     DECLARE_Proxy(VSTexAllState);

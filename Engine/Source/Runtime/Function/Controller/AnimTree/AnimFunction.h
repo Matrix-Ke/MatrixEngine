@@ -6,7 +6,7 @@
 #include "AnimAtom.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSAnimFunction : public VSAnimBaseFunction
     {
         // RTTI
@@ -23,11 +23,11 @@ namespace Matrix
         VSAnimFunction();
 
     public:
-        VSArray<VSAnimAtom> m_BoneOutput;
+        Container::MArray<VSAnimAtom> m_BoneOutput;
         VSAnimAtom m_RootAtom;
 
     public:
-        virtual bool SetObject(VSObject *pObject);
+        virtual bool SetObject(MObject *pObject);
     };
     DECLARE_Ptr(VSAnimFunction);
     VSTYPE_MARCO(VSAnimFunction);

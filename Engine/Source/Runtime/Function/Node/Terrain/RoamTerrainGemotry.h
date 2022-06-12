@@ -19,7 +19,7 @@ namespace Matrix
     C|/___|_______X
 
     */
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSRoamTerrainGeometry : public VSCLodTerrainGeometry
     {
         // PRIORITY
@@ -68,9 +68,9 @@ namespace Matrix
 
     protected:
         virtual void Tessellate(const VSVector3 &CameraPos);
-        VSREAL RecursiveComputeVariance(VSArray<VSREAL> &Variance, unsigned int uiIndex,
+        VSREAL RecursiveComputeVariance(Container::MArray<VSREAL> &Variance, unsigned int uiIndex,
                                         unsigned int A, unsigned int B, unsigned int C);
-        void RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, VSArray<VSREAL> &Variance,
+        void RecursiveTessellate(VSTriTreeNode *pTri, const VSVector3 &CameraPos, Container::MArray<VSREAL> &Variance,
                                  unsigned int uiIndex, unsigned int A, unsigned int B, unsigned int C);
         void Split(VSTriTreeNode *pTri);
         VSTriTreeNode *GetBuffer();
@@ -84,9 +84,9 @@ namespace Matrix
         void UpdateOtherEx(unsigned int uiLevel);
 
     protected:
-        VSArray<VSREAL> m_Variance[2];
+        Container::MArray<VSREAL> m_Variance[2];
         VSTriTreeNode m_TriTreeNode[2];
-        VSArray<VSTriTreeNode> m_TriBuffer;
+        Container::MArray<VSTriTreeNode> m_TriBuffer;
         unsigned int m_uiCurBufferNum;
     };
     DECLARE_Ptr(VSRoamTerrainGeometry);

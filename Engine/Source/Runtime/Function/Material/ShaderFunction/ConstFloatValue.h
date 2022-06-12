@@ -2,7 +2,7 @@
 #include "ConstValue.h"
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSConstFloatValue : public VSConstValue
     {
         // RTTI
@@ -30,11 +30,11 @@ namespace Matrix
         }
         bool GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        VSArray<VSREAL> &GetValue() { return m_Value; }
+        Container::MArray<VSREAL> &GetValue() { return m_Value; }
 
     protected:
         VSConstFloatValue();
-        VSArray<VSREAL> m_Value;
+        Container::MArray<VSREAL> m_Value;
     };
     DECLARE_Ptr(VSConstFloatValue);
     VSTYPE_MARCO(VSConstFloatValue);

@@ -3,8 +3,8 @@
 #include "GraphicInclude.h"
 #include "Stream.h"
 using namespace Matrix;
-IMPLEMENT_RTTI(VSUserSampler, VSObject)
-BEGIN_ADD_PROPERTY(VSUserSampler, VSObject)
+IMPLEMENT_RTTI(VSUserSampler, MObject)
+BEGIN_ADD_PROPERTY(VSUserSampler, MObject)
 REGISTER_PROPERTY(m_uiTexType, TexType, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_Name, Name, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_uiRegisterIndex, RegisterIndex, VSProperty::F_SAVE_LOAD_CLONE)
@@ -30,12 +30,12 @@ VSUserSampler::VSUserSampler(const VSUsedName &Name, unsigned int uiTexType, uns
     m_uiRegisterNum = uiRegisterNum;
     m_pTextureArray.SetBufferNum(uiRegisterNum);
 }
-bool VSUserSampler::PostLoad(VSStream *pStream)
+bool VSUserSampler::PostLoad(MStream *pStream)
 {
     m_pTextureArray.SetBufferNum(m_uiRegisterNum);
     return true;
 }
-bool VSUserSampler::PostClone(VSObject *pObjectSrc)
+bool VSUserSampler::PostClone(MObject *pObjectSrc)
 {
     m_pTextureArray.SetBufferNum(m_uiRegisterNum);
     return true;

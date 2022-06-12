@@ -155,6 +155,6 @@ namespace Matrix
     private:
         VSFileMonitor *m_fileMonitor;
         VSSafeQueue<FileChangedArgs> m_changedFiles;
-        VSArray<VSResourceChangedHandler *> m_handlers;
+        Container::MArray<VSResourceChangedHandler *> m_handlers;
     };
 };

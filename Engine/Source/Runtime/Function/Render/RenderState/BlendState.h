@@ -2,8 +2,8 @@
 #include "Bind.h"
 namespace Matrix
 {
-    class VSStream;
-    class MATRIX_FUNCTION_API VSBlendDesc : public VSObject
+    class MStream;
+    class MATRIX_FUNCTION_API VSBlendDesc : public MObject
     {
         DECLARE_RTTI;
         DECLARE_INITIAL
@@ -88,7 +88,7 @@ namespace Matrix
         }
         void *GetCRC32Data(unsigned int &DataSize) const
         {
-            DataSize = sizeof(VSBlendDesc) - sizeof(VSObject);
+            DataSize = sizeof(VSBlendDesc) - sizeof(MObject);
             return (void *)&bAlphaToCoverageEnable;
         }
     };

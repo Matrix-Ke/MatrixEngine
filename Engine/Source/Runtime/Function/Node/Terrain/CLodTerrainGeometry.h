@@ -10,7 +10,7 @@ j	4 9 14 19 24
 */
 namespace Matrix
 {
-    class VSStream;
+    class MStream;
     class MATRIX_FUNCTION_API VSCLodTerrainGeometry : public VSGeometry
     {
         // RTTI

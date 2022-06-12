@@ -13,9 +13,9 @@ namespace Matrix
         是否和每个Morph的Buffer的顶点一样（当这个Buffer不为空的时候）
 
     */
-    class VSStream;
+    class MStream;
 
-    class MATRIX_FUNCTION_API VSMorph : public VSObject
+    class MATRIX_FUNCTION_API VSMorph : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -65,14 +65,14 @@ namespace Matrix
 
     protected:
         // element is null that is this geometry no morph
-        VSArray<VSVertexBufferPtr> m_pVertexBufferArray;
+        Container::MArray<VSVertexBufferPtr> m_pVertexBufferArray;
     };
     DECLARE_Ptr(VSMorph);
     VSTYPE_MARCO(VSMorph);
 
     typedef VSDelegateEvent<void(void)> AddMorphEventType;
 
-    class MATRIX_FUNCTION_API VSMorphSet : public VSObject
+    class MATRIX_FUNCTION_API VSMorphSet : public MObject
     {
         // RTTI
         DECLARE_RTTI;
@@ -101,7 +101,7 @@ namespace Matrix
         AddMorphEventType m_AddMorphEvent;
 
     protected:
-        VSArray<VSMorphPtr> m_pMorphArray;
+        Container::MArray<VSMorphPtr> m_pMorphArray;
     };
     DECLARE_Ptr(VSMorphSet);
     VSTYPE_MARCO(VSMorphSet);
