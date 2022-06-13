@@ -1,7 +1,7 @@
 #include "PostEffectFunction.h"
 #include "PostEffectSet.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSPostEffectFunction, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSPostEffectFunction)
@@ -26,7 +26,7 @@ VSPostEffectFunction::VSPostEffectFunction(const VSUsedName &ShowName, VSPostEff
     m_ShowName = ShowName;
     m_pInput.Clear();
     m_pOutput.Clear();
-    VSMAC_ASSERT(pPostEffectSet);
+    ENGINE_ASSERT(pPostEffectSet);
     m_pOwner = pPostEffectSet;
     m_pOwner->AddPostEffectFunction(this);
     m_bEnable = true;
@@ -51,7 +51,7 @@ VSInputNode *VSPostEffectFunction::GetInputNode(unsigned int uiNodeID) const
         return NULL;
     return m_pInput[uiNodeID];
 }
-VSInputNode *VSPostEffectFunction::GetInputNode(const VSString &NodeName) const
+VSInputNode *VSPostEffectFunction::GetInputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {
@@ -63,10 +63,10 @@ VSInputNode *VSPostEffectFunction::GetInputNode(const VSString &NodeName) const
 
 VSOutputNode *VSPostEffectFunction::GetOutputNode(unsigned int uiNodeID) const
 {
-    VSMAC_ASSERT(uiNodeID < m_pOutput.GetNum());
+    ENGINE_ASSERT(uiNodeID < m_pOutput.GetNum());
     return m_pOutput[uiNodeID];
 }
-VSOutputNode *VSPostEffectFunction::GetOutputNode(const VSString &NodeName) const
+VSOutputNode *VSPostEffectFunction::GetOutputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {

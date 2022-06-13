@@ -1,8 +1,8 @@
 #include "PartialAnimBlend.h"
 #include "SkeletonMeshNode.h"
-#include "GraphicInclude.h"
-#include "BoneNode.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Node/Model/BoneNode.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPartialAnimBlend, VSAnimBlendFunction)
 BEGIN_ADD_PROPERTY(VSPartialAnimBlend, VSAnimBlendFunction)
@@ -24,26 +24,26 @@ VSPartialAnimBlend::VSPartialAnimBlend(const VSUsedName &ShowName, VSAnimTree *p
     : VSAnimBlendFunction(ShowName, pAnimTree)
 {
 
-    VSString InputName0 = _T("Child0");
+    Container::MString InputName0 = _T("Child0");
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
-    VSString InputName1 = _T("Child1");
+    Container::MString InputName1 = _T("Child1");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 void VSPartialAnimBlend::AddInputNode()
 {
-    VSString InputName = _T("Child");
-    VSString ID = Container::IntToString(m_pInput.GetNum());
+    Container::MString InputName = _T("Child");
+    Container::MString ID = Container::IntToString(m_pInput.GetNum());
     InputName += ID;
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
     for (unsigned int i = 0; i < m_BoneWeight.GetNum(); i++)
     {
@@ -116,7 +116,7 @@ bool VSPartialAnimBlend::ComputeOutBoneMatrix(double dAppTime)
 
     if (m_Weight.GetNum() == 0)
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
@@ -219,10 +219,10 @@ void VSPartialAnimBlend::ComputeWeight()
 {
 
     const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     m_Weight.SetBufferNum(m_pInput.GetNum());
     for (unsigned int i = 0; i < m_Weight.GetNum(); i++)

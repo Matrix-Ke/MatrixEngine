@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSIndexBuffer, VSBind)
 BEGIN_ADD_PROPERTY(VSIndexBuffer, VSBind)
@@ -35,7 +35,7 @@ void VSIndexBuffer::ClearInfo()
 }
 bool VSIndexBuffer::OnLoadResource(VSResourceIdentifier *&pID)
 {
-    VSMAC_ASSERT(m_pUser);
+    ENGINE_ASSERT(m_pUser);
 
     if (!m_pUser->OnLoadIBuffer(this, pID))
         return 0;
@@ -48,7 +48,7 @@ void *VSIndexBuffer::Lock()
         return NULL;
     }
 
-    VSMAC_ASSERT(m_pLockData == NULL);
+    ENGINE_ASSERT(m_pLockData == NULL);
     m_pLockData = m_pUser->Lock(this);
 
     return m_pLockData;
@@ -60,13 +60,13 @@ void VSIndexBuffer::UnLock()
         return;
     }
 
-    VSMAC_ASSERT(m_pLockData);
+    ENGINE_ASSERT(m_pLockData);
     m_pUser->UnLock(this);
     m_pLockData = NULL;
 }
 bool VSIndexBuffer::SetData(VSDataBuffer *pData)
 {
-    VSMAC_ASSERT((pData->GetDT() == VSDataBuffer::DT_USHORT || pData->GetDT() == VSDataBuffer::DT_UINT) && pData->GetNum() && pData->GetData());
+    ENGINE_ASSERT((pData->GetDT() == VSDataBuffer::DT_USHORT || pData->GetDT() == VSDataBuffer::DT_UINT) && pData->GetNum() && pData->GetData());
 
     m_pData = pData;
     m_uiNum = pData->GetNum();
@@ -84,8 +84,8 @@ unsigned int VSIndexBuffer::GetByteSize() const
 }
 VSIndexBuffer::VSIndexBuffer(unsigned int uiNum, unsigned int uiDT)
 {
-    VSMAC_ASSERT(uiNum);
-    VSMAC_ASSERT(uiDT == VSDataBuffer::DT_USHORT || uiDT == VSDataBuffer::DT_UINT)
+    ENGINE_ASSERT(uiNum);
+    ENGINE_ASSERT(uiDT == VSDataBuffer::DT_USHORT || uiDT == VSDataBuffer::DT_UINT)
     m_pData = NULL;
     m_uiNum = uiNum;
     m_uiDT = uiDT;

@@ -1,5 +1,5 @@
 #pragma once
-#include "2DTexture.h"
+#include "Render/Texture/2DTexture.h"
 #include "DepthStencil.h"
 #include "Spatial.h"
 #include "Scene.h"
@@ -18,7 +18,7 @@ namespace Matrix
 
         virtual VSRenderTarget *GetRenderTarget(unsigned int uiIndex);
 
-        inline void SetParam(unsigned int uiClearFlag, VSColorRGBA ClearColorRGBA, VSREAL fClearDepth,
+        inline void SetParam(unsigned int uiClearFlag, Math::ColorRGBA ClearColorRGBA, VSREAL fClearDepth,
                              unsigned int uiClearStencil, bool bUseViewClear = false)
         {
             m_uiClearFlag = uiClearFlag;
@@ -37,7 +37,7 @@ namespace Matrix
         Container::MArray<VSRenderTargetPtr> m_pTargetArray;
 
         unsigned int m_uiClearFlag;
-        VSColorRGBA m_ClearColorRGBA;
+        Math::ColorRGBA m_ClearColorRGBA;
         VSREAL m_fClearDepth;
         unsigned int m_uiClearStencil;
         bool m_bUseViewPortClear;

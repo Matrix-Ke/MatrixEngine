@@ -1,7 +1,7 @@
 #include "AnimSet.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSBoneKey, MObject)
 BEGIN_ADD_PROPERTY(VSBoneKey, MObject)
@@ -325,7 +325,7 @@ void VSAnim::Compress()
     }
     for (unsigned int i = 0; i < m_pBoneKeyArray.GetNum(); i++)
     {
-        VSBoneKeyCompress *pBoneKeyCompress = VS_NEW VSBoneKeyCompress();
+        VSBoneKeyCompress *pBoneKeyCompress = MX_NEW VSBoneKeyCompress();
         m_pBoneKeyArray[i]->Get(pBoneKeyCompress, m_MaxCompressTranslation, m_MinCompressTranslation, m_MaxCompressScale, m_MinCompressScale);
         m_pBoneKeyCompressArray.AddElement(pBoneKeyCompress);
     }
@@ -335,11 +335,11 @@ bool VSAnim::PostLoad(MStream *pStream)
 {
     if (m_bCompress)
     {
-        VSMAC_ASSERT(m_pBoneKeyCompressArray.GetNum() > 0 && m_pBoneKeyArray.GetNum() == 0);
+        ENGINE_ASSERT(m_pBoneKeyCompressArray.GetNum() > 0 && m_pBoneKeyArray.GetNum() == 0);
 
         for (unsigned int i = 0; i < m_pBoneKeyCompressArray.GetNum(); i++)
         {
-            VSBoneKey *pBoneKey = VS_NEW VSBoneKey();
+            VSBoneKey *pBoneKey = MX_NEW VSBoneKey();
             m_pBoneKeyCompressArray[i]->Get(pBoneKey, m_MaxCompressTranslation, m_MinCompressTranslation, m_MaxCompressScale, m_MinCompressScale);
             m_pBoneKeyArray.AddElement(pBoneKey);
         }
@@ -362,7 +362,7 @@ VSBoneKey *VSAnim::GetBoneKey(const VSUsedName &AnimName) const
 }
 VSBoneKey *VSAnim::GetBoneKey(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pBoneKeyArray.GetNum());
+    ENGINE_ASSERT(i < m_pBoneKeyArray.GetNum());
     return m_pBoneKeyArray[i];
 }
 Math::Vector3 VSAnim::GetTranslation(const VSUsedName &UseName, VSREAL fTime, unsigned int uiRepeatType) const
@@ -512,8 +512,8 @@ VSMatrix3X3W VSAnim::GetMat(const VSUsedName &UseName, VSREAL fTime, unsigned in
     Rotator.GetMatrix(mRotate);
     Math::Matrix3 Mat;
     Mat = Math::Matrix3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
-                      mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
-                      mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
+                        mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
+                        mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
 
     Output.AddTranslate(Translate);
     Output.Add3X3(Mat);
@@ -666,8 +666,8 @@ VSMatrix3X3W VSAnim::GetMat(unsigned int uiIndex, VSREAL fTime, unsigned int uiR
     Rotator.GetMatrix(mRotate);
     Math::Matrix3 Mat;
     Mat = Math::Matrix3(mRotate._00 * Scale.x, mRotate._01 * Scale.x, mRotate._02 * Scale.x,
-                      mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
-                      mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
+                        mRotate._10 * Scale.y, mRotate._11 * Scale.y, mRotate._12 * Scale.y,
+                        mRotate._20 * Scale.z, mRotate._21 * Scale.z, mRotate._22 * Scale.z);
 
     Output.AddTranslate(Translate);
     Output.Add3X3(Mat);
@@ -690,7 +690,7 @@ VSAnimSet::~VSAnimSet()
 }
 void VSAnimSet::AddAnim(VSUsedName AnimName, VSAnimR *pAnim)
 {
-    VSMAC_ASSERT(pAnim);
+    ENGINE_ASSERT(pAnim);
     m_pAnimArray.AddElement(AnimName, pAnim);
     m_AddAnimEvent();
 }
@@ -724,7 +724,7 @@ unsigned int VSAnimSet::GetAnimIndex(VSAnimR *pAnim) const
 }
 VSAnimR *VSAnimSet::GetAnim(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pAnimArray.GetNum());
+    ENGINE_ASSERT(i < m_pAnimArray.GetNum());
     return m_pAnimArray[i].Value;
 }
 VSREAL VSAnimSet::GetMaxAnimLength() const

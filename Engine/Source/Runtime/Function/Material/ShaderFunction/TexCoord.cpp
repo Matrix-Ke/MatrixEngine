@@ -1,7 +1,7 @@
 #include "TexCoord.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSTexCoord, VSShaderFunction)
 BEGIN_ADD_PROPERTY(VSTexCoord, VSShaderFunction)
@@ -13,11 +13,11 @@ VSTexCoord::VSTexCoord(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("TexCoordOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("TexCoordOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_2, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_2, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
     m_uiTexCoordIndex = 0;
@@ -31,12 +31,12 @@ VSTexCoord::~VSTexCoord()
 }
 void VSTexCoord::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("TexCoordOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("TexCoordOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 }
-bool VSTexCoord::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSTexCoord::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (VSShaderStringFactory::ms_TextureInputCoordValue[m_uiTexCoordIndex].GetLength() > 0)
     {

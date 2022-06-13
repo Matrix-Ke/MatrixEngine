@@ -1,7 +1,7 @@
 #include "SceneMap.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
-#include "SceneManager.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
+#include "Render/SceneManager/SceneManager.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSceneMap, MObject)
 BEGIN_ADD_PROPERTY(VSSceneMap, MObject)
@@ -17,7 +17,7 @@ IMPLEMENT_RESOURCE(VSSceneMap)
 VSSceneMap::VSSceneMap(const TCHAR *pName)
 {
     m_Name = pName;
-    m_pScene = VS_NEW VSScene();
+    m_pScene = MX_NEW VSScene();
     VSSceneManager::ms_pSceneManager->AddScene(m_pScene);
 }
 VSSceneMap::~VSSceneMap()
@@ -34,7 +34,7 @@ void VSSceneMap::OnDestroy()
 }
 bool VSSceneMap::InitialDefaultState()
 {
-    ms_Default = NULL; // VS_NEW VSSceneMap();
+    ms_Default = NULL; // MX_NEW VSSceneMap();
     return true;
 }
 bool VSSceneMap::TerminalDefaultState()

@@ -19,9 +19,9 @@ namespace Matrix
             return VSTexture::TT_2D;
         }
 
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VS2DTexSampler();

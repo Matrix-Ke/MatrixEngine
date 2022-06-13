@@ -1,10 +1,10 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "MemBind.h"
 #include "BindLockInterface.h"
 #include "DataBuffer.h"
 #include "Math.h"
-#include "VertexFormat.h"
+#include "Render/Buffer/VertexFormat.h"
 namespace Matrix
 {
     class MStream;

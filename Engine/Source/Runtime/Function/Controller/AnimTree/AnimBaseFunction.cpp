@@ -1,7 +1,7 @@
 #include "AnimBaseFunction.h"
-#include "BoneNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Node/Model/BoneNode.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSAnimBaseFunction, VSController)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSAnimBaseFunction)
@@ -26,7 +26,7 @@ VSAnimBaseFunction::VSAnimBaseFunction(const VSUsedName &ShowName, VSAnimTree *p
     m_ShowName = ShowName;
     m_pInput.Clear();
     m_pOutput.Clear();
-    VSMAC_ASSERT(pAnimTree);
+    ENGINE_ASSERT(pAnimTree);
     m_pOwner = pAnimTree;
 
     m_pOwner->AddAnimFunction(this);
@@ -64,10 +64,10 @@ VSSkeletonMeshNode *VSAnimBaseFunction::GetSkeletonMeshNode() const
 }
 VSInputNode *VSAnimBaseFunction::GetInputNode(unsigned int uiNodeID) const
 {
-    VSMAC_ASSERT(uiNodeID < m_pInput.GetNum());
+    ENGINE_ASSERT(uiNodeID < m_pInput.GetNum());
     return m_pInput[uiNodeID];
 }
-VSInputNode *VSAnimBaseFunction::GetInputNode(const VSString &NodeName) const
+VSInputNode *VSAnimBaseFunction::GetInputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {
@@ -79,10 +79,10 @@ VSInputNode *VSAnimBaseFunction::GetInputNode(const VSString &NodeName) const
 
 VSOutputNode *VSAnimBaseFunction::GetOutputNode(unsigned int uiNodeID) const
 {
-    VSMAC_ASSERT(uiNodeID < m_pOutput.GetNum());
+    ENGINE_ASSERT(uiNodeID < m_pOutput.GetNum());
     return m_pOutput[uiNodeID];
 }
-VSOutputNode *VSAnimBaseFunction::GetOutputNode(const VSString &NodeName) const
+VSOutputNode *VSAnimBaseFunction::GetOutputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {

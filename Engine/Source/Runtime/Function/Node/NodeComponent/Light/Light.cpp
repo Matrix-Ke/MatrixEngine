@@ -1,7 +1,7 @@
-#include "Light.h"
-#include "GraphicInclude.h"
+#include "Node/NodeComponent/Light/Light.h"
+#include "Core/GraphicInclude.h"
 #include "SceneRender.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 #include "Material.h"
 #include "RenderTarget.h"
 using namespace Matrix;
@@ -78,10 +78,10 @@ VSLocalLight::VSLocalLight()
 {
 
     m_bEnable = true;
-    m_Diffuse = VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-    m_Specular = VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+    m_Diffuse = Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+    m_Specular = Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
     m_bIsCastShadow = true;
-    m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+    m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
     m_ZBias = 0.0f;
     m_pLightFunDiffuseTexture = NULL;
     m_uiLightMaterialRTWidth = 1024;
@@ -89,7 +89,7 @@ VSLocalLight::VSLocalLight()
     m_pLMSceneRender = NULL;
     m_LightFunScale = VSVector2(0.5f, -0.5f);
     m_LightFunOffset = VSVector2(0.5f, 0.5f);
-    m_ProjectShadowColor = VSColorRGBA(0.2f, 0.2f, 0.2f, 1.0f);
+    m_ProjectShadowColor = Math::ColorRGBA(0.2f, 0.2f, 0.2f, 1.0f);
     m_ProjectShadowFallOff = 1.0f;
     m_bShadowMapDrawEnd = false;
     m_WVP.Identity();
@@ -134,7 +134,7 @@ void VSLocalLight::SetLightMaterialRtWidth(unsigned int uiRtWidth)
 
     if (m_pLightMaterial)
     {
-        m_pLightFunDiffuseTexture->SetTexture(VS_NEW VS2DTexture(m_uiLightMaterialRTWidth, m_uiLightMaterialRTWidth, VSRenderer::SFT_A8R8G8B8, 1, true));
+        m_pLightFunDiffuseTexture->SetTexture(MX_NEW VS2DTexture(m_uiLightMaterialRTWidth, m_uiLightMaterialRTWidth, VSRenderer::SFT_A8R8G8B8, 1, true));
         m_pLightFunDiffuseRenderTarget = VSResourceManager::CreateRenderTarget(StaticCast<VS2DTexture>(m_pLightFunDiffuseTexture->GetTexture()));
     }
 }
@@ -142,15 +142,15 @@ bool VSLocalLight::SetLightMaterial(VSMaterialR *pMaterial)
 {
     if (pMaterial)
     {
-        m_pLightMaterial = VS_NEW VSMaterialInstance(pMaterial);
-        m_pLightFunDiffuseTexture = VS_NEW VSTexAllState();
+        m_pLightMaterial = MX_NEW VSMaterialInstance(pMaterial);
+        m_pLightFunDiffuseTexture = MX_NEW VSTexAllState();
         m_pLightFunDiffuseTexture->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderZero());
-        m_pLightFunDiffuseTexture->SetTexture(VS_NEW VS2DTexture(m_uiLightMaterialRTWidth, m_uiLightMaterialRTWidth, VSRenderer::SFT_A8R8G8B8, 1, true));
+        m_pLightFunDiffuseTexture->SetTexture(MX_NEW VS2DTexture(m_uiLightMaterialRTWidth, m_uiLightMaterialRTWidth, VSRenderer::SFT_A8R8G8B8, 1, true));
         m_pLightFunDiffuseRenderTarget = VSResourceManager::CreateRenderTarget(StaticCast<VS2DTexture>(m_pLightFunDiffuseTexture->GetTexture()));
 
-        m_pLMSceneRender = VS_NEW VSLightMaterialSceneRender();
+        m_pLMSceneRender = MX_NEW VSLightMaterialSceneRender();
         m_pLMSceneRender->m_pMaterialInstacne = m_pLightMaterial;
-        m_pLMSceneRender->SetParam(VSRenderer::CF_COLOR, VSColorRGBA(0.0f, 0.0f, 0.0f, 0.0f), 1.0f, 0);
+        m_pLMSceneRender->SetParam(VSRenderer::CF_COLOR, Math::ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f), 1.0f, 0);
     }
     else
     {

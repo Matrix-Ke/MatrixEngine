@@ -1,6 +1,6 @@
-#include "BufferResource.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Render/Buffer/BufferResource.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSBufferResource, VSBind)
 BEGIN_ADD_PROPERTY(VSBufferResource, VSBind)
@@ -37,7 +37,7 @@ void VSBufferResource::ClearInfo()
 }
 bool VSBufferResource::OnLoadResource(VSResourceIdentifier *&pID)
 {
-    VSMAC_ASSERT(m_pUser);
+    ENGINE_ASSERT(m_pUser);
     if (!m_pUser->OnLoadSBuffer(this, pID))
         return 0;
     return 1;
@@ -49,7 +49,7 @@ void *VSBufferResource::Lock()
         return NULL;
     }
 
-    VSMAC_ASSERT(m_pLockData == NULL);
+    ENGINE_ASSERT(m_pLockData == NULL);
     m_pLockData = m_pUser->Lock(this);
 
     return m_pLockData;
@@ -61,13 +61,13 @@ void VSBufferResource::UnLock()
         return;
     }
 
-    VSMAC_ASSERT(m_pLockData);
+    ENGINE_ASSERT(m_pLockData);
     m_pUser->UnLock(this);
     m_pLockData = NULL;
 }
 bool VSBufferResource::SetData(VSDataBuffer *pData)
 {
-    VSMAC_ASSERT(pData->GetNum() && pData->GetData());
+    ENGINE_ASSERT(pData->GetNum() && pData->GetData());
 
     m_pData = pData;
     m_uiNum = pData->GetNum();
@@ -81,12 +81,12 @@ unsigned int VSBufferResource::GetByteSize() const
 }
 VSBufferResource::VSBufferResource(unsigned int uiNum, unsigned int uiDT, unsigned int uiStructStride)
 {
-    VSMAC_ASSERT(uiNum);
+    ENGINE_ASSERT(uiNum);
     if (uiDT == VSDataBuffer::DT_UBYTE)
     {
-        VSMAC_ASSERT(uiNum % 4 == 0)
+        ENGINE_ASSERT(uiNum % 4 == 0)
     }
-    VSMAC_ASSERT(uiDT != VSDataBuffer::DT_STRUCT || uiStructStride > 0)
+    ENGINE_ASSERT(uiDT != VSDataBuffer::DT_STRUCT || uiStructStride > 0)
     m_pData = NULL;
     m_uiNum = uiNum;
     m_uiDT = uiDT;
@@ -95,7 +95,7 @@ VSBufferResource::VSBufferResource(unsigned int uiNum, unsigned int uiDT, unsign
 }
 bool VSBufferResource::SetOutput(class VSBufferUnorderAccess *pOutputResource)
 {
-    VSMAC_ASSERT(pOutputResource);
+    ENGINE_ASSERT(pOutputResource);
 
     if (IsBindResource())
     {

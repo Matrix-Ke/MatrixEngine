@@ -15,13 +15,13 @@ namespace Matrix
         VSConstValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsigned int uiValueNum, bool bIsCustom);
         virtual ~VSConstValue();
         virtual unsigned int GetType() = 0;
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const = 0;
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const = 0;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const = 0;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const = 0;
         inline bool IsCustom() const
         {
             return m_bIsCustom;
         }
-        virtual bool GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const = 0;
+        virtual bool GetDeclareString(Container::MString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const = 0;
 
         virtual unsigned int GetValueNum() const = 0;
 

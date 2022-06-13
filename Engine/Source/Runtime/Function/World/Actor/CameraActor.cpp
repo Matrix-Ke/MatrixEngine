@@ -1,6 +1,6 @@
 #include "CameraActor.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "World.h"
 #include "ViewFamily.h"
 using namespace Matrix;

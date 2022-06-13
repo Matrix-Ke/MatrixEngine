@@ -1,7 +1,7 @@
 #include "ConstValue.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSConstValue, VSShaderFunction)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSConstValue)

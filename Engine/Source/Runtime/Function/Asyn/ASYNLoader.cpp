@@ -1,10 +1,10 @@
-#include "ASYNLoader.h"
-#include "GraphicInclude.h"
+#include "Asyn/ASYNLoader.h"
+#include "Core/GraphicInclude.h"
 #include "Image.h"
-#include "2DTexture.h"
+#include "Render/Texture/2DTexture.h"
 #include "NVCompression.h"
 #include "Timer.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 DECLEAR_TIME_PROFILENODE(VSASYNLoadManagerUpdate, ApplicationUpdate)
 VSAsynJob::VSAsynJob()
@@ -33,7 +33,7 @@ void VSFileJob::AsynThreadProcess()
     }
 
     m_uiSize = File.GetFileSize();
-    m_pBuffer = VS_NEW unsigned char[m_uiSize];
+    m_pBuffer = MX_NEW unsigned char[m_uiSize];
     if (!m_pBuffer)
     {
         m_uiJobState = JS_FAIL;
@@ -150,7 +150,7 @@ VSASYNLoadManager::VSASYNLoadManager()
 {
 
     m_JobArray.Clear();
-    VSMAC_ASSERT(!ms_pASYNLoadManager);
+    ENGINE_ASSERT(!ms_pASYNLoadManager);
     ms_pASYNLoadManager = this;
 }
 void VSASYNLoadManager::FlushAllJob()

@@ -1,7 +1,7 @@
 #include "ConstFloatValue.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSConstFloatValue, VSConstValue)
 BEGIN_ADD_PROPERTY(VSConstFloatValue, VSConstValue)
@@ -16,49 +16,49 @@ VSConstFloatValue::VSConstFloatValue()
 VSConstFloatValue::VSConstFloatValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsigned int uiValueNum, bool bIsCustom)
     : VSConstValue(ShowName, pMaterial, uiValueNum, bIsCustom)
 {
-    VSMAC_ASSERT(uiValueNum > 0 && uiValueNum < 5);
+    ENGINE_ASSERT(uiValueNum > 0 && uiValueNum < 5);
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ConstFloatValue") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ConstFloatValue") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(uiValueNum - 1, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(uiValueNum - 1, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
     if (uiValueNum >= 1)
     {
-        VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R); /*OutputName + _T(".x") ;*/
+        Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R); /*OutputName + _T(".x") ;*/
         VSOutputNode *pOutputNode = NULL;
-        pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
-        VSMAC_ASSERT(pOutputNode);
+        pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
+        ENGINE_ASSERT(pOutputNode);
         m_pOutput.AddElement(pOutputNode);
     }
 
     if (uiValueNum >= 2)
     {
-        VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G); /*OutputName + _T(".y");*/
+        Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G); /*OutputName + _T(".y");*/
         VSOutputNode *pOutputNode = NULL;
-        pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
-        VSMAC_ASSERT(pOutputNode);
+        pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
+        ENGINE_ASSERT(pOutputNode);
         m_pOutput.AddElement(pOutputNode);
     }
 
     if (uiValueNum >= 3)
     {
-        VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B); /*OutputName + _T(".z");*/
+        Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B); /*OutputName + _T(".z");*/
         VSOutputNode *pOutputNode = NULL;
-        pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
-        VSMAC_ASSERT(pOutputNode);
+        pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
+        ENGINE_ASSERT(pOutputNode);
         m_pOutput.AddElement(pOutputNode);
     }
 
     if (uiValueNum >= 4)
     {
 
-        VSString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_A); /*OutputName + _T(".w") ;*/
+        Container::MString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_A); /*OutputName + _T(".w") ;*/
         VSOutputNode *pOutputNode = NULL;
-        pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameA, this);
-        VSMAC_ASSERT(pOutputNode);
+        pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameA, this);
+        ENGINE_ASSERT(pOutputNode);
         m_pOutput.AddElement(pOutputNode);
     }
     m_Value.Clear();
@@ -76,35 +76,35 @@ VSConstFloatValue::~VSConstFloatValue()
 void VSConstFloatValue::ResetInShaderName(MaterialShaderPara &MSPara)
 {
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ConstFloatValue") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ConstFloatValue") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
     if (m_Value.GetNum() >= 1)
     {
-        VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
+        Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
         m_pOutput[1]->SetNodeName(OutputNameR);
     }
 
     if (m_Value.GetNum() >= 2)
     {
-        VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
+        Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
         m_pOutput[2]->SetNodeName(OutputNameG);
     }
 
     if (m_Value.GetNum() >= 3)
     {
-        VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
+        Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
         m_pOutput[3]->SetNodeName(OutputNameB);
     }
 
     if (m_Value.GetNum() >= 4)
     {
-        VSString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_A);
+        Container::MString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_A);
         m_pOutput[4]->SetNodeName(OutputNameA);
     }
 }
-bool VSConstFloatValue::GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const
+bool VSConstFloatValue::GetDeclareString(Container::MString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const
 {
     if (!m_bIsCustom)
         return 1;
@@ -117,7 +117,7 @@ bool VSConstFloatValue::GetDeclareString(VSString &OutString, unsigned int uiReg
 
     return 1;
 }
-bool VSConstFloatValue::GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSConstFloatValue::GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     if (m_bIsCustom && !MSPara.pGeometry->IsSameType(VSInstanceGeometry::ms_Type))
@@ -147,7 +147,7 @@ bool VSConstFloatValue::GetOutputValueString(VSString &OutString, MaterialShader
 
     return 1;
 }
-bool VSConstFloatValue::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSConstFloatValue::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (m_bIsCustom && !MSPara.pGeometry->IsSameType(VSInstanceGeometry::ms_Type))
         return 1;
@@ -161,7 +161,7 @@ bool VSConstFloatValue::GetFunctionString(VSString &OutString, MaterialShaderPar
     }
     else
     {
-        VSString Value[4];
+        Container::MString Value[4];
         for (unsigned int i = 0; i < m_Value.GetNum(); i++)
         {
             Value[i] = Container::RealToString(m_Value[i]);
@@ -190,6 +190,6 @@ bool VSConstFloatValue::GetFunctionString(VSString &OutString, MaterialShaderPar
 }
 void VSConstFloatValue::SetValue(unsigned int uiIndex, VSREAL Value)
 {
-    VSMAC_ASSERT(uiIndex < m_Value.GetNum());
+    ENGINE_ASSERT(uiIndex < m_Value.GetNum());
     m_Value[uiIndex] = Value;
 }

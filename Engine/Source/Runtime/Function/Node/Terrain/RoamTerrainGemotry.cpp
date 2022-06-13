@@ -1,7 +1,7 @@
 #include "RoamTerrainGemotry.h"
 #include "CLodTerrainNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "RenderThread.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSRoamTerrainGeometry, VSCLodTerrainGeometry)
@@ -32,7 +32,7 @@ VSREAL VSRoamTerrainGeometry::RecursiveComputeVariance(Container::MArray<VSREAL>
         return 0;
     }
     Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
-    VSMAC_ASSERT(pVer);
+    ENGINE_ASSERT(pVer);
 
     unsigned int uiMiddle = (B + C) >> 1;
     VSREAL fVariance = ABS(pVer[uiMiddle].y - (pVer[B].y + pVer[C].y) * 0.5f);
@@ -171,7 +171,7 @@ void VSRoamTerrainGeometry::Split(VSTriTreeNode *pTri)
             pTri->pLeftNeighbor->pRightNeighbor = pTri->pLeftChild;
         else
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
         }
     }
 
@@ -185,7 +185,7 @@ void VSRoamTerrainGeometry::Split(VSTriTreeNode *pTri)
             pTri->pRightNeighbor->pLeftNeighbor = pTri->pRightChild;
         else
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
         }
     }
 
@@ -309,7 +309,7 @@ void VSRoamTerrainGeometry::UpdateOtherEx(unsigned int uiLevel)
 }
 void VSRoamTerrainGeometry::UpdateOther(double dAppTime)
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
     if (!GetMeshData()->GetIndexBuffer()->IsBindResource())
     {
         return;

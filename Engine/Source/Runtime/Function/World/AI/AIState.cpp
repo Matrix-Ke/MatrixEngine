@@ -1,6 +1,6 @@
 #include "AIState.h"
 #include "Actor.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSAIState, MObject) bool VSAIState::HandleMessage(VSMessage &Message)
 {

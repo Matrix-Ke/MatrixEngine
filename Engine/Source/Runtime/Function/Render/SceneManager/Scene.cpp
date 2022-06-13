@@ -1,11 +1,11 @@
 #include "Scene.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "UpdateThread.h"
-#include "Stream.h"
-#include "SceneManager.h"
+#include "Core/Stream/Stream.h"
+#include "Render/SceneManager/SceneManager.h"
 #include "MeshComponent.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 #include "StreamingManager.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSScene, MObject)
@@ -132,7 +132,7 @@ void VSScene::CollectUpdateInfo()
 }
 void VSScene::AddObject(VSNode *pObject)
 {
-    VSMAC_ASSERT(pObject);
+    ENGINE_ASSERT(pObject);
 
     m_ObjectNodes.AddElement(pObject);
 
@@ -144,7 +144,7 @@ void VSScene::AddObject(VSNode *pObject)
 void VSScene::DeleteObject(VSNode *pObject)
 {
 
-    VSMAC_ASSERT(pObject);
+    ENGINE_ASSERT(pObject);
     {
 
         for (unsigned int i = 0; i < m_ObjectNodes.GetNum(); i++)
@@ -246,7 +246,7 @@ bool VSScene::Build()
             m_pDynamic.AddElement(m_ObjectNodes[i]);
         }
     }
-    m_pStaticRoot = VS_NEW VSQuadNode();
+    m_pStaticRoot = MX_NEW VSQuadNode();
     if (!m_pStaticRoot->RecursiveBuild(pStatic))
     {
         m_pStaticRoot = NULL;
@@ -299,7 +299,7 @@ unsigned int VSQuadNode::DeleteChild(VSSpatial *pChild)
 }
 bool VSQuadNode::DeleteChild(unsigned int i)
 {
-    VSMAC_ASSERT(i < m_pChild.GetNum());
+    ENGINE_ASSERT(i < m_pChild.GetNum());
     VSSpatial *Temp = m_pChild[i];
     VSNodeComponent *pNode = DynamicCast<VSNodeComponent>(Temp);
     if (pNode && pNode->IsNeedDraw())
@@ -322,7 +322,7 @@ void VSQuadNode::DeleteAllChild()
 }
 VSNodeComponent *VSQuadNode::GetNeedDrawNode(unsigned int uiIndex) const
 {
-    VSMAC_ASSERT(uiIndex < m_pNeedDrawNode.GetNum())
+    ENGINE_ASSERT(uiIndex < m_pNeedDrawNode.GetNum())
 
     return m_pNeedDrawNode[uiIndex];
 }
@@ -437,7 +437,7 @@ bool VSQuadNode::RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArr
     {
         if (ChildStatic[i].GetNum())
         {
-            VSQuadNode *pQuadNode = VS_NEW VSQuadNode();
+            VSQuadNode *pQuadNode = MX_NEW VSQuadNode();
             AddChild(pQuadNode);
             if (!pQuadNode->RecursiveBuild(ChildStatic[i]))
                 return 0;
@@ -447,7 +447,7 @@ bool VSQuadNode::RecursiveBuild(const Container::MArray<VSSpatial *> &pObjectArr
 }
 inline VSLight *VSScene::GetAllLight(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pAllLight.GetNum());
+    ENGINE_ASSERT(i < m_pAllLight.GetNum());
     return m_pAllLight[i];
 }
 inline unsigned int VSScene::GetAllLightNum() const

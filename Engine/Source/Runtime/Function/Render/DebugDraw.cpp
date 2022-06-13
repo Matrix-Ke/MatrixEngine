@@ -3,7 +3,7 @@
 #include "Sphere3.h"
 #include "OBB3.h"
 #include "MaterialPass.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 VSDebugDraw::VSDebugDraw()
 {

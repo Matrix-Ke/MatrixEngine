@@ -1,6 +1,6 @@
 #pragma once
-#include "Light.h"
-#include "CubeTexture.h"
+#include "Node/NodeComponent/Light/Light.h"
+#include "Render/Texture/CubeTexture.h"
 #include "RenderTarget.h"
 #include "DepthStencil.h"
 #include "SceneRender.h"

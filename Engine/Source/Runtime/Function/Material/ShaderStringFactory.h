@@ -5,7 +5,7 @@
 #include "GShader.h"
 #include "DShader.h"
 #include "HShader.h"
-#include "Light.h"
+#include "Node/NodeComponent/Light/Light.h"
 #include "ResourceManager.h"
 namespace Matrix
 {
@@ -13,26 +13,26 @@ namespace Matrix
     class MATRIX_FUNCTION_API VSShaderStringFactory
     {
     public:
-        static VSString ms_TextureInputCoordValue[UV_LEVEL];
-        static VSString ms_PSOutputColorValue;
-        static VSString ms_PSOutputColorValue1;
+        static Container::MString ms_TextureInputCoordValue[UV_LEVEL];
+        static Container::MString ms_PSOutputColorValue;
+        static Container::MString ms_PSOutputColorValue1;
 
-        static VSString ms_InputVertexID;
-        static VSString ms_InputColor[2];
-        static VSString ms_InputProjectZ;
-        static VSString ms_InputLocalNormal;
+        static Container::MString ms_InputVertexID;
+        static Container::MString ms_InputColor[2];
+        static Container::MString ms_InputProjectZ;
+        static Container::MString ms_InputLocalNormal;
 
-        static VSString ms_InputLocalBinormal;
-        static VSString ms_InputLocalTangent;
-        static VSString ms_InputLocalPos;
-        static VSString ms_InputWorldPos;
-        static VSString ms_InputTessellationValue;
-        static VSString ms_InputInstancePos[3];
+        static Container::MString ms_InputLocalBinormal;
+        static Container::MString ms_InputLocalTangent;
+        static Container::MString ms_InputLocalPos;
+        static Container::MString ms_InputWorldPos;
+        static Container::MString ms_InputTessellationValue;
+        static Container::MString ms_InputInstancePos[3];
 
-        static VSString ms_InputInstanceAnimData;
-        static VSString ms_InputInstanceAnimNum;
+        static Container::MString ms_InputInstanceAnimData;
+        static Container::MString ms_InputInstanceAnimNum;
 
-        static Container::MArray<VSString> ms_InputMaterialInstance;
+        static Container::MArray<Container::MString> ms_InputMaterialInstance;
 
         static VSUsedName ms_PSConstantShadowResource[MAX_DYNAMIC_LIGHT];
         static VSUsedName ms_PSConstantLightFunResource[MAX_DYNAMIC_LIGHT];
@@ -112,39 +112,39 @@ namespace Matrix
 
         // Create Shader
 
-        static bool CreateVShaderString(VSVShader *pVShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &VShaderString
+        static bool CreateVShaderString(VSVShader *pVShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &VShaderString
 #if _DEBUG
                                         ,
-                                        VSString &OutShaderFileName);
+                                        Container::MString &OutShaderFileName);
 #else
         );
 #endif
-        static bool CreatePShaderString(VSPShader *pPShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &PShaderString
+        static bool CreatePShaderString(VSPShader *pPShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &PShaderString
 #if _DEBUG
                                         ,
-                                        VSString &OutShaderFileName);
+                                        Container::MString &OutShaderFileName);
 #else
         );
 #endif
 
-        static bool CreateGShaderString(VSGShader *pGShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &GShaderString
+        static bool CreateGShaderString(VSGShader *pGShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &GShaderString
 #if _DEBUG
                                         ,
-                                        VSString &OutShaderFileName);
+                                        Container::MString &OutShaderFileName);
 #else
         );
 #endif
-        static bool CreateHShaderString(VSHShader *pHShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &HShaderString
+        static bool CreateHShaderString(VSHShader *pHShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &HShaderString
 #if _DEBUG
                                         ,
-                                        VSString &OutShaderFileName);
+                                        Container::MString &OutShaderFileName);
 #else
         );
 #endif
-        static bool CreateDShaderString(VSDShader *pDShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &DShaderString
+        static bool CreateDShaderString(VSDShader *pDShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &DShaderString
 #if _DEBUG
                                         ,
-                                        VSString &OutShaderFileName);
+                                        Container::MString &OutShaderFileName);
 #else
         );
 #endif
@@ -153,7 +153,7 @@ namespace Matrix
         static void ClearAllString();
 #if _DEBUG
         static void OutPutShaderLog(MaterialShaderPara &MSPara, unsigned int uiShaderID,
-                                    const VSString &ShaderCode, VSString &OutShaderTextName);
+                                    const Container::MString &ShaderCode, Container::MString &OutShaderTextName);
 #endif
     };
 

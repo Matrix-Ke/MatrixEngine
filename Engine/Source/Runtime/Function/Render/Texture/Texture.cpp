@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSTexture, VSBind)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSTexture)
@@ -20,8 +20,8 @@ VSTexture::VSTexture(unsigned int uiFormatType, unsigned int uiWidth,
                      unsigned int uiHeight, unsigned int uiLength, unsigned int uiArraySize,
                      unsigned int uiMipLevel, bool bIsStatic, bool bSRGB)
 {
-    VSMAC_ASSERT(uiWidth && uiHeight);
-    VSMAC_ASSERT(uiFormatType < VSRenderer::SFT_MAX);
+    ENGINE_ASSERT(uiWidth && uiHeight);
+    ENGINE_ASSERT(uiFormatType < VSRenderer::SFT_MAX);
     m_uiFormatType = uiFormatType;
     m_uiHeight = uiHeight;
     m_uiWidth = uiWidth;
@@ -88,7 +88,7 @@ void *VSTexture::Lock(unsigned int uiLevel, unsigned int uiFace)
         return NULL;
     }
 
-    VSMAC_ASSERT(m_pLockData[uiLevel][uiFace] == NULL);
+    ENGINE_ASSERT(m_pLockData[uiLevel][uiFace] == NULL);
     m_pLockData[uiLevel][uiFace] = m_pUser->Lock(this, uiLevel, uiFace);
 
     return m_pLockData[uiLevel][uiFace];
@@ -100,7 +100,7 @@ void VSTexture::UnLock(unsigned int uiLevel, unsigned int uiFace)
         return;
     }
 
-    VSMAC_ASSERT(m_pLockData[uiLevel][uiFace]);
+    ENGINE_ASSERT(m_pLockData[uiLevel][uiFace]);
     m_pUser->UnLock(this, uiLevel, uiFace);
 
     m_pLockData[uiLevel][uiFace] = NULL;
@@ -150,7 +150,7 @@ unsigned char *VSTexture::GetBuffer(unsigned int uiLevel, unsigned int uiFace) c
     }
     else
     {
-        VSMAC_ASSERT(false);
+        ENGINE_ASSERT(false);
         return NULL;
     }
 }
@@ -240,7 +240,7 @@ VSTextureOutputInfo *VSTexture::GetTextureOutputInfo(VSOutputResource *pOutputRe
 }
 bool VSTexture::SetOutput(class VSOutputResource *pOutputResource)
 {
-    VSMAC_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
+    ENGINE_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
     if (IsBindResource())
     {
         return false;
@@ -254,7 +254,7 @@ bool VSTexture::SetOutput(class VSOutputResource *pOutputResource)
         return false;
     }
     const VSTextureOutputInfo *pTextureOutputInfo = GetTextureOutputInfo(pOutputResource);
-    VSMAC_ASSERT(!m_pOutputResource[pTextureOutputInfo->GetLevel()]);
+    ENGINE_ASSERT(!m_pOutputResource[pTextureOutputInfo->GetLevel()]);
     m_pOutputResource[pTextureOutputInfo->GetLevel()] = pOutputResource;
 
     return true;
@@ -275,7 +275,7 @@ VSTextureCache::~VSTextureCache()
 bool VSTextureCache::SetCacheResource(MObject *pOwner)
 {
     VSTexAllState *pTex = DynamicCast<VSTexAllState>(pOwner);
-    VSMAC_ASSERT(pTex);
+    ENGINE_ASSERT(pTex);
     if (!m_pTex)
     {
         return false;
@@ -287,7 +287,7 @@ bool VSTextureCache::SetStreamResouce(VSResourceProxyBase *pOwner)
 {
     pOwner->CreateToStreamObject(this);
     VSResourceProxy<VSTexAllState> *pRTexAll = (VSResourceProxy<VSTexAllState> *)(pOwner);
-    VSMAC_ASSERT(pRTexAll);
+    ENGINE_ASSERT(pRTexAll);
     if (!m_pTex)
     {
         return false;

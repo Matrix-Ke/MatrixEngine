@@ -1,5 +1,5 @@
 #include "NodeComponent.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "SkeletonMeshComponent.h"
 #include "SocketNode.h"
 #include "StreamingManager.h"

@@ -1,5 +1,5 @@
 #include "OneParamSmoothAnimBlend.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSOneParamSmoothAnimBlend, VSOneParamAnimBlend)
 BEGIN_ADD_PROPERTY(VSOneParamSmoothAnimBlend, VSOneParamAnimBlend)

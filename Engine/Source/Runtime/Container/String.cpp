@@ -9,25 +9,25 @@ MString::MString()
 {
 	m_pBuffer = NULL;
 	m_pBuffer = MX_NEW TCHAR[1];
-	MATRIX_ENGINE_ASSERT(m_pBuffer);
+	ENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
 MString::MString(const TCHAR* String)
 {
-	MATRIX_ENGINE_ASSERT(String);
+	ENGINE_ASSERT(String);
 	m_pBuffer = NULL;
 	if (String)
 	{
 		unsigned int uiLength = (unsigned int)MXStrLen(String);
 		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-		MATRIX_ENGINE_ASSERT(m_pBuffer);
+		ENGINE_ASSERT(m_pBuffer);
 
 		MXStrCopy(m_pBuffer, uiLength + 1, String);
 	}
 	else
 	{
 		m_pBuffer = MX_NEW TCHAR[1];
-		MATRIX_ENGINE_ASSERT(m_pBuffer);
+		ENGINE_ASSERT(m_pBuffer);
 		m_pBuffer[0] = _T('\0');
 	}
 }
@@ -36,7 +36,7 @@ MString::MString(const MString& String)
 	m_pBuffer = NULL;
 	unsigned int uiLength = String.GetLength();
 	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-	MATRIX_ENGINE_ASSERT(m_pBuffer);
+	ENGINE_ASSERT(m_pBuffer);
 
 	MXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
 }
@@ -56,7 +56,7 @@ void MString::Clear()
 
 	ENGINE_DELETEA(m_pBuffer);
 	m_pBuffer = MX_NEW TCHAR[1];
-	MATRIX_ENGINE_ASSERT(m_pBuffer);
+	ENGINE_ASSERT(m_pBuffer);
 	m_pBuffer[0] = _T('\0');
 }
 MString& MString::operator=(const MString& String)
@@ -64,7 +64,7 @@ MString& MString::operator=(const MString& String)
 	ENGINE_DELETEA(m_pBuffer);
 	unsigned int uiLength = String.GetLength();
 	m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-	MATRIX_ENGINE_ASSERT(m_pBuffer);
+	ENGINE_ASSERT(m_pBuffer);
 
 	MXStrCopy(m_pBuffer, uiLength + 1, String.GetBuffer());
 	return *this;
@@ -76,7 +76,7 @@ MString& MString::operator=(const TCHAR* String)
 	{
 		unsigned int uiLength = (unsigned int)MXStrLen(String);
 		m_pBuffer = MX_NEW TCHAR[uiLength + 1];
-		MATRIX_ENGINE_ASSERT(m_pBuffer);
+		ENGINE_ASSERT(m_pBuffer);
 
 		MXStrCopy(m_pBuffer, uiLength + 1, String);
 	}
@@ -108,7 +108,7 @@ const MString& MString::operator+=(const MString& String)
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
 		pBuffer = MX_NEW TCHAR[uiLength];
-		MATRIX_ENGINE_ASSERT(pBuffer);
+		ENGINE_ASSERT(pBuffer);
 
 		MXStrCopy(pBuffer, uiLength, GetBuffer());
 		MXStrcat(pBuffer, uiLength, String.GetBuffer());
@@ -138,7 +138,7 @@ const MString& MString::operator+=(const TCHAR* String)
 		TCHAR* pBuffer = NULL;
 		unsigned int uiLength = uiLength2 + uiLength1 + 1;
 		pBuffer = MX_NEW TCHAR[uiLength];
-		MATRIX_ENGINE_ASSERT(pBuffer);
+		ENGINE_ASSERT(pBuffer);
 
 		MXStrCopy(pBuffer, uiLength, GetBuffer());
 		MXStrcat(pBuffer, uiLength, String);
@@ -481,7 +481,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MATRIX_ENGINE_ASSERT(pBuffer);
+				ENGINE_ASSERT(pBuffer);
 
 				MXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MXStrcat(pBuffer, uiLength, String2.GetBuffer());
@@ -492,7 +492,7 @@ namespace Matrix
 		}
 		MString operator+(const MString& String1, const TCHAR* String2)
 		{
-			MATRIX_ENGINE_ASSERT(String2);
+			ENGINE_ASSERT(String2);
 			unsigned int uiLength1 = String1.GetLength();
 			unsigned int uiLength2 = 0;
 			if (String2)
@@ -509,7 +509,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MATRIX_ENGINE_ASSERT(pBuffer);
+				ENGINE_ASSERT(pBuffer);
 
 				MXStrCopy(pBuffer, uiLength, String1.GetBuffer());
 				MXStrcat(pBuffer, uiLength, String2);
@@ -520,7 +520,7 @@ namespace Matrix
 		}
 		MString operator+(const TCHAR* String1, const MString& String2)
 		{
-			MATRIX_ENGINE_ASSERT(String1);
+			ENGINE_ASSERT(String1);
 			unsigned int uiLength2 = String2.GetLength();
 			unsigned int uiLength1 = 0;
 			if (String1)
@@ -537,7 +537,7 @@ namespace Matrix
 				TCHAR* pBuffer = NULL;
 				unsigned int uiLength = uiLength2 + uiLength1 + 1;
 				pBuffer = MX_NEW TCHAR[uiLength];
-				MATRIX_ENGINE_ASSERT(pBuffer);
+				ENGINE_ASSERT(pBuffer);
 
 				MXStrCopy(pBuffer, uiLength, String1);
 				MXStrcat(pBuffer, uiLength, String2.GetBuffer());

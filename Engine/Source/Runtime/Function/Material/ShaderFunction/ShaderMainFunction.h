@@ -35,12 +35,12 @@ namespace Matrix
         };
         VSShaderMainFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSShaderMainFunction() = 0;
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const = 0;
-        virtual bool GetNormalDepthString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetIndirectRenderString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetCubShadowString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetShadowString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetSDualParaboloidhadowString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const = 0;
+        virtual bool GetNormalDepthString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetIndirectRenderString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetCubShadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetShadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetSDualParaboloidhadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual inline unsigned int GetSMType() const = 0;
         inline void SetSRGBWrite(unsigned char uiVESRGBWrite)
         {
@@ -68,10 +68,10 @@ namespace Matrix
         virtual VSInputNode *GetDiffuseNode() const = 0;
         virtual VSInputNode *GetReflectMipNode() const = 0;
         virtual VSInputNode *GetReflectPowNode() const = 0;
-        virtual bool GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        virtual bool GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetVShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        virtual bool GetDShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
+        virtual bool GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        virtual bool GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetVShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        virtual bool GetDShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
         inline VSRenderState &GetRenderState()
         {
             return m_RenderState;
@@ -99,7 +99,7 @@ namespace Matrix
         virtual void SetGlobleValue(MaterialShaderPara &MSPara, VSVShader *pVShader, VSPShader *pPShader,
                                     VSGShader *pGShader, VSHShader *pHShader, VSDShader *pDShader) {}
         virtual void ResetInShaderName(MaterialShaderPara &MSPara) {}
-        virtual void GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const;
+        virtual void GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<Container::MString> ShadowStringArray[VSLight::LT_MAX]) const;
         virtual bool IsValidNodeToThis(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 
         inline void SetAlphaTestValue(VSREAL AlphaTestValue)
@@ -124,50 +124,50 @@ namespace Matrix
 
             VUS_ALL = VUS_PROJ_POS | VUS_VIEW_NORMAL | VUS_VIEW_WORLD_DIR,
         };
-        void GetValueUseDeclareString(VSString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara);
+        void GetValueUseDeclareString(Container::MString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara);
         VSRenderState m_RenderState;
 
         VSREAL m_fAlphaTestValue;
 
-        void GetValueUseString(VSString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara);
-        void GetAlphaTestString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        void GetSRGBWriteString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetValueUseString(Container::MString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara);
+        void GetAlphaTestString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        void GetSRGBWriteString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetNormalString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetNormalString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetWorldOffsetString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetWorldOffsetString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetAlphaString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetAlphaString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetEmissiveString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetEmissiveString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetDiffuseString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetDiffuseString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetReflectMipString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetReflectMipString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetReflectPowString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetReflectPowString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetTessellationValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetTessellationValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        void GetWorldDisplacementString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        void GetWorldDisplacementString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetNormalInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetNormalInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetAlphaInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetAlphaInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetEmissiveInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetEmissiveInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetDiffuseInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetDiffuseInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetReflectMipInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetReflectMipInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetReflectPowInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetReflectPowInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetWorldOffsetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetWorldOffsetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetTessellationValueInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetTessellationValueInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
-        bool GetWorldDisplacementInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        bool GetWorldDisplacementInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     public:
         enum

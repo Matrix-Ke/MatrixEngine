@@ -1,6 +1,6 @@
 #include "OneParamAnimBlend.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSOneParamAnimBlend, VSAnimBlendFunction)
 BEGIN_ADD_PROPERTY(VSOneParamAnimBlend, VSAnimBlendFunction)
@@ -25,26 +25,26 @@ VSOneParamAnimBlend::VSOneParamAnimBlend(const VSUsedName &ShowName, VSAnimTree 
     m_fParamMax = 1.0f;
     m_fParamMin = -1.0f;
 
-    VSString InputName0 = _T("Child0");
+    Container::MString InputName0 = _T("Child0");
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
-    VSString InputName1 = _T("Child1");
+    Container::MString InputName1 = _T("Child1");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 void VSOneParamAnimBlend::AddInputNode()
 {
-    VSString InputName = _T("Child");
-    VSString ID = Container::IntToString(m_pInput.GetNum());
+    Container::MString InputName = _T("Child");
+    Container::MString ID = Container::IntToString(m_pInput.GetNum());
     InputName += ID;
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 void VSOneParamAnimBlend::DeleteInputNode()

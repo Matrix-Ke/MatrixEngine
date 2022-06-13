@@ -1,6 +1,6 @@
-#include "SkeletonActor.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "World/Actor/SkeletonActor.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkeletonActor, VSActor)
 BEGIN_ADD_PROPERTY(VSSkeletonActor, VSActor)

@@ -1,6 +1,6 @@
 #pragma once
-#include "Object.h"
-#include "ShaderMap.h"
+#include "Core/Object.h"
+#include "Material/Shader/ShaderMap.h"
 #include "ShaderKey.h"
 #include "PShader.h"
 #include "Shader.h"

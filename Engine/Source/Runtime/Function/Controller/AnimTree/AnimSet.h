@@ -1,9 +1,9 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "Vector3.h"
 #include "Quat.h"
 #include "Matrix3X3W.h"
-#include "Name.h"
+#include "Core/Meta/ObjName.h"
 #include "Controller.h"
 #include "Resource.h"
 namespace Matrix
@@ -209,7 +209,7 @@ namespace Matrix
         VSAnimSet();
 
     protected:
-        VSMapOrder<VSUsedName, VSAnimRPtr> m_pAnimArray;
+        Container::MMapOrder<VSUsedName, VSAnimRPtr> m_pAnimArray;
 
     public:
         void AddAnim(VSUsedName AnimName, VSAnimR *pAnim);

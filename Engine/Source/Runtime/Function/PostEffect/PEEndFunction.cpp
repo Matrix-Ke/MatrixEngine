@@ -1,5 +1,5 @@
 #include "PEEndFunction.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPEEndFunction, VSPostEffectFunction)
 BEGIN_ADD_PROPERTY(VSPEEndFunction, VSPostEffectFunction)
@@ -19,8 +19,8 @@ VSPEEndFunction::VSPEEndFunction(const VSUsedName &ShowName, VSPostEffectSet *pP
 {
 
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 VSPEEndFunction::~VSPEEndFunction()

@@ -1,6 +1,6 @@
-#include "BoneNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Node/Model/BoneNode.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSBoneNode, VSNode)
 BEGIN_ADD_PROPERTY(VSBoneNode, VSNode)

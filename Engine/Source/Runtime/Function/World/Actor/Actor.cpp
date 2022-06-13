@@ -1,8 +1,8 @@
 #include "Actor.h"
 #include "AIState.h"
 #include "Steer.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "World.h"
 using namespace Matrix;
 IMPLEMENT_RESOURCE(VSActor)

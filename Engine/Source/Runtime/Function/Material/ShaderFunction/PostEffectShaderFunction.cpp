@@ -1,7 +1,7 @@
 #include "PostEffectShaderFunction.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "PosShaderFunction.h"
 #include "NormalFunction.h"
 using namespace Matrix;
@@ -14,11 +14,11 @@ VSPostEffectShaderFunction::VSPostEffectShaderFunction(const VSUsedName &ShowNam
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputName = _T("InColor");
+    Container::MString InputName = _T("InColor");
     VSInputNode *pInputNode = NULL;
 
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 VSPostEffectShaderFunction::VSPostEffectShaderFunction()
@@ -28,7 +28,7 @@ VSPostEffectShaderFunction::~VSPostEffectShaderFunction()
 {
 }
 
-bool VSPostEffectShaderFunction::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSPostEffectShaderFunction::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pInput[IN_COLOR]->GetNodeName().GetString() + _T(";\n");

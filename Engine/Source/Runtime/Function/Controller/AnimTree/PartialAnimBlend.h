@@ -35,7 +35,7 @@ namespace Matrix
         VSMatrix3X3W m_FastRootMatrix;
 #endif
         Container::MArray<Container::MArray<VSREAL>> m_Weight;
-        VSMap<VSUsedName, Container::MArray<VSREAL>> m_BoneWeight;
+        Container::MMap<VSUsedName, Container::MArray<VSREAL>> m_BoneWeight;
         void ComputeWeight();
         virtual bool IsSupportSimpleInstance() { return false; }
 

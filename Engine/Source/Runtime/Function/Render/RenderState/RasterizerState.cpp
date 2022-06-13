@@ -1,9 +1,9 @@
 #include "RasterizerState.h"
 #include "Shader.h"
 #include "Material.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ResourceManager.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSRasterizerState, VSBind)
 VSPointer<VSRasterizerState> VSRasterizerState::ms_Default;

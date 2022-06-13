@@ -1,7 +1,7 @@
 #include "ColorBuffer.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSColorBuffer, VSShaderFunction)
 BEGIN_ADD_PROPERTY(VSColorBuffer, VSShaderFunction)
@@ -12,44 +12,44 @@ VSColorBuffer::VSColorBuffer(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString InputName = _T("ColorBufferInput") + InputID;
+    Container::MString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString InputName = _T("ColorBufferInput") + InputID;
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_2, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_2, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ColorBufferOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ColorBufferOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_R);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_G);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_B);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_A);
+    Container::MString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_A);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameA, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameA, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 }
 VSColorBuffer::VSColorBuffer()
@@ -60,38 +60,38 @@ VSColorBuffer::~VSColorBuffer()
 }
 void VSColorBuffer::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString InputName = _T("ColorBufferInput") + InputID;
+    Container::MString InputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString InputName = _T("ColorBufferInput") + InputID;
     m_pInput[0]->SetNodeName(InputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ColorBufferOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ColorBufferOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_R);
     m_pOutput[1]->SetNodeName(OutputNameR);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_G);
     m_pOutput[2]->SetNodeName(OutputNameG);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_B);
     m_pOutput[3]->SetNodeName(OutputNameB);
 
-    VSString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_A);
+    Container::MString OutputNameA = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_COLOR), VSRenderer::VE_A);
     m_pOutput[4]->SetNodeName(OutputNameA);
 }
-bool VSColorBuffer::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSColorBuffer::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSMAC_ASSERT(VSRenderer::ms_pRenderer);
+    ENGINE_ASSERT(VSRenderer::ms_pRenderer);
     OutString += VSRenderer::ms_pRenderer->TexColorBuffer(this);
     return 1;
 }
-bool VSColorBuffer::GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSColorBuffer::GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSMAC_ASSERT(VSRenderer::ms_pRenderer);
-    VSString Temp;
+    ENGINE_ASSERT(VSRenderer::ms_pRenderer);
+    Container::MString Temp;
     if (m_pInput[0]->GetValueType() == VSPutNode::VT_1)
     {
         OutString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/
@@ -124,9 +124,9 @@ bool VSColorBuffer::GetInputValueString(VSString &OutString, MaterialShaderPara 
 
     return 1;
 }
-bool VSColorBuffer::GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSColorBuffer::GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     if (m_pOutput[0]->GetValueType() == VSPutNode::VT_1)
     {
         OutString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/

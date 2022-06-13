@@ -1,5 +1,5 @@
-#include "CubeTexture.h"
-#include "GraphicInclude.h"
+#include "Render/Texture/CubeTexture.h"
+#include "Core/GraphicInclude.h"
 #include "RenderTarget.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSCubeTexture, VSTexture)

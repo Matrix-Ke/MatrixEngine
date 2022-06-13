@@ -1,6 +1,6 @@
 #pragma once
-#include "PointLight.h"
-#include "DirectionLight.h"
+#include "Node/NodeComponent/Light/PointLight.h"
+#include "Node/NodeComponent/Light/DirectionLight.h"
 namespace Matrix
 {
     class LightPriority

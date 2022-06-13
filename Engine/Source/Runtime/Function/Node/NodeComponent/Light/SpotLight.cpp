@@ -1,7 +1,7 @@
-#include "SpotLight.h"
-#include "GraphicInclude.h"
+#include "Node/NodeComponent/Light/SpotLight.h"
+#include "Core/GraphicInclude.h"
 #include "SceneRender.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 #include "OBB3.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSpotLight, VSLocalLight)
@@ -29,7 +29,7 @@ VSSpotLight::VSSpotLight()
     m_uiRTWidth = 1024;
     m_ZBias = 0.005f;
     SetShadowType(ST_NORMAL);
-    m_ProjectShadowColor = VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+    m_ProjectShadowColor = Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
 }
 VSSpotLight::~VSSpotLight()
 {
@@ -103,16 +103,16 @@ void VSSpotLight::SetShadowType(unsigned int uiShadowType)
     ResetShadow();
     if (uiShadowType == ST_NORMAL || uiShadowType == ST_PROJECT)
     {
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
         if (uiShadowType == ST_PROJECT)
         {
-            m_pProjectShadowSceneRender = VS_NEW VSProjectShadowSceneRender();
+            m_pProjectShadowSceneRender = MX_NEW VSProjectShadowSceneRender();
             m_pProjectShadowSceneRender->m_pLocalLight = this;
-            m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
+            m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
         }
     }
     m_bShadowMapDrawEnd = false;

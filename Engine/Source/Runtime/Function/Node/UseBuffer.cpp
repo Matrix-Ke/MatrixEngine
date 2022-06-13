@@ -1,5 +1,5 @@
 #include "UseBuffer.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 
 VSUseBuffer::~VSUseBuffer()
@@ -10,18 +10,18 @@ VSUseBuffer::~VSUseBuffer()
 VSUseBuffer::VSUseBuffer(bool IsStatic, unsigned int uiBufferSize)
 {
     m_bIsStatic = IsStatic;
-    VSMAC_ASSERT(uiBufferSize);
+    ENGINE_ASSERT(uiBufferSize);
     m_uiBufferSize = uiBufferSize;
     m_uiCurSize = 0;
     m_pBuffer = NULL;
-    m_pBuffer = VS_NEW unsigned char[uiBufferSize];
-    VSMAC_ASSERT(m_pBuffer);
+    m_pBuffer = MX_NEW unsigned char[uiBufferSize];
+    ENGINE_ASSERT(m_pBuffer);
     m_BufferElemetnArray.Clear();
     m_uiOneAddLimitSize = 1024;
 }
 void *VSUseBuffer::NewGet(unsigned int uiDataSize)
 {
-    VSMAC_ASSERT(uiDataSize && uiDataSize <= m_uiOneAddLimitSize);
+    ENGINE_ASSERT(uiDataSize && uiDataSize <= m_uiOneAddLimitSize);
 
     unsigned int uiAddSize = 0;
     unsigned int uiCount = 0;
@@ -44,7 +44,7 @@ void *VSUseBuffer::NewGet(unsigned int uiDataSize)
     if (IsNeedRealloc)
     {
         unsigned char *pBuffer = NULL;
-        pBuffer = VS_NEW unsigned char[m_uiBufferSize + uiAddSize];
+        pBuffer = MX_NEW unsigned char[m_uiBufferSize + uiAddSize];
         if (!pBuffer)
             return false;
         VSMemcpy(pBuffer, m_pBuffer, m_uiCurSize);
@@ -66,7 +66,7 @@ void *VSUseBuffer::NewGet(unsigned int uiDataSize)
 }
 bool VSUseBuffer::Add(const void *pData, unsigned int uiDataSize)
 {
-    VSMAC_ASSERT(pData && uiDataSize && uiDataSize <= m_uiOneAddLimitSize);
+    ENGINE_ASSERT(pData && uiDataSize && uiDataSize <= m_uiOneAddLimitSize);
 
     unsigned int uiAddSize = 0;
     unsigned int uiCount = 0;
@@ -89,7 +89,7 @@ bool VSUseBuffer::Add(const void *pData, unsigned int uiDataSize)
     if (IsNeedRealloc)
     {
         unsigned char *pBuffer = NULL;
-        pBuffer = VS_NEW unsigned char[m_uiBufferSize + uiAddSize];
+        pBuffer = MX_NEW unsigned char[m_uiBufferSize + uiAddSize];
         if (!pBuffer)
             return false;
         VSMemcpy(pBuffer, m_pBuffer, m_uiCurSize);
@@ -117,9 +117,9 @@ void VSUseBuffer::Clear()
 }
 unsigned int VSUseBuffer::GetSizeByElementIndex(unsigned int i0, unsigned int i1)
 {
-    VSMAC_ASSERT(i1 >= i0);
+    ENGINE_ASSERT(i1 >= i0);
 
-    VSMAC_ASSERT(i1 < m_BufferElemetnArray.GetNum());
+    ENGINE_ASSERT(i1 < m_BufferElemetnArray.GetNum());
 
     unsigned int uiSize = 0;
     for (unsigned int i = i0; i <= i1; i++)

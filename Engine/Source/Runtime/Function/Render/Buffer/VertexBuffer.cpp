@@ -1,8 +1,8 @@
 #include "VertexBuffer.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ResourceManager.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSVertexBuffer, VSBind)
 BEGIN_ADD_PROPERTY(VSVertexBuffer, VSBind)
@@ -62,9 +62,9 @@ VSVertexBuffer::~VSVertexBuffer()
 
 bool VSVertexBuffer::SetData(VSDataBuffer *pData, unsigned int uiVF)
 {
-    VSMAC_ASSERT(pData && !m_pVertexFormat && uiVF < VSVertexFormat::VF_MAX);
+    ENGINE_ASSERT(pData && !m_pVertexFormat && uiVF < VSVertexFormat::VF_MAX);
 
-    VSMAC_ASSERT(pData->GetData());
+    ENGINE_ASSERT(pData->GetData());
     if (uiVF == VSVertexFormat::VF_POSITION)
     {
 
@@ -333,7 +333,7 @@ bool VSVertexBuffer::LoadResource(VSRenderer *pRender)
 
 bool VSVertexBuffer::OnLoadResource(VSResourceIdentifier *&pID)
 {
-    VSMAC_ASSERT(m_pUser);
+    ENGINE_ASSERT(m_pUser);
     if (!m_pUser->OnLoadVBufferData(this, pID))
         return 0;
     return 1;
@@ -350,7 +350,7 @@ void *VSVertexBuffer::Lock()
         return NULL;
     }
 
-    VSMAC_ASSERT(m_pLockData == NULL);
+    ENGINE_ASSERT(m_pLockData == NULL);
     m_pLockData = m_pUser->Lock(this);
 
     return m_pLockData;
@@ -362,7 +362,7 @@ void VSVertexBuffer::UnLock()
         return;
     }
 
-    VSMAC_ASSERT(m_pLockData);
+    ENGINE_ASSERT(m_pLockData);
 
     m_pUser->UnLock(this);
 
@@ -370,7 +370,7 @@ void VSVertexBuffer::UnLock()
 }
 VSVertexBuffer::VSVertexBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int uiNum)
 {
-    VSMAC_ASSERT(FormatArray.GetNum() && uiNum);
+    ENGINE_ASSERT(FormatArray.GetNum() && uiNum);
     m_pVertexFormat = NULL;
     m_uiOneVertexSize = 0;
     m_uiVertexNum = uiNum;
@@ -380,7 +380,7 @@ VSVertexBuffer::VSVertexBuffer(Container::MArray<VSVertexFormat::VERTEXFORMAT_TY
         m_uiOneVertexSize += VSDataBuffer::ms_uiDataTypeByte[FormatArray[i].DataType];
     }
     m_pVertexFormat = VSResourceManager::LoadVertexFormat(this, &FormatArray);
-    VSMAC_ASSERT(m_pVertexFormat);
+    ENGINE_ASSERT(m_pVertexFormat);
 }
 unsigned int VSVertexBuffer::GetSemanticsNum(unsigned int uiSemantics) const
 {

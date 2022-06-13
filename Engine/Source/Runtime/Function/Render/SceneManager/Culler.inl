@@ -69,7 +69,7 @@ inline VSRenderContext& VSCuller::GetVisibleSpatial(unsigned int i,unsigned int 
 {
 	if(uiVisibleSetType >= VST_MAX || uiRenderGroup > RG_MAX || i >=m_VisibleSet[uiRenderGroup][uiVisibleSetType].GetNum())
 	{
-		VSMAC_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return VSRenderContext::ms_RenderContextNULL;
 	}
 	return m_VisibleSet[uiRenderGroup][uiVisibleSetType][i];

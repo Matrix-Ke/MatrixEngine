@@ -2,7 +2,7 @@
 #include "GPULodTerrainNode.h"
 #include "TriangleSet.h"
 #include "VertexBuffer.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ControlPointPatch.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSGPULodTerrainGeometry, VSGeometry)
@@ -29,7 +29,7 @@ bool VSGPULodTerrainGeometry::CreateMesh(unsigned int uiTileNumX, unsigned int u
     VSGPULodTerrainNode *pTerrainNode = GetParentTerrainNode();
 
     VSDataBuffer *pVertexData = NULL;
-    pVertexData = VS_NEW VSDataBuffer();
+    pVertexData = MX_NEW VSDataBuffer();
     if (!pVertexData->CreateEmptyBuffer((uiTileNumX + 1) * (uiTileNumZ + 1), VSDataBuffer::DT_FLOAT32_3))
     {
         return 0;
@@ -51,14 +51,14 @@ bool VSGPULodTerrainGeometry::CreateMesh(unsigned int uiTileNumX, unsigned int u
     }
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(true);
-    VSMAC_ASSERT(pVertexBuffer);
+    pVertexBuffer = MX_NEW VSVertexBuffer(true);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
     VSDataBuffer *pIndexData = NULL;
-    pIndexData = VS_NEW VSDataBuffer();
-    VSMAC_ASSERT(pIndexData);
+    pIndexData = MX_NEW VSDataBuffer();
+    ENGINE_ASSERT(pIndexData);
 
     if (!pIndexData->CreateEmptyBuffer(uiTileNumX * uiTileNumZ * 4, VSDataBuffer::DT_USHORT))
     {
@@ -86,15 +86,15 @@ bool VSGPULodTerrainGeometry::CreateMesh(unsigned int uiTileNumX, unsigned int u
     }
 
     VSIndexBuffer *pIndexBuffer = NULL;
-    pIndexBuffer = VS_NEW VSIndexBuffer();
-    VSMAC_ASSERT(pIndexBuffer);
+    pIndexBuffer = MX_NEW VSIndexBuffer();
+    ENGINE_ASSERT(pIndexBuffer);
 
     pIndexBuffer->SetData(pIndexData);
 
     VSControlPointPatch *pMeshData = NULL;
-    pMeshData = VS_NEW VSControlPointPatch();
+    pMeshData = MX_NEW VSControlPointPatch();
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     pMeshData->SetVertexBuffer(pVertexBuffer);
     pMeshData->SetIndexBuffer(pIndexBuffer);

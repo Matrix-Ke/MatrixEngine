@@ -1,7 +1,7 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "PutNode.h"
-#include "Name.h"
+#include "Core/Meta/ObjName.h"
 #include "BitArray.h"
 #include "ShaderKey.h"
 namespace Matrix
@@ -28,7 +28,7 @@ namespace Matrix
         bool m_bIsVisited;
         inline void SetOwner(VSMaterial *pOwner)
         {
-            VSMAC_ASSERT(pOwner);
+            ENGINE_ASSERT(pOwner);
             m_pOwner = pOwner;
         }
 
@@ -43,20 +43,20 @@ namespace Matrix
             return false;
         }
         virtual void ResetInShaderName(MaterialShaderPara &MSPara) = 0;
-        virtual bool GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const = 0;
-        bool GetShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
+        virtual bool GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const = 0;
+        bool GetShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
         bool ClearShaderTreeStringFlag();
 
         VSInputNode *GetInputNode(unsigned int uiNodeID) const;
-        VSInputNode *GetInputNode(const VSString &NodeName) const;
+        VSInputNode *GetInputNode(const Container::MString &NodeName) const;
         inline unsigned int GetInputNodeNum() const
         {
             return m_pInput.GetNum();
         }
         VSOutputNode *GetOutputNode(unsigned int uiNodeID) const;
-        VSOutputNode *GetOutputNode(const VSString &NodeName) const;
+        VSOutputNode *GetOutputNode(const Container::MString &NodeName) const;
         inline unsigned int GetOutputNodeNum() const
         {
             return m_pOutput.GetNum();
@@ -66,7 +66,7 @@ namespace Matrix
             return m_ShowName;
         }
 
-        VSString GetValueEqualString(const VSOutputNode *pOutputNode, const VSInputNode *pInputNode) const;
+        Container::MString GetValueEqualString(const VSOutputNode *pOutputNode, const VSInputNode *pInputNode) const;
 
         virtual bool IsValidNodeToThis(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 
@@ -74,7 +74,7 @@ namespace Matrix
 
         virtual bool GetAllChildNode(Container::MArray<VSShaderFunction *> &ChildNodeArray, MaterialShaderPara &MSPara);
 
-        virtual bool CheckChildNodeValidAll(VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara);
+        virtual bool CheckChildNodeValidAll(Container::MMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara);
 
         virtual bool HaveThisChild(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 

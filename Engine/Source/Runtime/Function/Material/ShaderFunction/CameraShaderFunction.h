@@ -13,7 +13,7 @@ namespace Matrix
     public:
         VSViewWorldDir(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSViewWorldDir();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:
@@ -31,7 +31,7 @@ namespace Matrix
     public:
         VSCameraWorldPos(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSCameraWorldPos();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:

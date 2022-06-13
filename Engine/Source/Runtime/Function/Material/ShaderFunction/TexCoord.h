@@ -12,7 +12,7 @@ namespace Matrix
     public:
         VSTexCoord(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSTexCoord();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:

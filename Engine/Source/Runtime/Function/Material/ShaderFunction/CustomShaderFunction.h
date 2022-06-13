@@ -26,9 +26,9 @@ namespace Matrix
         };
         VSCustomShaderFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSCustomShaderFunction();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        virtual bool GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        virtual bool GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual inline unsigned int GetSMType() const
         {
             return SM_CUSTOM;
@@ -73,9 +73,9 @@ namespace Matrix
 
         virtual void CreatLightFunctionString(MaterialShaderPara &MSPara);
 
-        VSString m_LightFunctionString;
-        VSString m_CustomContentString;
-        VSString m_CustomDefine;
+        Container::MString m_LightFunctionString;
+        Container::MString m_CustomContentString;
+        Container::MString m_CustomDefine;
 
     protected:
         VSCustomShaderFunction();

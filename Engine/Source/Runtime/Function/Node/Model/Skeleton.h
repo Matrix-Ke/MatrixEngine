@@ -1,6 +1,6 @@
 #pragma once
 #include "Node.h"
-#include "Geometry.h"
+#include "Node/Geometry.h"
 namespace Matrix
 {
     DECLARE_Ptr(VSBoneNode);

@@ -2,8 +2,8 @@
 #include "TerrainNode.h"
 #include "TriangleSet.h"
 #include "VertexBuffer.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSCLodTerrainGeometry, VSGeometry)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSCLodTerrainGeometry)
@@ -34,10 +34,10 @@ bool VSCLodTerrainGeometry::CreateMeshData(unsigned int uiIndexXInTerrain, unsig
 {
 
     VSTerrainNode *pTerrainNode = DynamicCast<VSTerrainNode>(m_pParent);
-    VSMAC_ASSERT(pTerrainNode);
+    ENGINE_ASSERT(pTerrainNode);
 
     VSDataBuffer *pVertexData = NULL;
-    pVertexData = VS_NEW VSDataBuffer();
+    pVertexData = MX_NEW VSDataBuffer();
     unsigned int uiVertexLenght = (1 << uiTessellationLevel) + 1;
     if (!pVertexData->CreateEmptyBuffer(uiVertexLenght * uiVertexLenght, VSDataBuffer::DT_FLOAT32_3))
     {
@@ -59,18 +59,18 @@ bool VSCLodTerrainGeometry::CreateMeshData(unsigned int uiIndexXInTerrain, unsig
     }
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    pVertexBuffer = MX_NEW VSVertexBuffer(true);
     pVertexBuffer->SetMemType(VSMemBind::MT_BOTH);
-    VSMAC_ASSERT(pVertexBuffer);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
     unsigned int uiCurRenderTriNum = (uiVertexLenght - 1) * (uiVertexLenght - 1) * 2 * 3;
 
     VSIndexBuffer *pIndexBuffer = NULL;
-    pIndexBuffer = VS_NEW VSIndexBuffer(uiCurRenderTriNum);
+    pIndexBuffer = MX_NEW VSIndexBuffer(uiCurRenderTriNum);
     pIndexBuffer->SetMemType(VSMemBind::MT_BOTH);
-    VSMAC_ASSERT(pIndexBuffer);
+    ENGINE_ASSERT(pIndexBuffer);
 
     // test mul thread render
     if (GetTerrainGeometryType() == TGT_ROAM)
@@ -85,7 +85,7 @@ bool VSCLodTerrainGeometry::CreateMeshData(unsigned int uiIndexXInTerrain, unsig
     pIndexBuffer->SetLockFlag(VSInheritBind::LF_DISCARD);
 
     VSTriangleSet *pMeshData = NULL;
-    pMeshData = VS_NEW VSTriangleSet();
+    pMeshData = MX_NEW VSTriangleSet();
 
     if (!pMeshData)
     {
@@ -101,12 +101,12 @@ bool VSCLodTerrainGeometry::CreateMeshData(unsigned int uiIndexXInTerrain, unsig
 }
 bool VSCLodTerrainGeometry::AddNeighbor(VSCLodTerrainGeometry *pTerrainGemetry, unsigned int uiNeighbor)
 {
-    VSMAC_ASSERT(pTerrainGemetry && uiNeighbor < NT_MAX);
+    ENGINE_ASSERT(pTerrainGemetry && uiNeighbor < NT_MAX);
 
     VSTerrainNode *pTerrainNode = DynamicCast<VSTerrainNode>(m_pParent);
-    VSMAC_ASSERT(pTerrainNode);
+    ENGINE_ASSERT(pTerrainNode);
 
-    VSMAC_ASSERT(m_pNeighbor[uiNeighbor] == NULL);
+    ENGINE_ASSERT(m_pNeighbor[uiNeighbor] == NULL);
 
     m_pNeighbor[uiNeighbor] = pTerrainGemetry;
 
@@ -116,7 +116,7 @@ void VSCLodTerrainGeometry::UpdateView(VSCuller &Culler, double dAppTime)
 {
     VSGeometry::UpdateView(Culler, dAppTime);
     VSCamera *pCamera = Culler.GetCamera();
-    VSMAC_ASSERT(pCamera);
+    ENGINE_ASSERT(pCamera);
 
     if (Culler.GetCullerType() == VSCuller::CUT_MAIN)
     {

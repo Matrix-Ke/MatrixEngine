@@ -1,6 +1,6 @@
 #include "MorphSet.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSMorph, MObject)
 BEGIN_ADD_PROPERTY(VSMorph, MObject)
@@ -34,7 +34,7 @@ VSMorphSet::~VSMorphSet()
 }
 bool VSMorphSet::AddMorph(VSMorph *pMorph)
 {
-    VSMAC_ASSERT(pMorph);
+    ENGINE_ASSERT(pMorph);
     if (m_pMorphArray.GetNum() != 0)
     {
         //ÊÇ·ñ´æÔÚ
@@ -101,6 +101,6 @@ VSMorph *VSMorphSet::GetMorph(const VSUsedName &MorphName) const
 }
 VSMorph *VSMorphSet::GetMorph(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pMorphArray.GetNum());
+    ENGINE_ASSERT(i < m_pMorphArray.GetNum());
     return m_pMorphArray[i];
 }

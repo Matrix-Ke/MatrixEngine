@@ -1,8 +1,8 @@
 #pragma once
 #include "MemManager.h"
 #include "Math.h"
-#include "Object.h"
-#include "Name.h"
+#include "Core/Object.h"
+#include "Core/Meta/ObjName.h"
 namespace Matrix
 {
     class MStream;

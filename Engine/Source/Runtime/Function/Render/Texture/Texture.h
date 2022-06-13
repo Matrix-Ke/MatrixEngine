@@ -80,7 +80,7 @@ namespace Matrix
 
         inline void *GetLockDataPtr(unsigned int uiLevel = 0, unsigned int uiFace = 0) const
         {
-            VSMAC_ASSERT(uiLevel < GetMipLevel() && uiFace < 6)
+            ENGINE_ASSERT(uiLevel < GetMipLevel() && uiFace < 6)
             return m_pLockData[uiLevel][uiFace];
         }
         virtual void ClearInfo();

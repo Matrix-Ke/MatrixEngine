@@ -14,14 +14,14 @@ namespace Matrix
         DECLARE_INITIAL
         VSViewFamliyInfo();
         ~VSViewFamliyInfo();
-        Container::MArray<VSString> m_SceneMapName;
+        Container::MArray<Container::MString> m_SceneMapName;
         unsigned int m_uiWidth;
         unsigned int m_uiHeight;
         unsigned int m_uiCaptureViewFamilyType;
-        VSString m_ViewFamilyName;
+        Container::MString m_ViewFamilyName;
         VSPostEffectSetRPtr m_pPostEffect;
         VSViewFamily *m_pViewFamily;
-        VSString m_RenderMethodRTTIName;
+        Container::MString m_RenderMethodRTTIName;
         void GetScene();
     };
     DECLARE_Ptr(VSViewFamliyInfo);

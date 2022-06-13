@@ -1,7 +1,7 @@
 #pragma once
-#include "Geometry.h"
+#include "Node/Geometry.h"
 #include "UseBuffer.h"
-#include "VertexFormat.h"
+#include "Render/Buffer/VertexFormat.h"
 namespace Matrix
 {
     class VSVertexBuffer;

@@ -1,9 +1,9 @@
 #include "RenderState.h"
 #include "Shader.h"
 #include "Material.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ResourceManager.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSRenderState, MObject)
 BEGIN_ADD_PROPERTY(VSRenderState, MObject)
@@ -35,7 +35,7 @@ void VSRenderState::Inherit(const VSRenderState *pRenderState, unsigned int uiIn
     {
         return;
     }
-    VSMAC_ASSERT(pRenderState);
+    ENGINE_ASSERT(pRenderState);
     bool bReCreateDepthStencil = false;
     bool bReCreateRasterizer = false;
     bool bReCreateBlend = false;

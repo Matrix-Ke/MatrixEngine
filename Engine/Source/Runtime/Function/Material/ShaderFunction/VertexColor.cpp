@@ -1,7 +1,7 @@
 #include "VertexColor.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSVertexColor, VSShaderFunction)
 BEGIN_ADD_PROPERTY(VSVertexColor, VSShaderFunction)
@@ -13,11 +13,11 @@ VSVertexColor::VSVertexColor(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("VertexColorOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("VertexColorOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
     m_uiColorIndex = 0;
@@ -31,12 +31,12 @@ VSVertexColor::~VSVertexColor()
 }
 void VSVertexColor::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("VertexColorOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("VertexColorOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 }
-bool VSVertexColor::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSVertexColor::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (VSShaderStringFactory::ms_InputColor[m_uiColorIndex].GetLength() > 0)
     {

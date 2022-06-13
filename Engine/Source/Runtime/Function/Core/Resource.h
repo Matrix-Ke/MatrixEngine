@@ -16,7 +16,7 @@ namespace Matrix
         virtual ~VSResourceInterface() = 0;
         virtual const VSUsedName &GetResourceName() const
         {
-            MATRIX_ENGINE_ASSERT(false);
+            ENGINE_ASSERT(false);
             return VSUsedName::ms_cNULL;
         }
         virtual void SetResourceName(const VSUsedName &ResourceName){};
@@ -258,7 +258,7 @@ namespace Matrix
     template <class T>
     void VSResourceProxy<T>::OnLoadEvent()
     {
-        MATRIX_ENGINE_ASSERT(m_pResource && m_uiMaxLevel == 1);
+        ENGINE_ASSERT(m_pResource && m_uiMaxLevel == 1);
         m_uiMaxLevel = m_pResource->GetCurStreamLevel();
         ToReadyStream();
     }
@@ -617,7 +617,7 @@ namespace Matrix
     template <class KEY, class VALUE>
     const Container::MapElement<KEY, VALUE> *VSResourceSet<KEY, VALUE>::GetResource(unsigned int i)
     {
-        MATRIX_ENGINE_ASSERT(i < m_Resource.GetNum());
+        ENGINE_ASSERT(i < m_Resource.GetNum());
         if (i >= m_Resource.GetNum())
         {
             return NULL;

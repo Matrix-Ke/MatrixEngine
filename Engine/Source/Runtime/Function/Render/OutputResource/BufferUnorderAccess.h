@@ -1,5 +1,5 @@
 #pragma once
-#include "BufferResource.h"
+#include "Render/Buffer/BufferResource.h"
 #include "UnorderAccess.h"
 namespace Matrix
 {

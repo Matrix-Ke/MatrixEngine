@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-#include "Light.h"
+#include "Node/NodeComponent/Light/Light.h"
 namespace Matrix
 {
 

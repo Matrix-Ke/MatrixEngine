@@ -1,8 +1,8 @@
 #include "QuadTerrainGeometry.h"
 #include "CLodTerrainNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "RenderThread.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSQuadTerrainGeometry, VSCLodTerrainGeometry)
 BEGIN_ADD_PROPERTY(VSQuadTerrainGeometry, VSCLodTerrainGeometry)
@@ -33,7 +33,7 @@ bool VSQuadTerrainGeometry::RecursiveComputeVariance(unsigned int uiLevel)
     VSCLodTerrainNode *pTerrainNode = (VSCLodTerrainNode *)m_pParent;
     if (uiLevel >= pTerrainNode->GetTessellationLevel())
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
@@ -170,7 +170,7 @@ void VSQuadTerrainGeometry::RecursiveTessellate(const Math::Vector3 &CameraPos, 
         return;
     }
     Math::Vector3 *pVer = (Math::Vector3 *)m_pMeshData->GetVertexBuffer()->GetPositionData(0)->GetData();
-    VSMAC_ASSERT(pVer);
+    ENGINE_ASSERT(pVer);
 
     if (m_uiCurLevel < uiLevel)
     {
@@ -204,7 +204,7 @@ _________
 */
 void VSQuadTerrainGeometry::UpdateOther(double dAppTime)
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
     if (!GetMeshData()->GetIndexBuffer()->IsBindResource())
     {
         return;

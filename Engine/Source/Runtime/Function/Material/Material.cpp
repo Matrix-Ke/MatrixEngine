@@ -4,13 +4,13 @@
 #include "Spatial.h"
 #include "ShaderStringFactory.h"
 #include "ConstFloatValue.h"
-#include "BoneNode.h"
+#include "Node/Model/BoneNode.h"
 #include "ResourceManager.h"
 #include "VertexColor.h"
-#include "GraphicInclude.h"
-#include "PhoneShaderFunction.h"
-#include "OrenNayarShaderFunction.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Material/ShaderFunction/PhoneShaderFunction.h"
+#include "Material/ShaderFunction/OrenNayarShaderFunction.h"
+#include "Core/Stream/Stream.h"
 #include "CustomShaderFunction.h"
 #include "LightShaderFunction.h"
 #include "PosShaderFunction.h"
@@ -104,9 +104,9 @@ VSPointer<VSCustomCSMaterial> VSCustomCSMaterial::ms_pTestByteBuffer;
 VSPointer<VSCustomCSMaterial> VSCustomCSMaterial::ms_pTestTexture;
 bool VSCustomCSMaterial::InitialDefaultState()
 {
-    ms_pTestStruct = VS_NEW VSCustomCSMaterial();
-    ms_pTestByteBuffer = VS_NEW VSCustomCSMaterial();
-    ms_pTestTexture = VS_NEW VSCustomCSMaterial();
+    ms_pTestStruct = MX_NEW VSCustomCSMaterial();
+    ms_pTestByteBuffer = MX_NEW VSCustomCSMaterial();
+    ms_pTestTexture = MX_NEW VSCustomCSMaterial();
     LoadDefault();
     return 1;
 }
@@ -222,7 +222,7 @@ bool VSCustomCSMaterial::GetCShader(VSShaderKey &CShaderKey)
         }
         if (pCShader == NULL)
         {
-            pCShader = VS_NEW VSCShader(m_CShaderName.GetBuffer(), m_CMainFunName.GetBuffer(), true);
+            pCShader = MX_NEW VSCShader(m_CShaderName.GetBuffer(), m_CMainFunName.GetBuffer(), true);
 
             if (!pCShader)
             {
@@ -256,7 +256,7 @@ bool VSCustomCSMaterial::GetCShader(VSShaderKey &CShaderKey)
             }
             if (pCShader == NULL)
             {
-                pCShader = VS_NEW VSCShader(m_CShaderName.GetBuffer(), m_CMainFunName.GetBuffer(), true);
+                pCShader = MX_NEW VSCShader(m_CShaderName.GetBuffer(), m_CMainFunName.GetBuffer(), true);
 
                 if (!pCShader)
                 {
@@ -373,29 +373,29 @@ VSPointer<VSCustomMaterial> VSCustomMaterial::ms_pClearDepthStencilRange;
 VSPointer<VSCustomMaterial> VSCustomMaterial::ms_pOcclusionCull;
 bool VSCustomMaterial::InitialDefaultState()
 {
-    ms_pPostGray = VS_NEW VSCustomMaterial();
-    ms_pGammaCorrect = VS_NEW VSCustomMaterial();
-    ms_pPostScreenQuad = VS_NEW VSCustomMaterial();
-    ms_pPostSaturation = VS_NEW VSCustomMaterial();
-    ms_pOldPhoto = VS_NEW VSCustomMaterial();
-    ms_pGuassBlurH = VS_NEW VSCustomMaterial();
-    ms_pGuassBlurV = VS_NEW VSCustomMaterial();
-    ms_pFilter3X3 = VS_NEW VSCustomMaterial();
-    ms_pBright = VS_NEW VSCustomMaterial();
-    ms_pTexAdd = VS_NEW VSCustomMaterial();
+    ms_pPostGray = MX_NEW VSCustomMaterial();
+    ms_pGammaCorrect = MX_NEW VSCustomMaterial();
+    ms_pPostScreenQuad = MX_NEW VSCustomMaterial();
+    ms_pPostSaturation = MX_NEW VSCustomMaterial();
+    ms_pOldPhoto = MX_NEW VSCustomMaterial();
+    ms_pGuassBlurH = MX_NEW VSCustomMaterial();
+    ms_pGuassBlurV = MX_NEW VSCustomMaterial();
+    ms_pFilter3X3 = MX_NEW VSCustomMaterial();
+    ms_pBright = MX_NEW VSCustomMaterial();
+    ms_pTexAdd = MX_NEW VSCustomMaterial();
 
-    ms_pPostVolumeShadowMap = VS_NEW VSCustomMaterial();
-    ms_pProjectShadowPre = VS_NEW VSCustomMaterial();
-    ms_pProjectShadow = VS_NEW VSCustomMaterial();
-    ms_pSSR = VS_NEW VSCustomMaterial();
-    ms_pFont = VS_NEW VSCustomMaterial();
+    ms_pPostVolumeShadowMap = MX_NEW VSCustomMaterial();
+    ms_pProjectShadowPre = MX_NEW VSCustomMaterial();
+    ms_pProjectShadow = MX_NEW VSCustomMaterial();
+    ms_pSSR = MX_NEW VSCustomMaterial();
+    ms_pFont = MX_NEW VSCustomMaterial();
 
-    ms_pClearColorRange = VS_NEW VSCustomMaterial();
-    ms_pClearDepthRange = VS_NEW VSCustomMaterial();
-    ms_pClearColorDepthRange = VS_NEW VSCustomMaterial();
-    ms_pClearAllRange = VS_NEW VSCustomMaterial();
-    ms_pClearDepthStencilRange = VS_NEW VSCustomMaterial();
-    ms_pOcclusionCull = VS_NEW VSCustomMaterial();
+    ms_pClearColorRange = MX_NEW VSCustomMaterial();
+    ms_pClearDepthRange = MX_NEW VSCustomMaterial();
+    ms_pClearColorDepthRange = MX_NEW VSCustomMaterial();
+    ms_pClearAllRange = MX_NEW VSCustomMaterial();
+    ms_pClearDepthStencilRange = MX_NEW VSCustomMaterial();
+    ms_pOcclusionCull = MX_NEW VSCustomMaterial();
 
     {
         VSDepthStencilDesc DepthStencilDesc;
@@ -885,7 +885,7 @@ bool VSCustomMaterial::GetVShader(VSShaderKey &VShaderKey)
         }
         if (pVertexShader == NULL)
         {
-            pVertexShader = VS_NEW VSVShader(m_VShaderName.GetBuffer(), m_VMainFunName.GetBuffer(), true);
+            pVertexShader = MX_NEW VSVShader(m_VShaderName.GetBuffer(), m_VMainFunName.GetBuffer(), true);
             if (!pVertexShader)
             {
                 return 0;
@@ -919,7 +919,7 @@ bool VSCustomMaterial::GetVShader(VSShaderKey &VShaderKey)
             }
             if (pVertexShader == NULL)
             {
-                pVertexShader = VS_NEW VSVShader(m_VShaderName.GetBuffer(), m_VMainFunName.GetBuffer(), true);
+                pVertexShader = MX_NEW VSVShader(m_VShaderName.GetBuffer(), m_VMainFunName.GetBuffer(), true);
                 if (!pVertexShader)
                 {
                     return 0;
@@ -974,7 +974,7 @@ bool VSCustomMaterial::GetHShader(VSShaderKey &HShaderKey)
         }
         if (pHShader == NULL)
         {
-            pHShader = VS_NEW VSHShader(m_HShaderName.GetBuffer(), m_HMainFunName.GetBuffer(), true);
+            pHShader = MX_NEW VSHShader(m_HShaderName.GetBuffer(), m_HMainFunName.GetBuffer(), true);
 
             if (!pHShader)
             {
@@ -1008,7 +1008,7 @@ bool VSCustomMaterial::GetHShader(VSShaderKey &HShaderKey)
             }
             if (pHShader == NULL)
             {
-                pHShader = VS_NEW VSHShader(m_HShaderName.GetBuffer(), m_HMainFunName.GetBuffer(), true);
+                pHShader = MX_NEW VSHShader(m_HShaderName.GetBuffer(), m_HMainFunName.GetBuffer(), true);
 
                 if (!pHShader)
                 {
@@ -1064,7 +1064,7 @@ bool VSCustomMaterial::GetDShader(VSShaderKey &DShaderKey)
         }
         if (pDShader == NULL)
         {
-            pDShader = VS_NEW VSDShader(m_DShaderName.GetBuffer(), m_DMainFunName.GetBuffer(), true);
+            pDShader = MX_NEW VSDShader(m_DShaderName.GetBuffer(), m_DMainFunName.GetBuffer(), true);
 
             if (!pDShader)
             {
@@ -1098,7 +1098,7 @@ bool VSCustomMaterial::GetDShader(VSShaderKey &DShaderKey)
             }
             if (pDShader == NULL)
             {
-                pDShader = VS_NEW VSDShader(m_DShaderName.GetBuffer(), m_DMainFunName.GetBuffer(), true);
+                pDShader = MX_NEW VSDShader(m_DShaderName.GetBuffer(), m_DMainFunName.GetBuffer(), true);
 
                 if (!pDShader)
                 {
@@ -1154,7 +1154,7 @@ bool VSCustomMaterial::GetGShader(VSShaderKey &GShaderKey)
         }
         if (pGShader == NULL)
         {
-            pGShader = VS_NEW VSGShader(m_GShaderName.GetBuffer(), m_GMainFunName.GetBuffer(), true);
+            pGShader = MX_NEW VSGShader(m_GShaderName.GetBuffer(), m_GMainFunName.GetBuffer(), true);
 
             if (!pGShader)
             {
@@ -1188,7 +1188,7 @@ bool VSCustomMaterial::GetGShader(VSShaderKey &GShaderKey)
             }
             if (pGShader == NULL)
             {
-                pGShader = VS_NEW VSGShader(m_GShaderName.GetBuffer(), m_GMainFunName.GetBuffer(), true);
+                pGShader = MX_NEW VSGShader(m_GShaderName.GetBuffer(), m_GMainFunName.GetBuffer(), true);
 
                 if (!pGShader)
                 {
@@ -1241,7 +1241,7 @@ bool VSCustomMaterial::GetPShader(VSShaderKey &PShaderKey)
         }
         if (pPixelShader == NULL)
         {
-            pPixelShader = VS_NEW VSPShader(m_PShaderName.GetBuffer(), m_PMainFunName.GetBuffer(), true);
+            pPixelShader = MX_NEW VSPShader(m_PShaderName.GetBuffer(), m_PMainFunName.GetBuffer(), true);
 
             if (!pPixelShader)
             {
@@ -1275,7 +1275,7 @@ bool VSCustomMaterial::GetPShader(VSShaderKey &PShaderKey)
             }
             if (pPixelShader == NULL)
             {
-                pPixelShader = VS_NEW VSPShader(m_PShaderName.GetBuffer(), m_PMainFunName.GetBuffer(), true);
+                pPixelShader = MX_NEW VSPShader(m_PShaderName.GetBuffer(), m_PMainFunName.GetBuffer(), true);
 
                 if (!pPixelShader)
                 {
@@ -1416,28 +1416,28 @@ ADD_TERMINAL_FUNCTION_WITH_PRIORITY(TerminalDefaultState)
 IMPLEMENT_INITIAL_END
 bool VSMaterial::InitialDefaultState()
 {
-    ms_Default = VS_NEW VSMaterial(_T("DefaultMaterial"));
+    ms_Default = MX_NEW VSMaterial(_T("DefaultMaterial"));
     if (!ms_Default)
         return 0;
 
-    ms_DefaultOnlyColor = VS_NEW VSMaterial(_T("DefaultOnlyColorMaterial"));
+    ms_DefaultOnlyColor = MX_NEW VSMaterial(_T("DefaultOnlyColorMaterial"));
 
     if (!ms_DefaultOnlyColor)
         return 0;
 
-    ms_DefaultOnlyVertexColor = VS_NEW VSMaterial(_T("DefaultOnlyVertexColorMaterial"));
+    ms_DefaultOnlyVertexColor = MX_NEW VSMaterial(_T("DefaultOnlyVertexColorMaterial"));
 
     if (!ms_DefaultOnlyVertexColor)
     {
         return 0;
     }
 
-    ms_DefaultOnlyColorDisableDepth = VS_NEW VSMaterial(_T("DefaultOnlyColorDisableDepthMaterial"));
+    ms_DefaultOnlyColorDisableDepth = MX_NEW VSMaterial(_T("DefaultOnlyColorDisableDepthMaterial"));
 
     if (!ms_DefaultOnlyColorDisableDepth)
         return 0;
 
-    ms_DefaultOnlyVertexColorDisableDepth = VS_NEW VSMaterial(_T("DefaultOnlyVertexColorDisableDepthMaterial"));
+    ms_DefaultOnlyVertexColorDisableDepth = MX_NEW VSMaterial(_T("DefaultOnlyVertexColorDisableDepthMaterial"));
 
     if (!ms_DefaultOnlyVertexColorDisableDepth)
     {
@@ -1466,14 +1466,14 @@ bool VSMaterial::LoadDefault()
     {
         if (!ms_Default)
             return 0;
-        VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("TexSampler"), ms_Default);
+        VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("TexSampler"), ms_Default);
         p2DTexSamplerNode->SetTexture((VSTexAllStateR *)VSTexAllState::GetDefaultResource());
-        VSConstFloatValue *pSpecularColor = VS_NEW VSConstFloatValue(_T("SpecluarColor"), ms_Default, 4, false);
+        VSConstFloatValue *pSpecularColor = MX_NEW VSConstFloatValue(_T("SpecluarColor"), ms_Default, 4, false);
         pSpecularColor->SetValue(0, 0.5f);
         pSpecularColor->SetValue(1, 0.5f);
         pSpecularColor->SetValue(2, 0.5f);
         pSpecularColor->SetValue(3, 1.0f);
-        VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), ms_Default, 1, false);
+        VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), ms_Default, 1, false);
         pSpecularPow->SetValue(0, 5);
         ms_Default->m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
         ms_Default->m_pShaderMainFunction[0]->GetInputNode(_T("SpecularColor"))->Connection(pSpecularColor->GetOutputNode(0));
@@ -1484,7 +1484,7 @@ bool VSMaterial::LoadDefault()
         if (!ms_DefaultOnlyColor)
             return 0;
 
-        VSConstFloatValue *pEmissiveColor = VS_NEW VSConstFloatValue(_T("EmissiveColor"), ms_DefaultOnlyColor, 4, true);
+        VSConstFloatValue *pEmissiveColor = MX_NEW VSConstFloatValue(_T("EmissiveColor"), ms_DefaultOnlyColor, 4, true);
         pEmissiveColor->SetValue(0, 1.0f);
         pEmissiveColor->SetValue(1, 1.0f);
         pEmissiveColor->SetValue(2, 1.0f);
@@ -1498,7 +1498,7 @@ bool VSMaterial::LoadDefault()
         if (!ms_DefaultOnlyVertexColor)
             return 0;
 
-        VSVertexColor *pVertexColor = VS_NEW VSVertexColor(_T("VertexColor"), ms_DefaultOnlyVertexColor);
+        VSVertexColor *pVertexColor = MX_NEW VSVertexColor(_T("VertexColor"), ms_DefaultOnlyVertexColor);
 
         ms_DefaultOnlyVertexColor->m_pShaderMainFunction[0]->GetInputNode(VSPhoneShaderFunction::IN_EMISSIVE_COLOR)->Connection(pVertexColor->GetOutputNode(VSOutputNode::ONI_COLOR));
         ms_DefaultOnlyVertexColor->m_ResourceName = _T("_DefaultOnlyVertexColor");
@@ -1511,7 +1511,7 @@ bool VSMaterial::LoadDefault()
         DepthStencilDest.m_bDepthEnable = false;
         VSDepthStencilState *pState = VSResourceManager::CreateDepthStencilState(DepthStencilDest);
         ms_DefaultOnlyColorDisableDepth->SetDepthStencilState(pState);
-        VSConstFloatValue *pEmissiveColor = VS_NEW VSConstFloatValue(_T("EmissiveColor"), ms_DefaultOnlyColorDisableDepth, 4, true);
+        VSConstFloatValue *pEmissiveColor = MX_NEW VSConstFloatValue(_T("EmissiveColor"), ms_DefaultOnlyColorDisableDepth, 4, true);
         pEmissiveColor->SetValue(0, 1.0f);
         pEmissiveColor->SetValue(1, 1.0f);
         pEmissiveColor->SetValue(2, 1.0f);
@@ -1530,7 +1530,7 @@ bool VSMaterial::LoadDefault()
         VSDepthStencilState *pState = VSResourceManager::CreateDepthStencilState(DepthStencilDest);
         ms_DefaultOnlyVertexColorDisableDepth->SetDepthStencilState(pState);
 
-        VSVertexColor *pVertexColor = VS_NEW VSVertexColor(_T("VertexColor"), ms_DefaultOnlyVertexColorDisableDepth);
+        VSVertexColor *pVertexColor = MX_NEW VSVertexColor(_T("VertexColor"), ms_DefaultOnlyVertexColorDisableDepth);
 
         ms_DefaultOnlyVertexColorDisableDepth->m_pShaderMainFunction[0]->GetInputNode(VSPhoneShaderFunction::IN_EMISSIVE_COLOR)->Connection(pVertexColor->GetOutputNode(VSOutputNode::ONI_COLOR));
         ms_DefaultOnlyVertexColorDisableDepth->m_ResourceName = _T("_DefaultOnlyVertexColorDisableDepth");
@@ -1548,17 +1548,17 @@ VSMaterial::VSMaterial()
     m_bIsCombine = false;
     m_pShaderFunctionArray.Clear();
     m_bIsAllReadyLink = false;
-    m_pPass[VSPass::PT_MATERIAL] = VS_NEW VSMaterialPass();
-    m_pPass[VSPass::PT_NORMALDEPTH] = VS_NEW VSNormalDepthPass();
-    m_pPass[VSPass::PT_POINT_CUBE_SHADOW] = VS_NEW VSCubeShadowPass();
-    m_pPass[VSPass::PT_POINT_VOLUME_SHADOW] = VS_NEW VSVolumeShadowPass();
+    m_pPass[VSPass::PT_MATERIAL] = MX_NEW VSMaterialPass();
+    m_pPass[VSPass::PT_NORMALDEPTH] = MX_NEW VSNormalDepthPass();
+    m_pPass[VSPass::PT_POINT_CUBE_SHADOW] = MX_NEW VSCubeShadowPass();
+    m_pPass[VSPass::PT_POINT_VOLUME_SHADOW] = MX_NEW VSVolumeShadowPass();
     m_pPass[VSPass::PT_PREZ] = VSPreZPass::GetDefault();
-    m_pPass[VSPass::PT_SHADOW] = VS_NEW VSShadowPass();
-    m_pPass[VSPass::PT_DUAL_PARABOLOID_SHADOW] = VS_NEW VSDualParaboloidShadowPass();
-    m_pPass[VSPass::PT_LIGHT_FUNCTION] = VS_NEW VSLightFunPass();
-    m_pPass[VSPass::PT_POSTEFFECT] = VS_NEW VSPostEffectPass();
-    m_pPass[VSPass::PT_INDIRECT] = VS_NEW VSIndirectRenderPass();
-    VSMAC_ASSERT(m_pPass[VSPass::PT_MATERIAL] && m_pPass[VSPass::PT_INDIRECT]);
+    m_pPass[VSPass::PT_SHADOW] = MX_NEW VSShadowPass();
+    m_pPass[VSPass::PT_DUAL_PARABOLOID_SHADOW] = MX_NEW VSDualParaboloidShadowPass();
+    m_pPass[VSPass::PT_LIGHT_FUNCTION] = MX_NEW VSLightFunPass();
+    m_pPass[VSPass::PT_POSTEFFECT] = MX_NEW VSPostEffectPass();
+    m_pPass[VSPass::PT_INDIRECT] = MX_NEW VSIndirectRenderPass();
+    ENGINE_ASSERT(m_pPass[VSPass::PT_MATERIAL] && m_pPass[VSPass::PT_INDIRECT]);
     m_uiCustomLayer = 10;
     m_uiTessellationPartitioning = 0;
     m_ShaderCustomValue.Clear();
@@ -1602,37 +1602,37 @@ VSMaterial::VSMaterial(const VSUsedName &ShowName, unsigned int uiMUT)
     m_pPostEffectShaderFunction = NULL;
     if (uiMUT == MUT_PHONE)
     {
-        m_pShaderMainFunction.AddElement(VS_NEW VSPhoneShaderFunction(_T("PSMain"), this));
+        m_pShaderMainFunction.AddElement(MX_NEW VSPhoneShaderFunction(_T("PSMain"), this));
     }
     else if (uiMUT == MUT_OREN_NAYAR)
     {
-        m_pShaderMainFunction.AddElement(VS_NEW VSOrenNayarShaderFunction(_T("PSMain"), this));
+        m_pShaderMainFunction.AddElement(MX_NEW VSOrenNayarShaderFunction(_T("PSMain"), this));
     }
     else if (uiMUT == MUT_CUSTOM)
     {
-        m_pShaderMainFunction.AddElement(VS_NEW VSCustomShaderFunction(_T("PSMain"), this));
+        m_pShaderMainFunction.AddElement(MX_NEW VSCustomShaderFunction(_T("PSMain"), this));
     }
     else if (uiMUT == MUT_LIGHT)
     {
-        m_pLightShaderFunction = VS_NEW VSLightShaderFunction(_T("PSMain"), this);
+        m_pLightShaderFunction = MX_NEW VSLightShaderFunction(_T("PSMain"), this);
     }
     else if (uiMUT == MUT_POSTEFFECT)
     {
-        m_pPostEffectShaderFunction = VS_NEW VSPostEffectShaderFunction(_T("PSMain"), this);
+        m_pPostEffectShaderFunction = MX_NEW VSPostEffectShaderFunction(_T("PSMain"), this);
     }
     m_bIsAllReadyLink = false;
     m_bIsCombine = false;
-    m_pPass[VSPass::PT_MATERIAL] = VS_NEW VSMaterialPass();
-    m_pPass[VSPass::PT_NORMALDEPTH] = VS_NEW VSNormalDepthPass();
-    m_pPass[VSPass::PT_POINT_CUBE_SHADOW] = VS_NEW VSCubeShadowPass();
-    m_pPass[VSPass::PT_POINT_VOLUME_SHADOW] = VS_NEW VSVolumeShadowPass();
+    m_pPass[VSPass::PT_MATERIAL] = MX_NEW VSMaterialPass();
+    m_pPass[VSPass::PT_NORMALDEPTH] = MX_NEW VSNormalDepthPass();
+    m_pPass[VSPass::PT_POINT_CUBE_SHADOW] = MX_NEW VSCubeShadowPass();
+    m_pPass[VSPass::PT_POINT_VOLUME_SHADOW] = MX_NEW VSVolumeShadowPass();
     m_pPass[VSPass::PT_PREZ] = VSPreZPass::GetDefault();
-    m_pPass[VSPass::PT_SHADOW] = VS_NEW VSShadowPass();
-    m_pPass[VSPass::PT_DUAL_PARABOLOID_SHADOW] = VS_NEW VSDualParaboloidShadowPass();
-    m_pPass[VSPass::PT_LIGHT_FUNCTION] = VS_NEW VSLightFunPass();
-    m_pPass[VSPass::PT_POSTEFFECT] = VS_NEW VSPostEffectPass();
-    m_pPass[VSPass::PT_INDIRECT] = VS_NEW VSIndirectRenderPass();
-    VSMAC_ASSERT(m_pPass[VSPass::PT_MATERIAL] && m_pPass[VSPass::PT_INDIRECT]);
+    m_pPass[VSPass::PT_SHADOW] = MX_NEW VSShadowPass();
+    m_pPass[VSPass::PT_DUAL_PARABOLOID_SHADOW] = MX_NEW VSDualParaboloidShadowPass();
+    m_pPass[VSPass::PT_LIGHT_FUNCTION] = MX_NEW VSLightFunPass();
+    m_pPass[VSPass::PT_POSTEFFECT] = MX_NEW VSPostEffectPass();
+    m_pPass[VSPass::PT_INDIRECT] = MX_NEW VSIndirectRenderPass();
+    ENGINE_ASSERT(m_pPass[VSPass::PT_MATERIAL] && m_pPass[VSPass::PT_INDIRECT]);
     m_uiCustomLayer = 10;
     m_uiTessellationPartitioning = 0;
     m_ShaderCustomValue.Clear();
@@ -1646,41 +1646,41 @@ void VSMaterial::AddPass(unsigned int uiMUT)
     }
     if (uiMUT == MUT_PHONE)
     {
-        m_pShaderMainFunction.AddElement(VS_NEW VSPhoneShaderFunction(_T("PSMain"), this));
+        m_pShaderMainFunction.AddElement(MX_NEW VSPhoneShaderFunction(_T("PSMain"), this));
     }
     else if (uiMUT == MUT_OREN_NAYAR)
     {
-        m_pShaderMainFunction.AddElement(VS_NEW VSOrenNayarShaderFunction(_T("PSMain"), this));
+        m_pShaderMainFunction.AddElement(MX_NEW VSOrenNayarShaderFunction(_T("PSMain"), this));
     }
 }
 void VSMaterial::SetTessellationPartitioning(unsigned int uiTessellationPartitioning)
 {
-    VSMAC_ASSERT(uiTessellationPartitioning < TP_MAX);
+    ENGINE_ASSERT(uiTessellationPartitioning < TP_MAX);
     m_uiTessellationPartitioning = uiTessellationPartitioning;
 }
 void VSMaterial::SetBlendState(VSBlendState *pBlendState, unsigned int uiPassId)
 {
-    VSMAC_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
+    ENGINE_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
     m_pShaderMainFunction[uiPassId]->SetBlendState(pBlendState);
 }
 void VSMaterial::SetDepthStencilState(VSDepthStencilState *pDepthStencilState, unsigned int uiPassId)
 {
-    VSMAC_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
+    ENGINE_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
     m_pShaderMainFunction[uiPassId]->SetDepthStencilState(pDepthStencilState);
 }
 void VSMaterial::SetRasterizerState(VSRasterizerState *pRasterizerState, unsigned int uiPassId)
 {
-    VSMAC_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
+    ENGINE_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
     m_pShaderMainFunction[uiPassId]->SetRasterizerState(pRasterizerState);
 }
 void VSMaterial::AddClipPlane(const VSPlane3 &Plane, unsigned int uiPassId)
 {
-    VSMAC_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
+    ENGINE_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
     m_pShaderMainFunction[uiPassId]->AddClipPlane(Plane);
 }
 void VSMaterial::AddScissorRect(const VSRect2 &Rect, unsigned int uiPassId)
 {
-    VSMAC_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
+    ENGINE_ASSERT(uiPassId < m_pShaderMainFunction.GetNum());
     m_pShaderMainFunction[uiPassId]->AddScissorRect(Rect);
 }
 void VSMaterial::AddShaderFunction(VSShaderFunction *pShaderFunction)
@@ -1769,7 +1769,7 @@ int VSMaterial::GetInstanceIndex(const VSConstFloatValue *pCFValue)
             return i;
         }
     }
-    VSMAC_ASSERT(0);
+    ENGINE_ASSERT(0);
     return -1;
 }
 void VSMaterial::GetInstanceVertexFormat(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &FormatArray, unsigned int &uiOffset)
@@ -1797,7 +1797,7 @@ void VSMaterial::ClearShaderFunctionVisitFlagFalse()
         m_pShaderFunctionArray[i]->m_bIsVisited = 0;
     }
 }
-bool VSMaterial::GetCustomDeclareString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSMaterial::GetCustomDeclareString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     VSCustomShaderFunction *pCustomShaderFunction = DynamicCast<VSCustomShaderFunction>(m_pShaderMainFunction[MSPara.uiPassId]);
     if (pCustomShaderFunction)
@@ -1807,10 +1807,10 @@ bool VSMaterial::GetCustomDeclareString(VSString &OutString, MaterialShaderPara 
     }
     return false;
 }
-bool VSMaterial::GetVShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSMaterial::GetVShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
+    Container::MMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1829,10 +1829,10 @@ bool VSMaterial::GetVShaderTreeString(VSString &OutString, MaterialShaderPara &M
     }
     return true;
 }
-bool VSMaterial::GetDShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSMaterial::GetDShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
+    Container::MMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1851,10 +1851,10 @@ bool VSMaterial::GetDShaderTreeString(VSString &OutString, MaterialShaderPara &M
     }
     return true;
 }
-bool VSMaterial::GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSMaterial::GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
 
-    VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
+    Container::MMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> NoValidMap;
     VSShaderStringFactory::ms_ShaderValueIndex = 0;
     unsigned char uPassId = MSPara.uiPassId;
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1936,11 +1936,11 @@ void VSMaterial::CreateCustomTexture(VSShader *pShader)
                 RegisterID = Last->GetRegisterIndex() + Last->GetRegisterNum();
             }
         }
-        VSUserSampler *pSampler = VS_NEW VSUserSampler(Temp->GetShowName(), Temp->GetTexType(), RegisterID, 1);
+        VSUserSampler *pSampler = MX_NEW VSUserSampler(Temp->GetShowName(), Temp->GetTexType(), RegisterID, 1);
         pShader->m_pUserSampler.AddElement(pSampler);
     }
 }
-void VSMaterial::CreateTextureDeclare(VSString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara)
+void VSMaterial::CreateTextureDeclare(Container::MString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara)
 {
     Container::MArray<VSTexSampler *> TexSampler[VSEngineFlag::SS_MAX];
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -1990,12 +1990,12 @@ void VSMaterial::CreateCustomValue(VSShader *pShader)
                 uiRegisterIndex = Last->GetRegisterIndex() + Last->GetRegisterNum();
             }
         }
-        UserConstantTemp = VS_NEW VSUserConstant(Temp->GetShowName(), Temp->GetOutputNode(0)->GetNodeName(), Temp->GetSize(), uiRegisterIndex, 1, Temp->GetType());
+        UserConstantTemp = MX_NEW VSUserConstant(Temp->GetShowName(), Temp->GetOutputNode(0)->GetNodeName(), Temp->GetSize(), uiRegisterIndex, 1, Temp->GetType());
         pShader->m_pUserConstant.AddElement(UserConstantTemp);
     }
 }
 
-void VSMaterial::CreateConstValueDeclare(VSString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara)
+void VSMaterial::CreateConstValueDeclare(Container::MString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara)
 {
 
     for (unsigned int i = 0; i < m_pShaderFunctionArray.GetNum(); i++)
@@ -2033,7 +2033,7 @@ VSMaterialInstance::VSMaterialInstance()
 }
 VSMaterialInstance::VSMaterialInstance(VSMaterialR *pMaterial)
 {
-    VSMAC_ASSERT(pMaterial);
+    ENGINE_ASSERT(pMaterial);
     m_pMaterial = pMaterial;
     m_pMaterial->GetResource()->LinkAllResource();
     GetAllMaterialPara();
@@ -2041,7 +2041,7 @@ VSMaterialInstance::VSMaterialInstance(VSMaterialR *pMaterial)
 }
 void VSMaterialInstance::GetAllMaterialPara()
 {
-    VSMAC_ASSERT(m_pMaterial);
+    ENGINE_ASSERT(m_pMaterial);
     m_ShaderCustomValue = m_pMaterial->GetResource()->m_ShaderCustomValue;
     m_ShaderCustomTex = m_pMaterial->GetResource()->m_ShaderCustomTex;
 }
@@ -2123,7 +2123,7 @@ void VSMaterialInstance::DeleteShaderValue(const VSUsedName &Name)
 
 void VSMaterialInstance::SetShaderValue(const VSUsedName &Name, void *fValue, unsigned int uiSize)
 {
-    VSMAC_ASSERT(uiSize && fValue)
+    ENGINE_ASSERT(uiSize && fValue)
     for (unsigned int i = 0; i < m_ShaderCustomValue.GetNum(); i++)
     {
         if (m_ShaderCustomValue[i].ConstValueName == Name)
@@ -2199,7 +2199,7 @@ void VSMaterialInstance::SetShaderTexture(const VSUsedName &TexSamplerNodeName, 
 
 void VSMaterialInstance::SetShaderValue(VSShader *pShader)
 {
-    VSMAC_ASSERT(pShader);
+    ENGINE_ASSERT(pShader);
     for (unsigned int i = 0; i < m_ShaderCustomValue.GetNum(); i++)
     {
         pShader->SetParam(m_ShaderCustomValue[i].ConstValueName, m_ShaderCustomValue[i].Value.GetBuffer());
@@ -2222,16 +2222,16 @@ VSMaterialOnlyTexture::VSMaterialOnlyTexture()
 VSMaterialOnlyTexture::VSMaterialOnlyTexture(const VSUsedName &ShowName, VSTexAllStateR *pTexture)
     : VSMaterial(ShowName)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pSpecularColor = VS_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
+    VSConstFloatValue *pSpecularColor = MX_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
     pSpecularColor->SetValue(0, 1.0f);
     pSpecularColor->SetValue(1, 1.0f);
     pSpecularColor->SetValue(2, 1.0f);
     pSpecularColor->SetValue(3, 1.0f);
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
     pSpecularPow->SetValue(0, 300);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     m_pShaderMainFunction[0]->GetInputNode(_T("SpecularColor"))->Connection(pSpecularColor->GetOutputNode(0));
@@ -2247,19 +2247,19 @@ VSMaterialTextureAndNormal::VSMaterialTextureAndNormal()
 VSMaterialTextureAndNormal::VSMaterialTextureAndNormal(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture)
     : VSMaterial(ShowName)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pSpecularColor = VS_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
+    VSConstFloatValue *pSpecularColor = MX_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
     pSpecularColor->SetValue(0, 0.5f);
     pSpecularColor->SetValue(1, 0.5f);
     pSpecularColor->SetValue(2, 0.5f);
     pSpecularColor->SetValue(3, 1.0f);
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
     pSpecularPow->SetValue(0, 100.0f);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     m_pShaderMainFunction[0]->GetInputNode(_T("Normal"))->Connection(pNormalNode->GetOutputNode(0));
@@ -2277,29 +2277,29 @@ VSMaterialInstanceTest::VSMaterialInstanceTest()
 VSMaterialInstanceTest::VSMaterialInstanceTest(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture)
     : VSMaterial(ShowName)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pDiffuseColor = VS_NEW VSConstFloatValue(_T("DiffuseColor"), this, 4, true);
+    VSConstFloatValue *pDiffuseColor = MX_NEW VSConstFloatValue(_T("DiffuseColor"), this, 4, true);
     pDiffuseColor->SetValue(0, 1.0f);
     pDiffuseColor->SetValue(1, 1.0f);
     pDiffuseColor->SetValue(2, 1.0f);
     pDiffuseColor->SetValue(3, 1.0f);
 
-    VSMul *pMul = VS_NEW VSMul(_T("Mul"), this);
+    VSMul *pMul = MX_NEW VSMul(_T("Mul"), this);
     pMul->GetInputNode(VSInputNode::INI_A)->Connection(pDiffuseColor->GetOutputNode(VSOutputNode::ONI_VALUE));
     pMul->GetInputNode(VSInputNode::INI_B)->Connection(p2DTexSamplerNode->GetOutputNode(VSOutputNode::ONI_COLOR));
 
-    VSConstFloatValue *pSpecularColor = VS_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
+    VSConstFloatValue *pSpecularColor = MX_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
     pSpecularColor->SetValue(0, 0.5f);
     pSpecularColor->SetValue(1, 0.5f);
     pSpecularColor->SetValue(2, 0.5f);
     pSpecularColor->SetValue(3, 1.0f);
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
     pSpecularPow->SetValue(0, 100.0f);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(pMul->GetOutputNode(VSOutputNode::ONI_VALUE));
     m_pShaderMainFunction[0]->GetInputNode(_T("Normal"))->Connection(pNormalNode->GetOutputNode(0));
@@ -2315,7 +2315,7 @@ VSMaterialOnlyEmissive::VSMaterialOnlyEmissive(const VSUsedName &ShowName)
     : VSMaterial(ShowName)
 {
 
-    VSConstFloatValue *pEmissiveColor = VS_NEW VSConstFloatValue(_T("EmissiveColor"), this, 4, true);
+    VSConstFloatValue *pEmissiveColor = MX_NEW VSConstFloatValue(_T("EmissiveColor"), this, 4, true);
     pEmissiveColor->SetValue(0, 1.0f);
     pEmissiveColor->SetValue(1, 1.0f);
     pEmissiveColor->SetValue(2, 1.0f);
@@ -2331,84 +2331,84 @@ VSMaterialNoLight::VSMaterialNoLight(const VSUsedName &ShowName)
     : VSMaterial(ShowName)
 {
     // float One = 1.0f;
-    VSConstFloatValue *pOne = VS_NEW VSConstFloatValue(_T("One"), this, 1, false);
+    VSConstFloatValue *pOne = MX_NEW VSConstFloatValue(_T("One"), this, 1, false);
     pOne->SetValue(0, 1.0f);
 
     // WorldPos
-    VSWorldPos *pWorldPos = VS_NEW VSWorldPos(_T("WorldPos"), this);
+    VSWorldPos *pWorldPos = MX_NEW VSWorldPos(_T("WorldPos"), this);
 
     // WorldPos_One = float4(WorldPos,1.0f);
-    VSMakeValue *pWorldPos_One = VS_NEW VSMakeValue(_T("WorldPos_One"), this, 2);
+    VSMakeValue *pWorldPos_One = MX_NEW VSMakeValue(_T("WorldPos_One"), this, 2);
     pWorldPos_One->GetInputNode(VSInputNode::INI_A)->Connection(pWorldPos->GetOutputNode(VSOutputNode::ONI_VALUE));
     pWorldPos_One->GetInputNode(VSInputNode::INI_B)->Connection(pOne->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float4X4 ReflectViewProject;
-    VSConstFloatValue *pReflectViewProject_1 = VS_NEW VSConstFloatValue(_T("ReflectViewProject_1 "), this, 4, true);
-    VSConstFloatValue *pReflectViewProject_2 = VS_NEW VSConstFloatValue(_T("ReflectViewProject_2 "), this, 4, true);
-    VSConstFloatValue *pReflectViewProject_3 = VS_NEW VSConstFloatValue(_T("ReflectViewProject_3 "), this, 4, true);
-    VSConstFloatValue *pReflectViewProject_4 = VS_NEW VSConstFloatValue(_T("ReflectViewProject_4 "), this, 4, true);
+    VSConstFloatValue *pReflectViewProject_1 = MX_NEW VSConstFloatValue(_T("ReflectViewProject_1 "), this, 4, true);
+    VSConstFloatValue *pReflectViewProject_2 = MX_NEW VSConstFloatValue(_T("ReflectViewProject_2 "), this, 4, true);
+    VSConstFloatValue *pReflectViewProject_3 = MX_NEW VSConstFloatValue(_T("ReflectViewProject_3 "), this, 4, true);
+    VSConstFloatValue *pReflectViewProject_4 = MX_NEW VSConstFloatValue(_T("ReflectViewProject_4 "), this, 4, true);
 
     // float Dot_1 = dot(WorldPos_One,ReflectViewProject_1);
-    VSDot *pDot_1 = VS_NEW VSDot(_T("Dot_1"), this);
+    VSDot *pDot_1 = MX_NEW VSDot(_T("Dot_1"), this);
     pDot_1->GetInputNode(VSInputNode::INI_A)->Connection(pWorldPos_One->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_1->GetInputNode(VSInputNode::INI_B)->Connection(pReflectViewProject_1->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float Dot_2 = dot(WorldPos_One,ReflectViewProject_2);
-    VSDot *pDot_2 = VS_NEW VSDot(_T("Dot_2"), this);
+    VSDot *pDot_2 = MX_NEW VSDot(_T("Dot_2"), this);
     pDot_2->GetInputNode(VSInputNode::INI_A)->Connection(pWorldPos_One->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_2->GetInputNode(VSInputNode::INI_B)->Connection(pReflectViewProject_2->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float Dot_3 = dot(WorldPos_One,ReflectViewProject_3);
-    VSDot *pDot_3 = VS_NEW VSDot(_T("Dot_3"), this);
+    VSDot *pDot_3 = MX_NEW VSDot(_T("Dot_3"), this);
     pDot_3->GetInputNode(VSInputNode::INI_A)->Connection(pWorldPos_One->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_3->GetInputNode(VSInputNode::INI_B)->Connection(pReflectViewProject_3->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float Dot_4 = dot(WorldPos_One,ReflectViewProject_4);
-    VSDot *pDot_4 = VS_NEW VSDot(_T("Dot_4"), this);
+    VSDot *pDot_4 = MX_NEW VSDot(_T("Dot_4"), this);
     pDot_4->GetInputNode(VSInputNode::INI_A)->Connection(pWorldPos_One->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_4->GetInputNode(VSInputNode::INI_B)->Connection(pReflectViewProject_4->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float2 Dot_12 = float2(Dot_1,Dot_2);
-    VSMakeValue *pDot_12 = VS_NEW VSMakeValue(_T("Dot_12"), this, 2);
+    VSMakeValue *pDot_12 = MX_NEW VSMakeValue(_T("Dot_12"), this, 2);
     pDot_12->GetInputNode(VSInputNode::INI_A)->Connection(pDot_1->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_12->GetInputNode(VSInputNode::INI_B)->Connection(pDot_2->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float2 Dot_44 = float2(Dot_4,Dot_4);
-    VSMakeValue *pDot_44 = VS_NEW VSMakeValue(_T("Dot_44"), this, 2);
+    VSMakeValue *pDot_44 = MX_NEW VSMakeValue(_T("Dot_44"), this, 2);
     pDot_44->GetInputNode(VSInputNode::INI_A)->Connection(pDot_4->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDot_44->GetInputNode(VSInputNode::INI_B)->Connection(pDot_4->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float2 Div = Dot_12 / Dot_44;
-    VSDiv *pDiv = VS_NEW VSDiv(_T("Div"), this);
+    VSDiv *pDiv = MX_NEW VSDiv(_T("Div"), this);
     pDiv->GetInputNode(VSInputNode::INI_A)->Connection(pDot_12->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDiv->GetInputNode(VSInputNode::INI_B)->Connection(pDot_44->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSConstFloatValue *pPointFive = VS_NEW VSConstFloatValue(_T("PointFive"), this, 1, false);
+    VSConstFloatValue *pPointFive = MX_NEW VSConstFloatValue(_T("PointFive"), this, 1, false);
     pPointFive->SetValue(0, 0.5f);
 
-    VSConstFloatValue *pNegPointFive = VS_NEW VSConstFloatValue(_T("NegPointFive"), this, 1, false);
+    VSConstFloatValue *pNegPointFive = MX_NEW VSConstFloatValue(_T("NegPointFive"), this, 1, false);
     pNegPointFive->SetValue(0, -0.5f);
 
     // float2 FiveNegFive = float2(0.5f,-0.5f);
-    VSMakeValue *pFiveNegFive = VS_NEW VSMakeValue(_T("FiveNegFive"), this, 2);
+    VSMakeValue *pFiveNegFive = MX_NEW VSMakeValue(_T("FiveNegFive"), this, 2);
     pFiveNegFive->GetInputNode(VSInputNode::INI_A)->Connection(pPointFive->GetOutputNode(VSOutputNode::ONI_VALUE));
     pFiveNegFive->GetInputNode(VSInputNode::INI_B)->Connection(pNegPointFive->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // Div * FiveFive
-    VSMul *pMul = VS_NEW VSMul(_T("Mul"), this);
+    VSMul *pMul = MX_NEW VSMul(_T("Mul"), this);
     pMul->GetInputNode(VSInputNode::INI_A)->Connection(pDiv->GetOutputNode(VSOutputNode::ONI_VALUE));
     pMul->GetInputNode(VSInputNode::INI_B)->Connection(pFiveNegFive->GetOutputNode(VSOutputNode::ONI_VALUE));
 
     // float2 FiveFive = float2(0.5f,0.5f);
-    VSMakeValue *pFiveFive = VS_NEW VSMakeValue(_T("FiveFive"), this, 2);
+    VSMakeValue *pFiveFive = MX_NEW VSMakeValue(_T("FiveFive"), this, 2);
     pFiveFive->GetInputNode(VSInputNode::INI_A)->Connection(pPointFive->GetOutputNode(VSOutputNode::ONI_VALUE));
     pFiveFive->GetInputNode(VSInputNode::INI_B)->Connection(pPointFive->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSAdd *pAdd = VS_NEW VSAdd(_T("Add"), this);
+    VSAdd *pAdd = MX_NEW VSAdd(_T("Add"), this);
     pAdd->GetInputNode(VSInputNode::INI_A)->Connection(pMul->GetOutputNode(VSOutputNode::ONI_VALUE));
     pAdd->GetInputNode(VSInputNode::INI_B)->Connection(pFiveFive->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
 
     p2DTexSamplerNode->GetInputNode(VSInputNode::INI_TEXCOORD)->Connection(pAdd->GetOutputNode(VSOutputNode::ONI_VALUE));
 
@@ -2424,18 +2424,18 @@ VSMaterialOrenNayar::VSMaterialOrenNayar()
 VSMaterialOrenNayar::VSMaterialOrenNayar(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture,
                                          VSTexAllStateR *pEmissiveTexture) : VSMaterial(ShowName, MUT_OREN_NAYAR)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pEmissiveNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *pEmissiveNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
     pEmissiveNode->SetTexture(pEmissiveTexture);
 
-    VSConstFloatValue *pRoughnessSquared = VS_NEW VSConstFloatValue(_T("RoughnessSquared"), this, 1, true);
+    VSConstFloatValue *pRoughnessSquared = MX_NEW VSConstFloatValue(_T("RoughnessSquared"), this, 1, true);
     pRoughnessSquared->SetValue(0, 0.5f);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     m_pShaderMainFunction[0]->GetInputNode(_T("Normal"))->Connection(pNormalNode->GetOutputNode(0));
@@ -2443,7 +2443,7 @@ VSMaterialOrenNayar::VSMaterialOrenNayar(const VSUsedName &ShowName, VSTexAllSta
     m_pShaderMainFunction[0]->GetInputNode(_T("EmissiveColor"))->Connection(pEmissiveNode->GetOutputNode(0));
     // m_pShaderMainFunction[0]->SetSRGBWrite(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.6f);
 
     m_pShaderMainFunction[0]->GetInputNode(_T("Alpha"))->Connection(pFinalAlpah->GetOutputNode(0));
@@ -2459,21 +2459,21 @@ VSMaterialPhone::VSMaterialPhone()
 VSMaterialPhone::VSMaterialPhone(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture,
                                  VSTexAllStateR *pSpecularTexture, VSTexAllStateR *pEmissiveTexture, bool bPhoneSpecular) : VSMaterial(ShowName, MUT_PHONE)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pSpecularNode = VS_NEW VS2DTexSampler(_T("SpecularTexture"), this);
+    VS2DTexSampler *pSpecularNode = MX_NEW VS2DTexSampler(_T("SpecularTexture"), this);
     pSpecularNode->SetTexture(pSpecularTexture);
 
-    VS2DTexSampler *pEmissiveNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *pEmissiveNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
     pEmissiveNode->SetTexture(pEmissiveTexture);
 
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
     pSpecularPow->SetValue(0, 50.0f);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     m_pShaderMainFunction[0]->GetInputNode(_T("Normal"))->Connection(pNormalNode->GetOutputNode(0));
@@ -2482,7 +2482,7 @@ VSMaterialPhone::VSMaterialPhone(const VSUsedName &ShowName, VSTexAllStateR *pDi
     m_pShaderMainFunction[0]->GetInputNode(_T("EmissiveColor"))->Connection(pEmissiveNode->GetOutputNode(0));
     // m_pShaderMainFunction[0]->SetSRGBWrite(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.6f);
 
     m_pShaderMainFunction[0]->GetInputNode(_T("Alpha"))->Connection(pFinalAlpah->GetOutputNode(0));
@@ -2502,21 +2502,21 @@ VSMaterialPhoneTwoPass::VSMaterialPhoneTwoPass()
 VSMaterialPhoneTwoPass::VSMaterialPhoneTwoPass(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture,
                                                VSTexAllStateR *pSpecularTexture, VSTexAllStateR *pEmissiveTexture, bool bPhoneSpecular) : VSMaterial(ShowName, MUT_PHONE)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pSpecularNode = VS_NEW VS2DTexSampler(_T("SpecularTexture"), this);
+    VS2DTexSampler *pSpecularNode = MX_NEW VS2DTexSampler(_T("SpecularTexture"), this);
     pSpecularNode->SetTexture(pSpecularTexture);
 
-    VS2DTexSampler *pEmissiveNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *pEmissiveNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
     pEmissiveNode->SetTexture(pEmissiveTexture);
 
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
     pSpecularPow->SetValue(0, 50.0f);
     m_pShaderMainFunction[0]->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     m_pShaderMainFunction[0]->GetInputNode(_T("Normal"))->Connection(pNormalNode->GetOutputNode(0));
@@ -2532,13 +2532,13 @@ VSMaterialPhoneTwoPass::VSMaterialPhoneTwoPass(const VSUsedName &ShowName, VSTex
     m_ResourceName = _T("_MaterialPhoneTwoPass");
 
     AddPass(MUT_PHONE);
-    VSConstFloatValue *pFinalColor = VS_NEW VSConstFloatValue(_T("FinalColor"), this, 3, false);
+    VSConstFloatValue *pFinalColor = MX_NEW VSConstFloatValue(_T("FinalColor"), this, 3, false);
     pFinalColor->SetValue(0, 1.0f);
     pFinalColor->SetValue(1, 0.0f);
     pFinalColor->SetValue(2, 0.0f);
     m_pShaderMainFunction[1]->GetInputNode(_T("EmissiveColor"))->Connection(pFinalColor->GetOutputNode(0));
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.5f);
 
     m_pShaderMainFunction[1]->GetInputNode(_T("Alpha"))->Connection(pFinalAlpah->GetOutputNode(0));
@@ -2560,38 +2560,38 @@ VSMaterialCustom::VSMaterialCustom()
 VSMaterialCustom::VSMaterialCustom(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture, VSTexAllStateR *pEmissiveTexture)
     : VSMaterial(ShowName, MUT_CUSTOM)
 {
-    VSLightDir *pLightDir = VS_NEW VSLightDir(_T("LightDir"), this);
+    VSLightDir *pLightDir = MX_NEW VSLightDir(_T("LightDir"), this);
 
-    VSConstFloatValue *pValue = VS_NEW VSConstFloatValue(_T("ValueTest"), this, 1, false);
+    VSConstFloatValue *pValue = MX_NEW VSConstFloatValue(_T("ValueTest"), this, 1, false);
     pValue->SetValue(0, -1.0f);
 
-    VSMul *pMul1 = VS_NEW VSMul(_T("Mul1"), this);
+    VSMul *pMul1 = MX_NEW VSMul(_T("Mul1"), this);
 
     pMul1->GetInputNode(0)->Connection(pLightDir->GetOutputNode(0));
     pMul1->GetInputNode(1)->Connection(pValue->GetOutputNode(0));
 
-    VSWorldNormal *pWorldNormal = VS_NEW VSWorldNormal(_T("WorldNormal"), this);
+    VSWorldNormal *pWorldNormal = MX_NEW VSWorldNormal(_T("WorldNormal"), this);
 
-    VSDot *pDot = VS_NEW VSDot(_T("Dot"), this);
+    VSDot *pDot = MX_NEW VSDot(_T("Dot"), this);
 
     pDot->GetInputNode(0)->Connection(pWorldNormal->GetOutputNode(0));
     pDot->GetInputNode(1)->Connection(pMul1->GetOutputNode(0));
 
-    VSSaturate *pSaturate = VS_NEW VSSaturate(_T("Saturate"), this);
+    VSSaturate *pSaturate = MX_NEW VSSaturate(_T("Saturate"), this);
     pSaturate->GetInputNode(0)->Connection(pDot->GetOutputNode(0));
 
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pEmissiveNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *pEmissiveNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
     pEmissiveNode->SetTexture(pEmissiveTexture);
 
-    VSMul *pMul = VS_NEW VSMul(_T("Mul"), this);
+    VSMul *pMul = MX_NEW VSMul(_T("Mul"), this);
     pMul->GetInputNode(0)->Connection(pSaturate->GetOutputNode(0));
     pMul->GetInputNode(1)->Connection(p2DTexSamplerNode->GetOutputNode(0));
 
@@ -2601,7 +2601,7 @@ VSMaterialCustom::VSMaterialCustom(const VSUsedName &ShowName, VSTexAllStateR *p
     m_pShaderMainFunction[0]->GetInputNode(_T("Diffuse"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
     // m_pShaderMainFunction[0]->SetSRGBWrite(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.6f);
 
     m_pShaderMainFunction[0]->GetInputNode(_T("Alpha"))->Connection(pFinalAlpah->GetOutputNode(0));
@@ -2621,13 +2621,13 @@ VSLightMaterial::VSLightMaterial(const VSUsedName &ShowName, VSTexAllStateR *pDi
     : VSMaterial(ShowName, MUT_LIGHT)
 {
 
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
     m_pLightShaderFunction->GetInputNode(_T("DiffuseColor"))->Connection(p2DTexSamplerNode->GetOutputNode(0));
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.6f);
 
     m_pLightShaderFunction->GetInputNode(_T("Alpha"))->Connection(p2DTexSamplerNode->GetOutputNode(4));
@@ -2647,14 +2647,14 @@ VSPostEffectMaterial::VSPostEffectMaterial(const VSUsedName &ShowName)
     : VSMaterial(ShowName, MUT_POSTEFFECT)
 {
 
-    VSColorBuffer *pColorBuffer = VS_NEW VSColorBuffer(_T("ColorBuffer"), this);
-    VSConstFloatValue *pMulColor = VS_NEW VSConstFloatValue(_T("Color"), this, 4, false);
+    VSColorBuffer *pColorBuffer = MX_NEW VSColorBuffer(_T("ColorBuffer"), this);
+    VSConstFloatValue *pMulColor = MX_NEW VSConstFloatValue(_T("Color"), this, 4, false);
     pMulColor->SetValue(0, 1.0f);
     pMulColor->SetValue(1, 0.0f);
     pMulColor->SetValue(2, 0.0f);
     pMulColor->SetValue(3, 1.0f);
 
-    VSMul *pMul = VS_NEW VSMul(_T("Mul"), this);
+    VSMul *pMul = MX_NEW VSMul(_T("Mul"), this);
     pMul->GetInputNode(0)->Connection(pColorBuffer->GetOutputNode(0));
     pMul->GetInputNode(1)->Connection(pMulColor->GetOutputNode(0));
 
@@ -2671,29 +2671,29 @@ VSMaterialPhoneWolrdOffset::VSMaterialPhoneWolrdOffset()
 VSMaterialPhoneWolrdOffset::VSMaterialPhoneWolrdOffset(const VSUsedName &ShowName, VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture,
                                                        VSTexAllStateR *pSpecularTexture, VSTexAllStateR *pEmissiveTexture, bool bPhoneSpecular) : VSMaterial(ShowName, MUT_PHONE)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
     // p2DTexSamplerNode->SetVESRGB(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pSpecularNode = VS_NEW VS2DTexSampler(_T("SpecularTexture"), this);
+    VS2DTexSampler *pSpecularNode = MX_NEW VS2DTexSampler(_T("SpecularTexture"), this);
     pSpecularNode->SetTexture(pSpecularTexture);
 
-    VS2DTexSampler *pEmissiveNode = VS_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
+    VS2DTexSampler *pEmissiveNode = MX_NEW VS2DTexSampler(_T("EmissiveTexture"), this);
     pEmissiveNode->SetTexture(pEmissiveTexture);
 
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, true);
     pSpecularPow->SetValue(0, 50.0f);
 
-    VSWorldNormal *pWorldNormal = VS_NEW VSWorldNormal(_T("WorldNormal"), this);
+    VSWorldNormal *pWorldNormal = MX_NEW VSWorldNormal(_T("WorldNormal"), this);
     pWorldNormal->m_uiNormalType = VSWorldNormal::WNT_VERTEX;
-    VSConstFloatValue *pExtendLength = VS_NEW VSConstFloatValue(_T("ExtendLength"), this, 1, true);
+    VSConstFloatValue *pExtendLength = MX_NEW VSConstFloatValue(_T("ExtendLength"), this, 1, true);
     pExtendLength->SetValue(0, 10.0f);
 
-    VSMul *pWorldNormal_Mul_ExtendLength = VS_NEW VSMul(_T("WorldNormal_Mul_ExtendLength"), this);
+    VSMul *pWorldNormal_Mul_ExtendLength = MX_NEW VSMul(_T("WorldNormal_Mul_ExtendLength"), this);
     pWorldNormal_Mul_ExtendLength->GetInputNode(VSInputNode::INI_A)->Connection(pWorldNormal->GetOutputNode(VSOutputNode::ONI_VALUE));
     pWorldNormal_Mul_ExtendLength->GetInputNode(VSInputNode::INI_B)->Connection(pExtendLength->GetOutputNode(VSOutputNode::ONI_VALUE));
 
@@ -2705,7 +2705,7 @@ VSMaterialPhoneWolrdOffset::VSMaterialPhoneWolrdOffset(const VSUsedName &ShowNam
     m_pShaderMainFunction[0]->GetInputNode(_T("WorldOffset"))->Connection(pWorldNormal_Mul_ExtendLength->GetOutputNode(0));
     // m_pShaderMainFunction[0]->SetSRGBWrite(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VSConstFloatValue *pFinalAlpah = VS_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
+    VSConstFloatValue *pFinalAlpah = MX_NEW VSConstFloatValue(_T("FinalAlpha"), this, 1, false);
     pFinalAlpah->SetValue(0, 0.6f);
 
     m_pShaderMainFunction[0]->GetInputNode(_T("Alpha"))->Connection(pFinalAlpah->GetOutputNode(0));
@@ -2726,58 +2726,58 @@ VSMaterialTessellation::VSMaterialTessellation(const VSUsedName &ShowName,
                                                VSTexAllStateR *pDiffuseTexture, VSTexAllStateR *pNormalTexture, VSTexAllStateR *pWorldDisplacementTexture)
     : VSMaterial(ShowName)
 {
-    VS2DTexSampler *p2DTexSamplerNode = VS_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
+    VS2DTexSampler *p2DTexSamplerNode = MX_NEW VS2DTexSampler(_T("DiffuseTexture"), this);
     p2DTexSamplerNode->SetTexture(pDiffuseTexture);
 
-    VS2DTexSampler *pNormalNode = VS_NEW VS2DTexSampler(_T("NormalTexture"), this);
+    VS2DTexSampler *pNormalNode = MX_NEW VS2DTexSampler(_T("NormalTexture"), this);
     pNormalNode->SetTexture(pNormalTexture);
     pNormalNode->SetVEDecode(VSRenderer::VE_R | VSRenderer::VE_G | VSRenderer::VE_B);
 
-    VS2DTexSampler *pWorldDisplacementNode = VS_NEW VS2DTexSampler(_T("WorldDisplacementTexture"), this);
+    VS2DTexSampler *pWorldDisplacementNode = MX_NEW VS2DTexSampler(_T("WorldDisplacementTexture"), this);
     pWorldDisplacementNode->SetTexture(pWorldDisplacementTexture);
 
-    VSConstFloatValue *pSpecularColor = VS_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
+    VSConstFloatValue *pSpecularColor = MX_NEW VSConstFloatValue(_T("SpecluarColor"), this, 4, false);
     pSpecularColor->SetValue(0, 0.5f);
     pSpecularColor->SetValue(1, 0.5f);
     pSpecularColor->SetValue(2, 0.5f);
     pSpecularColor->SetValue(3, 1.0f);
-    VSConstFloatValue *pSpecularPow = VS_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
+    VSConstFloatValue *pSpecularPow = MX_NEW VSConstFloatValue(_T("SpecularPow"), this, 1, false);
     pSpecularPow->SetValue(0, 100.0f);
 
-    VSConstFloatValue *pDetaDistance = VS_NEW VSConstFloatValue(_T("MaxDistance"), this, 1, false);
+    VSConstFloatValue *pDetaDistance = MX_NEW VSConstFloatValue(_T("MaxDistance"), this, 1, false);
     pDetaDistance->SetValue(0, -2000.0f);
 
-    VSConstFloatValue *pMinDistance = VS_NEW VSConstFloatValue(_T("MinDistance"), this, 1, false);
+    VSConstFloatValue *pMinDistance = MX_NEW VSConstFloatValue(_T("MinDistance"), this, 1, false);
     pMinDistance->SetValue(0, 2500.0f);
 
-    VSCameraWorldPos *pCameraWorldPos = VS_NEW VSCameraWorldPos(_T("CameraWorldPos"), this);
-    VSWorldPos *pWorldPos = VS_NEW VSWorldPos(_T("WorldPos"), this);
-    VSSub *pSub = VS_NEW VSSub(_T("Sub"), this);
+    VSCameraWorldPos *pCameraWorldPos = MX_NEW VSCameraWorldPos(_T("CameraWorldPos"), this);
+    VSWorldPos *pWorldPos = MX_NEW VSWorldPos(_T("WorldPos"), this);
+    VSSub *pSub = MX_NEW VSSub(_T("Sub"), this);
     pSub->GetInputNode(VSInputNode::INI_A)->Connection(pCameraWorldPos->GetOutputNode(VSOutputNode::ONI_VALUE));
     pSub->GetInputNode(VSInputNode::INI_B)->Connection(pWorldPos->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSLength *pLength = VS_NEW VSLength(_T("Length"), this);
+    VSLength *pLength = MX_NEW VSLength(_T("Length"), this);
     pLength->GetInputNode(VSInputNode::INI_VALUE)->Connection(pSub->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSSub *pSubDeta = VS_NEW VSSub(_T("SubDeta"), this);
+    VSSub *pSubDeta = MX_NEW VSSub(_T("SubDeta"), this);
     pSubDeta->GetInputNode(VSInputNode::INI_A)->Connection(pLength->GetOutputNode(VSOutputNode::ONI_VALUE));
     pSubDeta->GetInputNode(VSInputNode::INI_B)->Connection(pMinDistance->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSDiv *pDiv = VS_NEW VSDiv(_T("Div"), this);
+    VSDiv *pDiv = MX_NEW VSDiv(_T("Div"), this);
     pDiv->GetInputNode(VSInputNode::INI_A)->Connection(pSubDeta->GetOutputNode(VSOutputNode::ONI_VALUE));
     pDiv->GetInputNode(VSInputNode::INI_B)->Connection(pDetaDistance->GetOutputNode(VSOutputNode::ONI_VALUE));
 
-    VSConstFloatValue *pDisplacementScalar = VS_NEW VSConstFloatValue(_T("DisplacementScalar"), this, 1, false);
+    VSConstFloatValue *pDisplacementScalar = MX_NEW VSConstFloatValue(_T("DisplacementScalar"), this, 1, false);
     pDisplacementScalar->SetValue(0, 100.0f);
 
-    VSMul *pMulDisplacementScalar = VS_NEW VSMul(_T("MulDisplacementScalar"), this);
+    VSMul *pMulDisplacementScalar = MX_NEW VSMul(_T("MulDisplacementScalar"), this);
     pMulDisplacementScalar->GetInputNode(VSInputNode::INI_A)->Connection(pDisplacementScalar->GetOutputNode(VSOutputNode::ONI_VALUE));
     pMulDisplacementScalar->GetInputNode(VSInputNode::INI_B)->Connection(pWorldDisplacementNode->GetOutputNode(VSOutputNode::ONI_A));
 
-    VSWorldNormal *pWorldNormal = VS_NEW VSWorldNormal(_T("WorldNormal"), this);
+    VSWorldNormal *pWorldNormal = MX_NEW VSWorldNormal(_T("WorldNormal"), this);
     pWorldNormal->m_uiNormalType = VSWorldNormal::WNT_VERTEX;
 
-    VSMul *pWorldNormal_Mul_ExtendLength = VS_NEW VSMul(_T("WorldNormal_Mul_ExtendLength"), this);
+    VSMul *pWorldNormal_Mul_ExtendLength = MX_NEW VSMul(_T("WorldNormal_Mul_ExtendLength"), this);
     pWorldNormal_Mul_ExtendLength->GetInputNode(VSInputNode::INI_A)->Connection(pWorldNormal->GetOutputNode(VSOutputNode::ONI_VALUE));
     pWorldNormal_Mul_ExtendLength->GetInputNode(VSInputNode::INI_B)->Connection(pMulDisplacementScalar->GetOutputNode(VSOutputNode::ONI_VALUE));
 

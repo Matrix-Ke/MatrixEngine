@@ -22,8 +22,8 @@ namespace Matrix
         {
             m_pTexAllState = pTexture;
         }
-        virtual bool GetInputValueString(VSString &InputString, MaterialShaderPara &MSPara) const;
-        virtual bool GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const;
+        virtual bool GetInputValueString(Container::MString &InputString, MaterialShaderPara &MSPara) const;
+        virtual bool GetDeclareString(Container::MString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const;
         virtual void SetTexCoordLevel(unsigned int uiTexCoordLevel)
         {
             m_uiTexCoordLevel = uiTexCoordLevel;
@@ -61,7 +61,7 @@ namespace Matrix
             }
             m_uiSamplerSource = SamplerSource;
         }
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const = 0;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const = 0;
 
     protected:
         VSTexSampler();

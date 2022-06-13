@@ -1,8 +1,8 @@
 #include "SkeletonMeshNode.h"
-#include "BoneNode.h"
+#include "Node/Model/BoneNode.h"
 #include "AnimTree.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkeletonMeshNode, VSModelMeshNode)
 BEGIN_ADD_PROPERTY(VSSkeletonMeshNode, VSModelMeshNode)
@@ -63,7 +63,7 @@ void VSSkeletonMeshNode::CreateAnimInstanceData()
     }
 
     m_uiAnimInstanceTextureWidth = m_uiKeyFrameLengthArrray[m_uiKeyFrameLengthArrray.GetNum() - 1];
-    VSMAC_ASSERT(m_uiAnimInstanceTextureWidth <= 4096);
+    ENGINE_ASSERT(m_uiAnimInstanceTextureWidth <= 4096);
     // m_uiAnimInstanceTextureWidth = 1 << (CeilLogTwo(m_uiAnimInstanceTextureWidth));
     m_uiAnimInstanceTextureHeight = m_pSkeleton->GetBoneNum() * 3;
     // m_uiAnimInstanceTextureHeight = 1 << (CeilLogTwo(m_uiAnimInstanceTextureHeight));
@@ -268,8 +268,8 @@ VSSkeletonMeshNode::~VSSkeletonMeshNode()
 }
 bool VSSkeletonMeshNode::InitialDefaultState()
 {
-    ms_Default = VS_NEW VSSkeletonMeshNode();
-    VSGeometryNodePtr GeometryNode = VS_NEW VSGeometryNode();
+    ms_Default = MX_NEW VSSkeletonMeshNode();
+    VSGeometryNodePtr GeometryNode = MX_NEW VSGeometryNode();
     ms_Default->AddChild(GeometryNode);
     VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);
@@ -307,10 +307,10 @@ VSSocketNode *VSSkeletonMeshNode::GetSocket(const VSUsedName &SocketName)
 }
 VSSocketNode *VSSkeletonMeshNode::CreateSocket(const VSUsedName &BoneName, const VSUsedName &SocketName)
 {
-    VSMAC_ASSERT(m_pSkeleton);
+    ENGINE_ASSERT(m_pSkeleton);
 
     VSBoneNode *pBone = m_pSkeleton->GetBoneNode(BoneName);
-    VSMAC_ASSERT(pBone);
+    ENGINE_ASSERT(pBone);
 
     for (unsigned int i = 0; i < m_pSocketArray.GetNum(); i++)
     {
@@ -320,7 +320,7 @@ VSSocketNode *VSSkeletonMeshNode::CreateSocket(const VSUsedName &BoneName, const
         }
     }
 
-    VSSocketNode *pSocketNode = VS_NEW VSSocketNode();
+    VSSocketNode *pSocketNode = MX_NEW VSSocketNode();
     pBone->AddChild(pSocketNode);
     pSocketNode->m_cName = SocketName;
     m_pSocketArray.AddElement(pSocketNode);
@@ -333,7 +333,7 @@ void VSSkeletonMeshNode::DeleteSocket(const VSUsedName &SocketName)
         if (m_pSocketArray[i]->m_cName == SocketName)
         {
             VSBoneNode *pSocketParent = (VSBoneNode *)(m_pSocketArray[i]->GetParent());
-            VSMAC_ASSERT(pSocketParent);
+            ENGINE_ASSERT(pSocketParent);
             pSocketParent->DeleteChild(m_pSocketArray[i]);
             m_pSocketArray.Erase(i);
             return;
@@ -450,7 +450,7 @@ void VSSkeletonMeshNode::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *
         m_pAnimTreeInstance->SetObject(this);
         if (!m_pAnimTreeInstance->IsSupportSimpleInstance() && VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_AdvanceInstance))
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             m_bDrawInstance = false;
         }
     }
@@ -591,11 +591,11 @@ void VSSkeletonMeshNode::UpdateWorldBound(double dAppTime)
         m_pParent->m_bIsChanged = true;
     }
 }
-bool VSSkeletonMeshNode::PlayAnim(const VSString &AnimName, VSREAL fRatio, unsigned int uiRepeatType)
+bool VSSkeletonMeshNode::PlayAnim(const Container::MString &AnimName, VSREAL fRatio, unsigned int uiRepeatType)
 {
     if (m_pAnimSequence == NULL)
     {
-        m_pAnimSequence = VS_NEW VSAnimSequenceFunc();
+        m_pAnimSequence = MX_NEW VSAnimSequenceFunc();
         m_pAnimSequence->SetObject(this);
         m_bIsStatic = false;
     }

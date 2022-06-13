@@ -1,8 +1,8 @@
 #include "ShaderFunction.h"
 #include "Material.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "LightShaderFunction.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSShaderFunction, MObject)
@@ -27,7 +27,7 @@ VSShaderFunction::VSShaderFunction(const VSUsedName &ShowName, VSMaterial *pMate
     m_ShowName = ShowName;
     m_pInput.Clear();
     m_pOutput.Clear();
-    VSMAC_ASSERT(pMaterial);
+    ENGINE_ASSERT(pMaterial);
     m_pOwner = pMaterial;
     m_pOwner->AddShaderFunction(this);
 }
@@ -43,11 +43,11 @@ VSShaderFunction::~VSShaderFunction()
     }
     m_pOwner->DeleteShaderFunction(this);
 }
-bool VSShaderFunction::GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderFunction::GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (!VSRenderer::ms_pRenderer)
         return 0;
-    VSString Temp;
+    Container::MString Temp;
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {
 
@@ -73,7 +73,7 @@ bool VSShaderFunction::GetInputValueString(VSString &OutString, MaterialShaderPa
         }
         else
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
         }
         if (!m_pInput[i]->GetOutputLink())
         {
@@ -86,10 +86,10 @@ bool VSShaderFunction::GetInputValueString(VSString &OutString, MaterialShaderPa
     }
     return 1;
 }
-VSString VSShaderFunction::GetValueEqualString(const VSOutputNode *pOutputNode, const VSInputNode *pInputNode) const
+Container::MString VSShaderFunction::GetValueEqualString(const VSOutputNode *pOutputNode, const VSInputNode *pInputNode) const
 {
     if (!pInputNode || !pOutputNode)
-        return VSString();
+        return Container::MString();
     unsigned int uiMaxElement = pInputNode->GetValueType();
     if (uiMaxElement == pOutputNode->GetValueType())
     {
@@ -97,9 +97,9 @@ VSString VSShaderFunction::GetValueEqualString(const VSOutputNode *pOutputNode, 
         return pInputNode->GetNodeName().GetString() + _T(" = ") + pOutputNode->GetNodeName().GetString() + _T(";\n");
     }
 
-    VSString OutString;
+    Container::MString OutString;
     OutString = pInputNode->GetNodeName().GetString() + _T(" = ");
-    VSString Value[4];
+    Container::MString Value[4];
     unsigned int Mask[4];
     Mask[0] = VSRenderer::VE_R;
     Mask[1] = VSRenderer::VE_G;
@@ -133,15 +133,15 @@ VSString VSShaderFunction::GetValueEqualString(const VSOutputNode *pOutputNode, 
         OutString += VSRenderer::ms_pRenderer->Float4Const(Value[0], Value[1], Value[2], Value[3]);
     }
     else
-        return VSString();
+        return Container::MString();
     OutString += _T(";\n");
     return OutString;
 }
-bool VSShaderFunction::GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderFunction::GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (!VSRenderer::ms_pRenderer)
         return 0;
-    VSString Temp;
+    Container::MString Temp;
     for (unsigned int i = 0; i < m_pOutput.GetNum(); i++)
     {
 
@@ -173,7 +173,7 @@ bool VSShaderFunction::GetOutputValueString(VSString &OutString, MaterialShaderP
     }
     return 1;
 }
-bool VSShaderFunction::GetShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSShaderFunction::GetShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     if (m_bIsVisited == 1)
         return 1;
@@ -223,14 +223,14 @@ bool VSShaderFunction::ClearShaderTreeStringFlag()
 }
 VSInputNode *VSShaderFunction::GetInputNode(unsigned int uiNodeID) const
 {
-    // VSMAC_ASSERT(uiNodeID < m_pInput.GetNum());
+    // ENGINE_ASSERT(uiNodeID < m_pInput.GetNum());
     if (uiNodeID >= m_pInput.GetNum())
     {
         return NULL;
     }
     return m_pInput[uiNodeID];
 }
-VSInputNode *VSShaderFunction::GetInputNode(const VSString &NodeName) const
+VSInputNode *VSShaderFunction::GetInputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
     {
@@ -242,10 +242,10 @@ VSInputNode *VSShaderFunction::GetInputNode(const VSString &NodeName) const
 
 VSOutputNode *VSShaderFunction::GetOutputNode(unsigned int uiNodeID) const
 {
-    VSMAC_ASSERT(uiNodeID < m_pOutput.GetNum());
+    ENGINE_ASSERT(uiNodeID < m_pOutput.GetNum());
     return m_pOutput[uiNodeID];
 }
-VSOutputNode *VSShaderFunction::GetOutputNode(const VSString &NodeName) const
+VSOutputNode *VSShaderFunction::GetOutputNode(const Container::MString &NodeName) const
 {
     for (unsigned int i = 0; i < m_pOutput.GetNum(); i++)
     {
@@ -303,7 +303,7 @@ bool VSShaderFunction::CheckChildNodeValidToThis(Container::MArray<VSShaderFunct
 
     return NoValidShaderFunctionArray.GetNum() == 0;
 }
-bool VSShaderFunction::CheckChildNodeValidAll(VSMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara)
+bool VSShaderFunction::CheckChildNodeValidAll(Container::MMap<VSShaderFunction *, Container::MArray<VSShaderFunction *>> &NoValidMap, MaterialShaderPara &MSPara)
 {
     Container::MArray<VSShaderFunction *> NoValidShaderFunctionArray;
     if (!CheckChildNodeValidToThis(NoValidShaderFunctionArray, MSPara))
@@ -317,7 +317,7 @@ bool VSShaderFunction::CheckChildNodeValidAll(VSMap<VSShaderFunction *, Containe
             VSShaderFunction *pOwner = (VSShaderFunction *)m_pInput[i]->GetOutputLink()->GetOwner();
             if (pOwner == this)
             {
-                VSMAC_ASSERT(0);
+                ENGINE_ASSERT(0);
                 return false;
             }
             pOwner->CheckChildNodeValidAll(NoValidMap, MSPara);

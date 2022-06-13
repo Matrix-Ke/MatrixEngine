@@ -50,7 +50,7 @@ namespace Matrix
         void GetAll(const VSRenderState *pRenderState)
         {
 
-            VSMAC_ASSERT(pRenderState);
+            ENGINE_ASSERT(pRenderState);
             if (pRenderState)
             {
                 SetRasterizerState(pRenderState->m_pRasterizerState);

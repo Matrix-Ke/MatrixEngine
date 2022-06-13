@@ -1,5 +1,5 @@
 #include "OutputResource.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSOutputResource, VSBind)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSOutputResource)

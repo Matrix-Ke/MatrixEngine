@@ -1,5 +1,5 @@
 #include "LineSet.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSLineSet, VSMeshData)
 BEGIN_ADD_PROPERTY(VSLineSet, VSMeshData)
@@ -15,9 +15,9 @@ VSLineSet::~VSLineSet()
 }
 bool VSLineSet::CreateIndex(unsigned int uiLineType)
 {
-    VSMAC_ASSERT(m_pVertexBuffer);
+    ENGINE_ASSERT(m_pVertexBuffer);
     unsigned int Num = m_pVertexBuffer->GetVertexNum();
-    VSMAC_ASSERT(Num >= 2);
+    ENGINE_ASSERT(Num >= 2);
     if (uiLineType == LT_OPEN)
     {
         Num = (Num - 1) * 2;
@@ -34,16 +34,16 @@ bool VSLineSet::CreateIndex(unsigned int uiLineType)
         }
     }
     else
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     VSDataBuffer *pIndex = NULL;
     pIndex = new VSDataBuffer();
-    VSMAC_ASSERT(pIndex);
+    ENGINE_ASSERT(pIndex);
 
     if (!pIndex->CreateEmptyBuffer(Num, VSDataBuffer::DT_USHORT))
         return 0;
 
     VSUSHORT_INDEX *pIndexBuffer = (VSUSHORT_INDEX *)pIndex->GetData();
-    VSMAC_ASSERT(pIndexBuffer);
+    ENGINE_ASSERT(pIndexBuffer);
 
     if (uiLineType == LT_OPEN)
     {
@@ -73,8 +73,8 @@ bool VSLineSet::CreateIndex(unsigned int uiLineType)
     }
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
-        VSMAC_ASSERT(m_pIndexBuffer);
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
+        ENGINE_ASSERT(m_pIndexBuffer);
     }
 
     m_pIndexBuffer->SetData(pIndex);

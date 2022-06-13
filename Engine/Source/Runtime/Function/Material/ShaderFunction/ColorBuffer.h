@@ -12,10 +12,10 @@ namespace Matrix
     public:
         VSColorBuffer(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSColorBuffer();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetInputValueString(VSString &InputString, MaterialShaderPara &MSPara) const;
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetInputValueString(Container::MString &InputString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSColorBuffer();

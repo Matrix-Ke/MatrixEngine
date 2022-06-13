@@ -1,5 +1,5 @@
 #include "OneParamSmoothAnimBlendSequence.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSOneParamSmoothAnimBlendSequence, VSOneParamSmoothAnimBlend)
 BEGIN_ADD_PROPERTY(VSOneParamSmoothAnimBlendSequence, VSOneParamSmoothAnimBlend)
@@ -95,7 +95,7 @@ void VSOneParamSmoothAnimBlendSequence::CreateSlot(unsigned int uiWidth)
     m_AnimSequenceFuncArray.Clear();
     for (unsigned int i = 0; i < uiWidth; i++)
     {
-        VSAnimSequenceFunc *pAnimSequenceFun = pAnimSequenceFun = VS_NEW VSAnimSequenceFunc();
+        VSAnimSequenceFunc *pAnimSequenceFun = pAnimSequenceFun = MX_NEW VSAnimSequenceFunc();
         m_AnimSequenceFuncArray.AddElement(pAnimSequenceFun);
     }
 }

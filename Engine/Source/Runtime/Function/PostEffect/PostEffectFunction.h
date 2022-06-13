@@ -1,7 +1,7 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "PutNode.h"
-#include "Name.h"
+#include "Core/Meta/ObjName.h"
 #include "SceneRender.h"
 namespace Matrix
 {
@@ -25,7 +25,7 @@ namespace Matrix
         bool m_bIsVisited;
         inline void SetOwner(VSPostEffectSet *pOwner)
         {
-            VSMAC_ASSERT(pOwner);
+            ENGINE_ASSERT(pOwner);
             m_pOwner = pOwner;
         }
 
@@ -40,10 +40,10 @@ namespace Matrix
         bool ClearFlag();
 
         VSInputNode *GetInputNode(unsigned int uiNodeID) const;
-        VSInputNode *GetInputNode(const VSString &NodeName) const;
+        VSInputNode *GetInputNode(const Container::MString &NodeName) const;
 
         VSOutputNode *GetOutputNode(unsigned int uiNodeID) const;
-        VSOutputNode *GetOutputNode(const VSString &NodeName) const;
+        VSOutputNode *GetOutputNode(const Container::MString &NodeName) const;
 
         inline const VSUsedName &GetShowName() const
         {

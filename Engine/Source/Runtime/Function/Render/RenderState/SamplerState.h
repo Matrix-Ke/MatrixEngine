@@ -38,7 +38,7 @@ namespace Matrix
             m_uiCoordU = CM_WRAP;
             m_uiCoordV = CM_WRAP;
             m_uiCoordW = CM_WRAP;
-            m_BorderColor = VSColorRGBA(0.0f, 0.0f, 0.0f, 0.0f);
+            m_BorderColor = Math::ColorRGBA(0.0f, 0.0f, 0.0f, 0.0f);
             m_MipLODBias = 0.0f;
         }
         ~VSSamplerDesc()
@@ -55,7 +55,7 @@ namespace Matrix
         unsigned char m_uiCoordV;
         unsigned char m_uiCoordW;
         VSREAL m_MipLODBias;
-        VSColorRGBA m_BorderColor;
+        Math::ColorRGBA m_BorderColor;
         void *GetCRC32Data(unsigned int &DataSize) const
         {
             DataSize = sizeof(VSSamplerDesc) - sizeof(MObject);

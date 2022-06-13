@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "Thread.h"
 #include "EngineThread.h"
 //#define EVENT_UPDATE
@@ -95,7 +95,7 @@ namespace Matrix
     if (VSResourceManager::ms_bRenderThread && VSRenderThreadSys::ms_pRenderThreadSys->IsRunning())         \
     {                                                                                                       \
         TypeName *pCommand = (TypeName *)VSRenderThreadSys::ms_pRenderThreadSys->AssignCommand<TypeName>(); \
-        VS_NEW(pCommand)                                                                                    \
+        MX_NEW(pCommand)                                                                                    \
         TypeName Params;                                                                                    \
     }                                                                                                       \
     else                                                                                                    \

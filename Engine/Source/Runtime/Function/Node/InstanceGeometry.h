@@ -1,6 +1,6 @@
 #pragma once
-#include "Object.h"
-#include "Geometry.h"
+#include "Core/Object.h"
+#include "Node/Geometry.h"
 namespace Matrix
 {
     struct INSTANCE_DATA_TYPE

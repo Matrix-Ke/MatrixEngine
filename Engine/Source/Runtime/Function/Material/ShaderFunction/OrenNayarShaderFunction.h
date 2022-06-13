@@ -26,7 +26,7 @@ namespace Matrix
         };
         VSOrenNayarShaderFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSOrenNayarShaderFunction();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual inline unsigned int GetSMType() const
         {
             return SM_OREN_NAYAR;

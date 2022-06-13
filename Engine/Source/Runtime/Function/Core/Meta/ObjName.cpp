@@ -14,7 +14,7 @@ VSName::~VSName()
 }
 VSName::VSName(const TCHAR* pChar, unsigned int uiID)
 {
-	MATRIX_ENGINE_ASSERT(pChar);
+	ENGINE_ASSERT(pChar);
 	m_uiID = uiID;
 	m_String.Clear();
 	m_String = pChar;

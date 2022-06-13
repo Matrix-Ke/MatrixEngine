@@ -1,15 +1,15 @@
 #include "ShaderMainFunction.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Light.h"
-#include "PointLight.h"
-#include "DirectionLight.h"
+#include "Core/GraphicInclude.h"
+#include "Node/NodeComponent/Light/Light.h"
+#include "Node/NodeComponent/Light/PointLight.h"
+#include "Node/NodeComponent/Light/DirectionLight.h"
 #include "NormalFunction.h"
 #include "PosShaderFunction.h"
 #include "NormalFunction.h"
 #include "CameraShaderFunction.h"
 #include "LightShaderFunction.h"
-#include "SpotLight.h"
+#include "Node/NodeComponent/Light/SpotLight.h"
 #include "ColorBuffer.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSShaderMainFunction, VSShaderFunction)
@@ -36,7 +36,7 @@ VSShaderMainFunction::VSShaderMainFunction()
     m_uiVESRGBWrite = false;
     m_fAlphaTestValue = 1.0f;
 }
-bool VSShaderMainFunction::GetVShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSShaderMainFunction::GetVShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (m_bIsVisited == 1)
@@ -57,7 +57,7 @@ bool VSShaderMainFunction::GetVShaderTreeString(VSString &OutString, MaterialSha
         return 1;
     }
 }
-bool VSShaderMainFunction::GetDShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSShaderMainFunction::GetDShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (m_bIsVisited == 1)
@@ -70,7 +70,7 @@ bool VSShaderMainFunction::GetDShaderTreeString(VSString &OutString, MaterialSha
         return 1;
     }
 }
-bool VSShaderMainFunction::GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSShaderMainFunction::GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (m_bIsVisited == 1)
@@ -185,29 +185,29 @@ bool VSShaderMainFunction::GetPShaderTreeString(VSString &OutString, MaterialSha
         return 1;
     }
 }
-void VSShaderMainFunction::GetAlphaTestString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetAlphaTestString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (m_fAlphaTestValue < 1.0f)
     {
-        VSString AlphaName = GetAlphaNode()->GetNodeName().GetString();
-        VSString AlphaTestValue = Container::RealToString(m_fAlphaTestValue);
+        Container::MString AlphaName = GetAlphaNode()->GetNodeName().GetString();
+        Container::MString AlphaTestValue = Container::RealToString(m_fAlphaTestValue);
 
         VSRenderer::ms_pRenderer->Clip(AlphaName + _T(" - ") + AlphaTestValue, OutString);
         OutString += _T(";\n");
     }
 }
-void VSShaderMainFunction::GetSRGBWriteString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetSRGBWriteString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (m_uiVESRGBWrite)
     {
-        VSString NodeString = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], m_uiVESRGBWrite);
+        Container::MString NodeString = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], m_uiVESRGBWrite);
 
         OutString += NodeString + _T(" = ");
         VSRenderer::ms_pRenderer->GreaterZeroPow(NodeString, 1.0f / 2.2f, OutString);
         OutString += _T(";\n");
     }
 }
-bool VSShaderMainFunction::GetIndirectRenderString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetIndirectRenderString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     GetAlphaTestString(OutString, MSPara);
@@ -219,16 +219,16 @@ bool VSShaderMainFunction::GetIndirectRenderString(VSString &OutString, Material
 
     GetSRGBWriteString(OutString, MSPara);
 
-    VSString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
+    Container::MString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
     OutString += NodeStringA + _T(" = ") + GetAlphaNode()->GetNodeName().GetString();
     OutString += _T(";\n");
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(";\n");
     return true;
 }
-void VSShaderMainFunction::GetValueUseDeclareString(VSString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara)
+void VSShaderMainFunction::GetValueUseDeclareString(Container::MString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara)
 {
 
-    VSString DefaultValue = VSRenderer::ms_pRenderer->Float3Const(_T("0"), _T("0"), _T("0"));
+    Container::MString DefaultValue = VSRenderer::ms_pRenderer->Float3Const(_T("0"), _T("0"), _T("0"));
     if ((uiValueUseString & VUS_WORLD_POS) == VUS_WORLD_POS)
         OutString += VSRenderer::ms_pRenderer->Float3() + *VSShaderStringFactory::ms_WorldPos + _T(" = ") + DefaultValue + _T(";\n");
     if ((uiValueUseString & VUS_VIEW_POS) == VUS_VIEW_POS)
@@ -251,18 +251,18 @@ void VSShaderMainFunction::GetValueUseDeclareString(VSString &OutString, unsigne
     if ((uiValueUseString & VUS_VIEW_WORLD_DIR) == VUS_VIEW_WORLD_DIR)
         OutString += VSRenderer::ms_pRenderer->Float3() + *VSShaderStringFactory::ms_ViewWorldDir + _T(" = ") + DefaultValue + _T(";\n");
 }
-bool VSShaderMainFunction::GetSDualParaboloidhadowString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetSDualParaboloidhadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     GetAlphaTestString(OutString, MSPara);
 
-    VSString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
+    Container::MString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
     OutString += NodeStringR + _T(" = ") + VSShaderStringFactory::ms_InputProjectZ;
     OutString += _T(";\n");
 
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(";\n");
     return true;
 }
-bool VSShaderMainFunction::GetShadowString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetShadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     GetAlphaTestString(OutString, MSPara);
@@ -272,14 +272,14 @@ bool VSShaderMainFunction::GetShadowString(VSString &OutString, MaterialShaderPa
     VSRenderer::ms_pRenderer->TransProjPos(*VSShaderStringFactory::ms_WorldPos, *VSShaderStringFactory::ms_LightShadowMatrix, OutString);
 
     OutString += _T(";\n");
-    VSString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
+    Container::MString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
     OutString += NodeStringR + _T(" = ") + VSRenderer::GetValueElement(_T("LightProj"), VSRenderer::VE_B);
     OutString += _T(";\n");
 
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(";\n");
     return true;
 }
-bool VSShaderMainFunction::GetCubShadowString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetCubShadowString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     GetAlphaTestString(OutString, MSPara);
@@ -288,8 +288,8 @@ bool VSShaderMainFunction::GetCubShadowString(VSString &OutString, MaterialShade
     VSRenderer::ms_pRenderer->ComputeLength(*VSShaderStringFactory::ms_CameraWorldPos, *VSShaderStringFactory::ms_WorldPos, OutString);
     OutString += _T(";\n");
 
-    VSString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
-    VSString SaturateString;
+    Container::MString NodeStringR = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R);
+    Container::MString SaturateString;
     VSRenderer::ms_pRenderer->Saturate(_T("WorldCameraLength /") + *VSShaderStringFactory::ms_PointLightRange, SaturateString);
     OutString += NodeStringR + _T(" = ") + SaturateString;
     OutString += _T(";\n");
@@ -298,22 +298,22 @@ bool VSShaderMainFunction::GetCubShadowString(VSString &OutString, MaterialShade
 
     return true;
 }
-bool VSShaderMainFunction::GetNormalDepthString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetNormalDepthString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     GetAlphaTestString(OutString, MSPara);
-    VSString NodeStringRG = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R | VSRenderer::VE_G);
+    Container::MString NodeStringRG = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_R | VSRenderer::VE_G);
     OutString += NodeStringRG + _T(" = ");
     VSRenderer::ms_pRenderer->DecodeNormal3(*VSShaderStringFactory::ms_ViewNormal, OutString);
     OutString += _T(";\n");
 
-    VSString NodeStringB = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_B);
-    VSString StringViewZ = VSRenderer::GetValueElement(*VSShaderStringFactory::ms_ViewPos, VSRenderer::VE_B);
-    VSString SaturateString;
+    Container::MString NodeStringB = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_B);
+    Container::MString StringViewZ = VSRenderer::GetValueElement(*VSShaderStringFactory::ms_ViewPos, VSRenderer::VE_B);
+    Container::MString SaturateString;
     VSRenderer::ms_pRenderer->Saturate(StringViewZ + _T("/") + *VSShaderStringFactory::ms_FarZ, SaturateString);
     OutString += NodeStringB + _T(" = ") + SaturateString;
     OutString += _T(";\n");
 
-    VSString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
+    Container::MString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
     OutString += NodeStringA + _T(" = ");
     VSRenderer::ms_pRenderer->EncodeReflect(GetReflectMipNode()->GetNodeName().GetString(), GetReflectPowNode()->GetNodeName().GetString(), OutString);
     OutString += _T(";\n");
@@ -322,12 +322,12 @@ bool VSShaderMainFunction::GetNormalDepthString(VSString &OutString, MaterialSha
 
     return true;
 }
-bool VSShaderMainFunction::GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (!VSRenderer::ms_pRenderer)
         return 0;
-    VSString Temp;
+    Container::MString Temp;
     if (uiOutputStringType == VSPass::PT_MATERIAL)
     {
         for (unsigned int i = 0; i < m_pInput.GetNum(); i++)
@@ -394,14 +394,14 @@ bool VSShaderMainFunction::GetInputValueString(VSString &OutString, MaterialShad
     }
     return 1;
 }
-void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX]) const
+void VSShaderMainFunction::GetLightShadow(MaterialShaderPara &MSPara, Container::MArray<Container::MString> ShadowStringArray[VSLight::LT_MAX]) const
 {
     Container::MArray<VSLight *> pLightArray = MSPara.LightArray;
     unsigned int uiShadowNum = 0;
     unsigned int uiLightIndex[VSLight::LT_MAX] = {0};
     for (unsigned int i = 0; i < pLightArray.GetNum(); i++)
     {
-        VSString ShadowString;
+        Container::MString ShadowString;
         VSLocalLight *pLocalLight = DynamicCast<VSLocalLight>(pLightArray[i]);
         if (pLocalLight && pLocalLight->GetCastShadow())
         {
@@ -538,7 +538,7 @@ bool VSShaderMainFunction::IsValidNodeToThis(VSShaderFunction *pShaderFunction, 
     }
     return true;
 }
-void VSShaderMainFunction::GetValueUseString(VSString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara)
+void VSShaderMainFunction::GetValueUseString(Container::MString &OutString, unsigned int uiValueUseString, MaterialShaderPara &MSPara)
 {
     if ((uiValueUseString & VUS_WORLD_NORMAL) == VUS_WORLD_NORMAL)
     {
@@ -673,78 +673,78 @@ void VSShaderMainFunction::GetValueUseString(VSString &OutString, unsigned int u
 
     if ((uiValueUseString & VUS_VIEW_WORLD_DIR) == VUS_VIEW_WORLD_DIR)
     {
-        VSString ViewWorldDir;
+        Container::MString ViewWorldDir;
         VSRenderer::ms_pRenderer->GetWorldViewDir(ViewWorldDir);
         OutString += *VSShaderStringFactory::ms_ViewWorldDir + _T(" = ") + ViewWorldDir;
         OutString += _T(";\n");
     }
 }
-void VSShaderMainFunction::GetNormalString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetNormalString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetNormalNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetNormalNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetWorldOffsetString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetWorldOffsetString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetWorldOffsetNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetWorldOffsetNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetAlphaString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetAlphaString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetAlphaNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetAlphaNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetEmissiveString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetEmissiveString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetEmissiveNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetEmissiveNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetDiffuseString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetDiffuseString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetDiffuseNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetDiffuseNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetReflectMipString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetReflectMipString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetReflectMipNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetReflectMipNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetReflectPowString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetReflectPowString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetReflectPowNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetReflectPowNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetTessellationValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetTessellationValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetTessellationValueNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetTessellationValueNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-void VSShaderMainFunction::GetWorldDisplacementString(VSString &OutString, MaterialShaderPara &MSPara) const
+void VSShaderMainFunction::GetWorldDisplacementString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (GetWorldDisplacementNode()->GetOutputLink())
     {
         ((VSShaderFunction *)GetWorldDisplacementNode()->GetOutputLink()->GetOwner())->GetShaderTreeString(OutString, MSPara);
     }
 }
-bool VSShaderMainFunction::GetTessellationValueInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetTessellationValueInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiTessellationValueType = GetTessellationValueNode()->GetValueType();
     if (uiTessellationValueType == VSPutNode::VT_1)
     {
@@ -753,7 +753,7 @@ bool VSShaderMainFunction::GetTessellationValueInputValueString(VSString &OutStr
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     if (!GetTessellationValueNode()->GetOutputLink())
@@ -766,9 +766,9 @@ bool VSShaderMainFunction::GetTessellationValueInputValueString(VSString &OutStr
     }
     return true;
 }
-bool VSShaderMainFunction::GetWorldDisplacementInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetWorldDisplacementInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiWorldDisplacementValueType = GetWorldDisplacementNode()->GetValueType();
     if (uiWorldDisplacementValueType == VSPutNode::VT_3)
     {
@@ -777,7 +777,7 @@ bool VSShaderMainFunction::GetWorldDisplacementInputValueString(VSString &OutStr
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return false;
     }
     if (!GetWorldDisplacementNode()->GetOutputLink())
@@ -790,9 +790,9 @@ bool VSShaderMainFunction::GetWorldDisplacementInputValueString(VSString &OutStr
     }
     return true;
 }
-bool VSShaderMainFunction::GetWorldOffsetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetWorldOffsetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiWorldOffsetValueType = GetWorldOffsetNode()->GetValueType();
     if (uiWorldOffsetValueType == VSPutNode::VT_3)
     {
@@ -801,7 +801,7 @@ bool VSShaderMainFunction::GetWorldOffsetInputValueString(VSString &OutString, M
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return false;
     }
     if (!GetWorldOffsetNode()->GetOutputLink())
@@ -814,9 +814,9 @@ bool VSShaderMainFunction::GetWorldOffsetInputValueString(VSString &OutString, M
     }
     return true;
 }
-bool VSShaderMainFunction::GetNormalInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetNormalInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiNormalValueType = GetNormalNode()->GetValueType();
     if (uiNormalValueType == VSPutNode::VT_4)
     {
@@ -825,7 +825,7 @@ bool VSShaderMainFunction::GetNormalInputValueString(VSString &OutString, Materi
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return false;
     }
     if (!GetNormalNode()->GetOutputLink())
@@ -838,9 +838,9 @@ bool VSShaderMainFunction::GetNormalInputValueString(VSString &OutString, Materi
     }
     return true;
 }
-bool VSShaderMainFunction::GetAlphaInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetAlphaInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiAplhaValueType = GetAlphaNode()->GetValueType();
     if (uiAplhaValueType == VSPutNode::VT_1)
     {
@@ -849,7 +849,7 @@ bool VSShaderMainFunction::GetAlphaInputValueString(VSString &OutString, Materia
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     if (!GetAlphaNode()->GetOutputLink())
@@ -862,9 +862,9 @@ bool VSShaderMainFunction::GetAlphaInputValueString(VSString &OutString, Materia
     }
     return true;
 }
-bool VSShaderMainFunction::GetEmissiveInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetEmissiveInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiEmissiveType = GetEmissiveNode()->GetValueType();
     if (uiEmissiveType == VSPutNode::VT_4)
     {
@@ -873,7 +873,7 @@ bool VSShaderMainFunction::GetEmissiveInputValueString(VSString &OutString, Mate
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     if (!GetEmissiveNode()->GetOutputLink())
@@ -886,9 +886,9 @@ bool VSShaderMainFunction::GetEmissiveInputValueString(VSString &OutString, Mate
     }
     return true;
 }
-bool VSShaderMainFunction::GetDiffuseInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetDiffuseInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiDiffuseType = GetDiffuseNode()->GetValueType();
     if (uiDiffuseType == VSPutNode::VT_4)
     {
@@ -897,7 +897,7 @@ bool VSShaderMainFunction::GetDiffuseInputValueString(VSString &OutString, Mater
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
 
@@ -911,9 +911,9 @@ bool VSShaderMainFunction::GetDiffuseInputValueString(VSString &OutString, Mater
     }
     return true;
 }
-bool VSShaderMainFunction::GetReflectMipInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetReflectMipInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiReflectMipValueType = GetReflectMipNode()->GetValueType();
     if (uiReflectMipValueType == VSPutNode::VT_1)
     {
@@ -922,7 +922,7 @@ bool VSShaderMainFunction::GetReflectMipInputValueString(VSString &OutString, Ma
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     if (!GetReflectMipNode()->GetOutputLink())
@@ -935,9 +935,9 @@ bool VSShaderMainFunction::GetReflectMipInputValueString(VSString &OutString, Ma
     }
     return true;
 }
-bool VSShaderMainFunction::GetReflectPowInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSShaderMainFunction::GetReflectPowInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     unsigned int uiReflectPowValueType = GetReflectPowNode()->GetValueType();
     if (uiReflectPowValueType == VSPutNode::VT_1)
     {
@@ -946,7 +946,7 @@ bool VSShaderMainFunction::GetReflectPowInputValueString(VSString &OutString, Ma
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return 0;
     }
     if (!GetReflectPowNode()->GetOutputLink())

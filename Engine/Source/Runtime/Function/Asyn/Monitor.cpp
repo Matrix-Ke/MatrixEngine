@@ -1,6 +1,6 @@
 #include "Monitor.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "Config.h"
 using namespace Matrix;
 #ifdef WINDOWS_PLATFORM
@@ -30,7 +30,7 @@ void VSFileMonitor::Run()
                                  FILE_NOTIFY_CHANGE_LAST_WRITE;
 
     // must be DWORD-aligned, don't use MAY_NEW!
-    m_pReadBuffer = VS_NEW unsigned char[BufferSize];
+    m_pReadBuffer = MX_NEW unsigned char[BufferSize];
 
     // Open directory handle
     HANDLE hDir = ::CreateFile(m_directory.GetBuffer(), GENERIC_READ,
@@ -118,7 +118,7 @@ void VSFileMonitor::NotifyHandler()
         char szPath[MAX_PATH] = {0};
         // Copy the file name into a message structure
         VSWcsToMbs(szPath, MAX_PATH, pInfo->FileName, pInfo->FileNameLength / sizeof(WCHAR));
-        VSString path = szPath;
+        Container::MString path = szPath;
 
         if (!m_isUseRelativePath)
         {
@@ -157,7 +157,7 @@ VSResourceMonitor *VSResourceMonitor::ms_pResourceMonitor = NULL;
 VSResourceMonitor::VSResourceMonitor()
     : m_fileMonitor(NULL)
 {
-    VSMAC_ASSERT(!ms_pResourceMonitor);
+    ENGINE_ASSERT(!ms_pResourceMonitor);
     ms_pResourceMonitor = this;
 }
 
@@ -175,7 +175,7 @@ VSResourceMonitor::~VSResourceMonitor()
 //------------------------------------------------------------------------------
 bool VSResourceMonitor::Open()
 {
-    m_fileMonitor = VS_NEW VSFileMonitor(this);
+    m_fileMonitor = MX_NEW VSFileMonitor(this);
     m_fileMonitor->SetDirectory(VSConfig::ms_ResourcePath);
     m_fileMonitor->Start();
 

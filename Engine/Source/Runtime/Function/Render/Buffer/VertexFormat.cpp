@@ -1,7 +1,7 @@
-#include "VertexFormat.h"
+#include "Render/Buffer/VertexFormat.h"
 #include "VertexBuffer.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSVertexFormat, VSBind)
 BEGIN_ADD_PROPERTY(VSVertexFormat, VSBind)

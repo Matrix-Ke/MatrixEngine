@@ -2,8 +2,8 @@
 #include "CLodTerrainGeometry.h"
 #include "RoamTerrainGemotry.h"
 #include "QuadTerrainGeometry.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSCLodTerrainNode, VSTerrainNode)
 BEGIN_ADD_PROPERTY(VSCLodTerrainNode, VSTerrainNode)
@@ -21,7 +21,7 @@ VSCLodTerrainNode::VSCLodTerrainNode()
 }
 void VSCLodTerrainNode::SetTerrainNodeType(unsigned int uiTerrainNodeType)
 {
-    VSMAC_ASSERT(uiTerrainNodeType < TNT_MAX);
+    ENGINE_ASSERT(uiTerrainNodeType < TNT_MAX);
     m_uiTerrainNodeType = uiTerrainNodeType;
 }
 VSCLodTerrainNode::~VSCLodTerrainNode()
@@ -29,7 +29,7 @@ VSCLodTerrainNode::~VSCLodTerrainNode()
 }
 unsigned int VSCLodTerrainNode::AddChild(VSSpatial *pChild)
 {
-    VSMAC_ASSERT(DynamicCast<VSCLodTerrainGeometry>(pChild));
+    ENGINE_ASSERT(DynamicCast<VSCLodTerrainGeometry>(pChild));
 
     return VSTerrainNode::AddChild(pChild);
 }
@@ -46,11 +46,11 @@ bool VSCLodTerrainNode::CreateChild()
             VSCLodTerrainGeometry *pTerrainGeo = NULL;
             if (m_uiTerrainNodeType == TNT_ROAM)
             {
-                pTerrainGeo = VS_NEW VSRoamTerrainGeometry();
+                pTerrainGeo = MX_NEW VSRoamTerrainGeometry();
             }
             else if (m_uiTerrainNodeType == TNT_QUAD)
             {
-                pTerrainGeo = VS_NEW VSQuadTerrainGeometry();
+                pTerrainGeo = MX_NEW VSQuadTerrainGeometry();
             }
 
             if (!pTerrainGeo)

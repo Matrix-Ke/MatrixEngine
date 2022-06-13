@@ -1,8 +1,8 @@
 #include "ModelMeshNode.h"
 #include "SwitchNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ModelSwitchNode.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSModelMeshNode, VSMeshNode)
 BEGIN_ADD_PROPERTY(VSModelMeshNode, VSMeshNode)
@@ -106,7 +106,7 @@ bool VSModelMeshNode::AddLODGeometryNode(VSGeometryNode *pGeoNode)
     if (!LodNode)
     {
         FirstLOD = DynamicCast<VSGeometryNode>(GetChild(0));
-        LodNode = VS_NEW VSModelSwitchNode();
+        LodNode = MX_NEW VSModelSwitchNode();
         VSSpatialPtr GeoNode = GetChild(0);
         DeleteAllChild();
         LodNode->AddChild(GeoNode);

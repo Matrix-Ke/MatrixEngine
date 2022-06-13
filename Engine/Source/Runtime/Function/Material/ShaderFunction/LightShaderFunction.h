@@ -12,7 +12,7 @@ namespace Matrix
     public:
         VSLightColor(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSLightColor();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:
@@ -30,7 +30,7 @@ namespace Matrix
     public:
         VSLightSpecular(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSLightSpecular();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:
@@ -48,7 +48,7 @@ namespace Matrix
     public:
         VSLightDir(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSLightDir();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:
@@ -66,7 +66,7 @@ namespace Matrix
     public:
         VSLightShaderFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSLightShaderFunction();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara){};
         virtual bool IsValidNodeToThis(VSShaderFunction *pShaderFunction, MaterialShaderPara &MSPara);
 

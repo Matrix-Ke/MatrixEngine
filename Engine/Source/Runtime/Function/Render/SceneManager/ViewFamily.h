@@ -3,7 +3,7 @@
 #include "Reference.h"
 #include "Camera.h"
 #include "SceneRender.h"
-#include "CubeTexture.h"
+#include "Render/Texture/CubeTexture.h"
 namespace Matrix
 {
     DECLARE_Proxy(VSPostEffectSet);
@@ -121,7 +121,7 @@ namespace Matrix
         DECLARE_RTTI;
 
     public:
-        VSViewFamily(const VSString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
+        VSViewFamily(const Container::MString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
         virtual ~VSViewFamily();
         inline void AddScene(VSScene *pScene);
         inline VSScene *GetScene(unsigned int i) const;
@@ -136,7 +136,7 @@ namespace Matrix
         virtual void CreateRenderTargetBuffer(unsigned int uiWidth, unsigned int uiHeight);
         bool IsReCreate(unsigned int uiWidth, unsigned int uiHeight);
 
-        VSString m_ViewFamilyName;
+        Container::MString m_ViewFamilyName;
         bool m_bEnable;
 
         VSSceneRenderMethodPtr m_pSceneRenderMethod;
@@ -218,8 +218,8 @@ namespace Matrix
             VT_WINDOW_NORMAL,
             VT_WINDOW_MAX
         };
-        VSWindowViewFamily(const VSString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName, int iWindowID = -1);
-        // VSWindowViewFamily(const VSString &ViewFamilyName,VSCamera * pCamera,int iWindowID = -1);
+        VSWindowViewFamily(const Container::MString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName, int iWindowID = -1);
+        // VSWindowViewFamily(const Container::MString &ViewFamilyName,VSCamera * pCamera,int iWindowID = -1);
         virtual ~VSWindowViewFamily();
         virtual void Draw(double dAppTime);
         virtual void OnDraw(double dAppTime);
@@ -242,8 +242,8 @@ namespace Matrix
             VT_CAPTURE_CUB_CAPTURE_NORMAL,
             VT_MAX
         };
-        VSCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
-        // VSCaptureViewFamily(const VSString &ViewFamilyName,unsigned int uiWidth,unsigned int uiHeight,VSCamera * pCamera);
+        VSCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
+        // VSCaptureViewFamily(const Container::MString &ViewFamilyName,unsigned int uiWidth,unsigned int uiHeight,VSCamera * pCamera);
         virtual ~VSCaptureViewFamily();
         virtual void OnDraw(double dAppTime);
         void SetSize(unsigned int uiWidth, unsigned int uiHeight);
@@ -264,7 +264,7 @@ namespace Matrix
         DECLARE_RTTI;
 
     public:
-        VSCubCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
+        VSCubCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
         virtual ~VSCubCaptureViewFamily();
         virtual void OnDraw(double dAppTime);
         virtual void CreateRenderTargetBuffer(unsigned int uiWidth, unsigned int uiHeight);
@@ -291,7 +291,7 @@ namespace Matrix
         DECLARE_RTTI;
 
     public:
-        VS2DCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
+        VS2DCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName);
         virtual ~VS2DCaptureViewFamily();
         virtual void CreateRenderTargetBuffer(unsigned int uiWidth, unsigned int uiHeight);
         virtual VSTexture *GetTexture() const;

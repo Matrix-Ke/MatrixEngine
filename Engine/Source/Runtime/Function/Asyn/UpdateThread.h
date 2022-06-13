@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "Thread.h"
 #include "EngineThread.h"
 #include "Delegate.h"
@@ -58,7 +58,7 @@ namespace Matrix
         }
         else
         {
-            VSMAC_ASSERT(iIndex < (int)m_uiContextNum);
+            ENGINE_ASSERT(iIndex < (int)m_uiContextNum);
             m_pContextArray[iIndex].AddCommand(pRenderCommand);
         }
         return pRenderCommand;
@@ -84,7 +84,7 @@ namespace Matrix
 #endif
 
         unsigned int m_uiThreadId;
-        VSString m_ThreadName;
+        Container::MString m_ThreadName;
 
     private:
     };
@@ -143,7 +143,7 @@ namespace Matrix
     if (VSResourceManager::ms_bUpdateThread)                                                                \
     {                                                                                                       \
         TypeName *pCommand = (TypeName *)VSUpdateThreadSys::ms_pUpdateThreadSys->AssignCommand<TypeName>(); \
-        VS_NEW(pCommand)                                                                                    \
+        MX_NEW(pCommand)                                                                                    \
         TypeName Params;                                                                                    \
     }                                                                                                       \
     else                                                                                                    \
@@ -156,7 +156,7 @@ namespace Matrix
     if (VSResourceManager::ms_bUpdateThread)                                                                        \
     {                                                                                                               \
         TypeName *pCommand = (TypeName *)VSUpdateThreadSys::ms_pUpdateThreadSys->AssignCommand<TypeName>(ThreadID); \
-        VS_NEW(pCommand)                                                                                            \
+        MX_NEW(pCommand)                                                                                            \
         TypeName Params;                                                                                            \
     }                                                                                                               \
     else                                                                                                            \

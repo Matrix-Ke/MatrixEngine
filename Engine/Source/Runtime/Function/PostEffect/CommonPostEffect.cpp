@@ -1,5 +1,5 @@
 #include "CommonPostEffect.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 COMMON_POST_EFFECT_FUNCTION_IMPLEMENT(Gray)
 

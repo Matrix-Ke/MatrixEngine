@@ -1,6 +1,6 @@
 #include "AdditiveBlend.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSAdditiveBlend, VSAnimBlendFunction)
 BEGIN_ADD_PROPERTY(VSAdditiveBlend, VSAnimBlendFunction)
@@ -16,16 +16,16 @@ VSAdditiveBlend::VSAdditiveBlend()
 VSAdditiveBlend::VSAdditiveBlend(const VSUsedName &ShowName, VSAnimTree *pAnimTree)
     : VSAnimBlendFunction(ShowName, pAnimTree)
 {
-    VSString InputName0 = _T("Delta");
+    Container::MString InputName0 = _T("Delta");
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName0, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
-    VSString InputName1 = _T("BlendAnim");
+    Container::MString InputName1 = _T("BlendAnim");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName1, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 void VSAdditiveBlend::AddInputNode()
@@ -55,7 +55,7 @@ bool VSAdditiveBlend::ComputeOutBoneMatrix(double dAppTime)
     }
     else if (pInputNode2->GetOutputLink())
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (m_bHaveRootMotion && m_bOnlyUpdateRootMotion)
     {

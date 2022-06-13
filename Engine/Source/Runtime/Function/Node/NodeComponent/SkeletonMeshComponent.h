@@ -22,7 +22,7 @@ namespace Matrix
         void SetIsDrawSkeleton(bool bIsDrawSkeleton);
 
         virtual bool BeforeSave(void *pData = NULL);
-        bool PlayAnim(const VSString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
+        bool PlayAnim(const Container::MString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
         VSSocketNode *GetSocketNode(const VSUsedName &SocketName);
         void SetAnimTreeNodePara(const VSUsedName &ShowName, void *pPara);
         virtual bool PostLoad(MStream *pStream);

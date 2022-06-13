@@ -13,7 +13,7 @@ namespace Matrix
     public:
         VSMul(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSMul();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -32,7 +32,7 @@ namespace Matrix
     public:
         VSDot(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSDot();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -51,7 +51,7 @@ namespace Matrix
     public:
         VSLength(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSLength();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -70,7 +70,7 @@ namespace Matrix
     public:
         VSSub(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSSub();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -89,7 +89,7 @@ namespace Matrix
     public:
         VSAdd(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSAdd();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -108,7 +108,7 @@ namespace Matrix
     public:
         VSMakeValue(const VSUsedName &ShowName, VSMaterial *pMaterial, unsigned int uiInputNum);
         virtual ~VSMakeValue();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -127,7 +127,7 @@ namespace Matrix
     public:
         VSDiv(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSDiv();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 
@@ -146,7 +146,7 @@ namespace Matrix
     public:
         VSSaturate(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSSaturate();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         virtual bool ResetValueType(MaterialShaderPara &MSPara);
 

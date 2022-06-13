@@ -1,7 +1,7 @@
 #include "DLodTerrainSwitchNode.h"
 #include "DLodTerrainNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDLodTerrainSwitchNode, VSSwitchNode)
 BEGIN_ADD_PROPERTY(VSDLodTerrainSwitchNode, VSSwitchNode)
@@ -25,7 +25,7 @@ void VSDLodTerrainSwitchNode::UpdateView(VSCuller &Culler, double dAppTime)
 {
     VSSwitchNode::UpdateView(Culler, dAppTime);
     VSCamera *pCamera = Culler.GetCamera();
-    VSMAC_ASSERT(pCamera);
+    ENGINE_ASSERT(pCamera);
 
     if (Culler.GetCullerType() == VSCuller::CUT_MAIN)
     {

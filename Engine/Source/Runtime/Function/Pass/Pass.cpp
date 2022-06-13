@@ -1,5 +1,5 @@
 #include "Pass.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSPass, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSPass)

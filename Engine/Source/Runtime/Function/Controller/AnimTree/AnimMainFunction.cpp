@@ -1,7 +1,7 @@
 #include "AnimMainFunction.h"
-#include "BoneNode.h"
+#include "Node/Model/BoneNode.h"
 #include "AnimFunction.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSAnimMainFunction, VSAnimBaseFunction)
 BEGIN_ADD_PROPERTY(VSAnimMainFunction, VSAnimBaseFunction)
@@ -11,18 +11,18 @@ IMPLEMENT_INITIAL_END
 VSAnimMainFunction::VSAnimMainFunction(const VSUsedName &ShowName, VSAnimTree *pAnimTree)
     : VSAnimBaseFunction(ShowName, pAnimTree)
 {
-    VSString InputName = _T("Anim");
+    Container::MString InputName = _T("Anim");
     VSInputNode *pInputNode = NULL;
 
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("IK");
     pInputNode = NULL;
 
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_IK, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_IK, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 }
 VSAnimMainFunction::VSAnimMainFunction()
@@ -37,10 +37,10 @@ bool VSAnimMainFunction::Update(double dAppTime)
         return false;
 
     const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     if (m_pInput[0]->GetOutputLink())
     {
@@ -105,15 +105,15 @@ const VSAnimAtom &VSAnimMainFunction::GetRootDelta()
     }
     return VSAnimAtom::ms_Identity;
 }
-// void VSAnimMainFunction::CreateNode(const VSString & NodeName,unsigned int uiNodeType)
+// void VSAnimMainFunction::CreateNode(const Container::MString & NodeName,unsigned int uiNodeType)
 // {
 // 	if (uiNodeType > VSPutNode::AVT_ANIM && uiNodeType < VSPutNode::AVT_MAX)
 // 	{
-// 		VSString InputName = NodeName;
+// 		Container::MString InputName = NodeName;
 // 		VSInputNode * pInputNode = NULL;
 //
-// 		pInputNode = VS_NEW VSInputNode(uiNodeType,InputName,this);
-// 		VSMAC_ASSERT(pInputNode);
+// 		pInputNode = MX_NEW VSInputNode(uiNodeType,InputName,this);
+// 		ENGINE_ASSERT(pInputNode);
 // 		m_pInput.AddElement(pInputNode);
 // 	}
 //

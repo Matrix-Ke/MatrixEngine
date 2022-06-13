@@ -1,8 +1,8 @@
 #include "TerrainNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "Config.h"
 using namespace Matrix;
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 IMPLEMENT_RTTI_NoCreateFun(VSTerrainNode, VSMeshNode)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSTerrainNode)
         IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
@@ -87,7 +87,7 @@ bool VSTerrainNode::CreateTerrain(unsigned int uiNumX, unsigned int uiNumZ, unsi
     SetNum(uiNumX, uiNumZ);
     SetTessellationLevel(uiTessellationLevel);
     VSMAC_DELETEA(m_pHeight);
-    m_pHeight = VS_NEW unsigned char[m_uiTotalNum];
+    m_pHeight = MX_NEW unsigned char[m_uiTotalNum];
     if (!m_pHeight)
     {
         return 0;
@@ -104,16 +104,16 @@ bool VSTerrainNode::CreateTerrain(unsigned int uiNumX, unsigned int uiNumZ, unsi
 }
 bool VSTerrainNode::CreateTerrainFromHeightMap(const TCHAR *pFileName, unsigned int uiTessellationLevel, VSREAL fHeightScale)
 {
-    VSMAC_ASSERT(pFileName);
+    ENGINE_ASSERT(pFileName);
 
     VSFile *pFile = NULL;
-    pFile = VS_NEW VSFile();
-    VSMAC_ASSERT(pFile);
+    pFile = MX_NEW VSFile();
+    ENGINE_ASSERT(pFile);
 
     unsigned int uiHeightSize = 0;
     VSMAC_DELETEA(m_pHeight);
 
-    VSString TerrainPath = VSConfig::ms_TerrainPath + pFileName;
+    Container::MString TerrainPath = VSConfig::ms_TerrainPath + pFileName;
     if (!pFile->Open(TerrainPath.GetBuffer(), VSFile::OM_RB))
     {
         VSMAC_DELETE(pFile);
@@ -121,9 +121,9 @@ bool VSTerrainNode::CreateTerrainFromHeightMap(const TCHAR *pFileName, unsigned 
     }
 
     pFile->Read(&uiHeightSize, 1, sizeof(unsigned int));
-    m_pHeight = VS_NEW unsigned char[uiHeightSize * uiHeightSize];
+    m_pHeight = MX_NEW unsigned char[uiHeightSize * uiHeightSize];
 
-    VSMAC_ASSERT(m_pHeight);
+    ENGINE_ASSERT(m_pHeight);
 
     pFile->Read(m_pHeight, 1, uiHeightSize * uiHeightSize);
 

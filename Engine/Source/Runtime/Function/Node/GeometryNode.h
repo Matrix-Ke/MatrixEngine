@@ -1,7 +1,7 @@
 #pragma once
 #include "Node.h"
 #include "MorphSet.h"
-#include "Geometry.h"
+#include "Node/Geometry.h"
 namespace Matrix
 {
     class MStream;

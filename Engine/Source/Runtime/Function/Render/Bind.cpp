@@ -1,8 +1,8 @@
 #include "Bind.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 Container::MArray<VSBind *> VSBind::ms_BindArray;
 IMPLEMENT_RTTI_NoCreateFun(VSBind, MObject)
@@ -32,7 +32,7 @@ VSBind::VSBind()
     {
         if (ms_BindArray[i] == this)
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
         }
     }
     ms_BindArray.AddElement(this);

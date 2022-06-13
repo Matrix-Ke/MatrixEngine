@@ -1,6 +1,6 @@
 #include "TerrainActor.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "CLodTerrainNode.h"
 #include "DLodTerrainNode.h"
 #include "GPULodTerrainNode.h"
@@ -31,7 +31,7 @@ VSCLodTerrainActor::~VSCLodTerrainActor()
 }
 void VSCLodTerrainActor::CreateDefaultComponentNode()
 {
-    m_pNode = VS_NEW VSCLodTerrainNode();
+    m_pNode = MX_NEW VSCLodTerrainNode();
     GetTypeNode()->CreateTerrain(10, 10, 7);
 }
 
@@ -48,7 +48,7 @@ VSDLodTerrainActor::~VSDLodTerrainActor()
 }
 void VSDLodTerrainActor::CreateDefaultComponentNode()
 {
-    m_pNode = VS_NEW VSDLodTerrainNode();
+    m_pNode = MX_NEW VSDLodTerrainNode();
     GetTypeNode()->CreateTerrain(10, 10, 7);
 }
 
@@ -65,6 +65,6 @@ VSGPULodTerrainActor::~VSGPULodTerrainActor()
 }
 void VSGPULodTerrainActor::CreateDefaultComponentNode()
 {
-    m_pNode = VS_NEW VSGPULodTerrainNode();
+    m_pNode = MX_NEW VSGPULodTerrainNode();
     GetTypeNode()->CreateTerrain(10, 10, 7);
 }

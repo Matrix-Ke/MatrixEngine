@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "UserConstant.h"
 #include "Controller.h"
 #include "UserSampler.h"
@@ -16,8 +16,8 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL_NO_CLASS_FACTORY
     public:
-        VSShader(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile = false);
-        VSShader(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile = false);
+        VSShader(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile = false);
+        VSShader(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile = false);
         VSShader();
         virtual ~VSShader() = 0;
         virtual unsigned int GetShaderType() const = 0;
@@ -32,7 +32,7 @@ namespace Matrix
         }
         bool HasBindResource();
 
-        inline const VSString &GetBuffer() const { return m_Buffer; }
+        inline const Container::MString &GetBuffer() const { return m_Buffer; }
         inline const void *GetCacheBuffer() const
         {
             return m_pCacheBuffer;
@@ -42,7 +42,7 @@ namespace Matrix
             return m_uiCacheBufferSize;
         }
         bool SetCacheBuffer(void *pBuffer, unsigned int uiSize);
-        const VSString &GetMainFunName() const
+        const Container::MString &GetMainFunName() const
         {
             return m_MainFunName;
         }
@@ -59,15 +59,15 @@ namespace Matrix
         }
 
     protected:
-        VSString m_Buffer;
+        Container::MString m_Buffer;
         unsigned char *m_pCacheBuffer;
         unsigned int m_uiCacheBufferSize;
-        VSString m_MainFunName;
+        Container::MString m_MainFunName;
         VSUsedName m_FileName;
 
     public:
-        void SetShaderString(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile = false);
-        void SetShaderString(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile = false);
+        void SetShaderString(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile = false);
+        void SetShaderString(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile = false);
         inline unsigned int GetMinShareSampler() const
         {
             return m_uiShareSamplerRegister.GetNum() > 0 ? m_uiShareSamplerRegister[0].Key : INVALID_SIMPLAR_REGISTER;
@@ -86,7 +86,7 @@ namespace Matrix
         bool m_bCreatePara;
         unsigned int m_uiArithmeticInstructionSlots;
         unsigned int m_uiTextureInstructionSlots;
-        VSMapOrder<unsigned int, unsigned int> m_uiShareSamplerRegister;
+        Container::MMapOrder<unsigned int, unsigned int> m_uiShareSamplerRegister;
     };
     DECLARE_Ptr(VSShader);
     VSTYPE_MARCO(VSShader);

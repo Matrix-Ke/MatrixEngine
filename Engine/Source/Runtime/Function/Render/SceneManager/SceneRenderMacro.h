@@ -49,8 +49,8 @@
 		VSPE##PostEffectName##SceneRender() \
 			:VSCombinePostEffectSceneRender(2) \
 		{ \
-			m_CPEArray[0] = VS_NEW PESceneRender1(); \
-			m_CPEArray[1] = VS_NEW PESceneRender2(); \
+			m_CPEArray[0] = MX_NEW PESceneRender1(); \
+			m_CPEArray[1] = MX_NEW PESceneRender2(); \
 		} \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender1,0) \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender2,1)
@@ -64,9 +64,9 @@
 		VSPE##PostEffectName##SceneRender() \
 			:VSCombinePostEffectSceneRender(3) \
 		{ \
-			m_CPEArray[0] = VS_NEW PESceneRender1(); \
-			m_CPEArray[1] = VS_NEW PESceneRender2(); \
-			m_CPEArray[2] = VS_NEW PESceneRender3(); \
+			m_CPEArray[0] = MX_NEW PESceneRender1(); \
+			m_CPEArray[1] = MX_NEW PESceneRender2(); \
+			m_CPEArray[2] = MX_NEW PESceneRender3(); \
 		} \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender1,0) \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender2,1) \
@@ -81,10 +81,10 @@
 		VSPE##PostEffectName##SceneRender() \
 			:VSCombinePostEffectSceneRender(4) \
 		{ \
-			m_CPEArray[0] = VS_NEW PESceneRender1(); \
-			m_CPEArray[1] = VS_NEW PESceneRender2(); \
-			m_CPEArray[2] = VS_NEW PESceneRender3(); \
-			m_CPEArray[3] = VS_NEW PESceneRender4(); \
+			m_CPEArray[0] = MX_NEW PESceneRender1(); \
+			m_CPEArray[1] = MX_NEW PESceneRender2(); \
+			m_CPEArray[2] = MX_NEW PESceneRender3(); \
+			m_CPEArray[3] = MX_NEW PESceneRender4(); \
 		} \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender1,0) \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender2,1) \
@@ -100,11 +100,11 @@
 		VSPE##PostEffectName##SceneRender() \
 			:VSCombinePostEffectSceneRender(5) \
 		{ \
-			m_CPEArray[0] = VS_NEW PESceneRender1(); \
-			m_CPEArray[1] = VS_NEW PESceneRender2(); \
-			m_CPEArray[2] = VS_NEW PESceneRender3(); \
-			m_CPEArray[3] = VS_NEW PESceneRender4(); \
-			m_CPEArray[4] = VS_NEW PESceneRender5(); \
+			m_CPEArray[0] = MX_NEW PESceneRender1(); \
+			m_CPEArray[1] = MX_NEW PESceneRender2(); \
+			m_CPEArray[2] = MX_NEW PESceneRender3(); \
+			m_CPEArray[3] = MX_NEW PESceneRender4(); \
+			m_CPEArray[4] = MX_NEW PESceneRender5(); \
 		} \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender1,0) \
 		GET_COMMON_POST_EFFECT_SCENE_RENDER(PESceneRender2,1) \

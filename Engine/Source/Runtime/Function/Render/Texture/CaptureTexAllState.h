@@ -1,7 +1,7 @@
 #pragma once
 #include "TexAllState.h"
 #include "ViewFamily.h"
-#include "CubeTexture.h"
+#include "Render/Texture/CubeTexture.h"
 namespace Matrix
 {
     class MATRIX_FUNCTION_API VSCaptureTexAllState : public VSTexAllState
@@ -17,7 +17,7 @@ namespace Matrix
 
         virtual ~VSCaptureTexAllState();
 
-        bool SetViewCapture(const VSString &ViewCaptureName);
+        bool SetViewCapture(const Container::MString &ViewCaptureName);
 
         virtual bool PostLoad(MStream *pStream);
         virtual bool PostClone(MObject *pObjectSrc);
@@ -29,7 +29,7 @@ namespace Matrix
         VSCaptureViewFamily *GetViewFamily();
 
     protected:
-        VSString m_ViewCaptureName;
+        Container::MString m_ViewCaptureName;
         bool m_bDynamic;
         VSTexturePtr m_pStaticTexture;
         unsigned int m_uiMipLevel;

@@ -1,5 +1,5 @@
-#include "2DTexture.h"
-#include "GraphicInclude.h"
+#include "Render/Texture/2DTexture.h"
+#include "Core/GraphicInclude.h"
 #include "RenderTarget.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VS2DTexture, VSTexture)
@@ -43,7 +43,7 @@ IMPLEMENT_INITIAL_END
 //
 //
 // 	unsigned char *pBufferTemp = NULL,*pBuffer = NULL;					//¡Ÿ ±ª∫≥Â«¯
-// 	pBufferTemp = VS_NEW unsigned char[uiHightSize];
+// 	pBufferTemp = MX_NEW unsigned char[uiHightSize];
 // 	pBuffer = GetBuffer(0);
 // 	if(!pBufferTemp)
 // 		return 0;
@@ -55,7 +55,7 @@ IMPLEMENT_INITIAL_END
 // 		&pBuffer[index * bytes_per_line], bytes_per_line);
 //
 // 	VSFile * pFile = NULL;
-// 	pFile = VS_NEW VSFile();
+// 	pFile = MX_NEW VSFile();
 // 	if (!pFile)
 // 	{
 // 		return 0;
@@ -96,12 +96,12 @@ void VS2DTexture::SetMipLevel()
     {
         return;
     }
-    VSMAC_ASSERT(m_uiWidth && m_uiHeight);
+    ENGINE_ASSERT(m_uiWidth && m_uiHeight);
 
     if (!IsTwoPower(m_uiWidth) || !IsTwoPower(m_uiHeight))
     {
         m_uiMipLevel = 1;
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 
     unsigned int uiWidthLevel = FastLog2(m_uiWidth);

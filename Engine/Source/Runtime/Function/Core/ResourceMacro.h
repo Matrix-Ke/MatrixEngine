@@ -64,7 +64,7 @@ protected:                                                                      
         VSFileName FileName(m_ResourceName.GetString());                                                     \
         Container::MString PathAndName;                                                                      \
         bool bFind = FileName.GetPathAndName(PathAndName);                                                   \
-        MATRIX_ENGINE_ASSERT(bFind)                                                                          \
+        ENGINE_ASSERT(bFind)                                                                          \
         Container::MString Name;                                                                             \
         const TCHAR *Replace = _T("/");                                                                      \
         Name.ReplaceChars(PathAndName, Replace, '_');                                                        \

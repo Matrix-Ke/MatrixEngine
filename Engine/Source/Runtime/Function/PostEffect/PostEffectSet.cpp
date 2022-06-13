@@ -1,11 +1,11 @@
 #include "PostEffectSet.h"
 #include "PEBeginFunction.h"
 #include "PEEndFunction.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "CommonPostEffect.h"
 #include "PEMaterial.h"
 #include "RenderTarget.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RESOURCE(VSPostEffectSet)
 IMPLEMENT_RTTI(VSPostEffectSet, MObject)
@@ -25,8 +25,8 @@ VSPostEffectSet::VSPostEffectSet(const VSUsedName &ShowName)
 {
     m_pPostEffectFunctionArray.Clear();
     m_ShowName = ShowName;
-    m_pPEBeginFunc = VS_NEW VSPEBeginFunction(_T("Begin"), this);
-    m_pPEEndFunc = VS_NEW VSPEEndFunction(_T("End"), this);
+    m_pPEBeginFunc = MX_NEW VSPEBeginFunction(_T("Begin"), this);
+    m_pPEEndFunc = MX_NEW VSPEEndFunction(_T("End"), this);
 }
 VSPostEffectSet::~VSPostEffectSet()
 {
@@ -43,13 +43,13 @@ VSPostEffectSet::~VSPostEffectSet()
 }
 void VSPostEffectSet::AddPostEffectFunction(VSPostEffectFunction *pPostEffectFunction)
 {
-    VSMAC_ASSERT(pPostEffectFunction);
+    ENGINE_ASSERT(pPostEffectFunction);
 
     m_pPostEffectFunctionArray.AddElement(pPostEffectFunction);
 }
 void VSPostEffectSet::DeletePostEffectFunction(VSPostEffectFunction *pPostEffectFunction)
 {
-    VSMAC_ASSERT(pPostEffectFunction);
+    ENGINE_ASSERT(pPostEffectFunction);
     for (unsigned int i = 0; i < m_pPostEffectFunctionArray.GetNum(); i++)
     {
         if (m_pPostEffectFunctionArray[i] == pPostEffectFunction)
@@ -67,7 +67,7 @@ void VSPostEffectSet::Draw(VSCuller &Culler, double dAppTime)
 }
 void VSPostEffectSet::SetBeginTargetArray(Container::MArray<VSRenderTarget *> *pBeginTargetArray)
 {
-    VSMAC_ASSERT(pBeginTargetArray && pBeginTargetArray->GetNum());
+    ENGINE_ASSERT(pBeginTargetArray && pBeginTargetArray->GetNum());
     m_pPEBeginFunc->SetPara(pBeginTargetArray);
     m_uiCurRTWidth = (*pBeginTargetArray)[0]->GetWidth();
     m_uiCurRTHeight = (*pBeginTargetArray)[0]->GetHeight();
@@ -100,7 +100,7 @@ VSPostEffectFunction *VSPostEffectSet::GetPEFunctionFromShowName(const VSUsedNam
 }
 VSPESetGray::VSPESetGray(const VSUsedName &ShowName) : VSPostEffectSet(ShowName)
 {
-    VSPEGray *pPEGray = VS_NEW VSPEGray(_T("Gray"), this);
+    VSPEGray *pPEGray = MX_NEW VSPEGray(_T("Gray"), this);
     m_pPEEndFunc->GetInputNode(VSPEEndFunction::INPUT_COLOR)->Connection(pPEGray->GetOutputNode(VSPEGray::OUT_COLOR));
     pPEGray->GetInputNode(VSPEGray::INPUT_COLOR)->Connection(m_pPEBeginFunc->GetOutputNode(VSPEBeginFunction::OUT_COLOR));
 }
@@ -110,8 +110,8 @@ VSPESetGray::~VSPESetGray()
 
 VSPESetMaterialAndGray::VSPESetMaterialAndGray(const VSUsedName &ShowName, VSMaterialR *pMaterial) : VSPostEffectSet(ShowName)
 {
-    VSPEGray *pPEGray = VS_NEW VSPEGray(_T("Gray"), this);
-    VSPEMaterial *pPEMaterial = VS_NEW VSPEMaterial(_T("Material"), this);
+    VSPEGray *pPEGray = MX_NEW VSPEGray(_T("Gray"), this);
+    VSPEMaterial *pPEMaterial = MX_NEW VSPEMaterial(_T("Material"), this);
     pPEMaterial->SetMaterial(pMaterial);
     m_pPEEndFunc->GetInputNode(VSPEEndFunction::INPUT_COLOR)->Connection(pPEMaterial->GetOutputNode(VSPEMaterial::OUT_COLOR));
     pPEMaterial->GetInputNode(VSPEMaterial::INPUT_COLOR)->Connection(pPEGray->GetOutputNode(VSPEGray::OUT_COLOR));
@@ -122,9 +122,9 @@ VSPESetMaterialAndGray::~VSPESetMaterialAndGray()
 }
 VSPESetMaterial_Gray_Bloom::VSPESetMaterial_Gray_Bloom(const VSUsedName &ShowName, VSMaterialR *pMaterial) : VSPostEffectSet(ShowName)
 {
-    VSPEGray *pPEGray = VS_NEW VSPEGray(_T("Gray"), this);
-    VSPEMaterial *pPEMaterial = VS_NEW VSPEMaterial(_T("Material"), this);
-    VSPEBloom *pPEBloom = VS_NEW VSPEBloom(_T("Bloom"), this);
+    VSPEGray *pPEGray = MX_NEW VSPEGray(_T("Gray"), this);
+    VSPEMaterial *pPEMaterial = MX_NEW VSPEMaterial(_T("Material"), this);
+    VSPEBloom *pPEBloom = MX_NEW VSPEBloom(_T("Bloom"), this);
     pPEBloom->MiddleGray = 0.8f;
     pPEMaterial->SetMaterial(pMaterial);
     m_pPEEndFunc->GetInputNode(VSPEEndFunction::INPUT_COLOR)->Connection(pPEMaterial->GetOutputNode(VSPEMaterial::OUT_COLOR));

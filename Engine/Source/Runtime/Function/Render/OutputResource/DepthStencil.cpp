@@ -1,7 +1,7 @@
 #include "DepthStencil.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
-#include "2DTexture.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
+#include "Render/Texture/2DTexture.h"
 #include "2DTextureArray.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDepthStencil, VSOutputResource)
@@ -54,7 +54,7 @@ VSDepthStencil::VSDepthStencil(VS2DTexture *pCreateBy, unsigned int uiMulSample,
     m_uiArraySize = 1;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSDepthStencil::VSDepthStencil(VS2DTextureArray *pCreateBy, unsigned int uiMulSample, unsigned int uiLevel,
@@ -80,7 +80,7 @@ VSDepthStencil::VSDepthStencil(VS2DTextureArray *pCreateBy, unsigned int uiMulSa
     m_uiArraySize = uiArraySize;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSDepthStencil::VSDepthStencil(VS3DTexture *pCreateBy, unsigned int uiMulSample, unsigned int uiLevel,
@@ -101,7 +101,7 @@ VSDepthStencil::VSDepthStencil(VS3DTexture *pCreateBy, unsigned int uiMulSample,
     m_uiArraySize = uiArraySize;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSDepthStencil::~VSDepthStencil()

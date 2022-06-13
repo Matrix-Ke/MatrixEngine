@@ -1,12 +1,12 @@
 #include "Skeleton.h"
-#include "BoneNode.h"
+#include "Node/Model/BoneNode.h"
 #include "LineSet.h"
 #include "SkeletonMeshNode.h"
 #include "GeometryNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ViewFamily.h"
 #include "DebugDraw.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkeleton, VSNode)
 VSREAL VSSkeleton::ms_fBoneAxisLength = 1.0f;
@@ -56,7 +56,7 @@ VSBoneNode *VSSkeleton::GetBoneNode(const VSUsedName &Name) const
 }
 VSBoneNode *VSSkeleton::GetBoneNode(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pBoneArray.GetNum());
+    ENGINE_ASSERT(i < m_pBoneArray.GetNum());
     return m_pBoneArray[i];
 }
 void VSSkeleton::CreateBoneArray()
@@ -143,7 +143,7 @@ void VSSkeleton::Draw(VSCamera *pCamera)
     }
 
     VSSkeletonMeshNode *pMesh = (VSSkeletonMeshNode *)m_pParent;
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     Math::Vector3 Dist = pCamera->GetWorldTranslate() - pMesh->GetWorldTranslate();
     ms_fBoneAxisLength = Dist.GetLength() * 0.05f;
@@ -174,7 +174,7 @@ void VSSkeleton::Draw(VSCamera *pCamera)
             Math::Vector3 P2 = m_pBoneArray[i]->GetParent()->GetWorldTranslate();
             for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
             {
-                s_DebugDrawArray[j]->AddDebugLine(P1, P2, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f).GetDWARGB(), false);
+                s_DebugDrawArray[j]->AddDebugLine(P1, P2, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f).GetDWARGB(), false);
             }
         }
     }
@@ -190,17 +190,17 @@ void VSSkeleton::Draw(VSCamera *pCamera)
 
         for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
         {
-            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[0] * ms_fBoneAxisLength, VSColorRGBA(1.0f, 0.0f, 0.0f, 1.0f).GetDWARGB(), false);
+            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[0] * ms_fBoneAxisLength, Math::ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f).GetDWARGB(), false);
         }
 
         for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
         {
-            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[1] * ms_fBoneAxisLength, VSColorRGBA(0.0f, 1.0f, 0.0f, 1.0f).GetDWARGB(), false);
+            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[1] * ms_fBoneAxisLength, Math::ColorRGBA(0.0f, 1.0f, 0.0f, 1.0f).GetDWARGB(), false);
         }
 
         for (unsigned int j = 0; j < s_DebugDrawArray.GetNum(); j++)
         {
-            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[2] * ms_fBoneAxisLength, VSColorRGBA(0.0f, 0.0f, 1.0f, 1.0f).GetDWARGB(), false);
+            s_DebugDrawArray[j]->AddDebugLine(Pos, Pos + Axis[2] * ms_fBoneAxisLength, Math::ColorRGBA(0.0f, 0.0f, 1.0f, 1.0f).GetDWARGB(), false);
         }
     }
 }

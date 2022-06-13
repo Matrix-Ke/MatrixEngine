@@ -1,7 +1,7 @@
 #include "Controller.h"
 #include "Math.h"
-#include "Stream.h"
-#include "GraphicInclude.h"
+#include "Core/Stream/Stream.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSController, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSController)
@@ -35,8 +35,8 @@ VSController::VSController()
     m_bEnable = true;
     m_bIsVisibleUpdate = true;
     m_fInnerTimeScale = 1.0f;
-    AddTimeEvent(VS_NEW VSStartAnimEvent(this));
-    AddTimeEvent(VS_NEW VSEndAnimEvent(this));
+    AddTimeEvent(MX_NEW VSStartAnimEvent(this));
+    AddTimeEvent(MX_NEW VSEndAnimEvent(this));
 }
 VSController::~VSController()
 {

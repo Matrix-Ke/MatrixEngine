@@ -12,7 +12,7 @@ namespace Matrix
     public:
         VSVertexColor(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSVertexColor();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
 
     protected:

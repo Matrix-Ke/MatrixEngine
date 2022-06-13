@@ -1,5 +1,5 @@
 #include "OneParamImmediateAnimBlend.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSOneParamImmediateAnimBlend, VSOneParamAnimBlend)
 BEGIN_ADD_PROPERTY(VSOneParamImmediateAnimBlend, VSOneParamAnimBlend)
@@ -27,12 +27,12 @@ VSOneParamImmediateAnimBlend::VSOneParamImmediateAnimBlend(const VSUsedName &Sho
 }
 void VSOneParamImmediateAnimBlend::AddInputNode()
 {
-    VSString InputName = _T("Child");
-    VSString ID = Container::IntToString(m_pInput.GetNum());
+    Container::MString InputName = _T("Child");
+    Container::MString ID = Container::IntToString(m_pInput.GetNum());
     InputName += ID;
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
     m_NodeCrossFadingTime.AddElement(0.0f);
 }

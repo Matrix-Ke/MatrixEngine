@@ -1,5 +1,5 @@
 #include "ModelSwitchNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSModelSwitchNode, VSSwitchNode)
 BEGIN_ADD_PROPERTY(VSModelSwitchNode, VSSwitchNode)
@@ -44,7 +44,7 @@ void VSModelSwitchNode::UpdateView(VSCuller &Culler, double dAppTime)
 {
     VSSwitchNode::UpdateView(Culler, dAppTime);
     VSCamera *pCamera = Culler.GetCamera();
-    VSMAC_ASSERT(pCamera);
+    ENGINE_ASSERT(pCamera);
     m_uiActiveNode = 0;
     if (Culler.GetCullerType() == VSCuller::CUT_MAIN)
     {

@@ -1,5 +1,5 @@
-#include "3DTexture.h"
-#include "GraphicInclude.h"
+#include "Render/Texture/3DTexture.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VS3DTexture, VSTexture)
 BEGIN_ADD_PROPERTY(VS3DTexture, VSTexture)
@@ -21,8 +21,8 @@ VS3DTexture::VS3DTexture()
 }
 void VS3DTexture::SetMipLevel()
 {
-    VSMAC_ASSERT(m_uiWidth && m_uiHeight && m_uiLength);
-    VSMAC_ASSERT(IsTwoPower(m_uiWidth) && IsTwoPower(m_uiHeight) && IsTwoPower(m_uiLength));
+    ENGINE_ASSERT(m_uiWidth && m_uiHeight && m_uiLength);
+    ENGINE_ASSERT(IsTwoPower(m_uiWidth) && IsTwoPower(m_uiHeight) && IsTwoPower(m_uiLength));
     unsigned int uiWidthLevel = FastLog2(m_uiWidth);
     unsigned int uHeightLevel = FastLog2(m_uiHeight);
     unsigned int uiLengthLevel = FastLog2(m_uiLength);
@@ -35,7 +35,7 @@ void VS3DTexture::SetMipLevel()
 }
 bool VS3DTexture::SetOutput(class VSOutputResource *pOutputResource)
 {
-    VSMAC_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
+    ENGINE_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
     if (IsBindResource())
     {
         return false;
@@ -79,7 +79,7 @@ bool VS3DTexture::SetOutput(class VSOutputResource *pOutputResource)
         }
         else
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }

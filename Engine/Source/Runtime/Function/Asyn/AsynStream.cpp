@@ -1,7 +1,7 @@
 #include "AsynStream.h"
 #include "Config.h"
-#include "Object.h"
-#include "GraphicInclude.h"
+#include "Core/Object.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 VSAsynStream::VSAsynStream()
     : MStream(ASYN_LOAD_FLAG)
@@ -90,7 +90,7 @@ void VSAsynStream::LoadAndLinkOjbect()
     for (unsigned int i = 0; i < m_ObjectTable.GetNum(); i++)
     {
         m_ObjectTable[i].m_ObjectPropertyTable.SetBufferNum(m_ObjectTable[i].m_uiObjectPropertyNum);
-        VSMapOrder<unsigned int, unsigned int> *pPropertyReplace = NULL;
+        Container::MMapOrder<unsigned int, unsigned int> *pPropertyReplace = NULL;
         VSConfig::GetPropertyReplace(m_ObjectTable[i].m_RttiName, pPropertyReplace);
         for (unsigned int j = 0; j < m_ObjectTable[i].m_uiObjectPropertyNum; j++)
         {
@@ -154,12 +154,12 @@ bool VSAsynStream::ReadResource(VSResourceProxyBasePtr &Resource)
     Read(&IsNone, sizeof(bool));
     if (IsNone == false)
     {
-        VSString Name;
+        Container::MString Name;
         ReadString(Name);
         Resource = VSResourceManager::LoadResource(Name.GetBuffer(), true);
         if (!Resource)
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }
@@ -192,7 +192,7 @@ const MObject *VSAsynStream::GetObjectByRtti(const VSRtti &Rtti)
     for (unsigned int i = 0; i < m_pVObjectArray.GetNum(); i++)
     {
         MObject *p = m_pVObjectArray[i];
-        VSMAC_ASSERT(p != NULL);
+        ENGINE_ASSERT(p != NULL);
         if (p)
         {
             p->ClearFlag(MObject::OF_REACH);

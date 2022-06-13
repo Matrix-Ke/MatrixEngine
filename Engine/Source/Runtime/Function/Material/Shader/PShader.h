@@ -12,8 +12,8 @@ namespace Matrix
         DECLARE_INITIAL
     public:
         VSPShader();
-        VSPShader(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile = false);
-        VSPShader(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile = false);
+        VSPShader(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile = false);
+        VSPShader(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile = false);
         virtual ~VSPShader();
         virtual unsigned int GetShaderType() const
         {

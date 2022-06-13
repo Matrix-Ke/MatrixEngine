@@ -1,18 +1,18 @@
-#include "Culler.h"
+#include "Render/SceneManager/Culler.h"
 #include "Spatial.h"
-#include "Geometry.h"
-#include "GraphicInclude.h"
-#include "SceneManager.h"
-#include "PointLight.h"
-#include "Geometry.h"
-#include "SpotLight.h"
+#include "Node/Geometry.h"
+#include "Core/GraphicInclude.h"
+#include "Render/SceneManager/SceneManager.h"
+#include "Node/NodeComponent/Light/PointLight.h"
+#include "Node/Geometry.h"
+#include "Node/NodeComponent/Light/SpotLight.h"
 #include "Material.h"
 #include "SortLight.h"
 #include "InstanceGeometry.h"
 #include "Query.h"
 #include "Timer.h"
 #include "RenderThread.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 VSRenderContext VSRenderContext::ms_RenderContextNULL;
 DECLEAR_TIME_PROFILENODE(CullerSort, ViewFamilyUpdate)
@@ -53,7 +53,7 @@ VSCuller::~VSCuller()
 }
 bool VSCuller::PushPlane(const VSPlane3 &Plane)
 {
-    VSMAC_ASSERT(m_uiPlaneNum <= VS_MAX_PLANE_NUM);
+    ENGINE_ASSERT(m_uiPlaneNum <= VS_MAX_PLANE_NUM);
     m_Plane[m_uiPlaneNum] = Plane;
     m_uiPlaneNum++;
     return true;
@@ -78,14 +78,14 @@ bool VSCuller::PushCameraPlane(VSCamera &Camera)
 }
 bool VSCuller::PopPlane(VSPlane3 &Plane)
 {
-    VSMAC_ASSERT(m_uiPlaneNum);
+    ENGINE_ASSERT(m_uiPlaneNum);
     Plane = m_Plane[m_uiPlaneNum];
     m_uiPlaneNum--;
     return true;
 }
 bool VSCuller::InsertObject(VSRenderContext &VisibleContext, unsigned int uiVisibleSetType, unsigned int uiRenderGroup)
 {
-    VSMAC_ASSERT(uiVisibleSetType < VST_MAX && uiRenderGroup < RG_MAX);
+    ENGINE_ASSERT(uiVisibleSetType < VST_MAX && uiRenderGroup < RG_MAX);
     m_VisibleSet[uiRenderGroup][uiVisibleSetType].AddElement(VisibleContext);
     return 1;
 }
@@ -132,7 +132,7 @@ void VSCuller::GetAndSortLight()
 }
 unsigned int VSCuller::IsVisible(const VSSphere3 &S, bool bClearState)
 {
-    VSMAC_ASSERT(m_uiPlaneNum);
+    ENGINE_ASSERT(m_uiPlaneNum);
     int iP = m_uiPlaneNum - 1;
     unsigned int uiMask = 1 << iP;
     unsigned int uiPlaneInNum = 0;
@@ -182,7 +182,7 @@ unsigned int VSCuller::IsVisible(const VSSphere3 &S, bool bClearState)
 }
 unsigned int VSCuller::IsVisible(const Math::Vector3 &Point, bool bClearState)
 {
-    VSMAC_ASSERT(m_uiPlaneNum);
+    ENGINE_ASSERT(m_uiPlaneNum);
     int iP = m_uiPlaneNum - 1;
     unsigned int uiMask = 1 << iP;
     unsigned int uiPlaneInNum = 0;
@@ -232,7 +232,7 @@ unsigned int VSCuller::IsVisible(const Math::Vector3 &Point, bool bClearState)
 }
 unsigned int VSCuller::IsVisible(const Primitive::AABB3 &BV, bool bClearState)
 {
-    VSMAC_ASSERT(m_uiPlaneNum);
+    ENGINE_ASSERT(m_uiPlaneNum);
     int iP = m_uiPlaneNum - 1;
     unsigned int uiMask = 1 << iP;
     unsigned int uiPlaneInNum = 0;
@@ -562,7 +562,7 @@ void VSCuller::Sort()
 }
 bool VSCuller::AlphaPriority::operator()(VSRenderContext &p1, VSRenderContext &p2)
 {
-    VSMAC_ASSERT(m_pCamera);
+    ENGINE_ASSERT(m_pCamera);
 
     Math::Vector3 vLength1 = m_pCamera->GetWorldTranslate() - p1.m_pGeometry->GetWorldTranslate();
     Math::Vector3 vLength2 = m_pCamera->GetWorldTranslate() - p2.m_pGeometry->GetWorldTranslate();
@@ -575,7 +575,7 @@ bool VSCuller::AlphaPriority::operator()(VSRenderContext &p1, VSRenderContext &p
 }
 void VSCuller::InsertLight(VSLight *pLight)
 {
-    VSMAC_ASSERT(pLight);
+    ENGINE_ASSERT(pLight);
 
     m_LightSet.AddElement(pLight);
 }
@@ -808,7 +808,7 @@ VSOcclusionQueryType VSOcclusionQueryPool::GetOcclusionQuery()
     {
         unsigned int ID = m_ElementArray.AddElement(VSOcclusionQueryType());
         m_ElementArray[ID].ID = ID;
-        m_ElementArray[ID].pQuery = VS_NEW VSQuery(VSQuery::QT_OCCLUSION);
+        m_ElementArray[ID].pQuery = MX_NEW VSQuery(VSQuery::QT_OCCLUSION);
         m_ElementArray[ID].pQuery->LoadResource(VSRenderer::ms_pRenderer);
         return m_ElementArray[ID];
     }
@@ -1010,7 +1010,7 @@ Container::MArray<VSGeometryOcclusionQueryData> &VSCullerManager::GetGroupGeomet
     unsigned int uiCullIndex = m_CullerArray.FindElement(pCuller);
     if (uiCullIndex == m_CullerArray.GetNum())
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     return (*(m_GOQBufferPointer[uiGroup][0]))[uiCullIndex];
 }

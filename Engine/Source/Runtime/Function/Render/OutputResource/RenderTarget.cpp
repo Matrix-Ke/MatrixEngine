@@ -1,7 +1,7 @@
 #include "RenderTarget.h"
-#include "VertexFormat.h"
-#include "GraphicInclude.h"
-#include "2DTexture.h"
+#include "Render/Buffer/VertexFormat.h"
+#include "Core/GraphicInclude.h"
+#include "Render/Texture/2DTexture.h"
 #include "2DTextureArray.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSRenderTarget, VSOutputResource)
@@ -55,7 +55,7 @@ VSRenderTarget::VSRenderTarget(VS2DTexture *pCreateBy, unsigned int uiMulSample,
     m_uiArraySize = 1;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSRenderTarget::VSRenderTarget(VS2DTextureArray *pCreateBy, unsigned int uiMulSample, unsigned int uiLevel,
@@ -81,7 +81,7 @@ VSRenderTarget::VSRenderTarget(VS2DTextureArray *pCreateBy, unsigned int uiMulSa
     m_uiArraySize = uiArraySize;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSRenderTarget::VSRenderTarget(VS3DTexture *pCreateBy, unsigned int uiMulSample, unsigned int uiLevel,
@@ -101,7 +101,7 @@ VSRenderTarget::VSRenderTarget(VS3DTexture *pCreateBy, unsigned int uiMulSample,
     m_uiArraySize = uiArraySize;
     if (!pCreateBy->SetOutput(this))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VSRenderTarget::~VSRenderTarget()

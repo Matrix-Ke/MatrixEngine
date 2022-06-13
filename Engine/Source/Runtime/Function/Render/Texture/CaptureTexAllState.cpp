@@ -1,8 +1,8 @@
 #include "CaptureTexAllState.h"
 #include "ResourceManager.h"
 #include "Image.h"
-#include "GraphicInclude.h"
-#include "SceneManager.h"
+#include "Core/GraphicInclude.h"
+#include "Render/SceneManager/SceneManager.h"
 #include "RenderThread.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSCaptureTexAllState, VSTexAllState)
@@ -31,7 +31,7 @@ VSCaptureTexAllState::~VSCaptureTexAllState()
         }
     }
 }
-bool VSCaptureTexAllState::SetViewCapture(const VSString &ViewCaptureName)
+bool VSCaptureTexAllState::SetViewCapture(const Container::MString &ViewCaptureName)
 {
 
     m_ViewCaptureName = ViewCaptureName;
@@ -44,7 +44,7 @@ bool VSCaptureTexAllState::SetViewCapture(const VSString &ViewCaptureName)
     }
     VSTexture *pTexture = pCaptureViewFamily->GetTexture();
 
-    VSMAC_ASSERT(pTexture);
+    ENGINE_ASSERT(pTexture);
 
     m_pTex = pTexture;
     ForceUpdate(!m_bDynamic);
@@ -117,18 +117,18 @@ void VSCaptureTexAllState::ForceUpdate(bool OnlyUpdateOneTime)
 void VSCaptureTexAllState::CreateStaticTexture()
 {
     VSCaptureViewFamily *pCaptureViewFamily = DynamicCast<VSCaptureViewFamily>(VSSceneManager::ms_pSceneManager->GetViewFamily(m_ViewCaptureName));
-    VSMAC_ASSERT(pCaptureViewFamily);
+    ENGINE_ASSERT(pCaptureViewFamily);
     if (!m_bDynamic)
     {
         VSTexture *pTexture = pCaptureViewFamily->GetTexture();
         unsigned int uiTextureType = pTexture->GetTexType();
         if (uiTextureType == VSTexture::TT_2D)
         {
-            m_pStaticTexture = VS_NEW VS2DTexture(pTexture->GetWidth(0), pTexture->GetHeight(0), pTexture->GetFormatType(), m_uiMipLevel, 1);
+            m_pStaticTexture = MX_NEW VS2DTexture(pTexture->GetWidth(0), pTexture->GetHeight(0), pTexture->GetFormatType(), m_uiMipLevel, 1);
         }
         else if (uiTextureType == VSTexture::TT_CUBE)
         {
-            m_pStaticTexture = VS_NEW VSCubeTexture(pTexture->GetWidth(0), pTexture->GetFormatType(), m_uiMipLevel, 1);
+            m_pStaticTexture = MX_NEW VSCubeTexture(pTexture->GetWidth(0), pTexture->GetFormatType(), m_uiMipLevel, 1);
         }
         m_pStaticTexture->CreateRAMData();
         m_uiMipLevel = m_pStaticTexture->GetMipLevel();
@@ -139,7 +139,7 @@ void VSCaptureTexAllState::NotifyEndDraw()
 {
     CreateStaticTexture();
     VSCaptureViewFamily *pCaptureViewFamily = DynamicCast<VSCaptureViewFamily>(VSSceneManager::ms_pSceneManager->GetViewFamily(m_ViewCaptureName));
-    VSMAC_ASSERT(pCaptureViewFamily);
+    ENGINE_ASSERT(pCaptureViewFamily);
     if (!m_bDynamic)
     {
         VSTexture *pSourceTexture = pCaptureViewFamily->GetTexture();

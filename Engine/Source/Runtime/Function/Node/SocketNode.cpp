@@ -1,6 +1,6 @@
 #include "SocketNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSocketNode, VSSpatial)
 BEGIN_ADD_PROPERTY(VSSocketNode, VSSpatial)

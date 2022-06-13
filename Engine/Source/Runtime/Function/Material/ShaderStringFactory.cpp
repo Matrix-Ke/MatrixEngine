@@ -1,31 +1,31 @@
 #include "ShaderStringFactory.h"
-#include "Geometry.h"
+#include "Node/Geometry.h"
 #include "Log.h"
 #include "ResourceManager.h"
-#include "BoneNode.h"
-#include "DirectionLight.h"
-#include "PointLight.h"
-#include "SpotLight.h"
-#include "GraphicInclude.h"
+#include "Node/Model/BoneNode.h"
+#include "Node/NodeComponent/Light/DirectionLight.h"
+#include "Node/NodeComponent/Light/PointLight.h"
+#include "Node/NodeComponent/Light/SpotLight.h"
+#include "Core/GraphicInclude.h"
 #include "Config.h"
 using namespace Matrix;
 unsigned int VSShaderStringFactory::ms_ShaderValueIndex = 0;
-VSString VSShaderStringFactory::ms_TextureInputCoordValue[UV_LEVEL];
-VSString VSShaderStringFactory::ms_InputVertexID;
-VSString VSShaderStringFactory::ms_InputColor[2];
-VSString VSShaderStringFactory::ms_PSOutputColorValue;
-VSString VSShaderStringFactory::ms_PSOutputColorValue1;
-VSString VSShaderStringFactory::ms_InputLocalNormal;
-VSString VSShaderStringFactory::ms_InputLocalBinormal;
-VSString VSShaderStringFactory::ms_InputLocalTangent;
-VSString VSShaderStringFactory::ms_InputLocalPos;
-VSString VSShaderStringFactory::ms_InputWorldPos;
-VSString VSShaderStringFactory::ms_InputTessellationValue;
-VSString VSShaderStringFactory::ms_InputProjectZ;
-VSString VSShaderStringFactory::ms_InputInstancePos[3];
-VSString VSShaderStringFactory::ms_InputInstanceAnimData;
-VSString VSShaderStringFactory::ms_InputInstanceAnimNum;
-Container::MArray<VSString> VSShaderStringFactory::ms_InputMaterialInstance;
+Container::MString VSShaderStringFactory::ms_TextureInputCoordValue[UV_LEVEL];
+Container::MString VSShaderStringFactory::ms_InputVertexID;
+Container::MString VSShaderStringFactory::ms_InputColor[2];
+Container::MString VSShaderStringFactory::ms_PSOutputColorValue;
+Container::MString VSShaderStringFactory::ms_PSOutputColorValue1;
+Container::MString VSShaderStringFactory::ms_InputLocalNormal;
+Container::MString VSShaderStringFactory::ms_InputLocalBinormal;
+Container::MString VSShaderStringFactory::ms_InputLocalTangent;
+Container::MString VSShaderStringFactory::ms_InputLocalPos;
+Container::MString VSShaderStringFactory::ms_InputWorldPos;
+Container::MString VSShaderStringFactory::ms_InputTessellationValue;
+Container::MString VSShaderStringFactory::ms_InputProjectZ;
+Container::MString VSShaderStringFactory::ms_InputInstancePos[3];
+Container::MString VSShaderStringFactory::ms_InputInstanceAnimData;
+Container::MString VSShaderStringFactory::ms_InputInstanceAnimNum;
+Container::MArray<Container::MString> VSShaderStringFactory::ms_InputMaterialInstance;
 
 VSUsedName VSShaderStringFactory::ms_PSOrenNayarLookUpTableResource = _T("Tex_OrenNayarLookUpTable");
 VSUsedName VSShaderStringFactory::ms_VSMorphVDataResource = _T("Tex_MorphVData");
@@ -116,7 +116,7 @@ void VSShaderStringFactory::AddShaderSamplerRegisterID(VSShader *pShader, unsign
         unsigned int CurMaxShareSamplerRegisterID = GetMaxShareSamplerRegisterID();
         if (CurMaxShareSamplerRegisterID == INVALID_SIMPLAR_REGISTER)
         {
-            VSMAC_ASSERT(uiTexRegisterID < VSRenderer::ms_pRenderer->GetMaxSampler(pShader->GetShaderType()));
+            ENGINE_ASSERT(uiTexRegisterID < VSRenderer::ms_pRenderer->GetMaxSampler(pShader->GetShaderType()));
             pShader->AddShareSampler(uiTexRegisterID, ShareSamplerType);
         }
         else
@@ -145,10 +145,10 @@ unsigned int VSShaderStringFactory::GetMaxShareSamplerRegisterID()
     }
     return Min;
 }
-bool VSShaderStringFactory::CreateVShaderString(VSVShader *pVShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &VShaderString
+bool VSShaderStringFactory::CreateVShaderString(VSVShader *pVShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &VShaderString
 #if _DEBUG
                                                 ,
-                                                VSString &OutShaderFileName)
+                                                Container::MString &OutShaderFileName)
 #else
 )
 #endif
@@ -166,12 +166,12 @@ bool VSShaderStringFactory::CreateVShaderString(VSVShader *pVShader, MaterialSha
     ClearAllString();
     ms_uiCreateVShaderNum++;
 
-    VSString VInclude;
-    VSString VDynamic;
-    VSString VInputDeclare;
-    VSString VOutputDeclare;
-    VSString VUserConstantString;
-    VSString VFunctionString;
+    Container::MString VInclude;
+    Container::MString VDynamic;
+    Container::MString VInputDeclare;
+    Container::MString VOutputDeclare;
+    Container::MString VUserConstantString;
+    Container::MString VFunctionString;
 
     VSRenderer::ms_pRenderer->GetIncludeShader(VInclude);
     VSRenderer::ms_pRenderer->GetDynamicShader(VDynamic);
@@ -187,10 +187,10 @@ bool VSShaderStringFactory::CreateVShaderString(VSVShader *pVShader, MaterialSha
 #endif
     return 1;
 }
-bool VSShaderStringFactory::CreatePShaderString(VSPShader *pPShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &PShaderString
+bool VSShaderStringFactory::CreatePShaderString(VSPShader *pPShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &PShaderString
 #if _DEBUG
                                                 ,
-                                                VSString &OutShaderFileName)
+                                                Container::MString &OutShaderFileName)
 #else
 )
 #endif
@@ -203,12 +203,12 @@ bool VSShaderStringFactory::CreatePShaderString(VSPShader *pPShader, MaterialSha
     MSPara.uiCompileShaderType = VSEngineFlag::ST_PIXEL;
     ClearAllString();
     ms_uiCreatePShaderNum++;
-    VSString PInclude;
-    VSString PDynamic;
-    VSString PInputDeclare;
-    VSString POutputDeclare;
-    VSString PUserConstantstring;
-    VSString PFunctionString;
+    Container::MString PInclude;
+    Container::MString PDynamic;
+    Container::MString PInputDeclare;
+    Container::MString POutputDeclare;
+    Container::MString PUserConstantstring;
+    Container::MString PFunctionString;
 
     VSRenderer::ms_pRenderer->GetIncludeShader(PInclude);
     VSRenderer::ms_pRenderer->GetDynamicShader(PDynamic);
@@ -224,10 +224,10 @@ bool VSShaderStringFactory::CreatePShaderString(VSPShader *pPShader, MaterialSha
 #endif
     return 1;
 }
-bool VSShaderStringFactory::CreateGShaderString(VSGShader *pGShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &GShaderString
+bool VSShaderStringFactory::CreateGShaderString(VSGShader *pGShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &GShaderString
 #if _DEBUG
                                                 ,
-                                                VSString &OutShaderFileName)
+                                                Container::MString &OutShaderFileName)
 #else
 )
 #endif
@@ -240,12 +240,12 @@ bool VSShaderStringFactory::CreateGShaderString(VSGShader *pGShader, MaterialSha
     MSPara.uiCompileShaderType = VSEngineFlag::ST_GEOMETRY;
     ClearAllString();
     ms_uiCreateGShaderNum++;
-    VSString GInclude;
-    VSString GDynamic;
-    VSString GInputDeclare;
-    VSString GOutputDeclare;
-    VSString GUserConstantstring;
-    VSString GFunctionString;
+    Container::MString GInclude;
+    Container::MString GDynamic;
+    Container::MString GInputDeclare;
+    Container::MString GOutputDeclare;
+    Container::MString GUserConstantstring;
+    Container::MString GFunctionString;
     VSRenderer::ms_pRenderer->GetIncludeShader(GInclude);
     VSRenderer::ms_pRenderer->GetDynamicShader(GDynamic);
     VSRenderer::ms_pRenderer->CreateGInputDeclare(MSPara, GInputDeclare);
@@ -266,10 +266,10 @@ bool VSShaderStringFactory::CreateGShaderString(VSGShader *pGShader, MaterialSha
 #endif
     return 1;
 }
-bool VSShaderStringFactory::CreateHShaderString(VSHShader *pHShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &HShaderString
+bool VSShaderStringFactory::CreateHShaderString(VSHShader *pHShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &HShaderString
 #if _DEBUG
                                                 ,
-                                                VSString &OutShaderFileName)
+                                                Container::MString &OutShaderFileName)
 #else
 )
 #endif
@@ -282,12 +282,12 @@ bool VSShaderStringFactory::CreateHShaderString(VSHShader *pHShader, MaterialSha
     MSPara.uiCompileShaderType = VSEngineFlag::ST_HULL;
     ClearAllString();
     ms_uiCreateHShaderNum++;
-    VSString HInclude;
-    VSString HDynamic;
-    VSString HInputDeclare;
-    VSString HOutputDeclare;
-    VSString HUserConstantstring;
-    VSString HFunctionString;
+    Container::MString HInclude;
+    Container::MString HDynamic;
+    Container::MString HInputDeclare;
+    Container::MString HOutputDeclare;
+    Container::MString HUserConstantstring;
+    Container::MString HFunctionString;
 
     VSRenderer::ms_pRenderer->GetIncludeShader(HInclude);
     VSRenderer::ms_pRenderer->GetDynamicShader(HDynamic);
@@ -303,10 +303,10 @@ bool VSShaderStringFactory::CreateHShaderString(VSHShader *pHShader, MaterialSha
 #endif
     return 1;
 }
-bool VSShaderStringFactory::CreateDShaderString(VSDShader *pDShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, VSString &DShaderString
+bool VSShaderStringFactory::CreateDShaderString(VSDShader *pDShader, MaterialShaderPara &MSPara, unsigned int uiShaderID, Container::MString &DShaderString
 #if _DEBUG
                                                 ,
-                                                VSString &OutShaderFileName)
+                                                Container::MString &OutShaderFileName)
 #else
 )
 #endif
@@ -319,12 +319,12 @@ bool VSShaderStringFactory::CreateDShaderString(VSDShader *pDShader, MaterialSha
     MSPara.uiCompileShaderType = VSEngineFlag::ST_DOMAIN;
     ClearAllString();
     ms_uiCreateDShaderNum++;
-    VSString DInclude;
-    VSString DDynamic;
-    VSString DInputDeclare;
-    VSString DOutputDeclare;
-    VSString DUserConstantstring;
-    VSString DFunctionString;
+    Container::MString DInclude;
+    Container::MString DDynamic;
+    Container::MString DInputDeclare;
+    Container::MString DOutputDeclare;
+    Container::MString DUserConstantstring;
+    Container::MString DFunctionString;
 
     VSRenderer::ms_pRenderer->GetIncludeShader(DInclude);
     VSRenderer::ms_pRenderer->GetDynamicShader(DDynamic);
@@ -342,12 +342,12 @@ bool VSShaderStringFactory::CreateDShaderString(VSDShader *pDShader, MaterialSha
 }
 #if _DEBUG
 void VSShaderStringFactory::OutPutShaderLog(MaterialShaderPara &MSPara, unsigned int uiShaderID,
-                                            const VSString &ShaderCode, VSString &OutShaderTextName)
+                                            const Container::MString &ShaderCode, Container::MString &OutShaderTextName)
 {
-    VSString ShaderType[VSEngineFlag::ST_MAX] = {_T("VShader.txt"), _T("PShader.txt"), _T("GShader.txt"), _T("HShader.txt"), _T("DShader.txt")};
+    Container::MString ShaderType[VSEngineFlag::ST_MAX] = {_T("VShader.txt"), _T("PShader.txt"), _T("GShader.txt"), _T("HShader.txt"), _T("DShader.txt")};
     VSLog ShaderText;
     OutShaderTextName = VSConfig::ms_OutputShaderCodePath + VSRenderer::ms_pRenderer->GetRenderTypeShaderPath();
-    VSString ShaderID = Container::IntToString(uiShaderID);
+    Container::MString ShaderID = Container::IntToString(uiShaderID);
     unsigned int uiPassType = MSPara.uiPassType;
     VSMaterial *pMaterial = MSPara.pMaterialInstance->GetMaterial();
     if (uiPassType == VSPass::PT_MATERIAL)

@@ -1,9 +1,9 @@
 #include "SamplerState.h"
 #include "Shader.h"
 #include "Material.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ResourceManager.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSamplerState, VSBind)
 VSPointer<VSSamplerState> VSSamplerState::ms_Default;
@@ -47,7 +47,7 @@ bool VSSamplerState::InitialDefaultState()
     TwoLineBorderOneDesc.m_uiMin = VSSamplerDesc::FM_LINE;
     TwoLineBorderOneDesc.m_uiCoordU = VSSamplerDesc::CM_BORDER;
     TwoLineBorderOneDesc.m_uiCoordV = VSSamplerDesc::CM_BORDER;
-    TwoLineBorderOneDesc.m_BorderColor = VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+    TwoLineBorderOneDesc.m_BorderColor = Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
     ms_TwoLineBorderOne = VSResourceManager::CreateSamplerState(TwoLineBorderOneDesc);
     if (!ms_TwoLineBorderOne)
         return 0;

@@ -1,5 +1,5 @@
 #include "Steer.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSSteerComponent, MObject)
     VSSteerComponent::VSSteerComponent()

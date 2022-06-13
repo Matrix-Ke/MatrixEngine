@@ -1,8 +1,8 @@
 #pragma once
 #include "MemManager.h"
 #include "Math.h"
-#include "Object.h"
-#include "BufferResource.h"
+#include "Core/Object.h"
+#include "Render/Buffer/BufferResource.h"
 namespace Matrix
 {
     class MStream;

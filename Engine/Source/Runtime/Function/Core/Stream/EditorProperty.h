@@ -465,7 +465,7 @@ namespace Matrix
 		VSEValueProperty(T* pData, Container::MString& Name, MObject* pOwner, bool bRange, T& Max, T& Min, T& Step)
 			: VSEditorProperty(Name, pOwner)
 		{
-			MATRIX_ENGINE_ASSERT(pData != NULL);
+			ENGINE_ASSERT(pData != NULL);
 			m_pText = (VSEText*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_TEXT, Name);
 			m_pText->SetOwner(this);
 			m_fStep = Step;
@@ -475,7 +475,7 @@ namespace Matrix
 				{
 					Math::Swap(Max, Min);
 				}
-				MATRIX_ENGINE_ASSERT(Max - Min > Step);
+				ENGINE_ASSERT(Max - Min > Step);
 				m_pSlider = (VSESlider*)CREATE_UI_PROPERTY(VSEditorSingle::CUT_SLIDER, Name);
 				m_pSlider->SetOwner(this);
 				m_pSlider->SetRange(0, int((Max - Min) / Step), 1);
@@ -715,7 +715,7 @@ namespace Matrix
 		VSEVector3Property(Math::Vector3* pVector3, Container::MString& Name, MObject* pOwner, bool bRange, Math::Vector3 Max, Math::Vector3 Min, Math::Vector3 Step)
 			: VSEditorProperty(Name, pOwner)
 		{
-			MATRIX_ENGINE_ASSERT(pVector3 != NULL);
+			ENGINE_ASSERT(pVector3 != NULL);
 
 			if (bRange)
 			{
@@ -731,9 +731,9 @@ namespace Matrix
 				{
 					Math::Swap(Max.z, Min.z);
 				}
-				MATRIX_ENGINE_ASSERT(Max.x - Min.x > Step.x);
-				MATRIX_ENGINE_ASSERT(Max.y - Min.y > Step.y);
-				MATRIX_ENGINE_ASSERT(Max.z - Min.z > Step.z);
+				ENGINE_ASSERT(Max.x - Min.x > Step.x);
+				ENGINE_ASSERT(Max.y - Min.y > Step.y);
+				ENGINE_ASSERT(Max.z - Min.z > Step.z);
 			}
 			m_pVector3 = pVector3;
 			m_fStep = Step;
@@ -1202,7 +1202,7 @@ namespace Matrix
 	template <typename T>
 	VSEditorElement* CreateEElement(T& Value, Container::MString& Name, MObject* pOwner, bool bRange, T& Max, T& Min, T& fStep)
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return NULL;
 	}
 	template <>

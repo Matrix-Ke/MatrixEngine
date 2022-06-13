@@ -1,9 +1,9 @@
 #include "MeshNode.h"
 #include "SwitchNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "DebugDraw.h"
 #include "ViewFamily.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSMeshNode, VSNode)
 BEGIN_ADD_PROPERTY(VSMeshNode, VSNode)
@@ -32,7 +32,7 @@ void VSMeshNode::UpdateView(VSCuller &Culler, double dAppTime)
 
     VSNode::UpdateView(Culler, dAppTime);
     VSCamera *pCamera = Culler.GetCamera();
-    VSMAC_ASSERT(pCamera);
+    ENGINE_ASSERT(pCamera);
 
     if (Culler.GetCullerType() == VSCuller::CUT_MAIN)
     {
@@ -47,7 +47,7 @@ void VSMeshNode::UpdateView(VSCuller &Culler, double dAppTime)
                     VSDebugDraw *pDebugDraw = pRM->GetDebugDraw(m_uiRenderGroup);
                     if (pDebugDraw)
                     {
-                        pDebugDraw->AddDebugLineAABB(m_WorldBV, VSColorRGBA(1.0f, 0.0f, 0.0f, 1.0f).GetDWABGR(), false);
+                        pDebugDraw->AddDebugLineAABB(m_WorldBV, Math::ColorRGBA(1.0f, 0.0f, 0.0f, 1.0f).GetDWABGR(), false);
                     }
                 }
             }

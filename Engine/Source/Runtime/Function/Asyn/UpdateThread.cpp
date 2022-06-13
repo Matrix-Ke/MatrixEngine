@@ -37,7 +37,7 @@ VSUpdateCenter::VSUpdateCenter(bool bIsMainRun, unsigned int uiThreadNum)
     {
         m_uiContextNum++;
     }
-    m_pContextArray = VS_NEW VSUpdateContext[m_uiContextNum];
+    m_pContextArray = MX_NEW VSUpdateContext[m_uiContextNum];
     m_uiIndex = -1;
 }
 VSUpdateCenter::~VSUpdateCenter()
@@ -130,8 +130,8 @@ bool VSUpdateThread::IsReady() const
 VSUpdateThreadSys *VSUpdateThreadSys::ms_pUpdateThreadSys = NULL;
 VSUpdateThreadSys::VSUpdateThreadSys(unsigned int uiThreadNum)
 {
-    VSMAC_ASSERT(uiThreadNum);
-    VSMAC_ASSERT(!ms_pUpdateThreadSys);
+    ENGINE_ASSERT(uiThreadNum);
+    ENGINE_ASSERT(!ms_pUpdateThreadSys);
     ms_pUpdateThreadSys = this;
 
     m_uiThreadNum = uiThreadNum;
@@ -150,7 +150,7 @@ VSUpdateThreadSys::VSUpdateThreadSys(unsigned int uiThreadNum)
     }
 #endif
     m_uiCurUpdateType = UPDATE_NODE;
-    m_UpdateCenter[UPDATE_NODE] = VS_NEW VSUpdateCenter(true, m_uiThreadNum);
+    m_UpdateCenter[UPDATE_NODE] = MX_NEW VSUpdateCenter(true, m_uiThreadNum);
 #ifdef CONTEXT_UPDATE
     for (unsigned int i = 0; i < m_uiThreadNum; i++)
     {

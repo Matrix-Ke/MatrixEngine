@@ -1,6 +1,6 @@
 #include "Font.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "Config.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSFont, VSBind)
@@ -76,7 +76,7 @@ void VSFont::SetFontData(VS2DTexture *pTexture, VSREAL *pCharacterData)
     }
     m_pFontTex = pTexture;
     VSMAC_DELETEA(m_pCharacterData);
-    m_pCharacterData = VS_NEW VSREAL[ASCII_NUM + 1];
+    m_pCharacterData = MX_NEW VSREAL[ASCII_NUM + 1];
     VSMemcpy(m_pCharacterData, pCharacterData, sizeof(VSREAL) * (ASCII_NUM + 1));
     return;
 }
@@ -84,7 +84,7 @@ bool VSFont::PostLoad(MStream *pStream)
 {
     if (m_pFontTex)
     {
-        m_pFontTexAllState = VS_NEW VSTexAllState();
+        m_pFontTexAllState = MX_NEW VSTexAllState();
         m_pFontTexAllState->SetTexture(m_pFontTex);
         m_pFontTexAllState->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
     }
@@ -94,7 +94,7 @@ bool VSFont::PostClone(MObject *pObjectSrc)
 {
     if (m_pFontTex)
     {
-        m_pFontTexAllState = VS_NEW VSTexAllState();
+        m_pFontTexAllState = MX_NEW VSTexAllState();
         m_pFontTexAllState->SetTexture(m_pFontTex);
         m_pFontTexAllState->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
     }

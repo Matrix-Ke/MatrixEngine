@@ -1,8 +1,8 @@
-#include "SceneManager.h"
-#include "GraphicInclude.h"
+#include "Render/SceneManager/SceneManager.h"
+#include "Core/GraphicInclude.h"
 #include "UpdateThread.h"
 #include "Timer.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 VSSceneManager *VSSceneManager::ms_pSceneManager = NULL;
 DECLEAR_TIME_PROFILENODE(VSSceneManagerUpdate, Update)
@@ -71,7 +71,7 @@ void VSSceneManager::Draw(double dAppTime)
         }
     }
 }
-VSViewFamily *VSSceneManager::GetViewFamily(const VSString &ViewFamilyName) const
+VSViewFamily *VSSceneManager::GetViewFamily(const Container::MString &ViewFamilyName) const
 {
     for (unsigned int i = 0; i < m_pViewFamily.GetNum(); i++)
     {

@@ -1,5 +1,5 @@
 #include "TwoParamAnimBlendSequence.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSTwoParamAnimBlendSequence, VSTwoParamAnimBlend)
 BEGIN_ADD_PROPERTY(VSTwoParamAnimBlendSequence, VSTwoParamAnimBlend)
@@ -21,13 +21,13 @@ VSTwoParamAnimBlendSequence::VSTwoParamAnimBlendSequence(const VSUsedName &ShowN
 }
 void VSTwoParamAnimBlendSequence::SetAnimFrequency(unsigned int i, unsigned int j, double Frequency)
 {
-    VSMAC_ASSERT(j < m_uiWidth || i < m_uiHeight);
+    ENGINE_ASSERT(j < m_uiWidth || i < m_uiHeight);
 
     m_AnimSequenceFuncArray[i * m_uiWidth + j]->m_dFrequency = Frequency;
 }
 void VSTwoParamAnimBlendSequence::SetAnimPhase(unsigned int i, unsigned int j, double Phase)
 {
-    VSMAC_ASSERT(j < m_uiWidth || i < m_uiHeight);
+    ENGINE_ASSERT(j < m_uiWidth || i < m_uiHeight);
     m_AnimSequenceFuncArray[i * m_uiWidth + j]->m_dPhase = Phase;
 }
 bool VSTwoParamAnimBlendSequence::ComputeOutBoneMatrix(double dAppTime)
@@ -122,14 +122,14 @@ void VSTwoParamAnimBlendSequence::CreateSlot(unsigned int uiWidth, unsigned int 
     {
         for (unsigned int j = 0; j < uiHeight; j++)
         {
-            VSAnimSequenceFunc *pAnimSequenceFun = VS_NEW VSAnimSequenceFunc();
+            VSAnimSequenceFunc *pAnimSequenceFun = MX_NEW VSAnimSequenceFunc();
             m_AnimSequenceFuncArray.AddElement(pAnimSequenceFun);
         }
     }
 }
 void VSTwoParamAnimBlendSequence::SetAnim(unsigned int i, unsigned int j, const VSUsedName &AnimName)
 {
-    VSMAC_ASSERT(j < m_uiWidth || i < m_uiHeight);
+    ENGINE_ASSERT(j < m_uiWidth || i < m_uiHeight);
     m_AnimSequenceFuncArray[i * m_uiWidth + j]->SetAnim(AnimName);
     m_bStart = false;
     for (unsigned int i = 0; i < m_AnimSequenceFuncArray.GetNum(); i++)

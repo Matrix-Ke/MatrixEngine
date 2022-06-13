@@ -1,5 +1,5 @@
 #include "RectAnimBlend.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSRectAnimBlend, VSTwoParamAnimBlend)
 BEGIN_ADD_PROPERTY(VSRectAnimBlend, VSTwoParamAnimBlend)
@@ -18,12 +18,12 @@ VSRectAnimBlend::VSRectAnimBlend(const VSUsedName &ShowName, VSAnimTree *pAnimTr
 
     for (unsigned int i = CL_LEFT_TOP; i < CL_MAX; i++)
     {
-        VSString InputName = _T("Child");
-        VSString ID = Container::IntToString(m_pInput.GetNum());
+        Container::MString InputName = _T("Child");
+        Container::MString ID = Container::IntToString(m_pInput.GetNum());
         InputName += ID;
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     unsigned int BoneNum = GetSkeletonMeshNode()->GetSkeleton()->GetBoneNum();
@@ -35,10 +35,10 @@ bool VSRectAnimBlend::SetObject(MObject *pObject)
     if (VSTwoParamAnimBlend::SetObject(pObject))
     {
         const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-        VSMAC_ASSERT(pMesh);
+        ENGINE_ASSERT(pMesh);
 
         VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-        VSMAC_ASSERT(pSkeleton);
+        ENGINE_ASSERT(pSkeleton);
 
         unsigned int BoneNum = pSkeleton->GetBoneNum();
         m_BlendBoneMatrix[0].SetBufferNum(BoneNum);

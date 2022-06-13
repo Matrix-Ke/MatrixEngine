@@ -1,7 +1,7 @@
 #include "DLodTerrainNode.h"
 #include "DLodTerrainGeometry.h"
 #include "DLodTerrainSwitchNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDLodTerrainNode, VSTerrainNode)
 BEGIN_ADD_PROPERTY(VSDLodTerrainNode, VSTerrainNode)
@@ -30,15 +30,15 @@ bool VSDLodTerrainNode::CreateChild()
         {
 
             VSDLodTerrainSwitchNode *pDTS = NULL;
-            pDTS = VS_NEW VSDLodTerrainSwitchNode(i, j);
-            VSMAC_ASSERT(pDTS);
+            pDTS = MX_NEW VSDLodTerrainSwitchNode(i, j);
+            ENGINE_ASSERT(pDTS);
 
             AddChild(pDTS);
             for (unsigned int k = 0; k < m_uiTessellationLevel; k++)
             {
                 VSDLodTerrainGeometry *pChild = NULL;
-                pChild = VS_NEW VSDLodTerrainGeometry();
-                VSMAC_ASSERT(pChild);
+                pChild = MX_NEW VSDLodTerrainGeometry();
+                ENGINE_ASSERT(pChild);
 
                 pDTS->AddChild(pChild);
                 pChild->CreateMesh(i, j, k, m_uiTessellationLevel);

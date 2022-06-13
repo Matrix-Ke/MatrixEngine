@@ -1,5 +1,5 @@
 #include "PointSet.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPointSet, VSMeshData)
 BEGIN_ADD_PROPERTY(VSPointSet, VSMeshData)
@@ -37,7 +37,7 @@ bool VSPointSet::CreateIndex()
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
         if (!m_pIndexBuffer)
         {
             return 0;
@@ -68,17 +68,17 @@ unsigned int VSPointSet::GetGirdNum(unsigned int uiInputNum) const
 }
 VSPointSet::VSPointSet(const Math::Vector3 &Point, VSREAL fSize)
 {
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
 
     pVertex->SetData(&Point, 1, VSDataBuffer::DT_FLOAT32_3);
 
-    VSDataBuffer *PSize = VS_NEW VSDataBuffer;
+    VSDataBuffer *PSize = MX_NEW VSDataBuffer;
     PSize->SetData(&fSize, 1, VSDataBuffer::DT_FLOAT32_1);
 
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
     m_pVertexBuffer->SetData(PSize, VSVertexFormat::VF_PSIZE);
 
     bool bResult = CreateIndex();
-    VSMAC_ASSERT(bResult);
+    ENGINE_ASSERT(bResult);
 }

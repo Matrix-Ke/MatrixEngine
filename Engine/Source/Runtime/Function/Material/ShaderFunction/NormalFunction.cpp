@@ -1,7 +1,7 @@
 #include "NormalFunction.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSWorldNormal, VSShaderFunction)
 BEGIN_ADD_PROPERTY(VSWorldNormal, VSShaderFunction)
@@ -17,30 +17,30 @@ VSWorldNormal::VSWorldNormal(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("WorldNormalOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("WorldNormalOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_3, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
     m_uiNormalType = WNT_PIXEL;
@@ -54,21 +54,21 @@ VSWorldNormal::~VSWorldNormal()
 }
 void VSWorldNormal::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("WorldNormalOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("WorldNormalOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
     m_pOutput[1]->SetNodeName(OutputNameR);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
     m_pOutput[2]->SetNodeName(OutputNameG);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
     m_pOutput[3]->SetNodeName(OutputNameB);
 }
-bool VSWorldNormal::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSWorldNormal::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     if (MSPara.uiCompileShaderType == VSEngineFlag::ST_VERTEX || MSPara.uiCompileShaderType == VSEngineFlag::ST_DOMAIN)
     {
@@ -88,9 +88,9 @@ bool VSWorldNormal::GetFunctionString(VSString &OutString, MaterialShaderPara &M
 
     return 1;
 }
-bool VSWorldNormal::GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSWorldNormal::GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     if (m_pOutput[0]->GetValueType() == VSPutNode::VT_1)
     {
         OutString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/
@@ -113,7 +113,7 @@ bool VSWorldNormal::GetOutputValueString(VSString &OutString, MaterialShaderPara
         Temp = VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("1")); /*_T("float4(0,0,0,1)");*/
     }
     else
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
 
     OutString += m_pOutput[0]->GetNodeName().GetString() + _T(" = ") + Temp + _T(";\n");
 
@@ -134,30 +134,30 @@ VSViewNormal::VSViewNormal(const VSUsedName &ShowName, VSMaterial *pMaterial)
     : VSShaderFunction(ShowName, pMaterial)
 {
 
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ViewNormalOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ViewNormalOutput") + OutputID;
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameR, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameG, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
 
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_1, OutputNameB, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
     m_uiNormalType = VNT_PIXEL;
 }
@@ -170,21 +170,21 @@ VSViewNormal::~VSViewNormal()
 }
 void VSViewNormal::ResetInShaderName(MaterialShaderPara &MSPara)
 {
-    VSString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
-    VSString OutputName = _T("ViewNormalOutput") + OutputID;
+    Container::MString OutputID = Container::IntToString(VSShaderStringFactory::ms_ShaderValueIndex);
+    Container::MString OutputName = _T("ViewNormalOutput") + OutputID;
     m_pOutput[0]->SetNodeName(OutputName);
     VSShaderStringFactory::ms_ShaderValueIndex++;
 
-    VSString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
+    Container::MString OutputNameR = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_R);
     m_pOutput[1]->SetNodeName(OutputNameR);
 
-    VSString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
+    Container::MString OutputNameG = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_G);
     m_pOutput[2]->SetNodeName(OutputNameG);
 
-    VSString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
+    Container::MString OutputNameB = VSRenderer::GetValueElement(GetOutputNode(VSOutputNode::ONI_VALUE), VSRenderer::VE_B);
     m_pOutput[3]->SetNodeName(OutputNameB);
 }
-bool VSViewNormal::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSViewNormal::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     if (MSPara.uiCompileShaderType == VSEngineFlag::ST_VERTEX)
@@ -205,9 +205,9 @@ bool VSViewNormal::GetFunctionString(VSString &OutString, MaterialShaderPara &MS
 
     return 1;
 }
-bool VSViewNormal::GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSViewNormal::GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSString Temp;
+    Container::MString Temp;
     if (m_pOutput[0]->GetValueType() == VSPutNode::VT_1)
     {
         OutString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/
@@ -230,7 +230,7 @@ bool VSViewNormal::GetOutputValueString(VSString &OutString, MaterialShaderPara 
         Temp = VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("1")); /*_T("float4(0,0,0,1)");*/
     }
     else
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
 
     OutString += m_pOutput[0]->GetNodeName().GetString() + _T(" = ") + Temp + _T(";\n");
 

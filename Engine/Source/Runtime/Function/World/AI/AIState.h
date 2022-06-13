@@ -1,8 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "Logic.h"
 #include "PutNode.h"
-#include "Name.h"
+#include "Core/Meta/ObjName.h"
 #include "Resource.h"
 namespace Matrix
 {

@@ -1,6 +1,6 @@
 #include "InstanceGeometry.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "RenderThread.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSInstanceGeometry, VSGeometry)
@@ -118,9 +118,9 @@ void VSInstanceGeometry::SetMaxInstanceBuffer(Container::MArray<VSVertexFormat::
     m_uiMaxInstanceNum = uiMaxNum;
     m_PendingDeleteInstanceBuffer = m_InstanceBuffer;
 
-    m_InstanceBuffer = VS_NEW VSVertexBuffer(FormatArray, m_uiMaxInstanceNum);
+    m_InstanceBuffer = MX_NEW VSVertexBuffer(FormatArray, m_uiMaxInstanceNum);
     m_InstanceBuffer->SetStatic(false);
-    unsigned char *pInstanceDataBuffer = VS_NEW unsigned char[m_uiMaxInstanceNum * m_uiInstanceSize];
+    unsigned char *pInstanceDataBuffer = MX_NEW unsigned char[m_uiMaxInstanceNum * m_uiInstanceSize];
     if (m_pInstanceDataBuffer != NULL)
     {
         VSMemcpy(pInstanceDataBuffer, m_pInstanceDataBuffer, m_uiInstanceNum * m_uiInstanceSize);
@@ -136,7 +136,7 @@ void VSInstanceGeometry::ClearInstanceData()
         if (m_bReCreate)
         {
             VSMAC_DELETEA(m_pInstanceDataRenderBuffer);
-            m_pInstanceDataRenderBuffer = VS_NEW unsigned char[m_uiMaxInstanceNum * m_uiInstanceSize];
+            m_pInstanceDataRenderBuffer = MX_NEW unsigned char[m_uiMaxInstanceNum * m_uiInstanceSize];
             m_bReCreate = false;
         }
 
@@ -161,7 +161,7 @@ unsigned int VSInstanceGeometry::AddInstance(const Primitive::AABB3 WorldBound, 
     {
         if (!m_InstanceBuffer)
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return 0;
         }
         else
@@ -233,7 +233,7 @@ unsigned int VSInstanceGeometry::AddInstance(const Primitive::AABB3 WorldBound, 
         {
             uiGetsize += sizeof(VSVector3W) * VSResourceManager::GetSimpleInstanceAnimFloat4Num();
         }
-        VSMAC_ASSERT(uiGetsize == m_uiInstanceSize);
+        ENGINE_ASSERT(uiGetsize == m_uiInstanceSize);
 #endif
     }
     if (m_uiInstanceNum == 0)
@@ -263,7 +263,7 @@ void VSInstanceGeometry::UpdateGeometryBeforeDrawCall()
                                                 unsigned int, m_uiInstanceSize, m_uiInstanceSize,
                                                 {
                                                     unsigned char *pData = (unsigned char *)m_InstanceBuffer->Lock();
-                                                    VSMAC_ASSERT(pData);
+                                                    ENGINE_ASSERT(pData);
                                                     VSMemcpy(pData, m_pInstanceDataBuffer, m_uiInstanceNum * m_uiInstanceSize);
                                                     m_InstanceBuffer->UnLock();
                                                 })

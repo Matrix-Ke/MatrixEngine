@@ -1,5 +1,5 @@
 #include "SwitchNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSwitchNode, VSNode)
 BEGIN_ADD_PROPERTY(VSSwitchNode, VSNode)
@@ -28,7 +28,7 @@ void VSSwitchNode::ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double 
 }
 void VSSwitchNode::UpdateWorldBound(double dAppTime)
 {
-    VSMAC_ASSERT(m_uiActiveNode < m_pChild.GetNum());
+    ENGINE_ASSERT(m_uiActiveNode < m_pChild.GetNum());
     {
         if (m_pChild[m_uiActiveNode])
             m_WorldBV = m_pChild[m_uiActiveNode]->m_WorldBV;
@@ -40,7 +40,7 @@ void VSSwitchNode::UpdateWorldBound(double dAppTime)
 }
 VSSpatial *VSSwitchNode::GetActiveNode() const
 {
-    VSMAC_ASSERT(m_uiActiveNode < m_pChild.GetNum());
+    ENGINE_ASSERT(m_uiActiveNode < m_pChild.GetNum());
 
     return m_pChild[m_uiActiveNode];
 }

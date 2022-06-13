@@ -1,8 +1,8 @@
-#include "Geometry.h"
-#include "BoneNode.h"
+#include "Node/Geometry.h"
+#include "Node/Model/BoneNode.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "TriangleSet.h"
 #include "RenderThread.h"
 using namespace Matrix;
@@ -27,30 +27,30 @@ VSPointer<VSGeometry> VSGeometry::ms_DefaultCone = NULL;
 VSPointer<VSGeometry> VSGeometry::ms_DefaultRenderCube = NULL;
 bool VSGeometry::InitialDefaultState()
 {
-    ms_Quad = VS_NEW VSGeometry();
+    ms_Quad = MX_NEW VSGeometry();
     if (!ms_Quad)
     {
         return false;
     }
 
-    ms_DefaultCube = VS_NEW VSGeometry();
+    ms_DefaultCube = MX_NEW VSGeometry();
     if (!ms_DefaultCube)
     {
         return false;
     }
 
-    ms_DefaultCubCone = VS_NEW VSGeometry();
+    ms_DefaultCubCone = MX_NEW VSGeometry();
     if (!ms_DefaultCubCone)
     {
         return false;
     }
 
-    ms_DefaultCone = VS_NEW VSGeometry();
+    ms_DefaultCone = MX_NEW VSGeometry();
     if (!ms_DefaultCone)
     {
         return false;
     }
-    ms_DefaultRenderCube = VS_NEW VSGeometry();
+    ms_DefaultRenderCube = MX_NEW VSGeometry();
     if (!ms_DefaultRenderCube)
     {
         return false;
@@ -92,25 +92,25 @@ void VSGeometry::LoadDefault()
         IndexArray.AddElement(2);
         IndexArray.AddElement(3);
 
-        VSDataBufferPtr pVertexData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pVertexData = MX_NEW VSDataBuffer;
         pVertexData->SetData(&VertexArray[0], (unsigned int)VertexArray.GetNum(), VSDataBuffer::DT_FLOAT32_4);
 
-        VSDataBufferPtr pTexCoord = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pTexCoord = MX_NEW VSDataBuffer;
         pTexCoord->SetData(&m_TexCoordArray[0], (unsigned int)m_TexCoordArray.GetNum(), VSDataBuffer::DT_FLOAT32_2);
 
-        VSDataBufferPtr pIndex = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pIndex = MX_NEW VSDataBuffer;
         pIndex->SetData(&IndexArray[0], (unsigned int)IndexArray.GetNum(), VSDataBuffer::DT_USHORT);
 
         //创建顶点BUFFER
-        VSVertexBufferPtr pVertexBuffer = VS_NEW VSVertexBuffer(true);
+        VSVertexBufferPtr pVertexBuffer = MX_NEW VSVertexBuffer(true);
         pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
         pVertexBuffer->SetData(pTexCoord, VSVertexFormat::VF_TEXCOORD);
 
-        VSIndexBufferPtr pIndexBuffer = VS_NEW VSIndexBuffer();
+        VSIndexBufferPtr pIndexBuffer = MX_NEW VSIndexBuffer();
 
         pIndexBuffer->SetData(pIndex);
 
-        VSTriangleSetPtr pTriangleSetData = VS_NEW VSTriangleSet();
+        VSTriangleSetPtr pTriangleSetData = MX_NEW VSTriangleSet();
         pTriangleSetData->SetVertexBuffer(pVertexBuffer);
         pTriangleSetData->SetIndexBuffer(pIndexBuffer);
 
@@ -182,21 +182,21 @@ void VSGeometry::LoadDefault()
         IndexArray.AddElement(2);
         IndexArray.AddElement(6);
 
-        VSDataBufferPtr pVertexData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pVertexData = MX_NEW VSDataBuffer;
         pVertexData->SetData(&VertexArray[0], (unsigned int)VertexArray.GetNum(), VSDataBuffer::DT_FLOAT32_3);
 
-        VSDataBufferPtr pIndex = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pIndex = MX_NEW VSDataBuffer;
         pIndex->SetData(&IndexArray[0], (unsigned int)IndexArray.GetNum(), VSDataBuffer::DT_USHORT);
 
         //创建顶点BUFFER
-        VSVertexBufferPtr pVertexBuffer = VS_NEW VSVertexBuffer(true);
+        VSVertexBufferPtr pVertexBuffer = MX_NEW VSVertexBuffer(true);
         pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
-        VSIndexBufferPtr pIndexBuffer = VS_NEW VSIndexBuffer();
+        VSIndexBufferPtr pIndexBuffer = MX_NEW VSIndexBuffer();
 
         pIndexBuffer->SetData(pIndex);
 
-        VSTriangleSetPtr pTriangleSetData = VS_NEW VSTriangleSet();
+        VSTriangleSetPtr pTriangleSetData = MX_NEW VSTriangleSet();
         pTriangleSetData->SetVertexBuffer(pVertexBuffer);
         pTriangleSetData->SetIndexBuffer(pIndexBuffer);
 
@@ -245,21 +245,21 @@ void VSGeometry::LoadDefault()
         IndexArray.AddElement(3);
         IndexArray.AddElement(4);
 
-        VSDataBufferPtr pVertexData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pVertexData = MX_NEW VSDataBuffer;
         pVertexData->SetData(&VertexArray[0], (unsigned int)VertexArray.GetNum(), VSDataBuffer::DT_FLOAT32_3);
 
-        VSDataBufferPtr pIndex = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pIndex = MX_NEW VSDataBuffer;
         pIndex->SetData(&IndexArray[0], (unsigned int)IndexArray.GetNum(), VSDataBuffer::DT_USHORT);
 
         //创建顶点BUFFER
-        VSVertexBufferPtr pVertexBuffer = VS_NEW VSVertexBuffer(true);
+        VSVertexBufferPtr pVertexBuffer = MX_NEW VSVertexBuffer(true);
         pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
-        VSIndexBufferPtr pIndexBuffer = VS_NEW VSIndexBuffer();
+        VSIndexBufferPtr pIndexBuffer = MX_NEW VSIndexBuffer();
 
         pIndexBuffer->SetData(pIndex);
 
-        VSTriangleSetPtr pTriangleSetData = VS_NEW VSTriangleSet();
+        VSTriangleSetPtr pTriangleSetData = MX_NEW VSTriangleSet();
         pTriangleSetData->SetVertexBuffer(pVertexBuffer);
         pTriangleSetData->SetIndexBuffer(pIndexBuffer);
 
@@ -349,21 +349,21 @@ void VSGeometry::LoadDefault()
             IndexArray.AddElement(Index2);
         }
 
-        VSDataBufferPtr pVertexData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pVertexData = MX_NEW VSDataBuffer;
         pVertexData->SetData(&VertexArray[0], (unsigned int)VertexArray.GetNum(), VSDataBuffer::DT_FLOAT32_3);
 
-        VSDataBufferPtr pIndex = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pIndex = MX_NEW VSDataBuffer;
         pIndex->SetData(&IndexArray[0], (unsigned int)IndexArray.GetNum(), VSDataBuffer::DT_USHORT);
 
         //创建顶点BUFFER
-        VSVertexBufferPtr pVertexBuffer = VS_NEW VSVertexBuffer(true);
+        VSVertexBufferPtr pVertexBuffer = MX_NEW VSVertexBuffer(true);
         pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
-        VSIndexBufferPtr pIndexBuffer = VS_NEW VSIndexBuffer();
+        VSIndexBufferPtr pIndexBuffer = MX_NEW VSIndexBuffer();
 
         pIndexBuffer->SetData(pIndex);
 
-        VSTriangleSetPtr pTriangleSetData = VS_NEW VSTriangleSet();
+        VSTriangleSetPtr pTriangleSetData = MX_NEW VSTriangleSet();
         pTriangleSetData->SetVertexBuffer(pVertexBuffer);
         pTriangleSetData->SetIndexBuffer(pIndexBuffer);
 
@@ -522,29 +522,29 @@ void VSGeometry::LoadDefault()
         IndexArray.AddElement(22);
         IndexArray.AddElement(23);
 
-        VSDataBufferPtr pVertexData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pVertexData = MX_NEW VSDataBuffer;
         pVertexData->SetData(&VertexArray[0], (unsigned int)VertexArray.GetNum(), VSDataBuffer::DT_FLOAT32_3);
 
-        VSDataBufferPtr pTexCoord = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pTexCoord = MX_NEW VSDataBuffer;
         pTexCoord->SetData(&TexCoordArray[0], TexCoordArray.GetNum(), VSDataBuffer::DT_FLOAT32_2);
 
-        VSDataBufferPtr pNormalData = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pNormalData = MX_NEW VSDataBuffer;
         pNormalData->SetData(&NormalArray[0], (unsigned int)NormalArray.GetNum(), VSDataBuffer::DT_FLOAT32_3);
 
-        VSDataBufferPtr pIndex = VS_NEW VSDataBuffer;
+        VSDataBufferPtr pIndex = MX_NEW VSDataBuffer;
         pIndex->SetData(&IndexArray[0], (unsigned int)IndexArray.GetNum(), VSDataBuffer::DT_USHORT);
 
         //创建顶点BUFFER
-        VSVertexBufferPtr pVertexBuffer = VS_NEW VSVertexBuffer(true);
+        VSVertexBufferPtr pVertexBuffer = MX_NEW VSVertexBuffer(true);
         pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
         pVertexBuffer->SetData(pTexCoord, VSVertexFormat::VF_TEXCOORD);
         pVertexBuffer->SetData(pNormalData, VSVertexFormat::VF_NORMAL);
 
-        VSIndexBufferPtr pIndexBuffer = VS_NEW VSIndexBuffer();
+        VSIndexBufferPtr pIndexBuffer = MX_NEW VSIndexBuffer();
 
         pIndexBuffer->SetData(pIndex);
 
-        VSTriangleSetPtr pTriangleSetData = VS_NEW VSTriangleSet();
+        VSTriangleSetPtr pTriangleSetData = MX_NEW VSTriangleSet();
         pTriangleSetData->SetVertexBuffer(pVertexBuffer);
         pTriangleSetData->SetIndexBuffer(pIndexBuffer);
 
@@ -569,7 +569,7 @@ bool VSGeometry::HasMorphTarget() const
 {
     return m_MorphData.MorphVDataTexture != NULL;
 }
-void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &MorphDataSet)
+void VSGeometry::CreateMorphMeshData(Container::MMap<unsigned int, VSVertexBuffer *> &MorphDataSet)
 {
     if (!m_pMeshData)
     {
@@ -618,11 +618,11 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
             break;
         }
     }
-    VSMAC_ASSERT(TexSizeY);
+    ENGINE_ASSERT(TexSizeY);
     m_MorphData.TextureSizeY = TexSizeY;
 #define DEFINE_RGBA32_MORPH_DATA(Texture, GetSemanticsDataFunction)                                                            \
     {                                                                                                                          \
-        VSVector3W *pData = VS_NEW VSVector3W[TexSizeX * TexSizeY];                                                            \
+        VSVector3W *pData = MX_NEW VSVector3W[TexSizeX * TexSizeY];                                                            \
         unsigned int uiNum = 0;                                                                                                \
         for (unsigned int i = 0; i < MorphDataSet.GetNum(); i++)                                                               \
         {                                                                                                                      \
@@ -632,7 +632,7 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
                 continue;                                                                                                      \
             }                                                                                                                  \
             VSVector3W *pDataTemp = pData + uiNum * TexSizeX * Layer;                                                          \
-            Math::Vector3 *pTemp = (Math::Vector3 *)pMorphVertexBuffer->GetSemanticsDataFunction->GetData();                           \
+            Math::Vector3 *pTemp = (Math::Vector3 *)pMorphVertexBuffer->GetSemanticsDataFunction->GetData();                   \
             for (unsigned int j = 0; j < pMorphVertexBuffer->GetVertexNum(); j++)                                              \
             {                                                                                                                  \
                 pDataTemp->x = pTemp->x;                                                                                       \
@@ -650,7 +650,7 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
 
 #define DEFINE_RGBA8_MORPH_DATA(Texture, GetSemanticsDataFunction)                                                        \
     {                                                                                                                     \
-        DWORD *pData = VS_NEW DWORD[TexSizeX * TexSizeY];                                                                 \
+        DWORD *pData = MX_NEW DWORD[TexSizeX * TexSizeY];                                                                 \
         unsigned int uiNum = 0;                                                                                           \
         for (unsigned int i = 0; i < MorphDataSet.GetNum(); i++)                                                          \
         {                                                                                                                 \
@@ -699,7 +699,7 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
     }
     if (!VSRenderer::ms_pRenderer->IsSupportFeature(VSRenderer::SF_VertexIDInShader))
     {
-        VSDataBuffer *pIDBuffer = VS_NEW VSDataBuffer();
+        VSDataBuffer *pIDBuffer = MX_NEW VSDataBuffer();
         Container::MArray<float> IDArray;
         for (unsigned int i = 0; i < pVertexBuffer->GetVertexNum(); i++)
         {
@@ -711,18 +711,18 @@ void VSGeometry::CreateMorphMeshData(VSMap<unsigned int, VSVertexBuffer *> &Morp
 }
 void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
 {
-    VSMAC_ASSERT(pMorphVertexBuffer);
+    ENGINE_ASSERT(pMorphVertexBuffer);
 
     // LinkBoneNode();
-    VSMAC_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
+    ENGINE_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
     {
         Primitive::AABB3 NewAABB;
 
         VSVertexBuffer *pVerBuffer = m_pMeshData->GetVertexBuffer();
-        VSMAC_ASSERT(pMorphVertexBuffer->GetPositionData(0));
+        ENGINE_ASSERT(pMorphVertexBuffer->GetPositionData(0));
 
         Math::Vector3 *pVer = (Math::Vector3 *)pMorphVertexBuffer->GetPositionData(0)->GetData();
-        VSMAC_ASSERT(pVer);
+        ENGINE_ASSERT(pVer);
 
         unsigned int uiVertexNum = pVerBuffer->GetPositionData(0)->GetNum();
         Math::VSTransform World = m_pParent->GetWorldTransform();
@@ -797,15 +797,15 @@ void VSGeometry::AddMorphAABB(VSVertexBuffer *pMorphVertexBuffer)
 void VSGeometry::CreateLocalAABB()
 {
     LinkBoneNode();
-    VSMAC_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
+    ENGINE_ASSERT(m_pMeshData && m_pMeshData->GetVertexBuffer())
     {
         Primitive::AABB3 NewAABB;
 
         VSVertexBuffer *pVerBuffer = m_pMeshData->GetVertexBuffer();
-        VSMAC_ASSERT(pVerBuffer->GetPositionData(0))
+        ENGINE_ASSERT(pVerBuffer->GetPositionData(0))
 
         Math::Vector3 *pVer = (Math::Vector3 *)pVerBuffer->GetPositionData(0)->GetData();
-        VSMAC_ASSERT(pVer);
+        ENGINE_ASSERT(pVer);
 
         unsigned int uiVertexNum = pVerBuffer->GetPositionData(0)->GetNum();
         Math::VSTransform World = m_pParent->GetWorldTransform();
@@ -909,7 +909,7 @@ void VSGeometry::UpdateView(VSCuller &Culler, double dAppTime)
 {
     VSSpatial::UpdateView(Culler, dAppTime);
     VSCamera *pCamera = Culler.GetCamera();
-    VSMAC_ASSERT(pCamera);
+    ENGINE_ASSERT(pCamera);
 
     if (Culler.GetCullerType() == VSCuller::CUT_MAIN)
     {
@@ -923,10 +923,10 @@ void VSGeometry::ComputeNodeVisibleSet(VSCuller &Culler, bool bNoCull, double dA
     }
     UpdateView(Culler, dAppTime);
     VSMeshNode *pMeshNode = GetMeshNode();
-    VSMAC_ASSERT(pMeshNode);
+    ENGINE_ASSERT(pMeshNode);
 
     unsigned int uiRenderGroup = pMeshNode->GetRenderGroup();
-    VSMAC_ASSERT(uiRenderGroup < VSCuller::RG_MAX);
+    ENGINE_ASSERT(uiRenderGroup < VSCuller::RG_MAX);
 
     VSMaterialInstance *pMaterialInstance = NULL;
     if (Culler.GetUseMaterialIndex() == -1)
@@ -1078,7 +1078,7 @@ void VSGeometry::LinkBoneNode()
                 VSBoneNode *pBoneNode = pSke->GetBoneNode(m_BoneName[i]);
                 if (!pBoneNode)
                 {
-                    VSMAC_ASSERT(0);
+                    ENGINE_ASSERT(0);
                 }
                 m_pBoneNode.AddElement(pBoneNode);
             }
@@ -1123,9 +1123,9 @@ VSSkeleton *VSGeometry::GetAffectSkeleton() const
 }
 unsigned int VSGeometry::GetVertexNum() const
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
 
-    VSMAC_ASSERT(m_pMeshData->GetVertexBuffer());
+    ENGINE_ASSERT(m_pMeshData->GetVertexBuffer());
 
     return m_pMeshData->GetVertexBuffer()->GetVertexNum();
 }
@@ -1156,33 +1156,33 @@ unsigned int VSGeometry::GetActiveNum()
 }
 bool VSGeometry::SetActiveNum(unsigned int uiActiveNum)
 {
-    VSMAC_ASSERT(uiActiveNum <= GetTotalNum());
+    ENGINE_ASSERT(uiActiveNum <= GetTotalNum());
     m_uiActiveNum = uiActiveNum;
     return 1;
 }
 unsigned int VSGeometry::GetTotalNum() const
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
 
     return m_pMeshData->GetTotalNum();
 }
 unsigned int VSGeometry::GetMeshDataType()
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
 
     return m_pMeshData->GetMeshDataType();
 }
 unsigned int VSGeometry::AddMaterialInstance(VSMaterialR *pMaterial)
 {
-    VSMAC_ASSERT(pMaterial);
-    VSMaterialInstance *pMaterialInstance = VS_NEW VSMaterialInstance(pMaterial);
+    ENGINE_ASSERT(pMaterial);
+    VSMaterialInstance *pMaterialInstance = MX_NEW VSMaterialInstance(pMaterial);
     m_pMaterialInstance.AddElement(pMaterialInstance);
 
     return m_pMaterialInstance.GetNum();
 }
 unsigned int VSGeometry::AddMaterialInstance(VSMaterialInstance *pMaterial)
 {
-    VSMAC_ASSERT(pMaterial && pMaterial->GetMaterial());
+    ENGINE_ASSERT(pMaterial && pMaterial->GetMaterial());
     VSMaterialInstance *pMaterialInstance = (VSMaterialInstance *)MObject::CloneCreateObject(pMaterial);
     m_pMaterialInstance.AddElement(pMaterialInstance);
 
@@ -1190,15 +1190,15 @@ unsigned int VSGeometry::AddMaterialInstance(VSMaterialInstance *pMaterial)
 }
 bool VSGeometry::SetMaterialInstance(VSMaterialR *pMaterial, unsigned int uiIndex)
 {
-    VSMAC_ASSERT(uiIndex < m_pMaterialInstance.GetNum() && pMaterial);
+    ENGINE_ASSERT(uiIndex < m_pMaterialInstance.GetNum() && pMaterial);
 
-    VSMaterialInstance *pMaterialInstance = VS_NEW VSMaterialInstance(pMaterial);
+    VSMaterialInstance *pMaterialInstance = MX_NEW VSMaterialInstance(pMaterial);
     m_pMaterialInstance[uiIndex] = pMaterialInstance;
     return true;
 }
 bool VSGeometry::SetMaterialInstance(VSMaterialInstance *pMaterial, unsigned int uiIndex)
 {
-    VSMAC_ASSERT(uiIndex < m_pMaterialInstance.GetNum() && pMaterial);
+    ENGINE_ASSERT(uiIndex < m_pMaterialInstance.GetNum() && pMaterial);
 
     m_pMaterialInstance[uiIndex] = (VSMaterialInstance *)MObject::CloneCreateObject(pMaterial);
 
@@ -1206,7 +1206,7 @@ bool VSGeometry::SetMaterialInstance(VSMaterialInstance *pMaterial, unsigned int
 }
 bool VSGeometry::SetUseMaterialInstance(unsigned int uiIndex)
 {
-    VSMAC_ASSERT(uiIndex < m_pMaterialInstance.GetNum());
+    ENGINE_ASSERT(uiIndex < m_pMaterialInstance.GetNum());
     m_uiCurUseMaterial = uiIndex;
     return true;
 }
@@ -1216,12 +1216,12 @@ void VSGeometry::ClearAllMaterialInstance()
 }
 void VSGeometry::DeleteMaterialInstance(unsigned int i)
 {
-    VSMAC_ASSERT(i < m_pMaterialInstance.GetNum());
+    ENGINE_ASSERT(i < m_pMaterialInstance.GetNum());
     m_pMaterialInstance[i] = NULL;
 }
 unsigned int VSGeometry::DeleteMaterialInstance(VSMaterialInstance *pMaterial)
 {
-    VSMAC_ASSERT(pMaterial);
+    ENGINE_ASSERT(pMaterial);
     for (unsigned int i = 0; i < m_pMaterialInstance.GetNum(); i++)
     {
         if (pMaterial == m_pMaterialInstance[i])
@@ -1243,12 +1243,12 @@ VSMaterialInstance *VSGeometry::GetUseMaterialInstance() const
 }
 VSMaterialInstance *VSGeometry::GetMaterialInstance(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pMaterialInstance.GetNum());
+    ENGINE_ASSERT(i < m_pMaterialInstance.GetNum());
     return m_pMaterialInstance[i];
 }
 void VSGeometry::UpdateOther(double dAppTime)
 {
-    VSMAC_ASSERT(m_pMeshData);
+    ENGINE_ASSERT(m_pMeshData);
 
     VSVertexBuffer *pVBuffer = GetMeshData()->GetVertexBuffer();
     if (GetAffectBoneNum() && pVBuffer->HaveBlendWeightInfo() && pVBuffer->HaveBlendIndicesInfo(0))

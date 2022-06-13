@@ -14,7 +14,7 @@ namespace Matrix
         static VSSceneManager *ms_pSceneManager;
         inline void AddViewFamily(VSViewFamily *pViewFamily);
         inline VSViewFamily *GetViewFamily(unsigned int i) const;
-        inline VSViewFamily *GetViewFamily(const VSString &ViewFamilyName) const;
+        inline VSViewFamily *GetViewFamily(const Container::MString &ViewFamilyName) const;
         inline void ClearAllViewFamily();
         inline void DeleteViewFamily(unsigned int i);
         inline void DeleteViewFamily(VSViewFamily *pViewFamily);

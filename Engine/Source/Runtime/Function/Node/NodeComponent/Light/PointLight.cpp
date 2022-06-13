@@ -1,7 +1,7 @@
-#include "PointLight.h"
-#include "GraphicInclude.h"
+#include "Node/NodeComponent/Light/PointLight.h"
+#include "Core/GraphicInclude.h"
 #include "SceneRender.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPointLight, VSLocalLight)
 BEGIN_ADD_PROPERTY(VSPointLight, VSLocalLight)
@@ -27,7 +27,7 @@ VSPointLight::VSPointLight()
     m_ZBias = 0.001f;
     m_LightFunScale = VSVector2(0.001f, 0.001f);
     m_LightFunOffset = VSVector2(0.0f, 0.0f);
-    m_ProjectShadowColor = VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+    m_ProjectShadowColor = Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
 }
 VSPointLight::~VSPointLight()
 {
@@ -75,54 +75,54 @@ void VSPointLight::SetShadowType(unsigned int uiShadowType)
     if (uiShadowType == ST_VOLUME)
     {
 
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
 
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
 
-        m_pPEVolumeSMSceneRender = VS_NEW VSPEVolumeShadowMapSceneRender();
-        m_pPEVolumeSMSceneRender->SetParam(VSRenderer::CF_COLOR, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pPEVolumeSMSceneRender = MX_NEW VSPEVolumeShadowMapSceneRender();
+        m_pPEVolumeSMSceneRender->SetParam(VSRenderer::CF_COLOR, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
 
-        m_pVolumeShadowSceneRender = VS_NEW VSVolumeShadowSceneRender();
+        m_pVolumeShadowSceneRender = MX_NEW VSVolumeShadowSceneRender();
         m_pVolumeShadowSceneRender->m_pLocalLight = this;
-        m_pVolumeShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
+        m_pVolumeShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
     }
     else if (uiShadowType == ST_CUB)
     {
 
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
 
-        m_pShadowTexture[0]->SetTexture(VS_NEW VSCubeTexture(m_uiRTWidth, VSRenderer::SFT_R16F, 1, true));
+        m_pShadowTexture[0]->SetTexture(MX_NEW VSCubeTexture(m_uiRTWidth, VSRenderer::SFT_R16F, 1, true));
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
         for (unsigned int i = 0; i < VSCubeTexture::F_MAX; i++)
         {
             m_pCubRenderTarget[i] = VSResourceManager::CreateRenderTarget(StaticCast<VS2DTextureArray>(m_pShadowTexture[0]->GetTexture()), 0, 0, i);
         }
 
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_CUB);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_CUB);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
     }
     else if (uiShadowType == ST_DUAL_PARABOLOID)
     {
 
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
         m_pShadowTexture[1]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_DUAL_PARABOLOID);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_DUAL_PARABOLOID);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
     }
     else if (uiShadowType == ST_PROJECT)
     {
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
-        m_pProjectShadowSceneRender = VS_NEW VSProjectShadowSceneRender();
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pProjectShadowSceneRender = MX_NEW VSProjectShadowSceneRender();
         m_pProjectShadowSceneRender->m_pLocalLight = this;
-        m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
+        m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
     }
     m_uiShadowType = uiShadowType;
 }

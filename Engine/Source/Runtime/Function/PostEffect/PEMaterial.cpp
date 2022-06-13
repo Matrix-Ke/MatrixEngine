@@ -1,5 +1,5 @@
 #include "PEMaterial.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPEMaterial, VSPostEffectFunction)
 BEGIN_ADD_PROPERTY(VSPEMaterial, VSPostEffectFunction)
@@ -12,13 +12,13 @@ VSPEMaterial::VSPEMaterial(const VSUsedName &ShowName, VSPostEffectSet *pPostEff
 {
 
     VSInputNode *pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     VSOutputNode *pOutNode = NULL;
-    pOutNode = VS_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this);
-    VSMAC_ASSERT(pOutNode);
+    pOutNode = MX_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this);
+    ENGINE_ASSERT(pOutNode);
     m_pOutput.AddElement(pOutNode);
     m_pMaterialInstance = NULL;
 }
@@ -34,14 +34,14 @@ VSPostEffectSceneRender *VSPEMaterial::CreateSceneRender()
 
     if (!m_pPostEffectRender)
     {
-        m_pPostEffectRender = VS_NEW VSPEMaterialSceneRender();
+        m_pPostEffectRender = MX_NEW VSPEMaterialSceneRender();
     }
 
     return m_pPostEffectRender;
 }
 void VSPEMaterial::SetMaterial(VSMaterialR *pMaterial)
 {
-    m_pMaterialInstance = VS_NEW VSMaterialInstance(pMaterial);
+    m_pMaterialInstance = MX_NEW VSMaterialInstance(pMaterial);
 }
 void VSPEMaterial::OnDraw(VSCuller &Culler, double dAppTime)
 {

@@ -1,9 +1,9 @@
 #include "TexAllState.h"
-#include "2DTexture.h"
+#include "Render/Texture/2DTexture.h"
 #include "ResourceManager.h"
 #include "Image.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "Config.h"
 #include "RenderThread.h"
 using namespace Matrix;
@@ -51,9 +51,9 @@ bool VSTexAllState::InitialDefaultState()
 
     unsigned int uiOrenNayarTexSize = 128;
 #ifdef DEFAULT_16FLOAT_TEXTURE
-    unsigned short *pBuffer = VS_NEW unsigned short[uiOrenNayarTexSize * uiOrenNayarTexSize];
+    unsigned short *pBuffer = MX_NEW unsigned short[uiOrenNayarTexSize * uiOrenNayarTexSize];
 #else
-    VSREAL *pBuffer = VS_NEW VSREAL[uiOrenNayarTexSize * uiOrenNayarTexSize];
+    VSREAL *pBuffer = MX_NEW VSREAL[uiOrenNayarTexSize * uiOrenNayarTexSize];
 #endif
     for (unsigned int i = 0; i < uiOrenNayarTexSize; i++)
     {
@@ -136,7 +136,7 @@ bool VSTexAllState::BeforeSave(MStream *pStream)
     {
         VS2DTexture *pNewTexture = VSResourceManager::CreateTextureCache(m_SourceData.GetBuffer(), m_uiWidth, m_uiHeight,
                                                                          m_uiFormatType, m_bNormal, m_bSRGB, m_bMip);
-        VSString CacheFilePath = GetCacheFilePath();
+        Container::MString CacheFilePath = GetCacheFilePath();
         VSTextureCache TextureCache(pNewTexture);
         VSResourceManager::SaveResouce(&TextureCache, CacheFilePath.GetBuffer());
     }
@@ -167,25 +167,25 @@ MObject *VSTexAllState::CreateToStreamObject(unsigned int uiWantSteamLevel, cons
     const VSTextureCache *pTextureCache = DynamicCast<VSTextureCache>(pCacheResouce);
     const VSTexture *pTexture = pTextureCache->GetTexture();
     unsigned int MipDelta = pTexture->GetMipLevel() - uiWantSteamLevel;
-    VSMAC_ASSERT(MipDelta >= 0);
+    ENGINE_ASSERT(MipDelta >= 0);
     unsigned char *pData = NULL;
     VSTexture *pNewTexture = NULL;
 
     if (pTexture->GetTexType() == VSTexture::TT_1D)
     {
-        pNewTexture = VS_NEW VS1DTexture(pTexture->GetWidth(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
+        pNewTexture = MX_NEW VS1DTexture(pTexture->GetWidth(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
     }
     else if (pTexture->GetTexType() == VSTexture::TT_2D)
     {
-        pNewTexture = VS_NEW VS2DTexture(pTexture->GetWidth(MipDelta), pTexture->GetHeight(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
+        pNewTexture = MX_NEW VS2DTexture(pTexture->GetWidth(MipDelta), pTexture->GetHeight(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
     }
     else if (pTexture->GetTexType() == VSTexture::TT_3D)
     {
-        pNewTexture = VS_NEW VS3DTexture(pTexture->GetWidth(MipDelta), pTexture->GetHeight(MipDelta), pTexture->GetLength(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
+        pNewTexture = MX_NEW VS3DTexture(pTexture->GetWidth(MipDelta), pTexture->GetHeight(MipDelta), pTexture->GetLength(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
     }
     else if (pTexture->GetTexType() == VSTexture::TT_CUBE)
     {
-        pNewTexture = VS_NEW VSCubeTexture(pTexture->GetWidth(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
+        pNewTexture = MX_NEW VSCubeTexture(pTexture->GetWidth(MipDelta), m_uiFormatType, uiWantSteamLevel, true, m_bSRGB);
     }
 
     pNewTexture->CopyRAMData(pTexture);

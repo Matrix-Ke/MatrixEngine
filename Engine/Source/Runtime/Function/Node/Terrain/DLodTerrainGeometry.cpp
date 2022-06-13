@@ -2,7 +2,7 @@
 #include "DLodTerrainNode.h"
 #include "TriangleSet.h"
 #include "VertexBuffer.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDLodTerrainGeometry, VSGeometry)
 BEGIN_ADD_PROPERTY(VSDLodTerrainGeometry, VSGeometry)
@@ -34,7 +34,7 @@ bool VSDLodTerrainGeometry::CreateMesh(unsigned int uiIndexXInTerrain, unsigned 
     unsigned int uiVertexLenght = (1 << (uiTessellationLevel - uiLevel)) + 1;
 
     VSDataBuffer *pVertexData = NULL;
-    pVertexData = VS_NEW VSDataBuffer();
+    pVertexData = MX_NEW VSDataBuffer();
     if (!pVertexData->CreateEmptyBuffer(uiVertexLenght * uiVertexLenght + (uiVertexLenght - 1) * 4, VSDataBuffer::DT_FLOAT32_3))
     {
         return 0;
@@ -93,14 +93,14 @@ bool VSDLodTerrainGeometry::CreateMesh(unsigned int uiIndexXInTerrain, unsigned 
     }
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(true);
-    VSMAC_ASSERT(pVertexBuffer);
+    pVertexBuffer = MX_NEW VSVertexBuffer(true);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetData(pVertexData, VSVertexFormat::VF_POSITION);
 
     VSDataBuffer *pIndexData = NULL;
-    pIndexData = VS_NEW VSDataBuffer();
-    VSMAC_ASSERT(pIndexData);
+    pIndexData = MX_NEW VSDataBuffer();
+    ENGINE_ASSERT(pIndexData);
 
     if (!pIndexData->CreateEmptyBuffer(
             (uiVertexLenght - 1) * (uiVertexLenght - 1) * 2 * 3 + (uiVertexLenght - 1) * 4 * 2 * 3, VSDataBuffer::DT_USHORT))
@@ -246,17 +246,17 @@ bool VSDLodTerrainGeometry::CreateMesh(unsigned int uiIndexXInTerrain, unsigned 
     }
 
     VSIndexBuffer *pIndexBuffer = NULL;
-    pIndexBuffer = VS_NEW VSIndexBuffer();
-    VSMAC_ASSERT(pIndexBuffer);
+    pIndexBuffer = MX_NEW VSIndexBuffer();
+    ENGINE_ASSERT(pIndexBuffer);
 
     // 	pIndexBuffer->SetStatic(false);
     // 	pIndexBuffer->SetLockFlag(VSInheritBind::LF_DISCARD);
     pIndexBuffer->SetData(pIndexData);
 
     VSTriangleSet *pMeshData = NULL;
-    pMeshData = VS_NEW VSTriangleSet();
+    pMeshData = MX_NEW VSTriangleSet();
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     pMeshData->SetVertexBuffer(pVertexBuffer);
     pMeshData->SetIndexBuffer(pIndexBuffer);

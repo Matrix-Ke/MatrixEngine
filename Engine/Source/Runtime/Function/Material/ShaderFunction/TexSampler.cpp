@@ -1,7 +1,7 @@
 #include "TexSampler.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSTexSampler, VSShaderFunction)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSTexSampler)
@@ -40,15 +40,15 @@ VSTexSampler::VSTexSampler()
     m_uiVESRGB = 0;
     m_uiSamplerSource = VSEngineFlag::SS_FROM_TEXTURE;
 }
-bool VSTexSampler::GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const
+bool VSTexSampler::GetDeclareString(Container::MString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const
 {
     OutString += VSRenderer::ms_pRenderer->GetDeclareSampler(m_ShowName.GetString(), GetTexType(), uiRegisterID, m_uiSamplerSource);
     return true;
 }
-bool VSTexSampler::GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSTexSampler::GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSMAC_ASSERT(VSRenderer::ms_pRenderer);
-    VSString Temp;
+    ENGINE_ASSERT(VSRenderer::ms_pRenderer);
+    Container::MString Temp;
     if (m_pInput[0]->GetValueType() == VSPutNode::VT_1)
     {
         OutString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/

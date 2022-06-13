@@ -1,6 +1,6 @@
 #include "MemBind.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "RenderThread.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSMemBind, VSInheritBind)

@@ -1,5 +1,5 @@
 #pragma once
-#include "Light.h"
+#include "Node/NodeComponent/Light/Light.h"
 namespace Matrix
 {
 
@@ -11,8 +11,8 @@ namespace Matrix
     public:
         VSSkyLight();
         virtual ~VSSkyLight();
-        VSColorRGBA m_UpColor;
-        VSColorRGBA m_DownColor;
+        Math::ColorRGBA m_UpColor;
+        Math::ColorRGBA m_DownColor;
         virtual unsigned int GetLightType() const
         {
             return LT_SKY;

@@ -1,7 +1,7 @@
-#include "DirectionLight.h"
-#include "GraphicInclude.h"
+#include "Node/NodeComponent/Light/DirectionLight.h"
+#include "Core/GraphicInclude.h"
 #include "SceneRender.h"
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 #include "Ray3.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDirectionLight, VSLocalLight)
@@ -54,41 +54,41 @@ void VSDirectionLight::SetShadowType(unsigned int uiShadowType)
     if (uiShadowType == ST_VOLUME)
     {
 
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
 
-        m_pPEVolumeSMSceneRender = VS_NEW VSPEVolumeShadowMapSceneRender();
-        m_pPEVolumeSMSceneRender->SetParam(VSRenderer::CF_COLOR, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pPEVolumeSMSceneRender = MX_NEW VSPEVolumeShadowMapSceneRender();
+        m_pPEVolumeSMSceneRender->SetParam(VSRenderer::CF_COLOR, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
 
-        m_pVolumeShadowSceneRender = VS_NEW VSVolumeShadowSceneRender();
+        m_pVolumeShadowSceneRender = MX_NEW VSVolumeShadowSceneRender();
         m_pVolumeShadowSceneRender->m_pLocalLight = this;
-        m_pVolumeShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
+        m_pVolumeShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
     }
     else if (uiShadowType == ST_OSM || uiShadowType == ST_PROJECT)
     {
-        m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+        m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
         m_pShadowTexture[0]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
         if (uiShadowType == ST_PROJECT)
         {
-            m_pProjectShadowSceneRender = VS_NEW VSProjectShadowSceneRender();
+            m_pProjectShadowSceneRender = MX_NEW VSProjectShadowSceneRender();
             m_pProjectShadowSceneRender->m_pLocalLight = this;
-            m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
+            m_pProjectShadowSceneRender->SetParam(VSRenderer::CF_STENCIL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 15);
         }
     }
     else if (uiShadowType == ST_CSM)
     {
         for (unsigned int i = 0; i < CSM_LEVLE; i++)
         {
-            m_pShadowTexture.AddElement(VS_NEW VSTexAllState());
+            m_pShadowTexture.AddElement(MX_NEW VSTexAllState());
             m_pShadowTexture[i]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLineBorderOne());
         }
         m_pCSMRTArray.SetBufferNum(CSM_LEVLE);
-        m_pShadowMapSceneRender = VS_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
+        m_pShadowMapSceneRender = MX_NEW VSShadowMapSceneRender(VSShadowMapSceneRender::SMT_SHADOWMAP);
         m_pShadowMapSceneRender->m_pLocalLight = this;
-        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
+        m_pShadowMapSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f), 1.0f, 0);
     }
     m_uiShadowType = uiShadowType;
 }

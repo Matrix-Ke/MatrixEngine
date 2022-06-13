@@ -1,6 +1,6 @@
 #pragma once
 #include "Plane3.h"
-#include "Object.h"
+#include "Core/Object.h"
 #include "Sphere3.h"
 #include "Stack.h"
 namespace Matrix

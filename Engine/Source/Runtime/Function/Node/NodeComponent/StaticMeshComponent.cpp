@@ -1,6 +1,6 @@
 #include "StaticMeshComponent.h"
 #include "StaticMeshNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSStaticMeshComponent, VSMeshComponent)
 BEGIN_ADD_PROPERTY(VSStaticMeshComponent, VSMeshComponent)

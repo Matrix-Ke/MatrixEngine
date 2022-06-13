@@ -5,7 +5,7 @@ namespace Matrix
 {
     DECLARE_Ptr(VSShader);
     DECLARE_Ptr(VSShaderKey);
-    typedef VSMapOrder<VSShaderKey, VSShaderPtr> VSShaderSet;
+    typedef Container::MMapOrder<VSShaderKey, VSShaderPtr> VSShaderSet;
     class MATRIX_FUNCTION_API VSShaderMapCache : public VSCacheResource
     {
         // RTTI
@@ -15,7 +15,7 @@ namespace Matrix
     public:
         VSShaderMapCache() {}
         ~VSShaderMapCache() {}
-        VSMapOrder<VSUsedName, VSShaderSet> m_ShaderMap;
+        Container::MMapOrder<VSUsedName, VSShaderSet> m_ShaderMap;
     };
     DECLARE_Ptr(VSShaderMapCache);
     VSTYPE_MARCO(VSShaderMapCache);
@@ -23,14 +23,14 @@ namespace Matrix
     {
 
     public:
-        VSShaderMap(VSString ShaderMapName);
+        VSShaderMap(Container::MString ShaderMapName);
         ~VSShaderMap();
 
     protected:
-        VSMapOrder<VSUsedName, VSShaderSet> m_ShaderMap;
+        Container::MMapOrder<VSUsedName, VSShaderSet> m_ShaderMap;
 
     public:
-        VSMapOrder<VSUsedName, VSShaderSet> &GetShaderMap()
+        Container::MMapOrder<VSUsedName, VSShaderSet> &GetShaderMap()
         {
             return m_ShaderMap;
         }
@@ -50,7 +50,7 @@ namespace Matrix
         {
             return (!m_ShaderMap.GetNum());
         }
-        VSString m_ShaderMapName;
+        Container::MString m_ShaderMapName;
     };
 
 }

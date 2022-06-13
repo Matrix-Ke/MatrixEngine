@@ -1,14 +1,14 @@
 #include "PreZPass.h"
 #include "Spatial.h"
-#include "BoneNode.h"
+#include "Node/Model/BoneNode.h"
 #include "ShaderStringFactory.h"
 #include "ConstValue.h"
-#include "Geometry.h"
-#include "BoneNode.h"
+#include "Node/Geometry.h"
+#include "Node/Model/BoneNode.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "Material.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPreZPass, VSPass)
 VSPointer<VSPreZPass> VSPreZPass::ms_Default;
@@ -24,7 +24,7 @@ IMPLEMENT_INITIAL_END
 DECLEAR_TIME_PROFILENODE(PreZRenderPassDraw, )
 bool VSPreZPass::InitialDefaultState()
 {
-    ms_Default = VS_NEW VSPreZPass();
+    ms_Default = MX_NEW VSPreZPass();
     if (!ms_Default)
         return 0;
     return 1;

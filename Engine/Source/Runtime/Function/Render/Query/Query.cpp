@@ -1,5 +1,5 @@
 #include "Query.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSQuery, VSBind)
 BEGIN_ADD_PROPERTY(VSQuery, VSBind)

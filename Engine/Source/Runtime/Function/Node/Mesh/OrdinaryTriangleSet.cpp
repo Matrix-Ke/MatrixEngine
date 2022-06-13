@@ -1,5 +1,5 @@
 #include "OrdinaryTriangleSet.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSOrdinaryTriangleSet, VSTriangleSet)
 BEGIN_ADD_PROPERTY(VSOrdinaryTriangleSet, VSTriangleSet)
@@ -13,9 +13,9 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const Primitive::AABB3 &AABB)
 {
     Math::Vector3 VertexData[8];
     AABB.GetPoint(VertexData);
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 8, VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
     VSUSHORT_INDEX Index[36];
     //前面的2个三角形
@@ -63,12 +63,12 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const Primitive::AABB3 &AABB)
     Index[34] = 7;
     Index[35] = 3;
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Index, 36, VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -77,9 +77,9 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSOBB3 &OBB)
 {
     Math::Vector3 VertexData[8];
     OBB.GetPoint(VertexData);
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 8, VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
     VSUSHORT_INDEX Index[36];
     //前面的2个三角形
@@ -127,12 +127,12 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSOBB3 &OBB)
     Index[34] = 7;
     Index[35] = 3;
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Index, 36, VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -151,9 +151,9 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSPlane3 &Plane)
     VertexData[2] = Plane.GetPoint() - A0 * DRAW_MATH_ELEMENT_LENGTH - A1 * DRAW_MATH_ELEMENT_LENGTH;
     VertexData[3] = Plane.GetPoint() + A0 * DRAW_MATH_ELEMENT_LENGTH - A1 * DRAW_MATH_ELEMENT_LENGTH;
 
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 4, VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
     VSUSHORT_INDEX Index[6];
@@ -165,12 +165,12 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSPlane3 &Plane)
     Index[4] = 2;
     Index[5] = 3;
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Index, 6, VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -179,21 +179,21 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSTriangle3 &Triangle)
 {
     Math::Vector3 VertexData[3];
     Triangle.GetPoint(VertexData);
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 3, VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
     VSUSHORT_INDEX Index[3];
     Index[0] = 0;
     Index[1] = 1;
     Index[2] = 2;
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Index, 3, VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -202,9 +202,9 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSRectangle3 &Rectangle)
 {
     Math::Vector3 VertexData[4];
     Rectangle.GetPoint(VertexData);
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(VertexData, 4, VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
     VSUSHORT_INDEX Index[6];
@@ -216,31 +216,31 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSRectangle3 &Rectangle)
     Index[4] = 3;
     Index[5] = 2;
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Index, 6, VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
 }
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSPolygon3 &Polyon)
 {
-    VSMAC_ASSERT(Polyon.GetpPoint() && Polyon.GetPointNum());
+    ENGINE_ASSERT(Polyon.GetpPoint() && Polyon.GetPointNum());
 
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->SetData(Polyon.GetpPoint(), Polyon.GetPointNum(), VSDataBuffer::DT_FLOAT32_3);
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->SetData(Polyon.GetpIndex(), Polyon.GetIndexNum(), VSDataBuffer::DT_USHORT);
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -260,7 +260,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSSphere3 &Sphere)
     LongitudeNum++;
     unsigned int LatitudeNum = unsigned int(360.0f / LatitudeAngle) + 1;
 
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     pVertex->CreateEmptyBuffer(LongitudeNum * LatitudeNum, VSDataBuffer::DT_FLOAT32_3);
 
     Math::Vector3 *pVertexData = (Math::Vector3 *)pVertex->GetData();
@@ -283,10 +283,10 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSSphere3 &Sphere)
         }
         i = i + LongitudeAngle;
     }
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->CreateEmptyBuffer((LongitudeNum - 1) * LatitudeNum * 2 * 3, VSDataBuffer::DT_USHORT);
     VSUSHORT_INDEX *pIndexData = (VSUSHORT_INDEX *)pIndexDataBuffer->GetData();
     for (unsigned int i = 0; i < LongitudeNum - 1; i++)
@@ -322,7 +322,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(const VSSphere3 &Sphere)
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);
@@ -332,23 +332,23 @@ VSOrdinaryTriangleSet::~VSOrdinaryTriangleSet()
 }
 VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(VSSurface3 *pSurface, VSSurface3Subdivision *pSubidvision)
 {
-    VSMAC_ASSERT(pSubidvision);
-    VSMAC_ASSERT(pSurface);
+    ENGINE_ASSERT(pSubidvision);
+    ENGINE_ASSERT(pSurface);
     if (!pSubidvision->GetPoints())
     {
         pSubidvision->SetSurface(pSurface);
         bool bResult = pSubidvision->Subdivision();
-        VSMAC_ASSERT(bResult);
+        ENGINE_ASSERT(bResult);
     }
-    VSDataBuffer *pVertex = VS_NEW VSDataBuffer;
+    VSDataBuffer *pVertex = MX_NEW VSDataBuffer;
     unsigned int Row = pSubidvision->GetRow();
     unsigned int Column = pSubidvision->GetColumn();
     pVertex->SetData(pSubidvision->GetPoints(), Row * Column, VSDataBuffer::DT_FLOAT32_3);
 
-    m_pVertexBuffer = VS_NEW VSVertexBuffer(true);
+    m_pVertexBuffer = MX_NEW VSVertexBuffer(true);
     m_pVertexBuffer->SetData(pVertex, VSVertexFormat::VF_POSITION);
 
-    VSDataBuffer *pIndexDataBuffer = VS_NEW VSDataBuffer;
+    VSDataBuffer *pIndexDataBuffer = MX_NEW VSDataBuffer;
     pIndexDataBuffer->CreateEmptyBuffer((Row - 1) * (Column - 1) * 2 * 3, VSDataBuffer::DT_USHORT);
     VSUSHORT_INDEX *pIndexData = (VSUSHORT_INDEX *)pIndexDataBuffer->GetData();
 
@@ -372,7 +372,7 @@ VSOrdinaryTriangleSet::VSOrdinaryTriangleSet(VSSurface3 *pSurface, VSSurface3Sub
 
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
     }
 
     m_pIndexBuffer->SetData(pIndexDataBuffer);

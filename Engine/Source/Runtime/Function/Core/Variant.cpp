@@ -1,376 +1,376 @@
 #include "Variant.h"
-#include "Name.h"
-#include "GraphicInclude.h"
+#include "Core/Meta/ObjName.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
-TCHAR* VSVariant::ms_VariantMap[V_MAX] =
+TCHAR *VSVariant::ms_VariantMap[V_MAX] =
+    {
+        _T("Null"),
+        _T("Bool"),
+        _T("Int"),
+        _T("Real"),
+        _T("Vector2"),
+        _T("Vector3"),
+        _T("Vector3W"),
+        _T("Matrix3X3"),
+        _T("Matrix3X3W"),
+        _T("String"),
+        _T("Object")};
+unsigned int VSVariant::MapVariantType(const Container::MString &inType)
 {
-	_T("Null"),
-	_T("Bool"),
-	_T("Int"),
-	_T("Real"),
-	_T("Vector2"),
-	_T("Vector3"),
-	_T("Vector3W"),
-	_T("Matrix3X3"),
-	_T("Matrix3X3W"),
-	_T("String"),
-	_T("Object") };
-unsigned int VSVariant::MapVariantType(const Container::MString& inType)
-{
-	for (unsigned int i = 0; i < V_MAX; i++)
-	{
-		if (inType == ms_VariantMap[i])
-		{
-			return i;
-		}
-	}
-	return V_MAX;
+    for (unsigned int i = 0; i < V_MAX; i++)
+    {
+        if (inType == ms_VariantMap[i])
+        {
+            return i;
+        }
+    }
+    return V_MAX;
 }
 Container::MString VSVariant::MapVariantString(unsigned int inType)
 {
-	if (inType >= V_MAX)
-	{
-		return _T("");
-	}
-	return ms_VariantMap[inType];
+    if (inType >= V_MAX)
+    {
+        return _T("");
+    }
+    return ms_VariantMap[inType];
 }
 VSVariant::VSVariant(unsigned int Type)
 {
-	m_uiType = Type;
-	m_pP = NULL;
+    m_uiType = Type;
+    m_pP = NULL;
 }
 VSVariant::~VSVariant()
 {
-	Clear();
+    Clear();
 }
 void VSVariant::Clear()
 {
-	if (m_uiType == V_STRING || m_uiType == V_OBJECT)
-	{
-		if (m_pP)
-		{
-			((VSReference*)m_pP)->DecreRef();
-			m_pP = NULL;
-		}
-	}
-	m_uiType = V_NULL;
+    if (m_uiType == V_STRING || m_uiType == V_OBJECT)
+    {
+        if (m_pP)
+        {
+            ((VSReference *)m_pP)->DecreRef();
+            m_pP = NULL;
+        }
+    }
+    m_uiType = V_NULL;
 }
 VSVariant::VSVariant(bool b)
 {
-	*this = b;
+    *this = b;
 }
 VSVariant::VSVariant(int i)
 {
-	*this = i;
+    *this = i;
 }
 VSVariant::VSVariant(VSREAL f)
 {
-	*this = f;
+    *this = f;
 }
-VSVariant::VSVariant(const VSVector2& v)
+VSVariant::VSVariant(const VSVector2 &v)
 {
-	*this = v;
+    *this = v;
 }
-VSVariant::VSVariant(const Math::Vector3& v)
+VSVariant::VSVariant(const Math::Vector3 &v)
 {
-	*this = v;
+    *this = v;
 }
-VSVariant::VSVariant(const Math::Vector4& v)
+VSVariant::VSVariant(const Math::Vector4 &v)
 {
-	*this = v;
+    *this = v;
 }
-VSVariant::VSVariant(const Math::Matrix3& m)
+VSVariant::VSVariant(const Math::Matrix3 &m)
 {
-	*this = m;
+    *this = m;
 }
-VSVariant::VSVariant(const VSMatrix3X3W& m)
+VSVariant::VSVariant(const VSMatrix3X3W &m)
 {
-	*this = m;
+    *this = m;
 }
-VSVariant::VSVariant(MObject* p)
+VSVariant::VSVariant(MObject *p)
 {
-	*this = p;
+    *this = p;
 }
-VSVariant::VSVariant(const TCHAR* s)
+VSVariant::VSVariant(const TCHAR *s)
 {
-	*this = s;
+    *this = s;
 }
-VSVariant::VSVariant(const VSVariant& Va)
+VSVariant::VSVariant(const VSVariant &Va)
 {
-	*this = Va;
+    *this = Va;
 }
-bool VSVariant::operator==(const VSVariant& rhs) const
+bool VSVariant::operator==(const VSVariant &rhs) const
 {
-	if (m_uiType != rhs.m_uiType)
-	{
-		return false;
-	}
-	switch (m_uiType)
-	{
-	case V_BOOL:
-		return GetBool() == rhs.GetBool();
-	case V_INT:
-		return GetInt() == rhs.GetInt();
-	case V_REAL:
-		return GetReal() == rhs.GetReal();
-	case V_VECTOR2:
-		return GetVector2() == rhs.GetVector2();
-	case V_VECTOR3:
-		return GetVector3() == rhs.GetVector3();
-	case V_VECTOR3W:
-		return GetVector3W() == rhs.GetVector3W();
-	case V_MATRIX3X3:
-		return GetMatrix3X3() == rhs.GetMatrix3X3();
-	case V_MATRIX3X3W:
-		return GetMatrix3X3W() == rhs.GetMatrix3X3W();
-	case V_STRING:
-		return m_pP == rhs.m_pP;
-	case V_OBJECT:
-		return GetObjectPtr() == rhs.GetObjectPtr();
-	default:
-		return false;
-	}
+    if (m_uiType != rhs.m_uiType)
+    {
+        return false;
+    }
+    switch (m_uiType)
+    {
+    case V_BOOL:
+        return GetBool() == rhs.GetBool();
+    case V_INT:
+        return GetInt() == rhs.GetInt();
+    case V_REAL:
+        return GetReal() == rhs.GetReal();
+    case V_VECTOR2:
+        return GetVector2() == rhs.GetVector2();
+    case V_VECTOR3:
+        return GetVector3() == rhs.GetVector3();
+    case V_VECTOR3W:
+        return GetVector3W() == rhs.GetVector3W();
+    case V_MATRIX3X3:
+        return GetMatrix3X3() == rhs.GetMatrix3X3();
+    case V_MATRIX3X3W:
+        return GetMatrix3X3W() == rhs.GetMatrix3X3W();
+    case V_STRING:
+        return m_pP == rhs.m_pP;
+    case V_OBJECT:
+        return GetObjectPtr() == rhs.GetObjectPtr();
+    default:
+        return false;
+    }
 }
 bool VSVariant::operator==(bool b) const
 {
-	if (m_uiType != V_BOOL)
-	{
-		return false;
-	}
-	return GetBool() == b;
+    if (m_uiType != V_BOOL)
+    {
+        return false;
+    }
+    return GetBool() == b;
 }
 bool VSVariant::operator==(int i) const
 {
-	if (m_uiType != V_INT)
-	{
-		return false;
-	}
-	return GetInt() == i;
+    if (m_uiType != V_INT)
+    {
+        return false;
+    }
+    return GetInt() == i;
 }
 bool VSVariant::operator==(VSREAL f) const
 {
-	if (m_uiType != V_REAL)
-	{
-		return false;
-	}
-	return GetReal() == f;
+    if (m_uiType != V_REAL)
+    {
+        return false;
+    }
+    return GetReal() == f;
 }
-bool VSVariant::operator==(const VSVector2& v) const
+bool VSVariant::operator==(const VSVector2 &v) const
 {
-	if (m_uiType != V_VECTOR2)
-	{
-		return false;
-	}
-	return GetVector2() == v;
+    if (m_uiType != V_VECTOR2)
+    {
+        return false;
+    }
+    return GetVector2() == v;
 }
-bool VSVariant::operator==(const Math::Vector3& v) const
+bool VSVariant::operator==(const Math::Vector3 &v) const
 {
-	if (m_uiType != V_VECTOR3)
-	{
-		return false;
-	}
-	return GetVector3() == v;
+    if (m_uiType != V_VECTOR3)
+    {
+        return false;
+    }
+    return GetVector3() == v;
 }
-bool VSVariant::operator==(const Math::Vector4& v) const
+bool VSVariant::operator==(const Math::Vector4 &v) const
 {
-	if (m_uiType != V_VECTOR3W)
-	{
-		return false;
-	}
-	return GetVector3W() == v;
+    if (m_uiType != V_VECTOR3W)
+    {
+        return false;
+    }
+    return GetVector3W() == v;
 }
-bool VSVariant::operator==(const Math::Matrix3& m) const
+bool VSVariant::operator==(const Math::Matrix3 &m) const
 {
-	if (m_uiType != V_MATRIX3X3)
-	{
-		return false;
-	}
-	return GetMatrix3X3() == m;
+    if (m_uiType != V_MATRIX3X3)
+    {
+        return false;
+    }
+    return GetMatrix3X3() == m;
 }
-bool VSVariant::operator==(const VSMatrix3X3W& m) const
+bool VSVariant::operator==(const VSMatrix3X3W &m) const
 {
-	if (m_uiType != V_MATRIX3X3W)
-	{
-		return false;
-	}
-	return GetMatrix3X3W() == m;
+    if (m_uiType != V_MATRIX3X3W)
+    {
+        return false;
+    }
+    return GetMatrix3X3W() == m;
 }
-bool VSVariant::operator==(const MObject* p) const
+bool VSVariant::operator==(const MObject *p) const
 {
-	if (m_uiType != V_OBJECT)
-	{
-		return false;
-	}
-	return GetObjectPtr() == p;
+    if (m_uiType != V_OBJECT)
+    {
+        return false;
+    }
+    return GetObjectPtr() == p;
 }
-bool VSVariant::operator==(const TCHAR* s) const
+bool VSVariant::operator==(const TCHAR *s) const
 {
-	if (m_uiType != V_STRING)
-	{
-		return false;
-	}
-	return ((VSName*)m_pP)->GetString() == s;
+    if (m_uiType != V_STRING)
+    {
+        return false;
+    }
+    return ((VSName *)m_pP)->GetString() == s;
 }
-VSVariant& VSVariant::operator=(const VSVariant& Va)
+VSVariant &VSVariant::operator=(const VSVariant &Va)
 {
-	Clear();
-	m_uiType = Va.m_uiType;
-	if (Va.m_uiType == V_STRING || Va.m_uiType == V_OBJECT)
-	{
-		m_pP = Va.m_pP;
-		if (m_pP)
-		{
-			((VSReference*)m_pP)->IncreRef();
-		}
-	}
-	else
-	{
-		Core::MXMemcpy(m_fVec, Va.m_fVec, sizeof(m_fVec));
-	}
-	return *this;
+    Clear();
+    m_uiType = Va.m_uiType;
+    if (Va.m_uiType == V_STRING || Va.m_uiType == V_OBJECT)
+    {
+        m_pP = Va.m_pP;
+        if (m_pP)
+        {
+            ((VSReference *)m_pP)->IncreRef();
+        }
+    }
+    else
+    {
+        Core::MXMemcpy(m_fVec, Va.m_fVec, sizeof(m_fVec));
+    }
+    return *this;
 }
-VSVariant& VSVariant::operator=(bool b)
+VSVariant &VSVariant::operator=(bool b)
 {
-	Clear();
-	m_uiType = V_BOOL;
-	m_bB = b;
-	return *this;
+    Clear();
+    m_uiType = V_BOOL;
+    m_bB = b;
+    return *this;
 }
-VSVariant& VSVariant::operator=(int i)
+VSVariant &VSVariant::operator=(int i)
 {
-	Clear();
-	m_uiType = V_INT;
-	m_iI = i;
-	return *this;
+    Clear();
+    m_uiType = V_INT;
+    m_iI = i;
+    return *this;
 }
-VSVariant& VSVariant::operator=(VSREAL f)
+VSVariant &VSVariant::operator=(VSREAL f)
 {
-	Clear();
-	m_uiType = V_REAL;
-	m_fVec[0] = f;
-	return *this;
+    Clear();
+    m_uiType = V_REAL;
+    m_fVec[0] = f;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const VSVector2& v)
+VSVariant &VSVariant::operator=(const VSVector2 &v)
 {
-	Clear();
-	m_uiType = V_VECTOR2;
-	*((VSVector2*)m_fVec) = v;
-	return *this;
+    Clear();
+    m_uiType = V_VECTOR2;
+    *((VSVector2 *)m_fVec) = v;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const Math::Vector3& v)
+VSVariant &VSVariant::operator=(const Math::Vector3 &v)
 {
-	Clear();
-	m_uiType = V_VECTOR3;
-	*((Math::Vector3*)m_fVec) = v;
-	return *this;
+    Clear();
+    m_uiType = V_VECTOR3;
+    *((Math::Vector3 *)m_fVec) = v;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const Math::Vector4& v)
+VSVariant &VSVariant::operator=(const Math::Vector4 &v)
 {
-	Clear();
-	m_uiType = V_VECTOR3W;
-	*((Math::Vector4*)m_fVec) = v;
-	return *this;
+    Clear();
+    m_uiType = V_VECTOR3W;
+    *((Math::Vector4 *)m_fVec) = v;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const Math::Matrix3& m)
+VSVariant &VSVariant::operator=(const Math::Matrix3 &m)
 {
-	Clear();
-	m_uiType = V_MATRIX3X3;
-	*((Math::Matrix3*)m_fVec) = m;
-	return *this;
+    Clear();
+    m_uiType = V_MATRIX3X3;
+    *((Math::Matrix3 *)m_fVec) = m;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const VSMatrix3X3W& m)
+VSVariant &VSVariant::operator=(const VSMatrix3X3W &m)
 {
-	Clear();
-	m_uiType = V_MATRIX3X3W;
-	*((VSMatrix3X3W*)m_fVec) = m;
-	return *this;
+    Clear();
+    m_uiType = V_MATRIX3X3W;
+    *((VSMatrix3X3W *)m_fVec) = m;
+    return *this;
 }
-VSVariant& VSVariant::operator=(MObject* p)
+VSVariant &VSVariant::operator=(MObject *p)
 {
-	Clear();
-	m_uiType = V_OBJECT;
-	m_pP = p;
-	if (m_pP)
-	{
-		((VSReference*)m_pP)->IncreRef();
-	}
+    Clear();
+    m_uiType = V_OBJECT;
+    m_pP = p;
+    if (m_pP)
+    {
+        ((VSReference *)m_pP)->IncreRef();
+    }
 
-	return *this;
+    return *this;
 }
-VSVariant& VSVariant::operator=(const TCHAR* s)
+VSVariant &VSVariant::operator=(const TCHAR *s)
 {
-	Clear();
-	m_uiType = V_STRING;
-	m_pP = (void*)VSResourceManager::CreateName(s);
-	if (m_pP)
-	{
-		((VSReference*)m_pP)->IncreRef();
-	}
-	return *this;
+    Clear();
+    m_uiType = V_STRING;
+    m_pP = (void *)VSResourceManager::CreateName(s);
+    if (m_pP)
+    {
+        ((VSReference *)m_pP)->IncreRef();
+    }
+    return *this;
 }
 unsigned int VSVariant::GetType() const
 {
-	return m_uiType;
+    return m_uiType;
 }
 bool VSVariant::IsValid() const
 {
-	return m_uiType != V_NULL;
+    return m_uiType != V_NULL;
 }
 bool VSVariant::GetBool() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_BOOL);
-	return m_bB;
+    ENGINE_ASSERT(m_uiType == V_BOOL);
+    return m_bB;
 }
 int VSVariant::GetInt() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_INT);
-	return m_iI;
+    ENGINE_ASSERT(m_uiType == V_INT);
+    return m_iI;
 }
 VSREAL VSVariant::GetReal() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_REAL);
-	return m_fVec[0];
+    ENGINE_ASSERT(m_uiType == V_REAL);
+    return m_fVec[0];
 }
-const VSVector2& VSVariant::GetVector2() const
+const VSVector2 &VSVariant::GetVector2() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR2);
-	return *((VSVector2*)m_fVec);
+    ENGINE_ASSERT(m_uiType == V_VECTOR2);
+    return *((VSVector2 *)m_fVec);
 }
-const Math::Vector3& VSVariant::GetVector3() const
+const Math::Vector3 &VSVariant::GetVector3() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR3);
-	return *((Math::Vector3*)m_fVec);
+    ENGINE_ASSERT(m_uiType == V_VECTOR3);
+    return *((Math::Vector3 *)m_fVec);
 }
-const Math::Vector4& VSVariant::GetVector3W() const
+const Math::Vector4 &VSVariant::GetVector3W() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_VECTOR3W);
-	return *((Math::Vector4*)m_fVec);
+    ENGINE_ASSERT(m_uiType == V_VECTOR3W);
+    return *((Math::Vector4 *)m_fVec);
 }
-const Math::Matrix3& VSVariant::GetMatrix3X3() const
+const Math::Matrix3 &VSVariant::GetMatrix3X3() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_MATRIX3X3);
-	return *((Math::Matrix3*)m_fVec);
+    ENGINE_ASSERT(m_uiType == V_MATRIX3X3);
+    return *((Math::Matrix3 *)m_fVec);
 }
-const VSMatrix3X3W& VSVariant::GetMatrix3X3W() const
+const VSMatrix3X3W &VSVariant::GetMatrix3X3W() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_MATRIX3X3W);
-	return *((VSMatrix3X3W*)m_fVec);
+    ENGINE_ASSERT(m_uiType == V_MATRIX3X3W);
+    return *((VSMatrix3X3W *)m_fVec);
 }
-const TCHAR* VSVariant::GetString() const
+const TCHAR *VSVariant::GetString() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_STRING);
-	return ((VSName*)m_pP)->GetBuffer();
+    ENGINE_ASSERT(m_uiType == V_STRING);
+    return ((VSName *)m_pP)->GetBuffer();
 }
-MObject* VSVariant::GetObjectPtr() const
+MObject *VSVariant::GetObjectPtr() const
 {
-	MATRIX_ENGINE_ASSERT(m_uiType == V_OBJECT);
-	return (MObject*)m_pP;
+    ENGINE_ASSERT(m_uiType == V_OBJECT);
+    return (MObject *)m_pP;
 }
-bool VSVariant::GetValueToString(Container::MString& outVal) const
+bool VSVariant::GetValueToString(Container::MString &outVal) const
 {
-	return true;
+    return true;
 }
-bool VSVariant::SetValueFromString(const Container::MString& inVal)
+bool VSVariant::SetValueFromString(const Container::MString &inVal)
 {
-	return true;
+    return true;
 }

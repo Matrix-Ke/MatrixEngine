@@ -65,7 +65,7 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL
         VSAnimTreeOneAnim();
-        VSAnimTreeOneAnim(const VSUsedName &ShowName, const VSString &AnimName);
+        VSAnimTreeOneAnim(const VSUsedName &ShowName, const Container::MString &AnimName);
         ~VSAnimTreeOneAnim();
     };
     DECLARE_Ptr(VSAnimTreeOneAnim);
@@ -77,7 +77,7 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL
         VSAnimTreeTwoSmoothBlendAnim();
-        VSAnimTreeTwoSmoothBlendAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2);
+        VSAnimTreeTwoSmoothBlendAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2);
         ~VSAnimTreeTwoSmoothBlendAnim();
     };
     DECLARE_Ptr(VSAnimTreeTwoSmoothBlendAnim);
@@ -89,7 +89,7 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL
         VSAnimTreeTwoImmediateAnim();
-        VSAnimTreeTwoImmediateAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2);
+        VSAnimTreeTwoImmediateAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2);
         ~VSAnimTreeTwoImmediateAnim();
     };
     DECLARE_Ptr(VSAnimTreeTwoImmediateAnim);
@@ -101,7 +101,7 @@ namespace Matrix
         DECLARE_RTTI;
         DECLARE_INITIAL
         VSAnimTreePartialAnim();
-        VSAnimTreePartialAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2);
+        VSAnimTreePartialAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2);
         ~VSAnimTreePartialAnim();
     };
     DECLARE_Ptr(VSAnimTreePartialAnim);
@@ -114,10 +114,10 @@ namespace Matrix
         DECLARE_INITIAL
         VSAnimTreeRectBlendAnim();
         VSAnimTreeRectBlendAnim(const VSUsedName &ShowName,
-                                const VSString &AnimName1,
-                                const VSString &AnimName2,
-                                const VSString &AnimName3,
-                                const VSString &AnimName4);
+                                const Container::MString &AnimName1,
+                                const Container::MString &AnimName2,
+                                const Container::MString &AnimName3,
+                                const Container::MString &AnimName4);
         ~VSAnimTreeRectBlendAnim();
     };
     DECLARE_Ptr(VSAnimTreeRectBlendAnim);

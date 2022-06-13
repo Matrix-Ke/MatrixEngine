@@ -1,7 +1,7 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "TexAllState.h"
-#include "2DTexture.h"
+#include "Render/Texture/2DTexture.h"
 namespace Matrix
 {
     class MStream;
@@ -32,7 +32,7 @@ namespace Matrix
     public:
         friend class VSRenderer;
 
-        inline const VSString &GetFace() const { return m_Face; }
+        inline const Container::MString &GetFace() const { return m_Face; }
         inline unsigned int GetSize() const { return m_uiSize; }
         inline bool GetBold() const { return m_bBold; }
         inline bool GetItalic() const { return m_bItalic; }
@@ -54,7 +54,7 @@ namespace Matrix
         virtual bool PostClone(MObject *pObjectSrc);
 
     protected:
-        VSString m_Face;
+        Container::MString m_Face;
         unsigned int m_uiSize;
         bool m_bBold;
         bool m_bItalic;

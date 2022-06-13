@@ -356,7 +356,7 @@ namespace Matrix
         template <typename T>
         void AddResource(VSPointer<VSResourceProxy<T>> &ResourceRPTR, VSFileName &FileName)
         {
-            VSFileJob *pResourceProxyJob = VS_NEW VSTResourceJob<T>(ResourceRPTR);
+            VSFileJob *pResourceProxyJob = MX_NEW VSTResourceJob<T>(ResourceRPTR);
             pResourceProxyJob->m_FileName = FileName;
             AddJob(pResourceProxyJob);
         }
@@ -371,7 +371,7 @@ namespace Matrix
         template <typename T>
         void AddStreamResourceJob(VSResourceProxy<T> *pResourceR)
         {
-            VSStreamResourceJob<T, typename T::CacheType> *pResourceCacheJob = VS_NEW VSStreamResourceJob<T, typename T::CacheType>(pResourceR);
+            VSStreamResourceJob<T, typename T::CacheType> *pResourceCacheJob = MX_NEW VSStreamResourceJob<T, typename T::CacheType>(pResourceR);
             pResourceCacheJob->m_FileName = pResourceR->GetResource()->GetCacheFilePath();
             AddJob(pResourceCacheJob);
         }
@@ -381,7 +381,7 @@ namespace Matrix
         template <typename T>
         VSCacheResourceJob<T, typename T::CacheType> *AddCacheResourceJob(T *pResource)
         {
-            VSCacheResourceJob<T, typename T::CacheType> *pResourceCacheJob = VS_NEW VSCacheResourceJob<T, typename T::CacheType>(pResource);
+            VSCacheResourceJob<T, typename T::CacheType> *pResourceCacheJob = MX_NEW VSCacheResourceJob<T, typename T::CacheType>(pResource);
             pResourceCacheJob->m_FileName = pResource->GetCacheFilePath();
             AddJob(pResourceCacheJob);
             return pResourceCacheJob;

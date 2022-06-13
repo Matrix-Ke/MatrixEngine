@@ -1,8 +1,8 @@
 #include "1stCameraController.h"
 #include "Camera.h"
 #include "Quat.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VS1stCameraController, VSController)
 BEGIN_ADD_PROPERTY(VS1stCameraController, VSController)
@@ -33,7 +33,7 @@ bool VS1stCameraController::UpdateEx(double dAppTime)
     // VSFreeCamera * Temp = (VSFreeCamera *)m_pObject;
 
     VSCamera *Temp = DynamicCast<VSCamera>(m_pObject);
-    VSMAC_ASSERT(Temp);
+    ENGINE_ASSERT(Temp);
     Temp->m_RotX += m_RotXDelta * (VSREAL)m_dIntervalTime;
     Temp->m_RotY += m_RotYDelta * (VSREAL)m_dIntervalTime;
     Temp->m_RotZ = 0;

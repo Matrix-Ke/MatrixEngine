@@ -1,8 +1,8 @@
 #pragma once
-#include "Object.h"
+#include "Core/Object.h"
 #include "ShaderMainFunction.h"
 #include "TexAllState.h"
-#include "Light.h"
+#include "Node/NodeComponent/Light/Light.h"
 #include "Resource.h"
 #include "MaterialPass.h"
 #include "NormalDepthPass.h"
@@ -16,7 +16,7 @@
 #include "LightFunPass.h"
 #include "IndirectRenderPass.h"
 #include "PostEffectPass.h"
-#include "BufferResource.h"
+#include "Render/Buffer/BufferResource.h"
 namespace Matrix
 {
     class MStream;
@@ -146,7 +146,7 @@ namespace Matrix
 
         VSCShaderPtr m_pCShader;
         VSUsedName m_CShaderName;
-        VSString m_CMainFunName;
+        Container::MString m_CMainFunName;
         VSShaderSet *m_pCShaderSet;
 
     public:
@@ -340,11 +340,11 @@ namespace Matrix
         VSUsedName m_HShaderName;
         VSUsedName m_DShaderName;
 
-        VSString m_VMainFunName;
-        VSString m_PMainFunName;
-        VSString m_GMainFunName;
-        VSString m_HMainFunName;
-        VSString m_DMainFunName;
+        Container::MString m_VMainFunName;
+        Container::MString m_PMainFunName;
+        Container::MString m_GMainFunName;
+        Container::MString m_HMainFunName;
+        Container::MString m_DMainFunName;
 
         VSShaderSet *m_pVShaderSet;
         VSShaderSet *m_pPShaderSet;
@@ -539,16 +539,16 @@ namespace Matrix
 
         void LinkAllResource();
         void ClearShaderFunctionVisitFlagFalse();
-        bool GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        bool GetVShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        bool GetDShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara);
-        bool GetCustomDeclareString(VSString &OutString, MaterialShaderPara &MSPara);
+        bool GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        bool GetVShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        bool GetDShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara);
+        bool GetCustomDeclareString(Container::MString &OutString, MaterialShaderPara &MSPara);
 
         void CreateCustomValue(VSShader *pShader);
-        void CreateConstValueDeclare(VSString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara);
+        void CreateConstValueDeclare(Container::MString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara);
 
         void CreateCustomTexture(VSShader *pShader);
-        void CreateTextureDeclare(VSString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara);
+        void CreateTextureDeclare(Container::MString &OutString, unsigned int &uiRegisterID, MaterialShaderPara &MSPara);
 
         void SetGlobleValue(MaterialShaderPara &MSPara,
                             VSVShader *pVShader, VSPShader *pPShader,

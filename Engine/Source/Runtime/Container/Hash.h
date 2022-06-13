@@ -53,7 +53,7 @@ namespace Matrix
             }
             inline void SetHashNum(unsigned int uiHashNum)
             {
-                MATRIX_ENGINE_ASSERT(uiHashNum);
+                ENGINE_ASSERT(uiHashNum);
                 m_Hash.SetBufferNum(uiHashNum);
             }
 
@@ -111,7 +111,7 @@ namespace Matrix
             }
             inline void SetHashNum(unsigned int uiHashNum)
             {
-                MATRIX_ENGINE_ASSERT(uiHashNum);
+                ENGINE_ASSERT(uiHashNum);
                 m_Hash.SetBufferNum(uiHashNum);
                 for (unsigned int i = 0; i < m_Hash.GetNum(); i++)
                 {
@@ -264,7 +264,7 @@ namespace Matrix
                     }
                     else
                     {
-                        MATRIX_ENGINE_ASSERT(0);
+                        ENGINE_ASSERT(0);
                         return m_pNode->Element;
                     }
                 }

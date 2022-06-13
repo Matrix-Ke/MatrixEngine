@@ -114,7 +114,7 @@ namespace Matrix
 
 	protected:
 		virtual void AddToSceneMap(VSSceneMap* pSceneMap);
-		virtual void CreateDefaultComponentNode();
+		virtual void CreateDefaultComponentNode(); //world创建实体的时候调用构造默认父组件（world::CreateActor）
 
 	protected:
 		Container::MArray<VSActor*> m_ChildActor;

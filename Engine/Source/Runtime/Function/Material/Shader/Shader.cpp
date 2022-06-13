@@ -1,6 +1,6 @@
 #include "Shader.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSShader, VSBind)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSShader)
@@ -17,11 +17,11 @@ REGISTER_PROPERTY(m_uiTextureInstructionSlots, TextureInstructionSlots, VSProper
 REGISTER_PROPERTY(m_uiConstBufferSize, ConstBufferSize, VSProperty::F_SAVE_LOAD_CLONE);
 REGISTER_PROPERTY(m_uiShareSamplerRegister, ShareSamplerRegister, VSProperty::F_SAVE_LOAD_CLONE);
 END_ADD_PROPERTY
-VSShader::VSShader(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile)
+VSShader::VSShader(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile)
     : VSBind()
 {
     m_pUserConstant.Clear();
-    VSMAC_ASSERT(pBuffer);
+    ENGINE_ASSERT(pBuffer);
     if (IsFromFile)
     {
         m_FileName = pBuffer;
@@ -49,7 +49,7 @@ VSShader::VSShader()
     m_uiTextureInstructionSlots = 0;
     m_uiConstBufferSize = 0;
 }
-VSShader::VSShader(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile)
+VSShader::VSShader(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile)
     : VSBind()
 {
     m_pUserConstant.Clear();
@@ -75,13 +75,13 @@ VSShader::~VSShader()
     m_uiCacheBufferSize = 0;
     ReleaseResource();
 }
-void VSShader::SetShaderString(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile)
+void VSShader::SetShaderString(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile)
 {
     VSMAC_DELETEA(m_pCacheBuffer);
     m_uiCacheBufferSize = 0;
     ReleaseResource();
 
-    VSMAC_ASSERT(pBuffer);
+    ENGINE_ASSERT(pBuffer);
     if (IsFromFile)
     {
         m_FileName = pBuffer;
@@ -95,7 +95,7 @@ void VSShader::SetShaderString(const TCHAR *pBuffer, const VSString &MainFunName
     m_uiCacheBufferSize = 0;
     m_MainFunName = MainFunName;
 }
-void VSShader::SetShaderString(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile)
+void VSShader::SetShaderString(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile)
 {
     VSMAC_DELETEA(m_pCacheBuffer);
     m_uiCacheBufferSize = 0;
@@ -179,7 +179,7 @@ bool VSShader::SetCacheBuffer(void *pBuffer, unsigned int uiSize)
     }
     VSMAC_DELETEA(m_pCacheBuffer);
     m_uiCacheBufferSize = uiSize;
-    m_pCacheBuffer = VS_NEW UCHAR[uiSize];
+    m_pCacheBuffer = MX_NEW UCHAR[uiSize];
     VSMemcpy(m_pCacheBuffer, pBuffer, uiSize);
     return 1;
 }
@@ -187,12 +187,12 @@ void VSShader::AddShareSampler(unsigned int ShareSamplerRegister, unsigned int S
 {
     if (ShareSamplerRegister >= VSRenderer::ms_pRenderer->GetMaxSampler(GetShaderType()))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return;
     }
     if (ShareSamplerType >= VSEngineFlag::SS_MAX)
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return;
     }
     if (m_uiShareSamplerRegister.GetNum() == VSEngineFlag::SS_MAX)

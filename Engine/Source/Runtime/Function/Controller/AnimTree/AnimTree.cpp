@@ -5,8 +5,8 @@
 #include "AnimSequenceFunc.h"
 #include "OneParamSmoothAnimBlend.h"
 #include "RectAnimBlend.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "OneParamSmoothAnimBlendSequence.h"
 #include "OneParamImmediateAnimBlend.h"
 #include "PartialAnimBlend.h"
@@ -40,8 +40,8 @@ VSAnimTree::VSAnimTree(const VSUsedName &ShowName)
     m_pAnimFunctionArray.Clear();
     m_pAnimMainFunction = NULL;
 
-    m_pAnimMainFunction = VS_NEW VSAnimMainFunction(_T("AnimTree"), this);
-    VSMAC_ASSERT(m_pAnimMainFunction);
+    m_pAnimMainFunction = MX_NEW VSAnimMainFunction(_T("AnimTree"), this);
+    ENGINE_ASSERT(m_pAnimMainFunction);
 }
 
 VSAnimTree::VSAnimTree()
@@ -55,13 +55,13 @@ VSSkeletonMeshNode *VSAnimTree::GetSkeletonMeshNode() const
 }
 void VSAnimTree::AddAnimFunction(VSAnimBaseFunction *pAnimFunction)
 {
-    VSMAC_ASSERT(pAnimFunction);
+    ENGINE_ASSERT(pAnimFunction);
 
     m_pAnimFunctionArray.AddElement(pAnimFunction);
 }
 void VSAnimTree::DeleteAnimFunction(VSAnimBaseFunction *pAnimFunction)
 {
-    VSMAC_ASSERT(pAnimFunction);
+    ENGINE_ASSERT(pAnimFunction);
 
     for (unsigned int i = 0; i < m_pAnimFunctionArray.GetNum(); i++)
     {
@@ -77,12 +77,12 @@ bool VSAnimTree::Update(double dAppTime)
     if (!VSController::Update(dAppTime))
         return false;
     const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
-    VSMAC_ASSERT(pMesh->GetAnimSet());
+    ENGINE_ASSERT(pMesh->GetAnimSet());
 
     for (unsigned int i = 0; i < m_pAnimFunctionArray.GetNum(); i++)
     {
@@ -107,7 +107,7 @@ bool VSAnimTree::IsSupportSimpleInstance()
 bool VSAnimTree::SetObject(MObject *pObject)
 {
     VSSkeletonMeshNode *Temp = DynamicCast<VSSkeletonMeshNode>(pObject);
-    VSMAC_ASSERT(Temp);
+    ENGINE_ASSERT(Temp);
     m_pObject = pObject;
     for (unsigned int i = 0; i < m_pAnimFunctionArray.GetNum(); i++)
     {
@@ -166,10 +166,10 @@ IMPLEMENT_INITIAL_END
 VSAnimTreeOneAnim::VSAnimTreeOneAnim()
 {
 }
-VSAnimTreeOneAnim::VSAnimTreeOneAnim(const VSUsedName &ShowName, const VSString &AnimName)
+VSAnimTreeOneAnim::VSAnimTreeOneAnim(const VSUsedName &ShowName, const Container::MString &AnimName)
     : VSAnimTree(ShowName)
 {
-    VSAnimSequenceFunc *pAnimSequenceFunc = VS_NEW VSAnimSequenceFunc(_T("Squence"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc = MX_NEW VSAnimSequenceFunc(_T("Squence"), this);
     m_pAnimMainFunction->GetInputNode(_T("Anim"))->Connection(pAnimSequenceFunc->GetOutputNode(0));
     pAnimSequenceFunc->SetAnim(AnimName);
 }
@@ -184,10 +184,10 @@ IMPLEMENT_INITIAL_END
 VSAnimTreeTwoSmoothBlendAnim::VSAnimTreeTwoSmoothBlendAnim()
 {
 }
-VSAnimTreeTwoSmoothBlendAnim::VSAnimTreeTwoSmoothBlendAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2)
+VSAnimTreeTwoSmoothBlendAnim::VSAnimTreeTwoSmoothBlendAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2)
     : VSAnimTree(ShowName)
 {
-    VSOneParamSmoothAnimBlendSequence *pAnimBlend = VS_NEW VSOneParamSmoothAnimBlendSequence(_T("OneParamSmoothAnimBlendSequence"), this);
+    VSOneParamSmoothAnimBlendSequence *pAnimBlend = MX_NEW VSOneParamSmoothAnimBlendSequence(_T("OneParamSmoothAnimBlendSequence"), this);
     pAnimBlend->CreateSlot(2);
     pAnimBlend->SetAnim(0, AnimName1);
     pAnimBlend->SetAnim(1, AnimName2);
@@ -205,18 +205,18 @@ IMPLEMENT_INITIAL_END
 VSAnimTreeTwoImmediateAnim::VSAnimTreeTwoImmediateAnim()
 {
 }
-VSAnimTreeTwoImmediateAnim::VSAnimTreeTwoImmediateAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2)
+VSAnimTreeTwoImmediateAnim::VSAnimTreeTwoImmediateAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2)
     : VSAnimTree(ShowName)
 {
-    VSAnimSequenceFunc *pAnimSequenceFunc1 = VS_NEW VSAnimSequenceFunc(_T("Squence1"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc1 = MX_NEW VSAnimSequenceFunc(_T("Squence1"), this);
 
     pAnimSequenceFunc1->SetAnim(AnimName1);
 
-    VSAnimSequenceFunc *pAnimSequenceFunc2 = VS_NEW VSAnimSequenceFunc(_T("Squence2"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc2 = MX_NEW VSAnimSequenceFunc(_T("Squence2"), this);
 
     pAnimSequenceFunc2->SetAnim(AnimName2);
 
-    VSOneParamImmediateAnimBlend *pAnimBlend = VS_NEW VSOneParamImmediateAnimBlend(_T("OneParamBlend"), this);
+    VSOneParamImmediateAnimBlend *pAnimBlend = MX_NEW VSOneParamImmediateAnimBlend(_T("OneParamBlend"), this);
 
     pAnimBlend->SetNodeCrossFadingTime(0, 1000.0f);
     pAnimBlend->SetNodeCrossFadingTime(1, 1000.0f);
@@ -238,18 +238,18 @@ IMPLEMENT_INITIAL_END
 VSAnimTreePartialAnim::VSAnimTreePartialAnim()
 {
 }
-VSAnimTreePartialAnim::VSAnimTreePartialAnim(const VSUsedName &ShowName, const VSString &AnimName1, const VSString &AnimName2)
+VSAnimTreePartialAnim::VSAnimTreePartialAnim(const VSUsedName &ShowName, const Container::MString &AnimName1, const Container::MString &AnimName2)
     : VSAnimTree(ShowName)
 {
-    VSAnimSequenceFunc *pAnimSequenceFunc1 = VS_NEW VSAnimSequenceFunc(_T("Squence1"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc1 = MX_NEW VSAnimSequenceFunc(_T("Squence1"), this);
 
     pAnimSequenceFunc1->SetAnim(AnimName1);
 
-    VSAnimSequenceFunc *pAnimSequenceFunc2 = VS_NEW VSAnimSequenceFunc(_T("Squence2"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc2 = MX_NEW VSAnimSequenceFunc(_T("Squence2"), this);
 
     pAnimSequenceFunc2->SetAnim(AnimName2);
 
-    VSPartialAnimBlend *pAnimBlend = VS_NEW VSPartialAnimBlend(_T("PartialAnimBlend"), this);
+    VSPartialAnimBlend *pAnimBlend = MX_NEW VSPartialAnimBlend(_T("PartialAnimBlend"), this);
 
     pAnimBlend->GetInputNode(0)->Connection(pAnimSequenceFunc1->GetOutputNode(0));
     pAnimBlend->GetInputNode(1)->Connection(pAnimSequenceFunc2->GetOutputNode(0));
@@ -269,29 +269,29 @@ VSAnimTreeRectBlendAnim::VSAnimTreeRectBlendAnim()
 {
 }
 VSAnimTreeRectBlendAnim::VSAnimTreeRectBlendAnim(const VSUsedName &ShowName,
-                                                 const VSString &AnimName1,
-                                                 const VSString &AnimName2,
-                                                 const VSString &AnimName3,
-                                                 const VSString &AnimName4)
+                                                 const Container::MString &AnimName1,
+                                                 const Container::MString &AnimName2,
+                                                 const Container::MString &AnimName3,
+                                                 const Container::MString &AnimName4)
     : VSAnimTree(ShowName)
 {
-    VSAnimSequenceFunc *pAnimSequenceFunc1 = VS_NEW VSAnimSequenceFunc(_T("Squence1"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc1 = MX_NEW VSAnimSequenceFunc(_T("Squence1"), this);
 
     pAnimSequenceFunc1->SetAnim(AnimName1);
 
-    VSAnimSequenceFunc *pAnimSequenceFunc2 = VS_NEW VSAnimSequenceFunc(_T("Squence2"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc2 = MX_NEW VSAnimSequenceFunc(_T("Squence2"), this);
 
     pAnimSequenceFunc2->SetAnim(AnimName2);
 
-    VSAnimSequenceFunc *pAnimSequenceFunc3 = VS_NEW VSAnimSequenceFunc(_T("Squence3"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc3 = MX_NEW VSAnimSequenceFunc(_T("Squence3"), this);
 
     pAnimSequenceFunc1->SetAnim(AnimName3);
 
-    VSAnimSequenceFunc *pAnimSequenceFunc4 = VS_NEW VSAnimSequenceFunc(_T("Squence4"), this);
+    VSAnimSequenceFunc *pAnimSequenceFunc4 = MX_NEW VSAnimSequenceFunc(_T("Squence4"), this);
 
     pAnimSequenceFunc2->SetAnim(AnimName4);
 
-    VSRectAnimBlend *pAnimBlend = VS_NEW VSRectAnimBlend(_T("RectBlend"), this);
+    VSRectAnimBlend *pAnimBlend = MX_NEW VSRectAnimBlend(_T("RectBlend"), this);
 
     pAnimBlend->GetInputNode(0)->Connection(pAnimSequenceFunc1->GetOutputNode(0));
     pAnimBlend->GetInputNode(1)->Connection(pAnimSequenceFunc2->GetOutputNode(0));

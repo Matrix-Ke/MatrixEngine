@@ -12,9 +12,9 @@ namespace Matrix
     public:
         VSWorldNormal(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSWorldNormal();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSWorldNormal();
@@ -40,9 +40,9 @@ namespace Matrix
     public:
         VSViewNormal(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSViewNormal();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSViewNormal();

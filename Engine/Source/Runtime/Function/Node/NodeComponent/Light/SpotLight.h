@@ -1,5 +1,5 @@
 #pragma once
-#include "Light.h"
+#include "Node/NodeComponent/Light/Light.h"
 #include "SceneRender.h"
 namespace Matrix
 {

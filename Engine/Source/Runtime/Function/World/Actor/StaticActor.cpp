@@ -1,6 +1,6 @@
-#include "StaticActor.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "World/Actor/StaticActor.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSStaticActor, VSActor)
 BEGIN_ADD_PROPERTY(VSStaticActor, VSActor)

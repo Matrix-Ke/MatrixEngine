@@ -76,7 +76,7 @@ VSProperty* VSRtti::GetProperty(const Container::MString& PropertyName)const
 			return m_PropertyArray[i];
 		}
 	}
-	MATRIX_ENGINE_ASSERT(0);
+	ENGINE_ASSERT(0);
 	return NULL;
 }
 unsigned int VSRtti::GetPropertyNum()const
@@ -89,7 +89,7 @@ void VSRtti::AddProperty(VSProperty* pProperty)
 	{
 		for (unsigned int i = 0; i < m_PropertyArray.GetNum(); i++)
 		{
-			MATRIX_ENGINE_ASSERT(m_PropertyArray[i]->GetName() != pProperty->GetName());
+			ENGINE_ASSERT(m_PropertyArray[i]->GetName() != pProperty->GetName());
 		}
 		m_PropertyArray.AddElement(pProperty);
 	}

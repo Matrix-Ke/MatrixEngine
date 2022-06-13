@@ -1,6 +1,6 @@
 #include "BufferUnorderAccess.h"
-#include "VertexFormat.h"
-#include "GraphicInclude.h"
+#include "Render/Buffer/VertexFormat.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSBufferUnorderAccess, VSBind)
 BEGIN_ADD_PROPERTY(VSBufferUnorderAccess, VSBind)
@@ -20,12 +20,12 @@ VSBufferUnorderAccess::~VSBufferUnorderAccess()
 }
 VSBufferUnorderAccess::VSBufferUnorderAccess(unsigned int uiNum, unsigned int uiDT, unsigned int uiStructStride, bool CPURead)
 {
-    VSMAC_ASSERT(uiNum);
+    ENGINE_ASSERT(uiNum);
     if (uiDT == VSDataBuffer::DT_UBYTE)
     {
-        VSMAC_ASSERT(uiNum % 4 == 0)
+        ENGINE_ASSERT(uiNum % 4 == 0)
     }
-    VSMAC_ASSERT(uiDT != VSDataBuffer::DT_STRUCT || uiStructStride > 0)
+    ENGINE_ASSERT(uiDT != VSDataBuffer::DT_STRUCT || uiStructStride > 0)
     m_uiNum = uiNum;
     m_uiDT = uiDT;
     m_uiStructStride = uiStructStride;

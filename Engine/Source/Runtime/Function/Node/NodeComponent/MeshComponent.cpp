@@ -1,5 +1,5 @@
 #include "MeshComponent.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "StreamingManager.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSMeshComponent, VSNodeComponent)

@@ -1,9 +1,9 @@
 #include "ViewFamily.h"
-#include "GraphicInclude.h"
-#include "CubeTexture.h"
+#include "Core/GraphicInclude.h"
+#include "Render/Texture/CubeTexture.h"
 #include "CaptureTexAllState.h"
 #include "ResourceManager.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSSceneRenderMethod, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSSceneRenderMethod)
@@ -15,8 +15,8 @@ VSSceneRenderMethod::VSSceneRenderMethod()
     m_pPostEffectSet = NULL;
     m_pPostEffectInstance = NULL;
 
-    m_pDebugDrawSceneRender = VS_NEW VSDebugDrawSceneRender();
-    m_pDebugDrawSceneRender->SetParam(VSRenderer::CF_NONE, VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+    m_pDebugDrawSceneRender = MX_NEW VSDebugDrawSceneRender();
+    m_pDebugDrawSceneRender->SetParam(VSRenderer::CF_NONE, Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
 
     for (unsigned int i = 0; i < VSCuller::RG_MAX; i++)
     {
@@ -150,7 +150,7 @@ VSDebugDraw *VSSceneRenderMethod::GetDebugDraw(unsigned int uiRenderGroup)
     return NULL;
 }
 IMPLEMENT_RTTI_NoCreateFun(VSViewFamily, MObject)
-    VSViewFamily::VSViewFamily(const VSString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
+    VSViewFamily::VSViewFamily(const Container::MString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
 {
     m_pCamera = pCamera;
     m_pCamera->AddViewFamily(this);
@@ -164,7 +164,7 @@ IMPLEMENT_RTTI_NoCreateFun(VSViewFamily, MObject)
     m_ViewFamilyName = ViewFamilyName;
     m_bEnable = true;
 
-    VSString RMName = RenderMethodRTTIName;
+    Container::MString RMName = RenderMethodRTTIName;
     m_pSceneRenderMethod = DynamicCast<VSSceneRenderMethod>(MObject::GetNoGCInstance(RMName));
 
     m_pSceneRenderMethod->SetPostEffect(pPostEffectSet);
@@ -203,7 +203,7 @@ void VSViewFamily::Update(double dAppTime)
 {
 
     Container::MArray<VSScene *> Temp;
-    VSMAC_ASSERT(m_pCamera);
+    ENGINE_ASSERT(m_pCamera);
 
     if (!m_pCamera->m_bEnable)
     {
@@ -242,12 +242,12 @@ VSRenderTarget *VSViewFamily::GetFinalColorRT()
     return m_pSceneRenderMethod->GetFinalColorRT();
 }
 IMPLEMENT_RTTI_NoCreateFun(VSWindowViewFamily, VSViewFamily);
-VSWindowViewFamily::VSWindowViewFamily(const VSString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName, int iWindowID)
+VSWindowViewFamily::VSWindowViewFamily(const Container::MString &ViewFamilyName, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName, int iWindowID)
     : VSViewFamily(ViewFamilyName, pCamera, pPostEffectSet, RenderMethodRTTIName)
 {
 
     m_iWindowID = iWindowID;
-    m_pScreenQuadRenderer = VS_NEW VSPEScreenQuadSceneRender();
+    m_pScreenQuadRenderer = MX_NEW VSPEScreenQuadSceneRender();
 }
 VSWindowViewFamily::~VSWindowViewFamily()
 {
@@ -257,7 +257,7 @@ void VSWindowViewFamily::OnDraw(double dAppTime)
 {
     VSViewFamily::OnDraw(dAppTime);
     VSRenderTarget *pRenderTarget = GetFinalColorRT();
-    VSMAC_ASSERT(pRenderTarget);
+    ENGINE_ASSERT(pRenderTarget);
 
     m_pScreenQuadRenderer->SetSourceTarget((VSTexture *)pRenderTarget->GetCreateBy());
     m_pScreenQuadRenderer->Draw(m_Culler, dAppTime);
@@ -292,11 +292,11 @@ void VSWindowViewFamily::CreateRenderTargetBuffer(unsigned int uiWidth, unsigned
     m_pScreenQuadRenderer->SetNoUseRTRenderSize(uiWidth, uiHeight);
 }
 IMPLEMENT_RTTI_NoCreateFun(VSCaptureViewFamily, VSViewFamily)
-    VSCaptureViewFamily::VSCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
+    VSCaptureViewFamily::VSCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
     : VSViewFamily(ViewFamilyName, pCamera, pPostEffectSet, RenderMethodRTTIName)
 {
-    VSMAC_ASSERT(uiWidth && uiHeight);
-    m_pScreenQuadRenderer = VS_NEW VSPEScreenQuadSceneRender();
+    ENGINE_ASSERT(uiWidth && uiHeight);
+    m_pScreenQuadRenderer = MX_NEW VSPEScreenQuadSceneRender();
 
     m_OnlyUpdateOneTime = false;
     m_pTexOwner = NULL;
@@ -328,7 +328,7 @@ void VSCaptureViewFamily::OnDraw(double dAppTime)
 {
     VSViewFamily::OnDraw(dAppTime);
     VSRenderTarget *pRenderTarget = GetFinalColorRT();
-    VSMAC_ASSERT(pRenderTarget);
+    ENGINE_ASSERT(pRenderTarget);
 
     m_pScreenQuadRenderer->SetSourceTarget((VSTexture *)pRenderTarget->GetCreateBy());
     m_pScreenQuadRenderer->Draw(m_Culler, dAppTime);
@@ -341,7 +341,7 @@ void VSCaptureViewFamily::SetSize(unsigned int uiWidth, unsigned int uiHeight)
     }
 }
 IMPLEMENT_RTTI_NoCreateFun(VS2DCaptureViewFamily, VSCaptureViewFamily)
-    VS2DCaptureViewFamily::VS2DCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
+    VS2DCaptureViewFamily::VS2DCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
     : VSCaptureViewFamily(ViewFamilyName, uiWidth, uiHeight, pCamera, pPostEffectSet, RenderMethodRTTIName)
 {
     if (IsReCreate(uiWidth, uiHeight))
@@ -356,7 +356,7 @@ VS2DCaptureViewFamily::~VS2DCaptureViewFamily()
 void VS2DCaptureViewFamily::CreateRenderTargetBuffer(unsigned int uiWidth, unsigned int uiHeight)
 {
     VSCaptureViewFamily::CreateRenderTargetBuffer(uiWidth, uiHeight);
-    VS2DTexture *pTexture = VS_NEW VS2DTexture(m_uiWidth, m_uiHeight, VSRenderer::SFT_A8R8G8B8, 1, true);
+    VS2DTexture *pTexture = MX_NEW VS2DTexture(m_uiWidth, m_uiHeight, VSRenderer::SFT_A8R8G8B8, 1, true);
 
     m_pRenderTarget = VSResourceManager::CreateRenderTarget(pTexture, VSRenderer::ms_pRenderer->GetCurMultisample());
 }
@@ -369,7 +369,7 @@ void VS2DCaptureViewFamily::OnDraw(double dAppTime)
 
     VSViewFamily::OnDraw(dAppTime);
     VSRenderTarget *pRenderTarget = GetFinalColorRT();
-    VSMAC_ASSERT(pRenderTarget);
+    ENGINE_ASSERT(pRenderTarget);
 
     m_pScreenQuadRenderer->ClearRTAndDepth();
     m_pScreenQuadRenderer->AddRenderTarget(m_pRenderTarget);
@@ -377,7 +377,7 @@ void VS2DCaptureViewFamily::OnDraw(double dAppTime)
     m_pScreenQuadRenderer->Draw(m_Culler, dAppTime);
 }
 IMPLEMENT_RTTI_NoCreateFun(VSCubCaptureViewFamily, VSCaptureViewFamily)
-    VSCubCaptureViewFamily::VSCubCaptureViewFamily(const VSString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
+    VSCubCaptureViewFamily::VSCubCaptureViewFamily(const Container::MString &ViewFamilyName, unsigned int uiWidth, unsigned int uiHeight, VSCamera *pCamera, VSPostEffectSetR *pPostEffectSet, const TCHAR *RenderMethodRTTIName)
     : VSCaptureViewFamily(ViewFamilyName, uiWidth, uiHeight, pCamera, pPostEffectSet, RenderMethodRTTIName)
 {
     if (IsReCreate(uiWidth, uiHeight))
@@ -420,7 +420,7 @@ void VSCubCaptureViewFamily::OnDraw(double dAppTime)
         m_pSceneRenderMethod->Draw(m_CubCuller[Index], dAppTime);
 
         VSRenderTarget *pRenderTarget = GetFinalColorRT();
-        VSMAC_ASSERT(pRenderTarget);
+        ENGINE_ASSERT(pRenderTarget);
         m_pScreenQuadRenderer->ClearRTAndDepth();
         m_pScreenQuadRenderer->AddRenderTarget(m_pCubRenderTarget[Index]);
         m_pScreenQuadRenderer->SetSourceTarget((VSTexture *)pRenderTarget->GetCreateBy());
@@ -431,7 +431,7 @@ void VSCubCaptureViewFamily::CreateRenderTargetBuffer(unsigned int uiWidth, unsi
 {
 
     VSCaptureViewFamily::CreateRenderTargetBuffer(uiWidth, uiHeight);
-    VSCubeTexture *pTexture = VS_NEW VSCubeTexture(m_uiWidth, VSRenderer::SFT_A8R8G8B8, 1, true);
+    VSCubeTexture *pTexture = MX_NEW VSCubeTexture(m_uiWidth, VSRenderer::SFT_A8R8G8B8, 1, true);
     for (unsigned int i = 0; i < VSCubeTexture::F_MAX; i++)
     {
         VSRenderTarget *pRenderTarget = VSResourceManager::CreateRenderTarget(pTexture, VSRenderer::ms_pRenderer->GetCurMultisample(), 0, i);
@@ -458,7 +458,7 @@ void VSCubCaptureViewFamily::Update(double dAppTime)
         for (unsigned int Index = 0; Index < VSCubeTexture::F_MAX; Index++)
         {
             m_CubCuller[Index].ClearAll();
-            CubCameraPtr[Index] = VS_NEW VSCamera();
+            CubCameraPtr[Index] = MX_NEW VSCamera();
             CubCameraPtr[Index]->CreateFromEuler(m_pCamera->GetWorldTranslate(), 0.0f, 0.0f, 0.0f);
             CubCameraPtr[Index]->SetLocalRotate(MatTemp[Index]);
             CubCameraPtr[Index]->SetPerspectiveFov(AngleToRadian(90.0f), 1.0f, 1.0f, m_pCamera->GetZFar());
@@ -486,12 +486,12 @@ VSForwardHighEffectSceneRenderMethod::~VSForwardHighEffectSceneRenderMethod()
 }
 VSForwardHighEffectSceneRenderMethod::VSForwardHighEffectSceneRenderMethod()
 {
-    m_pMaterialSceneRenderder = VS_NEW VSMaterialSceneRender();
-    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_COLOR, VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
-    m_pNormalDepthSceneRender = VS_NEW VSNormalDepthSceneRender();
-    m_pNormalDepthSceneRender->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(0.0f, 0.0f, 1.0f, 0.0f), 1.0f, 0);
-    m_pGammaCorrectSceneRender = VS_NEW VSPEGammaCorrectSceneRender();
-    // m_pSSRSceneRender = VS_NEW VSPESSRSceneRender();
+    m_pMaterialSceneRenderder = MX_NEW VSMaterialSceneRender();
+    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_COLOR, Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+    m_pNormalDepthSceneRender = MX_NEW VSNormalDepthSceneRender();
+    m_pNormalDepthSceneRender->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(0.0f, 0.0f, 1.0f, 0.0f), 1.0f, 0);
+    m_pGammaCorrectSceneRender = MX_NEW VSPEGammaCorrectSceneRender();
+    // m_pSSRSceneRender = MX_NEW VSPESSRSceneRender();
 
     m_pMaterialRT = NULL;
     m_pNormalDepthRT = NULL;
@@ -577,10 +577,10 @@ VSForwardEffectSceneRenderMethod::~VSForwardEffectSceneRenderMethod()
 }
 VSForwardEffectSceneRenderMethod::VSForwardEffectSceneRenderMethod()
 {
-    m_pMaterialSceneRenderder = VS_NEW VSMaterialSceneRender();
-    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+    m_pMaterialSceneRenderder = MX_NEW VSMaterialSceneRender();
+    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
 
-    m_pGammaCorrectSceneRender = VS_NEW VSPEGammaCorrectSceneRender();
+    m_pGammaCorrectSceneRender = MX_NEW VSPEGammaCorrectSceneRender();
 
     m_pMaterialRT = NULL;
 }
@@ -635,8 +635,8 @@ VSSimpleForwardEffectSceneRenderMethod::~VSSimpleForwardEffectSceneRenderMethod(
 }
 VSSimpleForwardEffectSceneRenderMethod::VSSimpleForwardEffectSceneRenderMethod()
 {
-    m_pMaterialSceneRenderder = VS_NEW VSMaterialSceneRender();
-    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_USE_ALL, VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+    m_pMaterialSceneRenderder = MX_NEW VSMaterialSceneRender();
+    m_pMaterialSceneRenderder->SetParam(VSRenderer::CF_USE_ALL, Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
 }
 void VSSimpleForwardEffectSceneRenderMethod::Draw(VSCuller &Culler, double dAppTime)
 {

@@ -1,5 +1,5 @@
 #include "PEBeginFunction.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPEBeginFunction, VSPostEffectFunction)
 BEGIN_ADD_PROPERTY(VSPEBeginFunction, VSPostEffectFunction)
@@ -18,8 +18,8 @@ VSPEBeginFunction::VSPEBeginFunction(const VSUsedName &ShowName, VSPostEffectSet
 {
 
     VSOutputNode *pOutNode = NULL;
-    pOutNode = VS_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this);
-    VSMAC_ASSERT(pOutNode);
+    pOutNode = MX_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this);
+    ENGINE_ASSERT(pOutNode);
     m_pOutput.AddElement(pOutNode);
     m_pBeginTargetArray = NULL;
 }

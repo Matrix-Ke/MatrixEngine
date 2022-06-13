@@ -63,12 +63,12 @@ void VSAnimAtom::Interpolation(const VSAnimAtom &Atom1, const VSAnimAtom Atom2, 
     if (t < 0.0f)
     {
         t = 0.0f;
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (t > 1.0f)
     {
         t = 1.0f;
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 #endif // DEBUG
 

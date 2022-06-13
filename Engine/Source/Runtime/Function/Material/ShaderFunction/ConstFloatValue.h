@@ -18,8 +18,8 @@ namespace Matrix
         }
         void SetValue(unsigned int uiIndex, VSREAL Value);
 
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual unsigned int GetValueNum() const
         {
             return m_Value.GetNum();
@@ -28,7 +28,7 @@ namespace Matrix
         {
             return m_Value.GetNum() * sizeof(VSREAL);
         }
-        bool GetDeclareString(VSString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const;
+        bool GetDeclareString(Container::MString &OutString, unsigned int uiRegisterID, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
         Container::MArray<VSREAL> &GetValue() { return m_Value; }
 

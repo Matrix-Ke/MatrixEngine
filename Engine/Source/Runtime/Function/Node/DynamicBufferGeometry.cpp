@@ -2,8 +2,8 @@
 #include "PointSet.h"
 #include "LineSet.h"
 #include "TriangleSet.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDynamicBufferGeometry, VSGeometry)
 VSDynamicBufferGeometry::VSDynamicBufferGeometry()
@@ -47,27 +47,27 @@ void VSDVGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &
                           unsigned int uiMeshDataType,
                           unsigned int uiVertexNum)
 {
-    VSMAC_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum);
+    ENGINE_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum);
 
     VSMeshData *pMeshData = NULL;
     if (uiMeshDataType == VSMeshData::MDT_POINT)
     {
-        pMeshData = VS_NEW VSPointSet();
+        pMeshData = MX_NEW VSPointSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_LINE)
     {
-        pMeshData = VS_NEW VSLineSet();
+        pMeshData = MX_NEW VSLineSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_TRIANGLE)
     {
-        pMeshData = VS_NEW VSTriangleSet();
+        pMeshData = MX_NEW VSTriangleSet();
     }
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(FormatArray, uiVertexNum);
-    VSMAC_ASSERT(pVertexBuffer);
+    pVertexBuffer = MX_NEW VSVertexBuffer(FormatArray, uiVertexNum);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetStatic(false);
     pVertexBuffer->SetMemType(VSMemBind::MT_VRAM);
@@ -78,11 +78,11 @@ void VSDVGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE> &
     m_pVertexUseBuffer = NULL;
     m_uiCurVUseBufferElementIndex = 0;
 
-    m_pVertexUseBuffer = VS_NEW VSUseBuffer(false);
+    m_pVertexUseBuffer = MX_NEW VSUseBuffer(false);
     m_pVertexUseBuffer->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
     if (VSResourceManager::ms_bRenderThread)
     {
-        m_pVertexUseBufferRender = VS_NEW VSUseBuffer(false);
+        m_pVertexUseBufferRender = MX_NEW VSUseBuffer(false);
         m_pVertexUseBufferRender->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
     }
     else
@@ -219,34 +219,34 @@ void VSDVDIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>
                             unsigned int uiVertexNum,
                             unsigned int uiIndexNum)
 {
-    VSMAC_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum && uiIndexNum);
+    ENGINE_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum && uiIndexNum);
 
     VSMeshData *pMeshData = NULL;
     if (uiMeshDataType == VSMeshData::MDT_POINT)
     {
-        pMeshData = VS_NEW VSPointSet();
+        pMeshData = MX_NEW VSPointSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_LINE)
     {
-        pMeshData = VS_NEW VSLineSet();
+        pMeshData = MX_NEW VSLineSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_TRIANGLE)
     {
-        pMeshData = VS_NEW VSTriangleSet();
+        pMeshData = MX_NEW VSTriangleSet();
     }
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(FormatArray, uiVertexNum);
-    VSMAC_ASSERT(pVertexBuffer);
+    pVertexBuffer = MX_NEW VSVertexBuffer(FormatArray, uiVertexNum);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetStatic(false);
     pVertexBuffer->SetMemType(VSMemBind::MT_VRAM);
     pVertexBuffer->SetLockFlag(VSInheritBind::LF_DISCARD);
     pMeshData->SetVertexBuffer(pVertexBuffer);
 
-    VSIndexBuffer *pIndexBuffer = VS_NEW VSIndexBuffer(uiIndexNum);
+    VSIndexBuffer *pIndexBuffer = MX_NEW VSIndexBuffer(uiIndexNum);
     pIndexBuffer->SetStatic(false);
     pIndexBuffer->SetMemType(VSMemBind::MT_VRAM);
     pIndexBuffer->SetLockFlag(VSInheritBind::LF_DISCARD);
@@ -258,18 +258,18 @@ void VSDVDIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>
     m_uiCurVUseBufferElementIndex = 0;
     m_uiCurIUseBufferElementIndex = 0;
 
-    m_pVertexUseBuffer = VS_NEW VSUseBuffer(false);
+    m_pVertexUseBuffer = MX_NEW VSUseBuffer(false);
     m_pVertexUseBuffer->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
 
-    m_pIndexUseBuffer = VS_NEW VSUseBuffer(false);
+    m_pIndexUseBuffer = MX_NEW VSUseBuffer(false);
     m_pIndexUseBuffer->SetOneAddLimitSize(pIndexBuffer->GetByteSize());
 
     if (VSResourceManager::ms_bRenderThread)
     {
-        m_pVertexUseBufferRender = VS_NEW VSUseBuffer(false);
+        m_pVertexUseBufferRender = MX_NEW VSUseBuffer(false);
         m_pVertexUseBufferRender->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
 
-        m_pIndexUseBufferRender = VS_NEW VSUseBuffer(false);
+        m_pIndexUseBufferRender = MX_NEW VSUseBuffer(false);
         m_pIndexUseBufferRender->SetOneAddLimitSize(pIndexBuffer->GetByteSize());
     }
     else
@@ -300,7 +300,7 @@ void *VSDVDIGeometry::NewGetI(unsigned int uiIndexSize)
 bool VSDVDIGeometry::Add(const void *pVeretexData, unsigned int uiVertexSize,
                          const void *pIndexData, unsigned int uiIndexSize)
 {
-    VSMAC_ASSERT(pVeretexData && uiVertexSize && pIndexData && uiIndexSize);
+    ENGINE_ASSERT(pVeretexData && uiVertexSize && pIndexData && uiIndexSize);
     if (!pVeretexData || !uiVertexSize || !pIndexData || !uiIndexSize)
     {
         return 0;
@@ -338,12 +338,12 @@ bool VSDVDIGeometry::Add(const void *pVeretexData, unsigned int uiVertexSize,
         return false;
     }
 
-    VSMAC_ASSERT(m_pVertexUseBuffer->GetElementNum() == m_pIndexUseBuffer->GetElementNum());
+    ENGINE_ASSERT(m_pVertexUseBuffer->GetElementNum() == m_pIndexUseBuffer->GetElementNum());
     return 1;
 }
 unsigned int VSDVDIGeometry::UpdateGeometry()
 {
-    VSMAC_ASSERT(m_pMeshData && m_pVertexUseBufferRender && m_pIndexUseBufferRender);
+    ENGINE_ASSERT(m_pMeshData && m_pVertexUseBufferRender && m_pIndexUseBufferRender);
     if (!m_pMeshData || !m_pVertexUseBufferRender || !m_pIndexUseBufferRender)
     {
         return UGRI_FAIL;
@@ -523,26 +523,26 @@ VSSVDIGeometry::~VSSVDIGeometry()
 }
 void VSSVDIGeometry::Create(unsigned int uiMeshDataType, VSVertexBuffer *pVertexBuffer, unsigned int uiIndexNum)
 {
-    VSMAC_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && uiIndexNum && pVertexBuffer && pVertexBuffer->IsStatic());
+    ENGINE_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && uiIndexNum && pVertexBuffer && pVertexBuffer->IsStatic());
     VSMeshData *pMeshData = NULL;
     if (uiMeshDataType == VSMeshData::MDT_POINT)
     {
-        pMeshData = VS_NEW VSPointSet();
+        pMeshData = MX_NEW VSPointSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_LINE)
     {
-        pMeshData = VS_NEW VSLineSet();
+        pMeshData = MX_NEW VSLineSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_TRIANGLE)
     {
-        pMeshData = VS_NEW VSTriangleSet();
+        pMeshData = MX_NEW VSTriangleSet();
     }
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     pMeshData->SetVertexBuffer(pVertexBuffer);
 
-    VSIndexBuffer *pIndexBuffer = VS_NEW VSIndexBuffer(uiIndexNum);
+    VSIndexBuffer *pIndexBuffer = MX_NEW VSIndexBuffer(uiIndexNum);
     pIndexBuffer->SetStatic(false);
     pIndexBuffer->SetMemType(VSMemBind::MT_VRAM);
     pIndexBuffer->SetLockFlag(VSInheritBind::LF_DISCARD);
@@ -554,13 +554,13 @@ void VSSVDIGeometry::Create(unsigned int uiMeshDataType, VSVertexBuffer *pVertex
 
     m_uiCurIUseBufferElementIndex = 0;
 
-    m_pIndexUseBuffer = VS_NEW VSUseBuffer(false);
+    m_pIndexUseBuffer = MX_NEW VSUseBuffer(false);
     m_pIndexUseBuffer->SetOneAddLimitSize(pIndexBuffer->GetByteSize());
 
     if (VSResourceManager::ms_bRenderThread)
     {
 
-        m_pIndexUseBufferRender = VS_NEW VSUseBuffer(false);
+        m_pIndexUseBufferRender = MX_NEW VSUseBuffer(false);
         m_pIndexUseBufferRender->SetOneAddLimitSize(pIndexBuffer->GetByteSize());
     }
     else
@@ -580,7 +580,7 @@ void *VSSVDIGeometry::NewGetI(unsigned int uiIndexSize)
 }
 bool VSSVDIGeometry::Add(const void *pIndexData, unsigned int uiIndexSize)
 {
-    VSMAC_ASSERT(pIndexData && uiIndexSize);
+    ENGINE_ASSERT(pIndexData && uiIndexSize);
     if (!pIndexData || !uiIndexSize)
     {
         return 0;
@@ -593,7 +593,7 @@ bool VSSVDIGeometry::Add(const void *pIndexData, unsigned int uiIndexSize)
 }
 unsigned int VSSVDIGeometry::UpdateGeometry()
 {
-    VSMAC_ASSERT(m_pMeshData && m_pIndexUseBufferRender);
+    ENGINE_ASSERT(m_pMeshData && m_pIndexUseBufferRender);
     if (!m_pMeshData || !m_pIndexUseBufferRender)
     {
         return UGRI_FAIL;
@@ -692,27 +692,27 @@ void VSDVSIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>
                             unsigned int uiVertexNum,
                             VSIndexBuffer *pIndexBuffer)
 {
-    VSMAC_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum && pIndexBuffer);
-    VSMAC_ASSERT(pIndexBuffer->IsStatic());
+    ENGINE_ASSERT(uiMeshDataType < VSMeshData::MDT_MAX && FormatArray.GetNum() && uiVertexNum && pIndexBuffer);
+    ENGINE_ASSERT(pIndexBuffer->IsStatic());
     VSMeshData *pMeshData = NULL;
     if (uiMeshDataType == VSMeshData::MDT_POINT)
     {
-        pMeshData = VS_NEW VSPointSet();
+        pMeshData = MX_NEW VSPointSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_LINE)
     {
-        pMeshData = VS_NEW VSLineSet();
+        pMeshData = MX_NEW VSLineSet();
     }
     else if (uiMeshDataType == VSMeshData::MDT_TRIANGLE)
     {
-        pMeshData = VS_NEW VSTriangleSet();
+        pMeshData = MX_NEW VSTriangleSet();
     }
 
-    VSMAC_ASSERT(pMeshData);
+    ENGINE_ASSERT(pMeshData);
 
     VSVertexBuffer *pVertexBuffer = NULL;
-    pVertexBuffer = VS_NEW VSVertexBuffer(FormatArray, uiVertexNum);
-    VSMAC_ASSERT(pVertexBuffer);
+    pVertexBuffer = MX_NEW VSVertexBuffer(FormatArray, uiVertexNum);
+    ENGINE_ASSERT(pVertexBuffer);
 
     pVertexBuffer->SetStatic(false);
     pVertexBuffer->SetMemType(VSMemBind::MT_VRAM);
@@ -723,11 +723,11 @@ void VSDVSIGeometry::Create(Container::MArray<VSVertexFormat::VERTEXFORMAT_TYPE>
     m_pVertexUseBuffer = NULL;
     m_uiCurVUseBufferElementIndex = 0;
 
-    m_pVertexUseBuffer = VS_NEW VSUseBuffer(false);
+    m_pVertexUseBuffer = MX_NEW VSUseBuffer(false);
     m_pVertexUseBuffer->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
     if (VSResourceManager::ms_bRenderThread)
     {
-        m_pVertexUseBufferRender = VS_NEW VSUseBuffer(false);
+        m_pVertexUseBufferRender = MX_NEW VSUseBuffer(false);
         m_pVertexUseBufferRender->SetOneAddLimitSize(pVertexBuffer->GetOneVertexSize() * pVertexBuffer->GetVertexNum());
     }
     else

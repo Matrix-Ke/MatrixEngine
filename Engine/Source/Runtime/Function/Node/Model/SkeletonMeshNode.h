@@ -54,7 +54,7 @@ namespace Matrix
         }
         virtual void UpdateController(double dAppTime);
         // can not use with anim tree
-        bool PlayAnim(const VSString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
+        bool PlayAnim(const Container::MString &AnimName, VSREAL fRatio = 1.0f, unsigned int uiRepeatType = VSController::RT_NONE);
         void StopAnim();
 
         virtual bool PostLoad(MStream *pStream);

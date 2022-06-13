@@ -358,7 +358,7 @@ namespace Matrix
                     return NULL;
                 }
                 T *pPtr = (T *)m_MemManagerObject.Allocate(uiNum * sizeof(T), 0, true);
-                MATRIX_ENGINE_ASSERT(pPtr);
+                ENGINE_ASSERT(pPtr);
                 if (!pPtr)
                 {
                     return NULL;

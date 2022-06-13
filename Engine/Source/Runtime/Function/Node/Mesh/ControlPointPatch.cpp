@@ -1,6 +1,6 @@
 #include "ControlPointPatch.h"
 #include "Node.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSControlPointPatch, VSMeshData)
 BEGIN_ADD_PROPERTY(VSControlPointPatch, VSMeshData)

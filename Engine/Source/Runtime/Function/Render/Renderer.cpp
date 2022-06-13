@@ -7,25 +7,25 @@
 #include "HShader.h"
 #include "CShader.h"
 #include "VertexBuffer.h"
-#include "Geometry.h"
+#include "Node/Geometry.h"
 #include "Texture.h"
-#include "2DTexture.h"
+#include "Render/Texture/2DTexture.h"
 #include "TexAllState.h"
 #include "Material.h"
 #include "DepthStencil.h"
-#include "CubeTexture.h"
-#include "VertexFormat.h"
-#include "MeshData.h"
+#include "Render/Texture/CubeTexture.h"
+#include "Render/Buffer/VertexFormat.h"
+#include "Node/Mesh/MeshData.h"
 #include "ShaderStringFactory.h"
 #include "AABB3.h"
 #include "OBB3.h"
 #include "Sphere3.h"
 #include "TriangleSet.h"
 #include "LineSet.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "RenderTarget.h"
-#include "Profiler.h"
-#include "BufferResource.h"
+#include "Core/Profiler.h"
+#include "Render/Buffer/BufferResource.h"
 #include "UnorderAccess.h"
 #include "Query.h"
 #include "RenderThread.h"
@@ -37,9 +37,9 @@ namespace Matrix
     DECLEAR_COUNT_PROFILENODE(DrawGeometryNum, )
 }
 VSRenderer *VSRenderer::ms_pRenderer = NULL;
-VSString VSRenderer::ms_ShaderTypeString[] = {_T("None"), _T("Dx9"), _T("Dx11")};
-VSString VSRenderer::ms_ShaderTypePathString[] = {_T("None"), _T("Dx9/"), _T("Dx11/")};
-VSString VSRenderer::ms_ShaderProgramMain[] = {_T("VSMain"), _T("PSMain"), _T("GSMain"), _T("HSMain"), _T("DSMain"), _T("CSMain")};
+Container::MString VSRenderer::ms_ShaderTypeString[] = {_T("None"), _T("Dx9"), _T("Dx11")};
+Container::MString VSRenderer::ms_ShaderTypePathString[] = {_T("None"), _T("Dx9/"), _T("Dx11/")};
+Container::MString VSRenderer::ms_ShaderProgramMain[] = {_T("VSMain"), _T("PSMain"), _T("GSMain"), _T("HSMain"), _T("DSMain"), _T("CSMain")};
 unsigned int VSRenderer::ms_uiBytesPerPixel[SFT_MAX] =
     {
         4,  // SFT_A8R8G8B8
@@ -133,54 +133,54 @@ VSRenderer::SCREEN_QUAD_TYPE VSRenderer::ms_FullScreen[4] =
 
 };
 VSUSHORT_INDEX VSRenderer::ms_FullScreenI[6] = {0, 1, 3, 1, 2, 3};
-const VSString &VSRenderer::GetRenderTypeShaderPath(unsigned int RenderTypeAPI)
+const Container::MString &VSRenderer::GetRenderTypeShaderPath(unsigned int RenderTypeAPI)
 {
     return ms_ShaderTypePathString[RenderTypeAPI];
 }
-const VSString &VSRenderer::GetRenderTypeString(unsigned int RenderTypeAPI)
+const Container::MString &VSRenderer::GetRenderTypeString(unsigned int RenderTypeAPI)
 {
     return ms_ShaderTypeString[RenderTypeAPI];
 }
 unsigned int VSRenderer::GetBytesPerPixel(unsigned int uiFormatType)
 {
-    VSMAC_ASSERT(uiFormatType < SFT_MAX)
+    ENGINE_ASSERT(uiFormatType < SFT_MAX)
     return ms_uiBytesPerPixel[uiFormatType];
 }
 unsigned int VSRenderer::GetChannelPerPixel(unsigned int uiFormatType)
 {
-    VSMAC_ASSERT(uiFormatType < SFT_MAX);
+    ENGINE_ASSERT(uiFormatType < SFT_MAX);
     return ms_uiChannelPerPixel[uiFormatType];
 }
 unsigned int VSRenderer::GetMinDimension(unsigned int uiFormatType)
 {
-    VSMAC_ASSERT(uiFormatType < SFT_MAX);
+    ENGINE_ASSERT(uiFormatType < SFT_MAX);
     return ms_uiMinDimension[uiFormatType];
 }
-const VSString &VSRenderer::GetVShaderProgramMain()
+const Container::MString &VSRenderer::GetVShaderProgramMain()
 {
     return ms_ShaderProgramMain[VSEngineFlag::ST_VERTEX];
 }
-const VSString &VSRenderer::GetPShaderProgramMain()
+const Container::MString &VSRenderer::GetPShaderProgramMain()
 {
     return ms_ShaderProgramMain[VSEngineFlag::ST_PIXEL];
 }
-const VSString &VSRenderer::GetGShaderProgramMain()
+const Container::MString &VSRenderer::GetGShaderProgramMain()
 {
     return ms_ShaderProgramMain[VSEngineFlag::ST_GEOMETRY];
 }
-const VSString &VSRenderer::GetHShaderProgramMain()
+const Container::MString &VSRenderer::GetHShaderProgramMain()
 {
     return ms_ShaderProgramMain[VSEngineFlag::ST_HULL];
 }
-const VSString &VSRenderer::GetDShaderProgramMain()
+const Container::MString &VSRenderer::GetDShaderProgramMain()
 {
     return ms_ShaderProgramMain[VSEngineFlag::ST_DOMAIN];
 }
-const VSString &VSRenderer::GetRenderTypeShaderPath() const
+const Container::MString &VSRenderer::GetRenderTypeShaderPath() const
 {
     return GetRenderTypeShaderPath(GetRendererType());
 }
-const VSString &VSRenderer::GetRenderTypeString() const
+const Container::MString &VSRenderer::GetRenderTypeString() const
 {
     return GetRenderTypeString(GetRendererType());
 }
@@ -339,10 +339,10 @@ bool VSRenderer::SetDefaultValue()
     VSCustomCSMaterial::LoadAllDeviceShader();
     return 1;
 }
-VSString VSRenderer::GetValueElement(const VSPutNode *pPutNode, unsigned char uiVE)
+Container::MString VSRenderer::GetValueElement(const VSPutNode *pPutNode, unsigned char uiVE)
 {
-    VSMAC_ASSERT(pPutNode);
-    VSString Temp = pPutNode->GetNodeName().GetString();
+    ENGINE_ASSERT(pPutNode);
+    Container::MString Temp = pPutNode->GetNodeName().GetString();
     if (uiVE > 0)
     {
         if (pPutNode->GetValueType() == VSPutNode::VT_1 && (uiVE & VE_R))
@@ -351,10 +351,10 @@ VSString VSRenderer::GetValueElement(const VSPutNode *pPutNode, unsigned char ui
         }
         else if (pPutNode->GetValueType() == VSPutNode::VT_1)
         {
-            VSMAC_ASSERT(0);
-            return VSString::ms_StringNULL;
+            ENGINE_ASSERT(0);
+            return Container::MString::ms_StringNULL;
         }
-        VSString Value[4];
+        Container::MString Value[4];
         Value[0] = _T("r");
         Value[1] = _T("g");
         Value[2] = _T("b");
@@ -380,12 +380,12 @@ VSString VSRenderer::GetValueElement(const VSPutNode *pPutNode, unsigned char ui
 
     return Temp;
 }
-VSString VSRenderer::GetValueElement(const VSString &InputString, unsigned char uiVE)
+Container::MString VSRenderer::GetValueElement(const Container::MString &InputString, unsigned char uiVE)
 {
-    VSString Temp = InputString;
+    Container::MString Temp = InputString;
     if (uiVE > 0)
     {
-        VSString Value[4];
+        Container::MString Value[4];
         Value[0] = _T("r");
         Value[1] = _T("g");
         Value[2] = _T("b");
@@ -409,7 +409,7 @@ VSString VSRenderer::GetValueElement(const VSString &InputString, unsigned char 
 }
 bool VSRenderer::SetRenderTargets(VSRenderTarget *pRenderTargets[], unsigned int uiNum)
 {
-    VSMAC_ASSERT(uiNum > 0);
+    ENGINE_ASSERT(uiNum > 0);
 
     if (pRenderTargets[0] == NULL)
     {
@@ -423,7 +423,7 @@ bool VSRenderer::SetRenderTargets(VSRenderTarget *pRenderTargets[], unsigned int
 }
 bool VSRenderer::EndRenderTargets(VSRenderTarget *pRenderTargets[], unsigned int uiNum)
 {
-    VSMAC_ASSERT(uiNum > 0);
+    ENGINE_ASSERT(uiNum > 0);
 
     if (pRenderTargets[0] == NULL)
     {
@@ -450,7 +450,7 @@ bool VSRenderer::SetCSUnorderAccesses(VSUnorderAccess *pUnorderAccesses[], unsig
 }
 bool VSRenderer::EndCSUnorderAccesses(VSUnorderAccess *pUnorderAccesses[], unsigned int uiNum)
 {
-    VSMAC_ASSERT(uiNum > 0);
+    ENGINE_ASSERT(uiNum > 0);
 
     if (pUnorderAccesses[0] == NULL)
     {
@@ -464,8 +464,8 @@ bool VSRenderer::EndCSUnorderAccesses(VSUnorderAccess *pUnorderAccesses[], unsig
 }
 VSRenderer::ChildWindowInfo *VSRenderer::GetChildWindowInfo(int uiID)
 {
-    VSMAC_ASSERT(m_bWindowed);
-    VSMAC_ASSERT(uiID < m_iNumChildWindow);
+    ENGINE_ASSERT(m_bWindowed);
+    ENGINE_ASSERT(uiID < m_iNumChildWindow);
     if (uiID < 0)
     {
         return NULL;
@@ -491,7 +491,7 @@ bool VSRenderer::ReleaseBindObjectResource()
         }
         if (!pBind->ReleaseResource())
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }
@@ -610,7 +610,7 @@ void VSRenderer::DisableBindResourceUsed(VSSlot *pSlotResource)
 }
 bool VSRenderer::SetRenderTarget(VSRenderTarget *pRenderTarget, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxRTNum);
+    ENGINE_ASSERT(i < m_uiMaxRTNum);
     if (!pRenderTarget)
     {
         return 0;
@@ -635,7 +635,7 @@ bool VSRenderer::SetRenderTarget(VSRenderTarget *pRenderTarget, unsigned int i)
         }
         else
         {
-            VSMAC_ASSERT(false);
+            ENGINE_ASSERT(false);
         }
     }
 
@@ -644,7 +644,7 @@ bool VSRenderer::SetRenderTarget(VSRenderTarget *pRenderTarget, unsigned int i)
 }
 bool VSRenderer::EndRenderTarget(VSRenderTarget *pRenderTarget, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxRTNum);
+    ENGINE_ASSERT(i < m_uiMaxRTNum);
     if (!pRenderTarget)
         return 0;
     VSTexture *pTexture = (VSTexture *)pRenderTarget->GetCreateBy();
@@ -671,7 +671,7 @@ bool VSRenderer::SetDepthStencilBuffer(VSDepthStencil *pDepthStencilBuffer)
 #ifdef _DEBUG
     if (m_uiCurRTWidth != pDepthStencilBuffer->GetWidth() || m_uiCurRTHeight != pDepthStencilBuffer->GetHeight() || m_uiCurRTMultisample != pDepthStencilBuffer->GetMulSample())
     {
-        VSMAC_ASSERT(false);
+        ENGINE_ASSERT(false);
     }
 #endif
     if (!LoadDepthStencil(pDepthStencilBuffer))
@@ -682,7 +682,7 @@ bool VSRenderer::SetDepthStencilBuffer(VSDepthStencil *pDepthStencilBuffer)
 }
 bool VSRenderer::SetCSUnorderAccess(VSUnorderAccess *pUnorderAccess, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxUAVNum);
+    ENGINE_ASSERT(i < m_uiMaxUAVNum);
     if (!pUnorderAccess)
     {
         return false;
@@ -700,7 +700,7 @@ bool VSRenderer::SetCSUnorderAccess(VSUnorderAccess *pUnorderAccess, unsigned in
 }
 bool VSRenderer::EndCSUnorderAccess(VSUnorderAccess *pUnorderAccess, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxUAVNum);
+    ENGINE_ASSERT(i < m_uiMaxUAVNum);
     if (!pUnorderAccess)
     {
         return false;
@@ -766,26 +766,26 @@ bool VSRenderer::CopyResourceBuffer(VS2DTexture *pSource, VSCubeTexture *pDest, 
 #ifdef _DEBUG
     if (!pSource || !pDest || uiFace >= VSCubeTexture::F_MAX)
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (pSource->GetWidth(0) != pSource->GetHeight(0) && pSource->GetWidth(0) != pDest->GetWidth(0))
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (pSource->GetMipLevel() != pDest->GetMipLevel())
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (pSource->GetFormatType() != pDest->GetFormatType())
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 #endif
     return true;
 }
 unsigned int VSRenderer::BeginQuery(VSQuery *pQuery)
 {
-    VSMAC_ASSERT(!m_pQuery);
+    ENGINE_ASSERT(!m_pQuery);
     if (m_pQuery)
     {
         EndQuery(m_pQuery);
@@ -805,7 +805,7 @@ unsigned int VSRenderer::BeginQuery(VSQuery *pQuery)
 }
 unsigned int VSRenderer::EndQuery(VSQuery *pQuery)
 {
-    VSMAC_ASSERT(m_pQuery && m_pQuery == pQuery);
+    ENGINE_ASSERT(m_pQuery && m_pQuery == pQuery);
     if (!m_pQuery)
     {
         return FRI_FAIL;
@@ -1164,7 +1164,7 @@ bool VSRenderer::ReleaseIBuffer(VSIndexBuffer *pIBuffer)
 }
 unsigned int VSRenderer::SetInstanceMesh(VSInstanceGeometry *pInstanceGeometry)
 {
-    VSMAC_ASSERT(pInstanceGeometry);
+    ENGINE_ASSERT(pInstanceGeometry);
 
     VSMeshData *pMeshData = pInstanceGeometry->GetMeshData();
 
@@ -1187,7 +1187,7 @@ unsigned int VSRenderer::SetInstanceMesh(VSInstanceGeometry *pInstanceGeometry)
 unsigned int VSRenderer::SetNormalMesh(VSGeometry *pGeometry)
 {
 
-    VSMAC_ASSERT(pGeometry);
+    ENGINE_ASSERT(pGeometry);
     VSMeshData *pMeshData = pGeometry->GetMeshData();
 
     if (!SetVBuffer(pMeshData->GetVertexBuffer()))
@@ -1205,7 +1205,7 @@ bool VSRenderer::DrawMesh(VSGeometry *pGeometry, VSRenderState *pRenderState, VS
                           VSGShader *pGShader, VSHShader *pHShader, VSDShader *pDShader)
 {
 
-    VSMAC_ASSERT(pGeometry && pGeometry->GetMeshData());
+    ENGINE_ASSERT(pGeometry && pGeometry->GetMeshData());
     m_LocalRenderState.GetAll(pRenderState);
 
     if (pGeometry->IsSwapCull())
@@ -1245,7 +1245,7 @@ bool VSRenderer::DrawMesh(VSGeometry *pGeometry, VSRenderState *pRenderState, VS
 }
 void VSRenderer::SetVTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
     unsigned int iMinShaderSampler = m_pVShader->GetMinShareSampler();
     bool bSetSampler = true;
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_VERTEX])
@@ -1271,7 +1271,7 @@ void VSRenderer::SetVTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 }
 unsigned int VSRenderer::SetGSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_GEOMETRY]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_GEOMETRY]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -1293,7 +1293,7 @@ unsigned int VSRenderer::SetGSamplerState(VSSamplerState *pSamplerState, unsigne
 }
 unsigned int VSRenderer::SetDSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_DOMAIN]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_DOMAIN]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -1315,7 +1315,7 @@ unsigned int VSRenderer::SetDSamplerState(VSSamplerState *pSamplerState, unsigne
 }
 unsigned int VSRenderer::SetHSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_HULL]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_HULL]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -1337,7 +1337,7 @@ unsigned int VSRenderer::SetHSamplerState(VSSamplerState *pSamplerState, unsigne
 }
 unsigned int VSRenderer::SetCSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_COMPUTE]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_COMPUTE]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -1359,7 +1359,7 @@ unsigned int VSRenderer::SetCSamplerState(VSSamplerState *pSamplerState, unsigne
 }
 unsigned int VSRenderer::SetVSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_VERTEX]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_VERTEX]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -1381,7 +1381,7 @@ unsigned int VSRenderer::SetVSamplerState(VSSamplerState *pSamplerState, unsigne
 }
 void VSRenderer::SetGTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
     unsigned int iMinShaderSampler = m_pGShader->GetMinShareSampler();
     bool bSetSampler = true;
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_GEOMETRY])
@@ -1408,7 +1408,7 @@ void VSRenderer::SetGTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 }
 void VSRenderer::SetDTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
     unsigned int iMinShaderSampler = m_pDShader->GetMinShareSampler();
     bool bSetSampler = true;
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_DOMAIN])
@@ -1435,7 +1435,7 @@ void VSRenderer::SetDTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 }
 void VSRenderer::SetHTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
     unsigned int iMinShaderSampler = m_pHShader->GetMinShareSampler();
     bool bSetSampler = true;
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_HULL])
@@ -1462,7 +1462,7 @@ void VSRenderer::SetHTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 }
 void VSRenderer::SetCTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
     bool bSetSampler = true;
     unsigned int iMinShaderSampler = m_pCShader->GetMinShareSampler();
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_COMPUTE])
@@ -1488,7 +1488,7 @@ void VSRenderer::SetCTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 }
 void VSRenderer::SetPTexAllState(VSTexAllState *pTexAllState, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
     bool bSetSampler = true;
     unsigned int iMinShaderSampler = m_pPShader->GetMinShareSampler();
     if ((iMinShaderSampler != INVALID_SIMPLAR_REGISTER && i >= iMinShaderSampler) || i >= m_uiMaxSampler[VSEngineFlag::ST_PIXEL])
@@ -1613,7 +1613,7 @@ bool VSRenderer::CheckIsResourceCanSet(VSSlot *pSlotResource)
     {
         if (pSlotResource->m_bBindResourceUse == true)
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
         else
@@ -1625,7 +1625,7 @@ bool VSRenderer::CheckIsResourceCanSet(VSSlot *pSlotResource)
 }
 unsigned int VSRenderer::SetVTexture(VSTexture *pTexture, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -1662,7 +1662,7 @@ unsigned int VSRenderer::SetVTexture(VSTexture *pTexture, unsigned int i)
 unsigned int VSRenderer::SetDTexture(VSTexture *pTexture, unsigned int i)
 {
 
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -1701,7 +1701,7 @@ unsigned int VSRenderer::SetDTexture(VSTexture *pTexture, unsigned int i)
 unsigned int VSRenderer::SetHTexture(VSTexture *pTexture, unsigned int i)
 {
 
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -1743,7 +1743,7 @@ void VSRenderer::Dispath(unsigned int uiThreadGroupCountX, unsigned int uiThread
 }
 unsigned int VSRenderer::SetCBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1781,7 +1781,7 @@ unsigned int VSRenderer::SetCBufferResource(VSBufferResource *pBufferResource, u
 }
 unsigned int VSRenderer::SetVBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_VERTEX]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1819,7 +1819,7 @@ unsigned int VSRenderer::SetVBufferResource(VSBufferResource *pBufferResource, u
 }
 unsigned int VSRenderer::SetPBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1857,7 +1857,7 @@ unsigned int VSRenderer::SetPBufferResource(VSBufferResource *pBufferResource, u
 }
 unsigned int VSRenderer::SetGBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1895,7 +1895,7 @@ unsigned int VSRenderer::SetGBufferResource(VSBufferResource *pBufferResource, u
 }
 unsigned int VSRenderer::SetHBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_HULL]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1933,7 +1933,7 @@ unsigned int VSRenderer::SetHBufferResource(VSBufferResource *pBufferResource, u
 }
 unsigned int VSRenderer::SetDBufferResource(VSBufferResource *pBufferResource, unsigned int i)
 {
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pBufferResource))
     {
@@ -1972,7 +1972,7 @@ unsigned int VSRenderer::SetDBufferResource(VSBufferResource *pBufferResource, u
 unsigned int VSRenderer::SetCTexture(VSTexture *pTexture, unsigned int i)
 {
 
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -2011,7 +2011,7 @@ unsigned int VSRenderer::SetCTexture(VSTexture *pTexture, unsigned int i)
 unsigned int VSRenderer::SetGTexture(VSTexture *pTexture, unsigned int i)
 {
 
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -2050,7 +2050,7 @@ unsigned int VSRenderer::SetGTexture(VSTexture *pTexture, unsigned int i)
 unsigned int VSRenderer::SetPTexture(VSTexture *pTexture, unsigned int i)
 {
 
-    VSMAC_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
+    ENGINE_ASSERT(i < m_uiMaxBindResource[VSEngineFlag::ST_PIXEL]);
 #ifdef _DEBUG
     if (!CheckIsResourceCanSet(pTexture))
     {
@@ -2088,7 +2088,7 @@ unsigned int VSRenderer::SetPTexture(VSTexture *pTexture, unsigned int i)
 }
 unsigned int VSRenderer::SetPSamplerState(VSSamplerState *pSamplerState, unsigned int i, bool bForceSet)
 {
-    VSMAC_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_PIXEL]);
+    ENGINE_ASSERT(i < m_uiMaxSampler[VSEngineFlag::ST_PIXEL]);
     if (!pSamplerState)
     {
         pSamplerState = (VSSamplerState *)VSSamplerState::GetDefault();
@@ -2223,8 +2223,8 @@ VSRenderer::VSRenderer()
 }
 bool VSRenderer::UseWindow(int uiWindowID)
 {
-    VSMAC_ASSERT(uiWindowID < m_iNumChildWindow);
-    VSMAC_ASSERT(uiWindowID >= -1);
+    ENGINE_ASSERT(uiWindowID < m_iNumChildWindow);
+    ENGINE_ASSERT(uiWindowID >= -1);
 
     m_iCurWindowID = uiWindowID;
     return 1;
@@ -2249,7 +2249,7 @@ bool VSRenderer::EndRendering()
         DrawScreenFont(m_FontVertex.GetBuffer(), uiLength * 4, m_FontIndex.GetBuffer(), uiLength * 2 * 3);
     }
     m_bIsRendering = false;
-    VSMAC_ASSERT(m_uiBackMacthType == BMT_NONE);
+    ENGINE_ASSERT(m_uiBackMacthType == BMT_NONE);
     m_uiBackMacthType = BMT_NONE;
     return true;
 }
@@ -2306,7 +2306,7 @@ bool VSRenderer::DrawScreen(SCREEN_QUAD_TYPE ScreenQuad[4])
 bool VSRenderer::DrawScreen(SCREEN_QUAD_TYPE *pScreenBuffer, unsigned int uiVertexNum,
                             VSUSHORT_INDEX *pIndexBuffer, unsigned int uiIndexNum)
 {
-    VSMAC_ASSERT(pScreenBuffer && uiVertexNum && pIndexBuffer && uiIndexNum);
+    ENGINE_ASSERT(pScreenBuffer && uiVertexNum && pIndexBuffer && uiIndexNum);
     SetVertexFormat(m_pQuadVertexFormat);
     m_pVertexBuffer[0] = NULL;
     m_pIndexBuffer = NULL;
@@ -2315,13 +2315,13 @@ bool VSRenderer::DrawScreen(SCREEN_QUAD_TYPE *pScreenBuffer, unsigned int uiVert
 bool VSRenderer::DrawScreenFont(SCREEN_FONT_TYPE *pScreenFontBuffer, unsigned int uiVertexNum,
                                 VSUSHORT_INDEX *pIndexBuffer, unsigned int uiIndexNum)
 {
-    VSMAC_ASSERT(pScreenFontBuffer && uiVertexNum && pIndexBuffer && uiIndexNum);
+    ENGINE_ASSERT(pScreenFontBuffer && uiVertexNum && pIndexBuffer && uiIndexNum);
     SetVertexFormat(m_pFontVertexFormat);
     m_pVertexBuffer[0] = NULL;
     m_pIndexBuffer = NULL;
     return 1;
 }
-VSString VSRenderer::Float(unsigned int uiIndex) const
+Container::MString VSRenderer::Float(unsigned int uiIndex) const
 {
     if (uiIndex == FI_1)
     {
@@ -2340,8 +2340,8 @@ VSString VSRenderer::Float(unsigned int uiIndex) const
         return Float4();
     }
     else
-        VSMAC_ASSERT(1);
-    return VSString();
+        ENGINE_ASSERT(1);
+    return Container::MString();
 }
 bool VSRenderer::SetViewPort(VSViewPort *pViewPort)
 {
@@ -2354,13 +2354,13 @@ bool VSRenderer::SetViewPort(VSViewPort *pViewPort)
 void VSRenderer::DrawText(int iX, int iY, const DWORD rColor,
                           const TCHAR *acText, ...)
 {
-    VSMAC_ASSERT(acText && m_pFont);
+    ENGINE_ASSERT(acText && m_pFont);
     VSFont *pUseFont = m_pFont->GetResource();
     TCHAR cch[1024];
     char *pArgs;
     pArgs = (char *)&acText + sizeof(acText);
     VSSprintf(cch, 1024, acText, pArgs);
-    VSString String = cch;
+    Container::MString String = cch;
 
     unsigned int uiLength = String.GetLength();
     unsigned int uiRTWidth = GetCurRTWidth();
@@ -2438,7 +2438,7 @@ void VSRenderer::DrawText(int iX, int iY, const DWORD rColor,
 }
 void VSRenderer::SetFont(VSFontR *pFont)
 {
-    VSMAC_ASSERT(pFont);
+    ENGINE_ASSERT(pFont);
     m_pFont = pFont;
 }
 unsigned int VSRenderer::SetVShader(VSVShader *pVShader)
@@ -2582,7 +2582,7 @@ void VSRenderer::SetVShaderBindResource(VSVShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_VERTEX])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_VERTEX])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2593,7 +2593,7 @@ void VSRenderer::SetVShaderBindResource(VSVShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_VERTEX])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_VERTEX])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2624,7 +2624,7 @@ void VSRenderer::SetPShaderBindResource(VSPShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_PIXEL])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_PIXEL])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2634,7 +2634,7 @@ void VSRenderer::SetPShaderBindResource(VSPShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_PIXEL])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_PIXEL])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2664,7 +2664,7 @@ void VSRenderer::SetDShaderBindResource(VSDShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2674,7 +2674,7 @@ void VSRenderer::SetDShaderBindResource(VSDShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_DOMAIN])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2704,7 +2704,7 @@ void VSRenderer::SetCShaderBindResource(VSCShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2714,7 +2714,7 @@ void VSRenderer::SetCShaderBindResource(VSCShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_COMPUTE])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2744,7 +2744,7 @@ void VSRenderer::SetHShaderBindResource(VSHShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_HULL])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_HULL])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2754,7 +2754,7 @@ void VSRenderer::SetHShaderBindResource(VSHShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_HULL])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_HULL])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2784,7 +2784,7 @@ void VSRenderer::SetGShaderBindResource(VSGShader *pShader)
     {
         for (unsigned int uiTexid = 0; uiTexid < pShader->m_pUserSampler.GetNum(); uiTexid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY])
+            ENGINE_ASSERT(pShader->m_pUserSampler[uiTexid]->GetRegisterIndex() + pShader->m_pUserSampler[uiTexid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserSampler[uiTexid]->GetRegisterNum(); i++)
                 {
@@ -2794,7 +2794,7 @@ void VSRenderer::SetGShaderBindResource(VSGShader *pShader)
         }
         for (unsigned int uiBufferid = 0; uiBufferid < pShader->m_pUserBuffer.GetNum(); uiBufferid++)
         {
-            VSMAC_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY])
+            ENGINE_ASSERT(pShader->m_pUserBuffer[uiBufferid]->GetRegisterIndex() + pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum() <= m_uiMaxBindResource[VSEngineFlag::ST_GEOMETRY])
             {
                 for (unsigned int i = 0; i < pShader->m_pUserBuffer[uiBufferid]->GetRegisterNum(); i++)
                 {
@@ -2816,7 +2816,7 @@ void VSRenderer::SetGShaderBindResource(VSGShader *pShader)
         SetGBufferResource(m_pBufferResource[i].Value, m_pBufferResource[i].Key);
     }
 }
-void VSRenderer::GetShareSamplerDeclare(VSShader *pShader, VSString &OutString)
+void VSRenderer::GetShareSamplerDeclare(VSShader *pShader, Container::MString &OutString)
 {
     if (!IsSupportFeature(SupportFeatureType::SF_ShareSampler))
     {

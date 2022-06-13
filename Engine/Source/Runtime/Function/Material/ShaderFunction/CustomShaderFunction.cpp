@@ -1,6 +1,6 @@
 #include "CustomShaderFunction.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "NormalFunction.h"
 #include "LightShaderFunction.h"
 #include "PosShaderFunction.h"
@@ -15,74 +15,74 @@ VSCustomShaderFunction::VSCustomShaderFunction(const VSUsedName &ShowName, VSMat
     : VSShaderMainFunction(ShowName, pMaterial)
 {
 
-    VSString InputName = _T("EmissiveColor");
+    Container::MString InputName = _T("EmissiveColor");
     VSInputNode *pInputNode = NULL;
 
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Normal");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Alpha");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Custom");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Diffuse");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("ReflectMip");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("ReflectPow");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("WorldOffset");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("TessellationValue");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("WorldDisplacement");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
-    VSString OutputName = _T("OutputColor");
+    Container::MString OutputName = _T("OutputColor");
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 }
-bool VSCustomShaderFunction::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSCustomShaderFunction::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
 
     GetAlphaTestString(OutString, MSPara);
@@ -114,7 +114,7 @@ bool VSCustomShaderFunction::GetFunctionString(VSString &OutString, MaterialShad
         OutString += m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(" = ") +
                      VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("0"));
 
-        Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX];
+        Container::MArray<Container::MString> ShadowStringArray[VSLight::LT_MAX];
         GetLightShadow(MSPara, ShadowStringArray);
         for (unsigned int i = 0; i < VSLight::LT_MAX; i++)
         {
@@ -143,7 +143,7 @@ bool VSCustomShaderFunction::GetFunctionString(VSString &OutString, MaterialShad
 
     GetSRGBWriteString(OutString, MSPara);
 
-    VSString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
+    Container::MString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
     OutString += NodeStringA + _T(" = ") + m_pInput[IN_ALPHA]->GetNodeName().GetString();
     OutString += _T(";\n");
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(";\n");
@@ -202,7 +202,7 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
     {
         return;
     }
-    VSString CustomFunctionString;
+    Container::MString CustomFunctionString;
     Container::MArray<VSShaderFunction *> NoLightFunctionParentNodeArray;
     m_LightFunctionString.Clear();
     m_CustomContentString.Clear();
@@ -221,7 +221,7 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
     }
 
     unsigned int uiCustomValueType = m_pInput[IN_CUSTOM]->GetValueType();
-    VSString Temp;
+    Container::MString Temp;
     if (uiCustomValueType == VSPutNode::VT_4)
     {
         CustomFunctionString += VSRenderer::ms_pRenderer->Float4() + _T(" ");             /*_T("float4 ");*/
@@ -229,7 +229,7 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
     if (!m_pInput[IN_CUSTOM]->GetOutputLink())
     {
@@ -240,13 +240,13 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
         CustomFunctionString += GetValueEqualString(m_pInput[IN_CUSTOM]->GetOutputLink(), m_pInput[IN_CUSTOM]);
     }
 
-    VSString CustomDeclareString;
+    Container::MString CustomDeclareString;
     for (unsigned int i = 0; i < NoLightFunctionParentNodeArray.GetNum(); i++)
     {
-        VSString NodeName = NoLightFunctionParentNodeArray[i]->GetOutputNode(0)->GetNodeName().GetString();
+        Container::MString NodeName = NoLightFunctionParentNodeArray[i]->GetOutputNode(0)->GetNodeName().GetString();
         unsigned int VTType = NoLightFunctionParentNodeArray[i]->GetOutputNode(0)->GetValueType();
 
-        VSString TypeString;
+        Container::MString TypeString;
         if (VTType == VSPutNode::VT_1)
         {
             TypeString += VSRenderer::ms_pRenderer->Float() + _T(" "); /*_T("VSREAL ");*/
@@ -267,14 +267,14 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
         CustomDeclareString += TypeString + NodeName + _T(",");
         m_CustomDefine += NodeName + _T(",");
     }
-    VSString DirectionLightString;
+    Container::MString DirectionLightString;
     DirectionLightString = VSRenderer::ms_pRenderer->Float4() + _T(" CustomDirectionLightFun(") + CustomDeclareString +
                            VSRenderer::ms_pRenderer->Float4() + *VSShaderStringFactory::ms_LightColor + _T(",") +
                            VSRenderer::ms_pRenderer->Float4() + *VSShaderStringFactory::ms_LightSpecular + _T(",") +
                            VSRenderer::ms_pRenderer->Float3() + *VSShaderStringFactory::ms_LightDir + _T(")");
     DirectionLightString += _T("\n{\n") + CustomFunctionString + VSRenderer::ms_pRenderer->Return() + m_pInput[IN_CUSTOM]->GetNodeName().GetString() + _T(";}\n");
 
-    VSString PointLightString;
+    Container::MString PointLightString;
     PointLightString = VSRenderer::ms_pRenderer->Float4() + _T(" CustomPointLightFun(") + CustomDeclareString +
                        VSRenderer::ms_pRenderer->Float3() + *VSShaderStringFactory::ms_WorldPos + _T(",") +
                        VSRenderer::ms_pRenderer->Float4() + *VSShaderStringFactory::ms_LightColor + _T(",") +
@@ -282,12 +282,12 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
                        VSRenderer::ms_pRenderer->Float() + _T("Range") + _T(",") +
                        VSRenderer::ms_pRenderer->Float3() + _T("LightWorldPos") + _T(")");
 
-    VSString PointLightUseString;
-    VSString PointAttenuationDivString;
+    Container::MString PointLightUseString;
+    Container::MString PointAttenuationDivString;
     VSRenderer::ms_pRenderer->CustomPointLightUseString(PointLightUseString, PointAttenuationDivString);
     PointLightString += _T("\n{\n") + PointLightUseString + CustomFunctionString + VSRenderer::ms_pRenderer->Return() + m_pInput[IN_CUSTOM]->GetNodeName().GetString() + PointAttenuationDivString + _T(";}\n");
 
-    VSString SpotLightString;
+    Container::MString SpotLightString;
     SpotLightString = VSRenderer::ms_pRenderer->Float4() + _T(" CustomSpotLightFun(") + CustomDeclareString +
                       VSRenderer::ms_pRenderer->Float3() + *VSShaderStringFactory::ms_WorldPos + _T(",") +
                       VSRenderer::ms_pRenderer->Float4() + *VSShaderStringFactory::ms_LightColor + _T(",") +
@@ -298,17 +298,17 @@ void VSCustomShaderFunction::CreatLightFunctionString(MaterialShaderPara &MSPara
                       VSRenderer::ms_pRenderer->Float() + _T("Falloff") + _T(",") +
                       VSRenderer::ms_pRenderer->Float3() + _T("LightWorldPos") + _T(",") +
                       VSRenderer::ms_pRenderer->Float3() + _T("LightWorldDirection") + _T(")");
-    VSString SpotLightUseString;
-    VSString SpotAttenuationDivString;
+    Container::MString SpotLightUseString;
+    Container::MString SpotAttenuationDivString;
     VSRenderer::ms_pRenderer->CustomSpotLightUseString(SpotLightUseString, SpotAttenuationDivString);
     SpotLightString += _T("\n{\n") + SpotLightUseString + CustomFunctionString + VSRenderer::ms_pRenderer->Return() + m_pInput[IN_CUSTOM]->GetNodeName().GetString() + SpotAttenuationDivString + _T(";}\n");
 
     m_LightFunctionString = DirectionLightString + PointLightString + SpotLightString;
 }
-bool VSCustomShaderFunction::GetInputValueString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSCustomShaderFunction::GetInputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
-    VSMAC_ASSERT(VSRenderer::ms_pRenderer);
-    VSString Temp;
+    ENGINE_ASSERT(VSRenderer::ms_pRenderer);
+    Container::MString Temp;
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (uiOutputStringType == VSPass::PT_MATERIAL)
     {
@@ -377,7 +377,7 @@ bool VSCustomShaderFunction::GetInputValueString(VSString &OutString, MaterialSh
     }
     return 1;
 }
-bool VSCustomShaderFunction::GetPShaderTreeString(VSString &OutString, MaterialShaderPara &MSPara)
+bool VSCustomShaderFunction::GetPShaderTreeString(Container::MString &OutString, MaterialShaderPara &MSPara)
 {
     unsigned int uiOutputStringType = MSPara.uiPassType;
     if (m_bIsVisited == 1)
@@ -485,26 +485,26 @@ bool VSCustomShaderFunction::PostLoad(MStream *pStream)
 {
     if (!GetWorldOffsetNode())
     {
-        VSString InputName = _T("WorldOffset");
+        Container::MString InputName = _T("WorldOffset");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     if (!GetTessellationValueNode())
     {
-        VSString InputName = _T("TessellationValue");
+        Container::MString InputName = _T("TessellationValue");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     if (!GetWorldDisplacementNode())
     {
-        VSString InputName = _T("WorldDisplacement");
+        Container::MString InputName = _T("WorldDisplacement");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     return true;

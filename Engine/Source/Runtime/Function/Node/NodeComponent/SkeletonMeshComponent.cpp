@@ -1,6 +1,6 @@
 #include "SkeletonMeshComponent.h"
 #include "SkeletonMeshNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkeletonMeshComponent, VSMeshComponent)
 BEGIN_ADD_PROPERTY(VSSkeletonMeshComponent, VSMeshComponent)
@@ -65,7 +65,7 @@ void VSSkeletonMeshComponent::SetIsDrawSkeleton(bool bIsDrawSkeleton)
         ((VSSkeletonMeshNode *)pMeshNode)->SetIsDrawSkeleton(bIsDrawSkeleton);
     }
 }
-bool VSSkeletonMeshComponent::PlayAnim(const VSString &AnimName, VSREAL fRatio, unsigned int uiRepeatType)
+bool VSSkeletonMeshComponent::PlayAnim(const Container::MString &AnimName, VSREAL fRatio, unsigned int uiRepeatType)
 {
     VSMeshNode *pMeshNode = m_pNode;
     if (pMeshNode)

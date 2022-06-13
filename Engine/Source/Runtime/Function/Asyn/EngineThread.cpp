@@ -17,7 +17,7 @@ unsigned char *VSConstantBuffer::Assign(unsigned int uiSize)
     m_uiCurBufferP += uiSize;
     if (m_uiCurBufferP > Constant_BUFFER_SIZE)
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
         return NULL;
     }
 
@@ -39,7 +39,7 @@ unsigned char *VSConstantBuffer::Assign(unsigned int VTType, unsigned int uiRegi
     {
         uiSize = sizeof(bool) * 4 * uiRegisterNum;
     }
-    VSMAC_ASSERT(uiSize);
+    ENGINE_ASSERT(uiSize);
     return Assign(uiSize);
 }
 void VSConstantBuffer::Clear()

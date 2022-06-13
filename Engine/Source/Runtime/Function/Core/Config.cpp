@@ -40,14 +40,14 @@ void VSConfig::InitEnginePath()
 	Container::MMatch Match;
 	if (!Match.Open(_T("Resource\\EnginePath.txt")))
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 
 	// output
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 
@@ -58,7 +58,7 @@ void VSConfig::InitEnginePath()
 
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 
@@ -70,7 +70,7 @@ void VSConfig::InitEnginePath()
 	// Terrain
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 
@@ -81,7 +81,7 @@ void VSConfig::InitEnginePath()
 
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 
@@ -97,7 +97,7 @@ void VSConfig::InitParamConfig()
 		return;
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 	if (Match.PatternMatch(_T("['EnableAsynLoad'][s>0]")))
@@ -108,7 +108,7 @@ void VSConfig::InitParamConfig()
 
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 	if (Match.PatternMatch(_T("['EnableAdvanceInstance'][s>0]")))
@@ -119,7 +119,7 @@ void VSConfig::InitParamConfig()
 
 	if (!Match.Getline())
 	{
-		MATRIX_ENGINE_ASSERT(0);
+		ENGINE_ASSERT(0);
 		return;
 	}
 	if (Match.PatternMatch(_T("['LODScreenScale'][f]")))
@@ -147,34 +147,34 @@ void VSConfig::InitClassReplace()
 		unsigned int ClassIndex = ms_ClassReplaceMap.AddElement(Match.pstrings[0], ClassReplaceType());
 		if (!Match.Getline())
 		{
-			MATRIX_ENGINE_ASSERT(0);
+			ENGINE_ASSERT(0);
 		}
 		if (Match.PatternMatch(_T("['{']")))
 		{
 			if (!Match.Getline())
 			{
-				MATRIX_ENGINE_ASSERT(0);
+				ENGINE_ASSERT(0);
 			}
 			while (Match.PatternMatch(_T("[s>1]")))
 			{
 				ms_ClassReplaceMap[ClassIndex].Value.ReplaceClass.AddElement(Match.pstrings[0]);
 				if (!Match.Getline())
 				{
-					MATRIX_ENGINE_ASSERT(0);
+					ENGINE_ASSERT(0);
 				}
 			}
 			if (Match.PatternMatch(_T("['[']")))
 			{
 				if (!Match.Getline())
 				{
-					MATRIX_ENGINE_ASSERT(0);
+					ENGINE_ASSERT(0);
 				} // end if
 				while (Match.PatternMatch(_T("[s>1]")))
 				{
 					unsigned int PropertyIndex = ms_ClassReplaceMap[ClassIndex].Value.ProperyReplaceMap.AddElement(Match.pstrings[0], PropertyReplaceType());
 					if (!Match.Getline())
 					{
-						MATRIX_ENGINE_ASSERT(0);
+						ENGINE_ASSERT(0);
 					}
 					if (Match.PatternMatch(_T("['{']")))
 					{
@@ -192,28 +192,28 @@ void VSConfig::InitClassReplace()
 						}
 						if (!Match.PatternMatch(_T("['}']")))
 						{
-							MATRIX_ENGINE_ASSERT(0);
+							ENGINE_ASSERT(0);
 							return;
 						}
 						if (!Match.Getline())
 						{
-							MATRIX_ENGINE_ASSERT(0);
+							ENGINE_ASSERT(0);
 							return;
 						}
 					}
 				}
 				if (!Match.PatternMatch(_T("[']']")))
 				{
-					MATRIX_ENGINE_ASSERT(0);
+					ENGINE_ASSERT(0);
 				}
 				if (!Match.Getline())
 				{
-					MATRIX_ENGINE_ASSERT(0);
+					ENGINE_ASSERT(0);
 				}
 			}
 			if (!Match.PatternMatch(_T("['}']")))
 			{
-				MATRIX_ENGINE_ASSERT(0);
+				ENGINE_ASSERT(0);
 			}
 			Match.Getline();
 		}

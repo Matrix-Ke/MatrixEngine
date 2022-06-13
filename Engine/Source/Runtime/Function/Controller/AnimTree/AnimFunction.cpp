@@ -1,7 +1,7 @@
 #include "AnimFunction.h"
-#include "BoneNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Node/Model/BoneNode.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSAnimFunction, VSAnimBaseFunction)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSAnimFunction)
@@ -21,10 +21,10 @@ bool VSAnimFunction::SetObject(MObject *pObject)
     if (VSAnimBaseFunction::SetObject(pObject))
     {
         const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-        VSMAC_ASSERT(pMesh);
+        ENGINE_ASSERT(pMesh);
 
         VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-        VSMAC_ASSERT(pSkeleton);
+        ENGINE_ASSERT(pSkeleton);
 
         unsigned int BoneNum = pSkeleton->GetBoneNum();
         m_BoneOutput.SetBufferNum(BoneNum);

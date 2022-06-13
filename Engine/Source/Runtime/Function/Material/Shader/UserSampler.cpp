@@ -1,7 +1,7 @@
 #include "UserSampler.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSUserSampler, MObject)
 BEGIN_ADD_PROPERTY(VSUserSampler, MObject)

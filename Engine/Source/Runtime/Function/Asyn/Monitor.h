@@ -21,7 +21,7 @@ namespace Matrix
     struct FileChangedArgs
     {
         FileOperation::Type Operation;
-        VSString FilePath;
+        Container::MString FilePath;
         bool operator==(const FileChangedArgs &rhs) const;
     };
     inline bool FileChangedArgs::operator==(const FileChangedArgs &rhs) const
@@ -37,7 +37,7 @@ namespace Matrix
         }
         virtual ~VSResourceChangedHandler() {}
         // 检测文件类型是否可以处理
-        virtual bool CheckFileType(const VSString &path) = 0;
+        virtual bool CheckFileType(const Container::MString &path) = 0;
         // 处理文件更新事件
         virtual void OnFileChanged(const FileChangedArgs &args) = 0;
     };
@@ -51,7 +51,7 @@ namespace Matrix
         virtual ~VSAnimChangedHandler()
         {
         }
-        virtual bool CheckFileType(const VSString &path)
+        virtual bool CheckFileType(const Container::MString &path)
         {
             return path.GetSubStringIndex(VSAnim::ms_FileSuffix, 1) != -1;
         }
@@ -68,9 +68,9 @@ namespace Matrix
         virtual ~VSFileMonitor();
 
         // 设置监视目录
-        void SetDirectory(const VSString &s);
+        void SetDirectory(const Container::MString &s);
         // 取得监视目录
-        const VSString &GetDirectory() const;
+        const Container::MString &GetDirectory() const;
 
         // 设置是否使用相对路径
         void SetUseRelativePath(bool b);
@@ -85,20 +85,20 @@ namespace Matrix
 
     private:
         static const size_t BufferSize = 4096;
-        VSString m_directory;
+        Container::MString m_directory;
         bool m_isUseRelativePath;
         unsigned char *m_pReadBuffer;
         VSMonitor *m_pOwner;
     };
 
     //------------------------------------------------------------------------------
-    inline const VSString &VSFileMonitor::GetDirectory() const
+    inline const Container::MString &VSFileMonitor::GetDirectory() const
     {
         return m_directory;
     }
 
     //------------------------------------------------------------------------------
-    inline void VSFileMonitor::SetDirectory(const VSString &s)
+    inline void VSFileMonitor::SetDirectory(const Container::MString &s)
     {
 
         m_directory = s;

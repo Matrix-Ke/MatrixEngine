@@ -1,7 +1,7 @@
 #include "AnimSequenceFunc.h"
-#include "BoneNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Node/Model/BoneNode.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSAnimSequenceFunc, VSAnimFunction)
 BEGIN_ADD_PROPERTY(VSAnimSequenceFunc, VSAnimFunction)
@@ -13,10 +13,10 @@ IMPLEMENT_INITIAL_END
 VSAnimSequenceFunc::VSAnimSequenceFunc(const VSUsedName &ShowName, VSAnimTree *pAnimTree)
     : VSAnimFunction(ShowName, pAnimTree)
 {
-    VSString OutputName = _T("Output");
+    Container::MString OutputName = _T("Output");
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::AVT_ANIM, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::AVT_ANIM, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
     m_pAnimR = NULL;
@@ -30,7 +30,7 @@ bool VSAnimSequenceFunc::SetObject(MObject *pObject)
     if (VSAnimFunction::SetObject(pObject))
     {
         VSSkeleton *pSkeleton = GetSkeletonMeshNode()->GetSkeleton();
-        VSMAC_ASSERT(pSkeleton);
+        ENGINE_ASSERT(pSkeleton);
         unsigned int BoneNum = pSkeleton->GetBoneNum();
         m_UsedBoneIndexInAnim.SetBufferNum(BoneNum);
         m_LastKey.SetBufferNum(BoneNum);
@@ -111,10 +111,10 @@ void VSAnimSequenceFunc::SetAnim(const VSUsedName &AnimName)
 void VSAnimSequenceFunc::LoadedEvent(VSResourceProxyBase *pResourceProxy, void *Data)
 {
     const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     VSAnim *pAnim = m_pAnimR->GetResource();
     if (m_pAnimR == pResourceProxy)
@@ -226,7 +226,7 @@ void VSAnimSequenceFunc::ComputeAnim(VSAnim *pAnim, Container::MArray<LAST_KEY_T
                     fFactor = 1.0f;
 
                 Math::Vector3 Scale = pBoneKey->m_ScaleArray[Key1].m_Vector * (1 - fFactor) +
-                                  pBoneKey->m_ScaleArray[Key2].m_Vector * fFactor;
+                                      pBoneKey->m_ScaleArray[Key2].m_Vector * fFactor;
                 BoneOutput[i].m_fScale = Scale;
             }
 
@@ -347,10 +347,10 @@ bool VSAnimSequenceFunc::Update(double dAppTime)
         return false;
 
     VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     if (m_pAnimR == NULL)
     {
@@ -410,10 +410,10 @@ VSREAL VSAnimSequenceFunc::GetAnimTime()
         return 0.0f;
     }
     const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     if (!m_pAnimR || !m_pAnimR->IsLoaded())
     {
@@ -480,10 +480,10 @@ void VSAnimSequenceFunc::UpdateBone()
         return;
     }
     VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-    VSMAC_ASSERT(pMesh);
+    ENGINE_ASSERT(pMesh);
 
     VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-    VSMAC_ASSERT(pSkeleton);
+    ENGINE_ASSERT(pSkeleton);
 
     if (!m_pAnimR || !m_pAnimR->IsLoaded())
     {

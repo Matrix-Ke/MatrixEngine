@@ -7,7 +7,7 @@ MMap<KEY, VALUE, MMemManagerClass>::~MMap()
 template <class KEY, class VALUE, class MMemManagerClass>
 MMap<KEY, VALUE, MMemManagerClass>::MMap(unsigned int uiGrowBy)
 {
-	MATRIX_ENGINE_ASSERT(uiGrowBy);
+	ENGINE_ASSERT(uiGrowBy);
 	m_uiGrowBy = uiGrowBy;
 	m_pBuffer = NULL;
 	m_uiCurUse = 0;
@@ -123,9 +123,9 @@ template <class KEY, class VALUE, class MMemManagerClass>
 template <class KEY1, class VALUE1, class MXMemManagerClass1>
 void MMap<KEY, VALUE, MMemManagerClass>::AddElement(const MMap<KEY1, VALUE1, MXMemManagerClass1>& Map, unsigned int uiBegin, unsigned int uiEnd)
 {
-	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	ENGINE_ASSERT(uiBegin <= uiEnd);
 
-	MATRIX_ENGINE_ASSERT(uiEnd < Map.GetNum());
+	ENGINE_ASSERT(uiEnd < Map.GetNum());
 
 	unsigned int iAddNum = uiEnd - uiBegin + 1;
 	int iHaveNum = m_uiBufferNum - m_uiCurUse;
@@ -211,7 +211,7 @@ template <class KEY, class VALUE, class MMemManagerClass>
 MapElement<KEY, VALUE>& MMap<KEY, VALUE, MMemManagerClass>::operator[](unsigned int i) const
 {
 
-	MATRIX_ENGINE_ASSERT(i < m_uiBufferNum);
+	ENGINE_ASSERT(i < m_uiBufferNum);
 	return m_pBuffer[i];
 }
 template <class KEY, class VALUE, class MMemManagerClass>
@@ -222,9 +222,9 @@ void MMap<KEY, VALUE, MMemManagerClass>::Erase(unsigned int i)
 template <class KEY, class VALUE, class MMemManagerClass>
 void MMap<KEY, VALUE, MMemManagerClass>::Erase(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MATRIX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	ENGINE_ASSERT(uiEnd < m_uiCurUse);
 
-	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	ENGINE_ASSERT(uiBegin <= uiEnd);
 
 	unsigned int k;
 	unsigned int uiMoveNum = m_uiCurUse - 1 - uiEnd;
@@ -250,8 +250,8 @@ template <class KEY, class VALUE, class MMemManagerClass>
 template <class N>
 void MMap<KEY, VALUE, MMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd, N& Compare)
 {
-	MATRIX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
-	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	ENGINE_ASSERT(uiBegin <= uiEnd);
 
 	//¹é²¢ÅÅÐò ¸´ÔÓ¶È nlogn
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
@@ -296,8 +296,8 @@ void MMap<KEY, VALUE, MMemManagerClass>::SortAll()
 template <class KEY, class VALUE, class MMemManagerClass>
 void MMap<KEY, VALUE, MMemManagerClass>::Sort(unsigned int uiBegin, unsigned int uiEnd)
 {
-	MATRIX_ENGINE_ASSERT(uiEnd < m_uiCurUse);
-	MATRIX_ENGINE_ASSERT(uiBegin <= uiEnd);
+	ENGINE_ASSERT(uiEnd < m_uiCurUse);
+	ENGINE_ASSERT(uiBegin <= uiEnd);
 	//¹é²¢ÅÅÐò ¸´ÔÓ¶È nlogn
 	MapElement<KEY, VALUE>* pBuffer = New(uiEnd - uiBegin + 1);
 	for (unsigned int i = 0; i < uiEnd - uiBegin + 1; i++)

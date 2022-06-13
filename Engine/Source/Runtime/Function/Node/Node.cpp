@@ -1,8 +1,8 @@
 #include "Node.h"
 #include "Math.h"
-#include "Geometry.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Node/Geometry.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 #include "NodeComponent.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSNode, VSSpatial)
@@ -22,7 +22,7 @@ VSNode::~VSNode()
 
 unsigned int VSNode::AddChild(VSSpatial *pChild)
 {
-    VSMAC_ASSERT(pChild);
+    ENGINE_ASSERT(pChild);
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
     {
         if (m_pChild[i] == pChild)
@@ -36,7 +36,7 @@ unsigned int VSNode::AddChild(VSSpatial *pChild)
 }
 unsigned int VSNode::DeleteChild(VSSpatial *pChild)
 {
-    VSMAC_ASSERT(pChild);
+    ENGINE_ASSERT(pChild);
     for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
     {
 
@@ -53,7 +53,7 @@ unsigned int VSNode::DeleteChild(VSSpatial *pChild)
 }
 bool VSNode::DeleteChild(unsigned int i)
 {
-    VSMAC_ASSERT(i < m_pChild.GetNum());
+    ENGINE_ASSERT(i < m_pChild.GetNum());
     VSSpatial *Temp = m_pChild[i];
 
     Temp->SetParent(NULL);
@@ -64,7 +64,7 @@ bool VSNode::DeleteChild(unsigned int i)
 
 VSSpatial *VSNode::GetChild(unsigned int i) const
 {
-    VSMAC_ASSERT(i < m_pChild.GetNum());
+    ENGINE_ASSERT(i < m_pChild.GetNum());
     return m_pChild[i];
 }
 

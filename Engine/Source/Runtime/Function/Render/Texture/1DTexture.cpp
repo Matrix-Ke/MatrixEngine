@@ -1,5 +1,5 @@
-#include "1DTexture.h"
-#include "GraphicInclude.h"
+#include "Render/Texture/1DTexture.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VS1DTexture, VSTexture)
 BEGIN_ADD_PROPERTY(VS1DTexture, VSTexture)
@@ -27,8 +27,8 @@ VS1DTexture::VS1DTexture()
 }
 void VS1DTexture::SetMipLevel()
 {
-    VSMAC_ASSERT(m_uiWidth && m_uiHeight);
-    VSMAC_ASSERT(IsTwoPower(m_uiWidth));
+    ENGINE_ASSERT(m_uiWidth && m_uiHeight);
+    ENGINE_ASSERT(IsTwoPower(m_uiWidth));
     unsigned int uiWidthLevel = FastLog2(m_uiWidth);
     unsigned int uiCurMipLevel = uiWidthLevel + 1;
     if (!m_uiMipLevel || m_uiMipLevel > uiCurMipLevel)

@@ -1,15 +1,15 @@
 #include "SceneRender.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "NormalDepthPass.h"
 #include "PreZPass.h"
 #include "Material.h"
-#include "MeshData.h"
-#include "Profiler.h"
+#include "Node/Mesh/MeshData.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 VSSceneRenderInterface::VSSceneRenderInterface()
 {
     m_uiClearFlag = VSRenderer::CF_USE_ALL;
-    m_ClearColorRGBA = VSColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
+    m_ClearColorRGBA = Math::ColorRGBA(0.0f, 0.0f, 0.0f, 1.0f);
     m_fClearDepth = 1.0f;
     m_uiClearStencil = 0;
 
@@ -58,13 +58,13 @@ bool VSSceneRenderInterface::AddRenderTarget(VSRenderTarget *pTarget)
     {
         if (m_uiRTWidth != pTarget->GetWidth() || m_uiRTHeight != pTarget->GetHeight() || m_uiMulSample != pTarget->GetMulSample())
         {
-            VSMAC_ASSERT(false);
+            ENGINE_ASSERT(false);
             return false;
         }
     }
     else
     {
-        VSMAC_ASSERT(false);
+        ENGINE_ASSERT(false);
         return false;
     }
 
@@ -284,13 +284,13 @@ bool VSSceneRender::SetDepthStencil(VSDepthStencil *pDepthStencil, unsigned int 
         {
             if (m_uiRTWidth != pDepthStencil->GetWidth() || m_uiRTHeight != pDepthStencil->GetHeight() || m_uiMulSample != pDepthStencil->GetMulSample())
             {
-                VSMAC_ASSERT(false);
+                ENGINE_ASSERT(false);
                 return false;
             }
         }
         else
         {
-            VSMAC_ASSERT(false);
+            ENGINE_ASSERT(false);
             return false;
         }
     }
@@ -321,7 +321,7 @@ bool VSSceneRender::Draw(VSCuller &Culler, double dAppTime)
     if (m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
 
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 
@@ -457,7 +457,7 @@ VSDebugDrawSceneRender::VSDebugDrawSceneRender()
 {
     for (unsigned int i = 0; i < VSCuller::RG_MAX; i++)
     {
-        m_pDebugDraw[i] = VS_NEW VSDebugDraw();
+        m_pDebugDraw[i] = MX_NEW VSDebugDraw();
     }
 }
 VSDebugDrawSceneRender::~VSDebugDrawSceneRender()
@@ -746,7 +746,7 @@ VSPostEffectSceneRender::~VSPostEffectSceneRender()
 void VSPostEffectSceneRender::GetRT(unsigned int uiWidth, unsigned int uiHeight)
 {
     ClearRTAndDepth();
-    VSMAC_ASSERT(!m_pFinalRenderTarget);
+    ENGINE_ASSERT(!m_pFinalRenderTarget);
     m_pFinalRenderTarget = VSResourceManager::GetRenderTarget(uiWidth, uiHeight, VSRenderer::SFT_A8R8G8B8, 0);
     AddRenderTarget(m_pFinalRenderTarget);
 }
@@ -813,7 +813,7 @@ bool VSPostEffectSceneRender::AddRenderTarget(VSRenderTarget *pTarget)
 }
 bool VSPostEffectSceneRender::OnDraw(VSCuller &Culler, double dAppTime)
 {
-    VSMAC_ASSERT(m_pCustomMaterial);
+    ENGINE_ASSERT(m_pCustomMaterial);
 
     if (!m_uiRTWidth || !m_uiRTHeight)
     {
@@ -835,7 +835,7 @@ bool VSPostEffectSceneRender::Draw(VSCuller &Culler, double dAppTime)
     SetRenderTargets();
     if (m_uiClearFlag > 0 && m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 
@@ -863,7 +863,7 @@ VSCommonPESceneRender::VSCommonPESceneRender()
 {
     for (unsigned int i = 0; i < POSTEFFECT_MAX_INPUT; i++)
     {
-        m_pTexAllState[i] = VS_NEW VSTexAllState();
+        m_pTexAllState[i] = MX_NEW VSTexAllState();
         m_pTexAllState[i]->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
     }
 };
@@ -880,7 +880,7 @@ void VSCommonPESceneRender::OnUpdate(double dAppTime)
 void VSCommonPESceneRender::GetRT(unsigned int uiWidth, unsigned int uiHeight)
 {
     ClearRTAndDepth();
-    VSMAC_ASSERT(!m_pFinalRenderTarget);
+    ENGINE_ASSERT(!m_pFinalRenderTarget);
     m_uiRTWidth = (unsigned int)(uiWidth * m_fGetRTScale);
     m_uiRTHeight = (unsigned int)(uiHeight * m_fGetRTScale);
     m_pFinalRenderTarget = VSResourceManager::GetRenderTarget(m_uiRTWidth, m_uiRTHeight, VSRenderer::SFT_A8R8G8B8, 0);
@@ -888,7 +888,7 @@ void VSCommonPESceneRender::GetRT(unsigned int uiWidth, unsigned int uiHeight)
 }
 bool VSCommonPESceneRender::OnDraw(VSCuller &Culler, double dAppTime)
 {
-    VSMAC_ASSERT(m_pCustomMaterial);
+    ENGINE_ASSERT(m_pCustomMaterial);
     if (!m_uiRTWidth || !m_uiRTHeight)
     {
         return false;
@@ -934,7 +934,7 @@ void VSCombinePostEffectSceneRender::OnUpdate(unsigned int uiPassID, double dApp
 {
     if (uiPassID == 0)
     {
-        VSMAC_ASSERT(m_pTexAllState[0]->GetTexture());
+        ENGINE_ASSERT(m_pTexAllState[0]->GetTexture());
         m_CPEArray[0]->SetSourceTarget(m_pTexAllState[0]->GetTexture());
     }
 }
@@ -986,9 +986,9 @@ VSRenderTarget *VSCombinePostEffectSceneRender::GetRenderTarget(unsigned int uiI
 // VSPESSRSceneRender::VSPESSRSceneRender()
 // {
 // 	m_pCustomMaterial = VSCustomMaterial::GetSSR();
-// 	m_pNormalDepthTexture = VS_NEW VSTexAllState();
+// 	m_pNormalDepthTexture = MX_NEW VSTexAllState();
 // 	m_pNormalDepthTexture->SetSamplerState((VSSamplerState*)VSSamplerState::GetTwoLineBorderOne());
-// 	m_pSceneColorTexture = VS_NEW VSTexAllState();
+// 	m_pSceneColorTexture = MX_NEW VSTexAllState();
 // 	m_pSceneColorTexture->SetSamplerState((VSSamplerState*)VSSamplerState::GetTwoLineBorderZero());
 // };
 // VSPESSRSceneRender::~VSPESSRSceneRender()
@@ -1009,7 +1009,7 @@ VSRenderTarget *VSCombinePostEffectSceneRender::GetRenderTarget(unsigned int uiI
 // }
 // bool VSPESSRSceneRender::OnDraw(VSCuller & Culler, double dAppTime)
 // {
-// 	VSMAC_ASSERT(m_pCustomMaterial);
+// 	ENGINE_ASSERT(m_pCustomMaterial);
 //
 // 	if (!m_uiRTWidth || !m_uiRTHeight)
 // 	{
@@ -1085,7 +1085,7 @@ bool VSShadowMapSceneRender::Draw(VSCuller &Culler, double dAppTime)
     if (m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
 
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 
@@ -1225,7 +1225,7 @@ bool VSLightMaterialSceneRender::Draw(VSCuller &Culler, double dAppTime)
     {
         if (!VSRenderer::ms_pRenderer->SetDepthStencilBuffer(m_pDepthStencil))
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }
@@ -1233,7 +1233,7 @@ bool VSLightMaterialSceneRender::Draw(VSCuller &Culler, double dAppTime)
     if (m_uiClearFlag > 0 && m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
 
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 
@@ -1256,7 +1256,7 @@ bool VSLightMaterialSceneRender::Draw(VSCuller &Culler, double dAppTime)
     {
         if (!VSRenderer::ms_pRenderer->EndDepthStencilBuffer(m_pDepthStencil))
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }
@@ -1309,7 +1309,7 @@ bool VSLightMaterialSceneRender::SetDepthStencil(VSDepthStencil *pDepthStencil)
 }
 VSProjectShadowSceneRender::VSProjectShadowSceneRender()
 {
-    m_pTexAllState = VS_NEW VSTexAllState();
+    m_pTexAllState = MX_NEW VSTexAllState();
     m_pTexAllState->SetSamplerState((VSSamplerState *)VSSamplerState::GetTwoLine());
     m_pNormalDepthTexture = NULL;
     static VSUsedName LightTypeString = _T("LIGHT_TYPE");
@@ -1325,7 +1325,7 @@ bool VSProjectShadowSceneRender::Draw(VSCuller &Culler, double dAppTime)
     if (m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
 
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 
@@ -1489,7 +1489,7 @@ bool VSVolumeShadowSceneRender::Draw(VSCuller &Culler, double dAppTime)
     if (m_uiClearFlag <= VSRenderer::CF_USE_ALL)
     {
 
-        VSColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
+        Math::ColorRGBA ClearColorRGBA = VSRenderer::ms_pRenderer->GetClearColor();
         VSREAL fClearDepth = VSRenderer::ms_pRenderer->GetClearDepth();
         unsigned int uiClearStencil = VSRenderer::ms_pRenderer->GetClearStencil();
 

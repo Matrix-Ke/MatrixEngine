@@ -12,9 +12,9 @@ namespace Matrix
     public:
         VSWorldPos(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSWorldPos();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSWorldPos();
@@ -31,9 +31,9 @@ namespace Matrix
     public:
         VSViewPos(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSViewPos();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSViewPos();
@@ -50,9 +50,9 @@ namespace Matrix
     public:
         VSProjectPos(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSProjectPos();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual void ResetInShaderName(MaterialShaderPara &MSPara);
-        virtual bool GetOutputValueString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetOutputValueString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
 
     protected:
         VSProjectPos();

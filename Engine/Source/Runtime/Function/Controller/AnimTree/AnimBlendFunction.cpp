@@ -1,6 +1,6 @@
 #include "AnimBlendFunction.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSAnimBlendFunction, VSAnimFunction)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSAnimBlendFunction)
@@ -14,10 +14,10 @@ VSAnimBlendFunction::VSAnimBlendFunction(const VSUsedName &ShowName, VSAnimTree 
     : VSAnimFunction(ShowName, pAnimTree)
 {
 
-    VSString OutputName = _T("Output");
+    Container::MString OutputName = _T("Output");
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::AVT_ANIM, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::AVT_ANIM, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 }
 VSAnimBlendFunction::~VSAnimBlendFunction()
@@ -37,20 +37,20 @@ bool VSAnimBlendFunction::Update(double dAppTime)
 }
 void VSAnimBlendFunction::AdditiveBlend(VSAnimFunction *pOut, VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2)
 {
-    VSMAC_ASSERT(pOut);
+    ENGINE_ASSERT(pOut);
     if (pOut->m_bOnlyUpdateRootMotion)
     {
         return;
     }
     unsigned int uiBoneNum = pOut->m_BoneOutput.GetNum();
-    VSMAC_ASSERT(uiBoneNum);
+    ENGINE_ASSERT(uiBoneNum);
 
     if (pAnimFunction1 && pAnimFunction2)
     {
 
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
 
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -59,7 +59,7 @@ void VSAnimBlendFunction::AdditiveBlend(VSAnimFunction *pOut, VSAnimFunction *pA
     }
     else if (pAnimFunction1)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -68,7 +68,7 @@ void VSAnimBlendFunction::AdditiveBlend(VSAnimFunction *pOut, VSAnimFunction *pA
     }
     else if (pAnimFunction2)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -81,19 +81,19 @@ void VSAnimBlendFunction::LineBlendTwo(VSAnimFunction *pOut,
                                        VSREAL fWeight)
 {
 
-    VSMAC_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
+    ENGINE_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
     if (pOut->m_bOnlyUpdateRootMotion)
     {
         return;
     }
     unsigned int uiBoneNum = pOut->m_BoneOutput.GetNum();
-    VSMAC_ASSERT(uiBoneNum);
+    ENGINE_ASSERT(uiBoneNum);
 
     if (pAnimFunction1 && pAnimFunction2)
     {
 
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum())
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum())
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -105,7 +105,7 @@ void VSAnimBlendFunction::LineBlendTwo(VSAnimFunction *pOut,
     }
     else if (pAnimFunction1)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -115,7 +115,7 @@ void VSAnimBlendFunction::LineBlendTwo(VSAnimFunction *pOut,
     }
     else if (pAnimFunction2)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -127,7 +127,7 @@ void VSAnimBlendFunction::LineBlendTwo(VSAnimFunction *pOut,
 void VSAnimBlendFunction::LineBlendTwoRoot(VSAnimFunction *pOut,
                                            VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2, VSREAL fWeight)
 {
-    VSMAC_ASSERT(fWeight >= 0.0f && fWeight <= 1.0f);
+    ENGINE_ASSERT(fWeight >= 0.0f && fWeight <= 1.0f);
 
     if (pAnimFunction1 && pAnimFunction2)
     {

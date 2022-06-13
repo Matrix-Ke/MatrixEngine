@@ -1,7 +1,7 @@
 #pragma once
 #include "MemManager.h"
 #include "Math.h"
-#include "Object.h"
+#include "Core/Object.h"
 #include "TexAllState.h"
 namespace Matrix
 {

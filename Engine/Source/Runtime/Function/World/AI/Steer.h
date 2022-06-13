@@ -78,7 +78,7 @@ namespace Matrix
                 continue;
             }
         }
-        T *pComponent = VS_NEW T();
+        T *pComponent = MX_NEW T();
         VSSteerComponent *pTemp = StaticCast<VSSteerComponent>(pComponent);
         pTemp->m_pSteer = this;
         pTemp->m_fWeight = fWeight;

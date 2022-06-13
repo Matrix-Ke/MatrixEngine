@@ -1,5 +1,5 @@
 #pragma once
-#include "Stream.h"
+#include "Core/Stream/Stream.h"
 namespace Matrix
 {
     class MATRIX_FUNCTION_API VSAsynStream : public MStream

@@ -1,5 +1,5 @@
 #include "StaticMeshNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ModelSwitchNode.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSStaticMeshNode, VSModelMeshNode)
@@ -19,8 +19,8 @@ VSStaticMeshNode::~VSStaticMeshNode()
 }
 bool VSStaticMeshNode::InitialDefaultState()
 {
-    ms_Default = VS_NEW VSStaticMeshNode();
-    VSGeometryNodePtr GeometryNode = VS_NEW VSGeometryNode();
+    ms_Default = MX_NEW VSStaticMeshNode();
+    VSGeometryNodePtr GeometryNode = MX_NEW VSGeometryNode();
     ms_Default->AddChild(GeometryNode);
     VSGeometryPtr Geometry = (VSGeometry *)MObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
     GeometryNode->AddChild(Geometry);

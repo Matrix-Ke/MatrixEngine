@@ -1,10 +1,10 @@
 #include "Camera.h"
 #include "Renderer.h"
-#include "GraphicInclude.h"
-#include "2DTexture.h"
+#include "Core/GraphicInclude.h"
+#include "Render/Texture/2DTexture.h"
 #include "DepthStencil.h"
-#include "Stream.h"
-#include "SceneManager.h"
+#include "Core/Stream/Stream.h"
+#include "Render/SceneManager/SceneManager.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSCamera, VSNodeComponent)
 BEGIN_ADD_PROPERTY(VSCamera, VSNodeComponent)
@@ -31,7 +31,7 @@ VSPointer<VSCamera> VSCamera::ms_Default;
 bool VSCamera::InitialDefaultState()
 {
     VSCamera *p = NULL;
-    p = VS_NEW VSCamera();
+    p = MX_NEW VSCamera();
 
     if (p)
     {
@@ -312,7 +312,7 @@ void VSCamera::UpdateCameraState(double dAppTime)
 }
 VSREAL VSCamera::GetProjectScreenSize(const Primitive::AABB3 &WorldAABB)
 {
-    VSMAC_ASSERT(m_ProjMat.M[2][3] > EPSILON_E3);
+    ENGINE_ASSERT(m_ProjMat.M[2][3] > EPSILON_E3);
 
     VSREAL DistSqr = (WorldAABB.GetCenter() - GetWorldTranslate()).GetSqrLength();
     VSREAL RadiusSqr = (WorldAABB.GetCenter() - WorldAABB.GetMaxPoint()).GetSqrLength();

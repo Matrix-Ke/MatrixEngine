@@ -5,7 +5,7 @@
 #include "SamplerState.h"
 #include "ShaderKey.h"
 #include "Camera.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 namespace Matrix
 {
     EXTERN_TIME_PROFILENODE(DrawMesh)
@@ -51,7 +51,7 @@ namespace Matrix
         UINT uiHeight;
         UINT uiRefreshRate; //刷新率
         UINT uiBitFormat;
-        VSString StringExpress; //字符串表示
+        Container::MString StringExpress; //字符串表示
     } VSDisplayMode, *VSDisplayModePtr;
 
     typedef struct VSDEVICEINFO_STURCT
@@ -70,7 +70,7 @@ namespace Matrix
     typedef struct VSADAPTERINFO_STURCT
     {
         unsigned int m_uiAdapter;
-        VSString AdapterName;
+        Container::MString AdapterName;
         Container::MArray<VSDisplayMode> DisplayMode;
         UINT uiDisplayModeNum;
         // HAL SW REF
@@ -162,8 +162,8 @@ namespace Matrix
 
         virtual int GetRendererType() const = 0;
         // 颜色 深度 模板 buffer
-        inline void SetClearColor(const VSColorRGBA &ClearColor);
-        inline const VSColorRGBA &GetClearColor() const;
+        inline void SetClearColor(const Math::ColorRGBA &ClearColor);
+        inline const Math::ColorRGBA &GetClearColor() const;
 
         inline void SetClearDepth(VSREAL fClearDepth);
         inline VSREAL GetClearDepth() const;
@@ -219,11 +219,11 @@ namespace Matrix
         static unsigned int GetBytesPerPixel(unsigned int uiFormatType);
         static unsigned int GetChannelPerPixel(unsigned int uiFormatType);
         static unsigned int GetMinDimension(unsigned int uiFormatType);
-        static const VSString &GetVShaderProgramMain();
-        static const VSString &GetPShaderProgramMain();
-        static const VSString &GetGShaderProgramMain();
-        static const VSString &GetHShaderProgramMain();
-        static const VSString &GetDShaderProgramMain();
+        static const Container::MString &GetVShaderProgramMain();
+        static const Container::MString &GetPShaderProgramMain();
+        static const Container::MString &GetGShaderProgramMain();
+        static const Container::MString &GetHShaderProgramMain();
+        static const Container::MString &GetDShaderProgramMain();
 
         inline unsigned int GetScreenWith() const;
         inline unsigned int GetScreenHeight() const;
@@ -247,7 +247,7 @@ namespace Matrix
 
         inline unsigned int GetMaxRTNum() const;
         inline unsigned int GetMaxUAVNum() const;
-        inline VSString GetAdapterName() const;
+        inline Container::MString GetAdapterName() const;
 
         inline unsigned int GetCurRTWidth() const;
         inline unsigned int GetCurRTHeight() const;
@@ -454,7 +454,7 @@ namespace Matrix
         int m_iCurWindowID;
         bool m_bIsRendering;
 
-        VSColorRGBA m_ClearColor;
+        Math::ColorRGBA m_ClearColor;
         VSREAL m_fClearDepth;
         unsigned int m_uiClearStencil;
 
@@ -481,8 +481,8 @@ namespace Matrix
         VSHShader *m_pHShader;
         VSCShader *m_pCShader;
 
-        VSMap<unsigned int, VSTexAllState *> m_pTexAllStateBuffer;
-        VSMap<unsigned int, VSBufferResource *> m_pBufferResource;
+        Container::MMap<unsigned int, VSTexAllState *> m_pTexAllStateBuffer;
+        Container::MMap<unsigned int, VSBufferResource *> m_pBufferResource;
 
         Container::MArray<VSSamplerState *> m_pSamplerState[VSEngineFlag::ST_MAX];
 
@@ -611,7 +611,7 @@ namespace Matrix
 
         unsigned int m_uinAdapter;
         unsigned int m_uiDevType;
-        VSString m_AdapterName;
+        Container::MString m_AdapterName;
         UINT m_uiScreenWidth;
         UINT m_uiScreenHeight;
         UINT m_uiCurRTWidth;
@@ -639,7 +639,7 @@ namespace Matrix
         UINT m_uiMaxRTNum;
         UINT m_uiMaxUAVNum;
 
-        static VSString ms_ShaderProgramMain[VSEngineFlag::ST_MAX];
+        static Container::MString ms_ShaderProgramMain[VSEngineFlag::ST_MAX];
 
         static unsigned int ms_uiBytesPerPixel[SFT_MAX];
         static unsigned int ms_uiMinDimension[SFT_MAX];
@@ -651,22 +651,22 @@ namespace Matrix
 
         VSViewPort m_CurViewPort;
 
-        static VSString ms_ShaderTypeString[VSRenderer::RAT_MAX];
-        static VSString ms_ShaderTypePathString[VSRenderer::RAT_MAX];
+        static Container::MString ms_ShaderTypeString[VSRenderer::RAT_MAX];
+        static Container::MString ms_ShaderTypePathString[VSRenderer::RAT_MAX];
         // shader string
     public:
         // shader function
-        virtual VSString TexColorBuffer(const VSColorBuffer *pColorBuffer) const = 0;
-        virtual VSString Tex2D(const VS2DTexSampler *p2DTexSampler, unsigned int uiShaderType) const = 0;
-        virtual VSString Tex1D(const VS1DTexSampler *p1DTexSampler, unsigned int uiShaderType) const = 0;
-        virtual VSString Mul(const VSMul *pMul) const = 0;
-        virtual VSString Div(const VSDiv *pDiv) const = 0;
-        virtual VSString Dot(const VSDot *pDot) const = 0;
-        virtual VSString Length(const VSLength *pLength) const = 0;
-        virtual VSString Sub(const VSSub *pSub) const = 0;
-        virtual VSString Add(const VSAdd *pAdd) const = 0;
-        virtual VSString MakeValue(const VSMakeValue *pMakeValue) const = 0;
-        virtual VSString Saturate(const VSSaturate *pSaturate) const = 0;
+        virtual Container::MString TexColorBuffer(const VSColorBuffer *pColorBuffer) const = 0;
+        virtual Container::MString Tex2D(const VS2DTexSampler *p2DTexSampler, unsigned int uiShaderType) const = 0;
+        virtual Container::MString Tex1D(const VS1DTexSampler *p1DTexSampler, unsigned int uiShaderType) const = 0;
+        virtual Container::MString Mul(const VSMul *pMul) const = 0;
+        virtual Container::MString Div(const VSDiv *pDiv) const = 0;
+        virtual Container::MString Dot(const VSDot *pDot) const = 0;
+        virtual Container::MString Length(const VSLength *pLength) const = 0;
+        virtual Container::MString Sub(const VSSub *pSub) const = 0;
+        virtual Container::MString Add(const VSAdd *pAdd) const = 0;
+        virtual Container::MString MakeValue(const VSMakeValue *pMakeValue) const = 0;
+        virtual Container::MString Saturate(const VSSaturate *pSaturate) const = 0;
         // shader key word
         enum // Float Index
         {
@@ -677,24 +677,24 @@ namespace Matrix
             FI_MAX
 
         };
-        virtual VSString FloatByChannelNum(unsigned int ChannelNum) const = 0;
-        VSString Float(unsigned int uiIndex) const;
-        virtual VSString Float() const = 0;
-        virtual VSString Float2() const = 0;
-        virtual VSString Float3() const = 0;
-        virtual VSString Float4() const = 0;
-        virtual VSString Return() const = 0;
+        virtual Container::MString FloatByChannelNum(unsigned int ChannelNum) const = 0;
+        Container::MString Float(unsigned int uiIndex) const;
+        virtual Container::MString Float() const = 0;
+        virtual Container::MString Float2() const = 0;
+        virtual Container::MString Float3() const = 0;
+        virtual Container::MString Float4() const = 0;
+        virtual Container::MString Return() const = 0;
 
-        virtual VSString FloatConst(const VSString &Value1) const = 0;
-        virtual VSString Float2Const(const VSString &Value1, const VSString &Value2) const = 0;
-        virtual VSString Float3Const(const VSString &Value1,
-                                     const VSString &Value2, const VSString &Value3) const = 0;
-        virtual VSString Float4Const(const VSString &Value1, const VSString &Value2,
-                                     const VSString &Value3, const VSString &Value4) const = 0;
+        virtual Container::MString FloatConst(const Container::MString &Value1) const = 0;
+        virtual Container::MString Float2Const(const Container::MString &Value1, const Container::MString &Value2) const = 0;
+        virtual Container::MString Float3Const(const Container::MString &Value1,
+                                               const Container::MString &Value2, const Container::MString &Value3) const = 0;
+        virtual Container::MString Float4Const(const Container::MString &Value1, const Container::MString &Value2,
+                                               const Container::MString &Value3, const Container::MString &Value4) const = 0;
 
-        virtual void CustomPointLightUseString(VSString &PointLightUseString, VSString &PointAttenuationDivString) = 0;
+        virtual void CustomPointLightUseString(Container::MString &PointLightUseString, Container::MString &PointAttenuationDivString) = 0;
 
-        virtual void CustomSpotLightUseString(VSString &SpotLightUseString, VSString &SpotAttenuationDivString) = 0;
+        virtual void CustomSpotLightUseString(Container::MString &SpotLightUseString, Container::MString &SpotAttenuationDivString) = 0;
 
         enum // Value Element
         {
@@ -705,174 +705,174 @@ namespace Matrix
             VE_B = BIT(3),
             DF_ALL = 0X0F
         };
-        static VSString GetValueElement(const VSPutNode *pPutNode,
-                                        unsigned char uiVE);
-        static VSString GetValueElement(const VSString &InputString,
-                                        unsigned char uiVE);
+        static Container::MString GetValueElement(const VSPutNode *pPutNode,
+                                                  unsigned char uiVE);
+        static Container::MString GetValueElement(const Container::MString &InputString,
+                                                  unsigned char uiVE);
 
-        virtual void GetShareSamplerDeclare(class VSShader *pShader, VSString &OutString);
+        virtual void GetShareSamplerDeclare(class VSShader *pShader, Container::MString &OutString);
 
-        virtual VSString GetDeclareValue(const VSString &ShowName, unsigned int uiValueType, unsigned int uiRegisterIndex) const = 0;
-        virtual VSString GetDeclareSampler(const VSString &ShowName, unsigned int SamplerType, unsigned int uiRegisterIndex, unsigned int SamplerSource) const = 0;
-        virtual void GetDeclareShareSampler(unsigned int SamplerSource, unsigned int uiRegisterIndex, VSString &OutString) const = 0;
+        virtual Container::MString GetDeclareValue(const Container::MString &ShowName, unsigned int uiValueType, unsigned int uiRegisterIndex) const = 0;
+        virtual Container::MString GetDeclareSampler(const Container::MString &ShowName, unsigned int SamplerType, unsigned int uiRegisterIndex, unsigned int SamplerSource) const = 0;
+        virtual void GetDeclareShareSampler(unsigned int SamplerSource, unsigned int uiRegisterIndex, Container::MString &OutString) const = 0;
         // shader custom function
         virtual void CreateVInputDeclare(MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateVOutputDeclare(MaterialShaderPara &MSPara,
-                                          VSString &OutString) = 0;
+                                          Container::MString &OutString) = 0;
         virtual void CreateVUserConstant(VSVShader *pVShader, MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateVFunction(MaterialShaderPara &MSPara,
-                                     VSString &OutString) = 0;
+                                     Container::MString &OutString) = 0;
 
         virtual void SetMaterialVShaderConstant(MaterialShaderPara &MSPara, VSVShader *pVShader) = 0;
 
         virtual void CreatePInputDeclare(MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreatePOutputDeclare(MaterialShaderPara &MSPara,
-                                          VSString &OutString) = 0;
+                                          Container::MString &OutString) = 0;
         virtual void CreatePUserConstant(VSPShader *pPShader, MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreatePFunction(MaterialShaderPara &MSPara,
-                                     VSString &OutString) = 0;
+                                     Container::MString &OutString) = 0;
 
         virtual void SetMaterialPShaderConstant(MaterialShaderPara &MSPara, VSPShader *pPShader) = 0;
 
         virtual void CreateGInputDeclare(MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateGOutputDeclare(MaterialShaderPara &MSPara,
-                                          VSString &OutString) = 0;
+                                          Container::MString &OutString) = 0;
         virtual void CreateGUserConstant(VSGShader *pGShader, MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateGFunction(MaterialShaderPara &MSPara,
-                                     VSString &OutString) = 0;
+                                     Container::MString &OutString) = 0;
         virtual void SetMaterialGShaderConstant(MaterialShaderPara &MSPara, VSGShader *pGShader) = 0;
 
         virtual void CreateHInputDeclare(MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateHOutputDeclare(MaterialShaderPara &MSPara,
-                                          VSString &OutString) = 0;
+                                          Container::MString &OutString) = 0;
         virtual void CreateHUserConstant(VSHShader *pHShader, MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateHFunction(MaterialShaderPara &MSPara,
-                                     VSString &OutString) = 0;
+                                     Container::MString &OutString) = 0;
         virtual void SetMaterialHShaderConstant(MaterialShaderPara &MSPara, VSHShader *pHShader) = 0;
 
         virtual void CreateDInputDeclare(MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateDOutputDeclare(MaterialShaderPara &MSPara,
-                                          VSString &OutString) = 0;
+                                          Container::MString &OutString) = 0;
         virtual void CreateDUserConstant(VSDShader *pDShader, MaterialShaderPara &MSPara,
-                                         VSString &OutString) = 0;
+                                         Container::MString &OutString) = 0;
         virtual void CreateDFunction(MaterialShaderPara &MSPara,
-                                     VSString &OutString) = 0;
+                                     Container::MString &OutString) = 0;
         virtual void SetMaterialDShaderConstant(MaterialShaderPara &MSPara, VSDShader *pDShader) = 0;
 
-        virtual void GetIncludeShader(VSString &OutString) = 0;
+        virtual void GetIncludeShader(Container::MString &OutString) = 0;
 
-        virtual void GetDynamicShader(VSString &OutString) = 0;
+        virtual void GetDynamicShader(Container::MString &OutString) = 0;
 
-        virtual void SkyLight(const VSString &WorldNormal, const VSString &UpColor, const VSString &DownColor, const VSString &DiffuseColor, VSString &OutString) = 0;
-        virtual void DirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                      const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
-                                      VSString &OutString) const = 0;
-        virtual void CustomDirectionalLight(int iLightNum, const VSString &CustomString, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
+        virtual void SkyLight(const Container::MString &WorldNormal, const Container::MString &UpColor, const Container::MString &DownColor, const Container::MString &DiffuseColor, Container::MString &OutString) = 0;
+        virtual void DirectionalLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &Specular, const Container::MString &SpecularPow,
+                                      const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, Container::MArray<Container::MString> ShadowString,
+                                      Container::MString &OutString) const = 0;
+        virtual void CustomDirectionalLight(int iLightNum, const Container::MString &CustomString, Container::MArray<Container::MString> ShadowString, Container::MString &OutString) const = 0;
 
-        virtual void OrenNayarDirectionalLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                               const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
-                                               VSString &OutString) const = 0;
+        virtual void OrenNayarDirectionalLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &RoughnessSquared,
+                                               const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, bool bLookUpTable, Container::MArray<Container::MString> ShadowString,
+                                               Container::MString &OutString) const = 0;
 
-        virtual void PointLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                                const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
-                                VSString &OutString) const = 0;
-        virtual void CustomPointLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
+        virtual void PointLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &Specular, const Container::MString &SpecularPow,
+                                const Container::MString &WorldPos, const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, Container::MArray<Container::MString> ShadowString,
+                                Container::MString &OutString) const = 0;
+        virtual void CustomPointLight(int iLightNum, const Container::MString &CustomString, const Container::MString &WorldPos, Container::MArray<Container::MString> ShadowString, Container::MString &OutString) const = 0;
 
-        virtual void OrenNayarPointLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                         const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
-                                         VSString &OutString) const = 0;
+        virtual void OrenNayarPointLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &RoughnessSquared,
+                                         const Container::MString &WorldPos, const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, bool bLookUpTable, Container::MArray<Container::MString> ShadowString,
+                                         Container::MString &OutString) const = 0;
 
-        virtual void SpotLight(int iLightNum, const VSString &Diffuse, const VSString &Specular, const VSString &SpecularPow,
-                               const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, Container::MArray<VSString> ShadowString,
-                               VSString &OutString) const = 0;
-        virtual void CustomSpotLight(int iLightNum, const VSString &CustomString, const VSString &WorldPos, Container::MArray<VSString> ShadowString, VSString &OutString) const = 0;
-        virtual void OrenNayarSpotLight(int iLightNum, const VSString &Diffuse, const VSString &RoughnessSquared,
-                                        const VSString &WorldPos, const VSString &WorldNormal, const VSString &WorldCameraDir, bool bLookUpTable, Container::MArray<VSString> ShadowString,
-                                        VSString &OutString) const = 0;
+        virtual void SpotLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &Specular, const Container::MString &SpecularPow,
+                               const Container::MString &WorldPos, const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, Container::MArray<Container::MString> ShadowString,
+                               Container::MString &OutString) const = 0;
+        virtual void CustomSpotLight(int iLightNum, const Container::MString &CustomString, const Container::MString &WorldPos, Container::MArray<Container::MString> ShadowString, Container::MString &OutString) const = 0;
+        virtual void OrenNayarSpotLight(int iLightNum, const Container::MString &Diffuse, const Container::MString &RoughnessSquared,
+                                        const Container::MString &WorldPos, const Container::MString &WorldNormal, const Container::MString &WorldCameraDir, bool bLookUpTable, Container::MArray<Container::MString> ShadowString,
+                                        Container::MString &OutString) const = 0;
 
-        virtual void LocalToWorldPos(const VSString &LocalPos, VSString &OutString) const = 0;
-        virtual void WorldToViewPos(const VSString &LocalPos, VSString &OutString) const = 0;
+        virtual void LocalToWorldPos(const Container::MString &LocalPos, Container::MString &OutString) const = 0;
+        virtual void WorldToViewPos(const Container::MString &LocalPos, Container::MString &OutString) const = 0;
 
-        virtual void LocalToWorldNormal(const VSString &LocalNormal, VSString &OutString) const = 0;
+        virtual void LocalToWorldNormal(const Container::MString &LocalNormal, Container::MString &OutString) const = 0;
 
-        virtual void WorldToViewNormal(const VSString &WorldNormal, VSString &OutString) const = 0;
+        virtual void WorldToViewNormal(const Container::MString &WorldNormal, Container::MString &OutString) const = 0;
 
-        virtual void GetWorldViewDir(VSString &OutString) const = 0;
+        virtual void GetWorldViewDir(Container::MString &OutString) const = 0;
 
-        virtual void TransProjPos(const VSString &Pos, const VSString &Matrix, VSString &OutString) const = 0;
-        virtual void BumpNormal(const VSString &TexNormal, VSString &OutString) const = 0;
+        virtual void TransProjPos(const Container::MString &Pos, const Container::MString &Matrix, Container::MString &OutString) const = 0;
+        virtual void BumpNormal(const Container::MString &TexNormal, Container::MString &OutString) const = 0;
 
-        virtual void ComputeDir(const VSString &Orgin, const VSString &End, VSString &OutString) const = 0;
-        virtual void ComputeLength(const VSString &Orgin, const VSString &End, VSString &OutString) const = 0;
-        virtual void ComputeBoneVector(const VSString &BoneIndex, const VSString &BoneWeight, const VSString &BoneVector,
-                                       const VSString &U, const VSString &V, const VSString &N, VSString &OutString) const = 0;
-        virtual void ComputeBoneVector(const VSString &BoneIndex, const VSString &BoneWeight,
-                                       const VSString &AnimDataResource, const VSString &AnimAllInfo,
-                                       const VSString &AnimInstanceInfo, const VSString &AnimNum,
-                                       const VSString &U, const VSString &V, const VSString &N, VSString &OutString) const = 0;
+        virtual void ComputeDir(const Container::MString &Orgin, const Container::MString &End, Container::MString &OutString) const = 0;
+        virtual void ComputeLength(const Container::MString &Orgin, const Container::MString &End, Container::MString &OutString) const = 0;
+        virtual void ComputeBoneVector(const Container::MString &BoneIndex, const Container::MString &BoneWeight, const Container::MString &BoneVector,
+                                       const Container::MString &U, const Container::MString &V, const Container::MString &N, Container::MString &OutString) const = 0;
+        virtual void ComputeBoneVector(const Container::MString &BoneIndex, const Container::MString &BoneWeight,
+                                       const Container::MString &AnimDataResource, const Container::MString &AnimAllInfo,
+                                       const Container::MString &AnimInstanceInfo, const Container::MString &AnimNum,
+                                       const Container::MString &U, const Container::MString &V, const Container::MString &N, Container::MString &OutString) const = 0;
 
-        virtual void BoneTranPos(const VSString &LocalPos, const VSString &U, const VSString &V, const VSString &N, VSString &OutString) const = 0;
-        virtual void BoneTranNormal(const VSString &LocalNormal, const VSString &U, const VSString &V, const VSString &N, VSString &OutString) const = 0;
+        virtual void BoneTranPos(const Container::MString &LocalPos, const Container::MString &U, const Container::MString &V, const Container::MString &N, Container::MString &OutString) const = 0;
+        virtual void BoneTranNormal(const Container::MString &LocalNormal, const Container::MString &U, const Container::MString &V, const Container::MString &N, Container::MString &OutString) const = 0;
 
-        virtual void DecodeNormal1(const VSString &Normal, VSString &OutString) const = 0;
-        virtual void RecodeNormal1(const VSString &Normal, VSString &OutString) const = 0;
-        virtual void DecodeNormal2(const VSString &Normal, const VSString &Tengent, VSString &OutString) const = 0;
+        virtual void DecodeNormal1(const Container::MString &Normal, Container::MString &OutString) const = 0;
+        virtual void RecodeNormal1(const Container::MString &Normal, Container::MString &OutString) const = 0;
+        virtual void DecodeNormal2(const Container::MString &Normal, const Container::MString &Tengent, Container::MString &OutString) const = 0;
 
-        virtual void DecodeNormal3(const VSString &Normal, VSString &OutString) const = 0;
-        virtual void RecodeNormal3(const VSString &Normal, VSString &OutString) const = 0;
+        virtual void DecodeNormal3(const Container::MString &Normal, Container::MString &OutString) const = 0;
+        virtual void RecodeNormal3(const Container::MString &Normal, Container::MString &OutString) const = 0;
 
-        virtual void Reciprocal(const VSString &Value, VSString &OutString) const = 0;
-        virtual void Clip(const VSString &Value, VSString &OutString) const = 0;
-        virtual void GreaterZeroPow(const VSString &Value, VSREAL Exp, VSString &OutString) const = 0;
-        virtual void SaturatePow(const VSString &Value, VSREAL Exp, VSString &OutString) const = 0;
-        virtual void Saturate(const VSString &Value, VSString &OutString) const = 0;
+        virtual void Reciprocal(const Container::MString &Value, Container::MString &OutString) const = 0;
+        virtual void Clip(const Container::MString &Value, Container::MString &OutString) const = 0;
+        virtual void GreaterZeroPow(const Container::MString &Value, VSREAL Exp, Container::MString &OutString) const = 0;
+        virtual void SaturatePow(const Container::MString &Value, VSREAL Exp, Container::MString &OutString) const = 0;
+        virtual void Saturate(const Container::MString &Value, Container::MString &OutString) const = 0;
 
-        virtual void PointLightCubeShadow(const VSString &PointLightName, const VSString &CubeShadowSampler, const VSString &ViewMatrix,
-                                          const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void PointLightCubeShadow(const Container::MString &PointLightName, const Container::MString &CubeShadowSampler, const Container::MString &ViewMatrix,
+                                          const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void PointLightCubeShadow(const VSString &PointLightName, const VSString &CubeShadowSampler,
-                                          const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void PointLightCubeShadow(const Container::MString &PointLightName, const Container::MString &CubeShadowSampler,
+                                          const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void PointLightVolumeShadow(const VSString &PointLightName, const VSString &VolumeShadowSampler,
-                                            const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void PointLightVolumeShadow(const Container::MString &PointLightName, const Container::MString &VolumeShadowSampler,
+                                            const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void PointLightDualParaboloidShadow(const VSString &PointLightName, const VSString &ShadowSampler,
-                                                    const VSString &WorldPos, VSString &OutString) const = 0;
-        virtual void DirectionLightVolumeShadow(const VSString &DirLightName, const VSString &VolumeShadowSampler,
-                                                const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void PointLightDualParaboloidShadow(const Container::MString &PointLightName, const Container::MString &ShadowSampler,
+                                                    const Container::MString &WorldPos, Container::MString &OutString) const = 0;
+        virtual void DirectionLightVolumeShadow(const Container::MString &DirLightName, const Container::MString &VolumeShadowSampler,
+                                                const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void DirectionLightCSMShadow(const VSString &DirLightName, const VSString &ShadowSampler,
-                                             const VSString &WorldPos, const VSString &ViewPos, const VSString &FarZ, VSString &OutString) const = 0;
+        virtual void DirectionLightCSMShadow(const Container::MString &DirLightName, const Container::MString &ShadowSampler,
+                                             const Container::MString &WorldPos, const Container::MString &ViewPos, const Container::MString &FarZ, Container::MString &OutString) const = 0;
 
-        virtual void DirectionLightShadow(const VSString &DirLightName, const VSString &ShadowSampler,
-                                          const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void DirectionLightShadow(const Container::MString &DirLightName, const Container::MString &ShadowSampler,
+                                          const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void SpotLightShadow(const VSString &SpotLightName, const VSString &ShadowSampler,
-                                     const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void SpotLightShadow(const Container::MString &SpotLightName, const Container::MString &ShadowSampler,
+                                     const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void TranLightToTemp(Container::MArray<VSLight *> LightArray, VSString &OutString) const = 0;
+        virtual void TranLightToTemp(Container::MArray<VSLight *> LightArray, Container::MString &OutString) const = 0;
 
-        virtual void GetLightFunction(Container::MArray<VSLight *> LightArray, const VSString &WorldPos, VSString &OutString) const = 0;
+        virtual void GetLightFunction(Container::MArray<VSLight *> LightArray, const Container::MString &WorldPos, Container::MString &OutString) const = 0;
 
-        virtual void EncodeReflect(const VSString &Mip, const VSString &Pow, VSString &OutString) = 0;
+        virtual void EncodeReflect(const Container::MString &Mip, const Container::MString &Pow, Container::MString &OutString) = 0;
 
-        virtual void DecodeReflect(const VSString &Mip, const VSString &Pow, const VSString &Value, VSString &OutString) = 0;
+        virtual void DecodeReflect(const Container::MString &Mip, const Container::MString &Pow, const Container::MString &Value, Container::MString &OutString) = 0;
 
     public:
         static VSRenderer *ms_pRenderer;
-        static const VSString &GetRenderTypeShaderPath(unsigned int RenderTypeAPI);
-        static const VSString &GetRenderTypeString(unsigned int RenderTypeAPI);
-        const VSString &GetRenderTypeShaderPath() const;
-        const VSString &GetRenderTypeString() const;
+        static const Container::MString &GetRenderTypeShaderPath(unsigned int RenderTypeAPI);
+        static const Container::MString &GetRenderTypeString(unsigned int RenderTypeAPI);
+        const Container::MString &GetRenderTypeShaderPath() const;
+        const Container::MString &GetRenderTypeString() const;
     };
 
 #include "VSRenderer.inl"

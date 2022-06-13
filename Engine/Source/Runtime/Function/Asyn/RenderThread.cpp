@@ -1,9 +1,9 @@
 #include "RenderThread.h"
 #include "UserConstant.h"
 #include "Bind.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "ResourceManager.h"
-#include "Profiler.h"
+#include "Core/Profiler.h"
 using namespace Matrix;
 //#define DEBUG_RENDER_THREAD
 VSRenderThreadBuffer::VSRenderThreadBuffer()
@@ -70,11 +70,11 @@ void VSRenderThreadBuffer::Execute(bool bMustFlust)
 VSRenderThreadSys *VSRenderThreadSys::ms_pRenderThreadSys = NULL;
 VSRenderThreadSys::VSRenderThreadSys()
 {
-    VSMAC_ASSERT(!ms_pRenderThreadSys);
+    ENGINE_ASSERT(!ms_pRenderThreadSys);
     ms_pRenderThreadSys = this;
     m_bIsRunning = false;
-    m_RenderBuffer = VS_NEW VSRenderThreadBuffer();
-    m_UpdateBuffer = VS_NEW VSRenderThreadBuffer();
+    m_RenderBuffer = MX_NEW VSRenderThreadBuffer();
+    m_UpdateBuffer = MX_NEW VSRenderThreadBuffer();
 #ifdef RENDERBUFFER_UPDATE
     m_RenderThread.Start();
 #endif

@@ -30,12 +30,12 @@
 	:VSPostEffectFunction(ShowName, pPostEffectSet) \
 	{ \
 		VSInputNode * pInputNode = NULL; \
-		pInputNode = VS_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this); \
-		VSMAC_ASSERT(pInputNode); \
+		pInputNode = MX_NEW VSInputNode(VSPutNode::PET_IN, _T("InputColor"), this); \
+		ENGINE_ASSERT(pInputNode); \
 		m_pInput.AddElement(pInputNode); \
 		VSOutputNode * pOutNode = NULL; \
-		pOutNode = VS_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this); \
-		VSMAC_ASSERT(pOutNode); \
+		pOutNode = MX_NEW VSOutputNode(VSPutNode::PET_OUT, _T("OutColor"), this); \
+		ENGINE_ASSERT(pOutNode); \
 		m_pOutput.AddElement(pOutNode); \
 	} \
 	VSPE##PostEffectName::~VSPE##PostEffectName() \
@@ -48,7 +48,7 @@
 	{ \
 		if (!m_pPostEffectRender) \
 		{ \
-			m_pPostEffectRender = VS_NEW VSPE##PostEffectName##SceneRender(); \
+			m_pPostEffectRender = MX_NEW VSPE##PostEffectName##SceneRender(); \
 		} \
 		return m_pPostEffectRender; \
 	} \

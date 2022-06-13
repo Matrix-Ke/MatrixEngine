@@ -337,10 +337,10 @@ namespace Matrix
 					MObject* Value = NULL;
 					Value = GetVSTypeMapValue(Key);
 					LinkObjectPtr(Value);
-					MATRIX_ENGINE_ASSERT(Value);
+					ENGINE_ASSERT(Value);
 					MObject::CloneObject(Value, Key);
 					// unsigned int uiIndex = m_pObjectArray.FindElement(Value);
-					// MATRIX_ENGINE_ASSERT(uiIndex < m_CopyUsed.GetNum());
+					// ENGINE_ASSERT(uiIndex < m_CopyUsed.GetNum());
 					// m_CopyUsed[uiIndex] = true;
 				}
 				else if (TIsCustomType<T>::Value)

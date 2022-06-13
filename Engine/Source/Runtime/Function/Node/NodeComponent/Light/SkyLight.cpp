@@ -1,5 +1,5 @@
 #include "SkyLight.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSSkyLight, VSIndirectLight)
 BEGIN_ADD_PROPERTY(VSSkyLight, VSIndirectLight)
@@ -10,8 +10,8 @@ IMPLEMENT_INITIAL_BEGIN(VSSkyLight)
 IMPLEMENT_INITIAL_END
 VSSkyLight::VSSkyLight()
 {
-    m_UpColor = VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
-    m_DownColor = VSColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+    m_UpColor = Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+    m_DownColor = Math::ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
 }
 VSSkyLight::~VSSkyLight()
 {

@@ -1,6 +1,6 @@
 #include "TimeEvent.h"
-#include "Stream.h"
-#include "GraphicInclude.h"
+#include "Core/Stream/Stream.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI_NoCreateFun(VSTimeEvent, MObject)
     IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(VSTimeEvent)

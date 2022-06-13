@@ -1,6 +1,6 @@
-#include "PhoneShaderFunction.h"
+#include "Material/ShaderFunction/PhoneShaderFunction.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSPhoneShaderFunction, VSShaderMainFunction)
 BEGIN_ADD_PROPERTY(VSPhoneShaderFunction, VSShaderMainFunction)
@@ -16,83 +16,83 @@ VSPhoneShaderFunction::VSPhoneShaderFunction(const VSUsedName &ShowName, VSMater
     : VSShaderMainFunction(ShowName, pMaterial)
 {
 
-    VSString InputName = _T("DiffuseColor");
+    Container::MString InputName = _T("DiffuseColor");
     VSInputNode *pInputNode = NULL;
 
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("EmissiveColor");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("SpecularColor");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("SpecularPow");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Normal");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_4, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("Alpha");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("ReflectMip");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("ReflectPow");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("WorldOffset");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("TessellationValue");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
     InputName = _T("WorldDisplacement");
     pInputNode = NULL;
-    pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-    VSMAC_ASSERT(pInputNode);
+    pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+    ENGINE_ASSERT(pInputNode);
     m_pInput.AddElement(pInputNode);
 
-    VSString OutputName = _T("OutputColor");
+    Container::MString OutputName = _T("OutputColor");
     VSOutputNode *pOutputNode = NULL;
-    pOutputNode = VS_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
-    VSMAC_ASSERT(pOutputNode);
+    pOutputNode = MX_NEW VSOutputNode(VSPutNode::VT_4, OutputName, this);
+    ENGINE_ASSERT(pOutputNode);
     m_pOutput.AddElement(pOutputNode);
 
     m_uiSpecularType = ST_BlinnPhong;
 }
 
-bool VSPhoneShaderFunction::GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const
+bool VSPhoneShaderFunction::GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const
 {
     GetAlphaTestString(OutString, MSPara);
     if (!m_pInput[IN_DIFFUSE_COLOR]->GetOutputLink() && !m_pInput[IN_SPECULAR_COLOR]->GetOutputLink())
@@ -128,7 +128,7 @@ bool VSPhoneShaderFunction::GetFunctionString(VSString &OutString, MaterialShade
         OutString += m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(" = ") +
                      VSRenderer::ms_pRenderer->Float4Const(_T("0"), _T("0"), _T("0"), _T("0"));
 
-        Container::MArray<VSString> ShadowStringArray[VSLight::LT_MAX];
+        Container::MArray<Container::MString> ShadowStringArray[VSLight::LT_MAX];
         GetLightShadow(MSPara, ShadowStringArray);
         for (unsigned int i = 0; i < VSLight::LT_MAX; i++)
         {
@@ -157,7 +157,7 @@ bool VSPhoneShaderFunction::GetFunctionString(VSString &OutString, MaterialShade
 
     GetSRGBWriteString(OutString, MSPara);
 
-    VSString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
+    Container::MString NodeStringA = VSRenderer::GetValueElement(m_pOutput[OUT_COLOR], VSRenderer::VE_A);
     OutString += NodeStringA + _T(" = ") + m_pInput[IN_ALPHA]->GetNodeName().GetString();
     OutString += _T(";\n");
     OutString += VSShaderStringFactory::ms_PSOutputColorValue + _T(" = ") + m_pOutput[OUT_COLOR]->GetNodeName().GetString() + _T(";\n");
@@ -174,26 +174,26 @@ bool VSPhoneShaderFunction::PostLoad(MStream *pStream)
 {
     if (!GetWorldOffsetNode())
     {
-        VSString InputName = _T("WorldOffset");
+        Container::MString InputName = _T("WorldOffset");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     if (!GetTessellationValueNode())
     {
-        VSString InputName = _T("TessellationValue");
+        Container::MString InputName = _T("TessellationValue");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_1, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     if (!GetWorldDisplacementNode())
     {
-        VSString InputName = _T("WorldDisplacement");
+        Container::MString InputName = _T("WorldDisplacement");
         VSInputNode *pInputNode = NULL;
-        pInputNode = VS_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
-        VSMAC_ASSERT(pInputNode);
+        pInputNode = MX_NEW VSInputNode(VSPutNode::VT_3, InputName, this);
+        ENGINE_ASSERT(pInputNode);
         m_pInput.AddElement(pInputNode);
     }
     return true;

@@ -74,18 +74,18 @@ inline unsigned int VSRenderer::GetMaxUAVNum()const
 {
 	return m_uiMaxUAVNum;
 }
-inline VSString VSRenderer::GetAdapterName()const
+inline Container::MString VSRenderer::GetAdapterName()const
 {
 	return m_AdapterName;
 }
 //----------------------------------------------------------------------------
-inline void VSRenderer::SetClearColor (const VSColorRGBA& ClearColor)
+inline void VSRenderer::SetClearColor (const Math::ColorRGBA& ClearColor)
 {
 	m_ClearColor = ClearColor;
 
 }
 //----------------------------------------------------------------------------
-inline const VSColorRGBA& VSRenderer::GetClearColor () const
+inline const Math::ColorRGBA& VSRenderer::GetClearColor () const
 {
 	return m_ClearColor;
 }

@@ -1,5 +1,5 @@
 #include "2DTextureArray.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "RenderTarget.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VS2DTextureArray, VSTexture)
@@ -17,7 +17,7 @@ VS2DTextureArray::VS2DTextureArray(unsigned int uiWidth, unsigned int uiHeight, 
 }
 bool VS2DTextureArray::SetOutput(class VSOutputResource *pOutputResource)
 {
-    VSMAC_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
+    ENGINE_ASSERT(pOutputResource && pOutputResource->GetOutputType() != VSOutputResource::OT_BUFFER_UNORDER_ACCESS);
     if (IsBindResource())
     {
         return false;
@@ -60,7 +60,7 @@ bool VS2DTextureArray::SetOutput(class VSOutputResource *pOutputResource)
         }
         else
         {
-            VSMAC_ASSERT(0);
+            ENGINE_ASSERT(0);
             return false;
         }
     }
@@ -85,7 +85,7 @@ VS2DTextureArray::VS2DTextureArray(Container::MArray<VS2DTexture *> &pTextureArr
             {
                 uiWidth = pTextureArray[i]->GetWidth(0);
                 uiHeight = pTextureArray[i]->GetHeight(0);
-                VSMAC_ASSERT(uiWidth == uiHeight);
+                ENGINE_ASSERT(uiWidth == uiHeight);
                 uiFormat = pTextureArray[i]->GetFormatType();
                 uiOutputType = pTextureArray[i]->GetOutputType();
                 uiMipLevel = pTextureArray[i]->GetMipLevel();
@@ -97,14 +97,14 @@ VS2DTextureArray::VS2DTextureArray(Container::MArray<VS2DTexture *> &pTextureArr
             {
                 if (uiWidth != pTextureArray[i]->GetWidth(0) || uiFormat != pTextureArray[i]->GetFormatType() || uiOutputType != pTextureArray[i]->GetOutputType() || uiMipLevel != pTextureArray[i]->GetMipLevel() || bStatic != pTextureArray[i]->IsStatic() || bSRGB != pTextureArray[i]->GetSRGB())
                 {
-                    VSMAC_ASSERT(0);
+                    ENGINE_ASSERT(0);
                 }
             }
         }
     }
 
-    VSMAC_ASSERT(uiWidth);
-    VSMAC_ASSERT(uiFormat < VSRenderer::SFT_MAX);
+    ENGINE_ASSERT(uiWidth);
+    ENGINE_ASSERT(uiFormat < VSRenderer::SFT_MAX);
     m_uiFormatType = uiFormat;
     m_uiHeight = uiWidth;
     m_uiWidth = uiWidth;
@@ -139,7 +139,7 @@ VS2DTextureArray::VS2DTextureArray(Container::MArray<VS2DTexture *> &pTextureArr
     }
     else
     {
-        VSMAC_ASSERT(0);
+        ENGINE_ASSERT(0);
     }
 }
 VS2DTextureArray::~VS2DTextureArray()
@@ -150,8 +150,8 @@ VS2DTextureArray::VS2DTextureArray()
 }
 void VS2DTextureArray::SetMipLevel()
 {
-    VSMAC_ASSERT(m_uiWidth && m_uiHeight);
-    VSMAC_ASSERT(IsTwoPower(m_uiWidth));
+    ENGINE_ASSERT(m_uiWidth && m_uiHeight);
+    ENGINE_ASSERT(IsTwoPower(m_uiWidth));
     unsigned int uiWidthLevel = FastLog2(m_uiWidth);
     unsigned int uiCurMipLevel = uiWidthLevel + 1;
     if (!m_uiMipLevel || uiCurMipLevel < m_uiMipLevel)

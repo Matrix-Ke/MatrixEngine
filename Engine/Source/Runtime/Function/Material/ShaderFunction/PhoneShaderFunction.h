@@ -33,7 +33,7 @@ namespace Matrix
         };
         VSPhoneShaderFunction(const VSUsedName &ShowName, VSMaterial *pMaterial);
         virtual ~VSPhoneShaderFunction();
-        virtual bool GetFunctionString(VSString &OutString, MaterialShaderPara &MSPara) const;
+        virtual bool GetFunctionString(Container::MString &OutString, MaterialShaderPara &MSPara) const;
         virtual inline unsigned int GetSMType() const
         {
             return SM_PHONE;

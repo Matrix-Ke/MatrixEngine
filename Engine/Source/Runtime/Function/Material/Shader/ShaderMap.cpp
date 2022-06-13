@@ -1,8 +1,8 @@
-#include "ShaderMap.h"
-#include "Geometry.h"
-#include "BoneNode.h"
+#include "Material/Shader/ShaderMap.h"
+#include "Node/Geometry.h"
+#include "Node/Model/BoneNode.h"
 #include "ResourceManager.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSShaderMapCache, VSCacheResource)
 BEGIN_ADD_PROPERTY(VSShaderMapCache, VSCacheResource)
@@ -10,7 +10,7 @@ REGISTER_PROPERTY(m_ShaderMap, ShaderMap, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
 IMPLEMENT_INITIAL_BEGIN(VSShaderMapCache)
 IMPLEMENT_INITIAL_END
-VSShaderMap::VSShaderMap(VSString ShaderMapName)
+VSShaderMap::VSShaderMap(Container::MString ShaderMapName)
 {
     m_ShaderMapName = ShaderMapName;
 }

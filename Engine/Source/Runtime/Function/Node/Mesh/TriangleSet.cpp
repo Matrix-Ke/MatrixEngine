@@ -1,6 +1,6 @@
 #include "TriangleSet.h"
 #include "Node.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSTriangleSet, VSMeshData)
 BEGIN_ADD_PROPERTY(VSTriangleSet, VSMeshData)
@@ -40,7 +40,7 @@ bool VSTriangleSet::CreateFanIndex()
     }
     if (!m_pIndexBuffer)
     {
-        m_pIndexBuffer = VS_NEW VSIndexBuffer();
+        m_pIndexBuffer = MX_NEW VSIndexBuffer();
         if (!m_pIndexBuffer)
         {
             return 0;
@@ -75,7 +75,7 @@ bool VSTriangleSet::CreateNormal(unsigned int uiVertexLevel)
     Math::Vector3 *pNormalBuffer = (Math::Vector3 *)pNormal->GetData();
 
     //¼ÆÊý
-    unsigned int *pVertexTemp = VS_NEW unsigned int[Num];
+    unsigned int *pVertexTemp = MX_NEW unsigned int[Num];
     VSMemset((void *)pVertexTemp, 0, sizeof(unsigned int) * Num);
 
     unsigned int TriangleNum = GetTotalNum();

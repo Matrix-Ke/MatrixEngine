@@ -32,7 +32,7 @@ namespace Matrix
 
         inline void SetOwner(VSAnimTree *pOwner)
         {
-            VSMAC_ASSERT(pOwner);
+            ENGINE_ASSERT(pOwner);
             m_pOwner = pOwner;
         }
         friend class VSAnimMainFunction;
@@ -59,10 +59,10 @@ namespace Matrix
         virtual bool IsSupportSimpleInstance() { return false; }
         VSSkeletonMeshNode *GetSkeletonMeshNode() const;
         VSInputNode *GetInputNode(unsigned int uiNodeID) const;
-        VSInputNode *GetInputNode(const VSString &NodeName) const;
+        VSInputNode *GetInputNode(const Container::MString &NodeName) const;
 
         VSOutputNode *GetOutputNode(unsigned int uiNodeID) const;
-        VSOutputNode *GetOutputNode(const VSString &NodeName) const;
+        VSOutputNode *GetOutputNode(const Container::MString &NodeName) const;
 
         inline const VSUsedName &GetShowName() const
         {

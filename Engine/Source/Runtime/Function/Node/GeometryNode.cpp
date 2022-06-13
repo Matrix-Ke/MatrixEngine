@@ -1,6 +1,6 @@
 #include "GeometryNode.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSGeometryNode, VSNode)
 BEGIN_ADD_PROPERTY(VSGeometryNode, VSNode)
@@ -137,7 +137,7 @@ bool VSGeometryNode::PostLoad(MStream *pStream)
         for (unsigned int j = 0; j < GetNormalGeometryNum(); j++)
         {
             VSGeometry *NormalGeometry = GetNormalGeometry(j);
-            VSMap<unsigned int, VSVertexBuffer *> MorphDataSet;
+            Container::MMap<unsigned int, VSVertexBuffer *> MorphDataSet;
             for (unsigned int i = 0; i < m_pMorphSet->GetMorphNum(); i++)
             {
                 VSMorph *pMorph = m_pMorphSet->GetMorph(i);

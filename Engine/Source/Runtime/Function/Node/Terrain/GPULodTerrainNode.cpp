@@ -1,5 +1,5 @@
 #include "GPULodTerrainNode.h"
-#include "GraphicInclude.h"
+#include "Core/GraphicInclude.h"
 #include "GPULodTerrainGeometry.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSGPULodTerrainNode, VSTerrainNode)
@@ -23,7 +23,7 @@ bool VSGPULodTerrainNode::CreateChild()
     m_pChild.Clear();
 
     VSGPULodTerrainGeometry *pGLG = NULL;
-    pGLG = VS_NEW VSGPULodTerrainGeometry();
+    pGLG = MX_NEW VSGPULodTerrainGeometry();
     if (!pGLG->CreateMesh(GetTileNumX(), GetTileNumZ()))
     {
         return false;
@@ -46,8 +46,8 @@ bool VSGPULodTerrainNode::CreateTerrain(unsigned int uiNumX, unsigned int uiNumZ
     SetNum(uiNumX, uiNumZ);
     SetTessellationLevel(uiTessellationLevel, MAX_GPU_TESSELLATION_LEVEL);
     VSMAC_DELETEA(m_pHeight);
-    m_pHeight = VS_NEW unsigned char[m_uiTotalNum];
-    VSMAC_ASSERT(m_pHeight);
+    m_pHeight = MX_NEW unsigned char[m_uiTotalNum];
+    ENGINE_ASSERT(m_pHeight);
 
     VSMemset(m_pHeight, 0, m_uiTotalNum * sizeof(unsigned char));
     m_LodTexture = VSResourceManager::Create2DTexture(GetSizeX(), GetSizeZ(), VSRenderer::SFT_R16F, 1, m_pHeight);

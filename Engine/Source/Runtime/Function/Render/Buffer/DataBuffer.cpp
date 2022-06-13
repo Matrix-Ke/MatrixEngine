@@ -4,8 +4,8 @@
 #include "Vector2.h"
 #include "Vector3W.h"
 #include "ShaderStringFactory.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSDataBuffer, MObject)
 BEGIN_ADD_PROPERTY(VSDataBuffer, MObject)
@@ -109,14 +109,14 @@ VSDataBuffer::~VSDataBuffer()
 
 bool VSDataBuffer::SetData(const void *pData, unsigned int uiNum, unsigned int uiDT, unsigned int uiStructStride)
 {
-    VSMAC_ASSERT(uiDT < DT_MAXNUM && pData && uiNum);
+    ENGINE_ASSERT(uiDT < DT_MAXNUM && pData && uiNum);
 
     m_uiDT = uiDT;
     m_uiNum = uiNum;
     m_uiStructStride = uiStructStride;
     VSMAC_DELETEA(m_pData);
 
-    m_pData = VS_NEW unsigned char[GetSize()];
+    m_pData = MX_NEW unsigned char[GetSize()];
 
     if (!m_pData)
         return 0;
@@ -126,7 +126,7 @@ bool VSDataBuffer::SetData(const void *pData, unsigned int uiNum, unsigned int u
 }
 bool VSDataBuffer::AddData(const void *pData, unsigned int uiNum, unsigned int uiDT, unsigned int uiStructStride)
 {
-    VSMAC_ASSERT(uiDT < DT_MAXNUM && pData && uiNum);
+    ENGINE_ASSERT(uiDT < DT_MAXNUM && pData && uiNum);
     if (m_uiDT != DT_MAXNUM)
     {
         if (m_uiDT != uiDT)
@@ -146,7 +146,7 @@ bool VSDataBuffer::AddData(const void *pData, unsigned int uiNum, unsigned int u
     }
 
     unsigned char *Temp = NULL;
-    Temp = VS_NEW unsigned char[(uiNum + m_uiNum) * GetStride()];
+    Temp = MX_NEW unsigned char[(uiNum + m_uiNum) * GetStride()];
     if (!Temp)
         return 0;
     VSMemcpy(Temp, m_pData, GetStride() * m_uiNum);
@@ -160,14 +160,14 @@ bool VSDataBuffer::AddData(const void *pData, unsigned int uiNum, unsigned int u
 }
 bool VSDataBuffer::CreateEmptyBuffer(unsigned int uiNum, unsigned int uiDT, unsigned int uiStructStride)
 {
-    VSMAC_ASSERT(uiDT < DT_MAXNUM && uiNum);
+    ENGINE_ASSERT(uiDT < DT_MAXNUM && uiNum);
 
     m_uiDT = uiDT;
     m_uiNum = uiNum;
     m_uiStructStride = uiStructStride;
     VSMAC_DELETEA(m_pData);
 
-    m_pData = VS_NEW unsigned char[GetSize()];
+    m_pData = MX_NEW unsigned char[GetSize()];
 
     if (!m_pData)
         return 0;

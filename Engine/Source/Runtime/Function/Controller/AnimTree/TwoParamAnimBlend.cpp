@@ -1,6 +1,6 @@
 #include "TwoParamAnimBlend.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSTwoParamAnimBlend, VSAnimBlendFunction)
 IMPLEMENT_INITIAL_BEGIN(VSTwoParamAnimBlend)
@@ -57,10 +57,10 @@ bool VSTwoParamAnimBlend::SetObject(MObject *pObject)
     if (VSAnimBlendFunction::SetObject(pObject))
     {
         const VSSkeletonMeshNode *pMesh = GetSkeletonMeshNode();
-        VSMAC_ASSERT(pMesh);
+        ENGINE_ASSERT(pMesh);
 
         VSSkeleton *pSkeleton = pMesh->GetSkeleton();
-        VSMAC_ASSERT(pSkeleton);
+        ENGINE_ASSERT(pSkeleton);
 
         unsigned int BoneNum = pSkeleton->GetBoneNum();
         m_BlendBoneMatrix[0].SetBufferNum(BoneNum);
@@ -79,14 +79,14 @@ void VSTwoParamAnimBlend::CreateSlot(unsigned int uiWidth, unsigned int uiHeight
     {
         for (unsigned int j = 0; j < uiHeight; j++)
         {
-            VSString InputName = _T("Child");
-            VSString ID = Container::IntToString(i);
+            Container::MString InputName = _T("Child");
+            Container::MString ID = Container::IntToString(i);
             InputName += ID;
             ID = Container::IntToString(j);
             InputName += ID;
             VSInputNode *pInputNode = NULL;
-            pInputNode = VS_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
-            VSMAC_ASSERT(pInputNode);
+            pInputNode = MX_NEW VSInputNode(VSPutNode::AVT_ANIM, InputName, this);
+            ENGINE_ASSERT(pInputNode);
             m_pInput.AddElement(pInputNode);
         }
     }
@@ -176,17 +176,17 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
                                        VSREAL fWeight)
 {
 
-    VSMAC_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
+    ENGINE_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
 
     unsigned int uiBoneNum = pOut->GetNum();
-    VSMAC_ASSERT(uiBoneNum);
+    ENGINE_ASSERT(uiBoneNum);
 
     if (pIn1 && pIn2)
     {
 
-        VSMAC_ASSERT(uiBoneNum == pIn1->GetNum());
+        ENGINE_ASSERT(uiBoneNum == pIn1->GetNum());
 
-        VSMAC_ASSERT(uiBoneNum == pIn2->GetNum());
+        ENGINE_ASSERT(uiBoneNum == pIn2->GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -195,7 +195,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
     }
     else if (pIn1)
     {
-        VSMAC_ASSERT(uiBoneNum == pIn1->GetNum());
+        ENGINE_ASSERT(uiBoneNum == pIn1->GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -204,7 +204,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
     }
     else if (pIn2)
     {
-        VSMAC_ASSERT(uiBoneNum == pIn2->GetNum());
+        ENGINE_ASSERT(uiBoneNum == pIn2->GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -216,14 +216,14 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
                                        VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2,
                                        VSREAL fWeight)
 {
-    VSMAC_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
+    ENGINE_ASSERT(pOut && fWeight >= 0.0f && fWeight <= 1.0f);
     unsigned int uiBoneNum = pOut->GetNum();
-    VSMAC_ASSERT(uiBoneNum);
+    ENGINE_ASSERT(uiBoneNum);
 
     if (pAnimFunction1 && pAnimFunction2)
     {
 
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
         if (uiBoneNum != pAnimFunction2->m_BoneOutput.GetNum())
         {
             return;
@@ -236,7 +236,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
     }
     else if (pAnimFunction1)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction1->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -245,7 +245,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
     }
     else if (pAnimFunction2)
     {
-        VSMAC_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
+        ENGINE_ASSERT(uiBoneNum == pAnimFunction2->m_BoneOutput.GetNum());
 
         for (unsigned int i = 0; i < uiBoneNum; i++)
         {
@@ -256,7 +256,7 @@ void VSTwoParamAnimBlend::LineBlendTwo(Container::MArray<VSAnimAtom> *pOut,
 bool VSTwoParamAnimBlend::LineBlendTwoRoot(VSAnimAtom &pOut,
                                            VSAnimFunction *pAnimFunction1, VSAnimFunction *pAnimFunction2, VSREAL fWeight)
 {
-    VSMAC_ASSERT(fWeight >= 0.0f && fWeight <= 1.0f);
+    ENGINE_ASSERT(fWeight >= 0.0f && fWeight <= 1.0f);
 
     if (pAnimFunction1 && pAnimFunction2)
     {

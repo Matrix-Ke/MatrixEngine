@@ -1,6 +1,6 @@
 #include "Shader.h"
-#include "GraphicInclude.h"
-#include "Stream.h"
+#include "Core/GraphicInclude.h"
+#include "Core/Stream/Stream.h"
 using namespace Matrix;
 IMPLEMENT_RTTI(VSVShader, VSShader)
 BEGIN_ADD_PROPERTY(VSVShader, VSShader)
@@ -14,17 +14,17 @@ VSVShader::VSVShader()
 VSVShader::~VSVShader()
 {
 }
-VSVShader::VSVShader(const TCHAR *pBuffer, const VSString &MainFunName, bool IsFromFile)
+VSVShader::VSVShader(const TCHAR *pBuffer, const Container::MString &MainFunName, bool IsFromFile)
     : VSShader(pBuffer, MainFunName, IsFromFile)
 {
 }
-VSVShader::VSVShader(const VSString &Buffer, const VSString &MainFunName, bool IsFromFile)
+VSVShader::VSVShader(const Container::MString &Buffer, const Container::MString &MainFunName, bool IsFromFile)
     : VSShader(Buffer, MainFunName, IsFromFile)
 {
 }
 bool VSVShader::OnLoadResource(VSResourceIdentifier *&pID)
 {
-    VSMAC_ASSERT(m_pUser);
+    ENGINE_ASSERT(m_pUser);
 
     if (!m_pUser->OnLoadVShaderProgram(this, pID))
         return 0;

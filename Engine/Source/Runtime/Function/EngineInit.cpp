@@ -2,7 +2,7 @@
 #include "Core/Object.h"
 
 #include "Container/String.h"
-//#include "GraphicInclude.h"
+//#include "Core/GraphicInclude.h"
 
 using namespace Matrix;
 
@@ -98,7 +98,7 @@ bool EngineInit::Initialize()
 
         if (!(*((*ms_pInitialPropertyArray)[i]))(NULL))
         {
-            MATRIX_ENGINE_ASSERT(0);
+            ENGINE_ASSERT(0);
             return 0;
         }
     }
@@ -111,7 +111,7 @@ bool EngineInit::Initialize()
 
         if (!(*((*ms_pInitialArray)[i].Func))())
         {
-            MATRIX_ENGINE_ASSERT(0);
+            ENGINE_ASSERT(0);
             return 0;
         }
     }
@@ -141,7 +141,7 @@ bool EngineInit::Terminate()
         //(*( (*ms_pTerminalArray)[i].Func ))();*/
         if (!(*((*ms_pTerminalArray)[i].Func))())
         {
-            MATRIX_ENGINE_ASSERT(0);
+            ENGINE_ASSERT(0);
             return 0;
         }
     }
@@ -153,7 +153,7 @@ bool EngineInit::Terminate()
 
         if (!(*((*ms_pTerminalPropertyArray)[i]))())
         {
-            MATRIX_ENGINE_ASSERT(0);
+            ENGINE_ASSERT(0);
             return 0;
         }
     }
@@ -163,10 +163,10 @@ bool EngineInit::Terminate()
     // todo list engine GC
     // VSResourceManager::GCObject();
     // VSResourceManager::RunAllGCTask();
-    // MATRIX_ENGINE_ASSERT(VSResourceManager::IsReleaseAll());
+    // ENGINE_ASSERT(VSResourceManager::IsReleaseAll());
 
     VSFastObjectManager &Temp = MObject::GetObjectManager();
     ms_uiTerminalObject = MObject::GetObjectManager().GetObjectNum();
-    MATRIX_ENGINE_ASSERT(ms_uiTerminalObject == 0);
+    ENGINE_ASSERT(ms_uiTerminalObject == 0);
     return 1;
 }
