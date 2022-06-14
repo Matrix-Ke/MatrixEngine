@@ -5,6 +5,8 @@
 [Rr]eleases/
 [Bb]uild/
 .vs/
+.vscode/
+CMakeFiles/
 
 #other
 *.tlog
@@ -13,10 +15,18 @@
 # Prerequisites
 *.d
 
+# cmake file
+CMakeCache.txt
+*.cmake
+*.stamp
+*.depend
+
+
 # visual studio porject
 *.sln
 *.vcxproj
 *.filters
+*.user
 
 # Compiled Object files
 *.slo
