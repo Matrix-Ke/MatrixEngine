@@ -14,6 +14,10 @@ set_target_properties(${SharedLibName} PROPERTIES FOLDER ${ENGINE_ROOT_DIR}/${SE
 
 # ==============================设置target属性=============================
 target_compile_definitions(${SharedLibName} PRIVATE $<$<CONFIG:Debug>: _TEST_MACRO_>)
+target_include_directories(${SharedLibName} PRIVATE "${THIRD_PARTY_DIR}/NVCompress/include")
+target_link_directories(${SharedLibName} PRIVATE ${THIRD_PARTY_DIR}/NVCompress/Lib)
+target_link_libraries(${SharedLibName} PRIVATE "nvtt_64.lib")
+
 target_compile_definitions(${SharedLibName} PUBLIC "UNICODE; _UNICODE")
 target_include_directories(${SharedLibName} PRIVATE "${ENGINE_SOURCE_RUNTIME_DIR}")
 target_include_directories(${SharedLibName} PRIVATE "${ENGINE_SOURCE_RUNTIME_DIR}/Function")
