@@ -17,7 +17,7 @@ set(PROJECT_VERSION 1.0.0)
 Project(MatrixEngine LANGUAGES CXX VERSION ${PROJECT_VERSION})
 message(STATUS "Version: ${PROJECT_VERSION}")
 
-# 设置c++ 版本 目前选择14版
+# 设置c++ 版本 目前选择17版
 set(CMAKE_CXX_STANDARD 17) # 方法一，全局设置
 set(CMAKE_CXX_FLAGS "/GR-") # 设置关闭RTTI
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
